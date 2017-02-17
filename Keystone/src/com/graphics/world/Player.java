@@ -16,6 +16,9 @@ import com.graphics.GFX;
  */
 public class Player extends Entity
 {	
+	
+	private boolean canJump = true;
+	
 	/**
 	 * Creates a new player
 	 * @param position The initial position of the player
@@ -69,10 +72,20 @@ public class Player extends Entity
 		{
 			super.moveRight();
 		}
+		
+
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) == false)
+		{
+			canJump = true;
+		}
 		// If the space bar is pressed make the player jump
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))
 		{
-			super.jump();
+			if(canJump)
+			{
+				super.jump();
+				canJump = false;
+			}
 		}
 		for(Tile t: tiles)
 		{

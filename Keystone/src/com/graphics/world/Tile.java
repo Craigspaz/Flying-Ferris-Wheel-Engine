@@ -101,6 +101,11 @@ public class Tile
 		return collider.isCollidingWithBox(entity.getCollider());
 	}
 	
+	public Vector2f isColliding(RectangleBox box)
+	{
+		return collider.isColliding(box);
+	}
+	
 	/**
 	 * Returns true if the tile is colliding with the box
 	 * @param box The box to check if colliding with

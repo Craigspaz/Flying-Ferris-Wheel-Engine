@@ -16,8 +16,10 @@ import com.graphics.GFX;
 public class Entity
 {
 	
-	protected static float GRAVITY = 4.0f;
+	protected static final float GRAVITY = 0.8f;
+	protected static final float MAX_SPEED = 20.0f;
 	protected Vector3f position;
+	protected Vector3f velocity;
 	private Texture texture;
 	protected int numberOfSprites;
 	private Vector2f sizeOfSpriteOnSheet;
@@ -57,6 +59,7 @@ public class Entity
 		isAnimated = false;
 		animSpriteFrame = 0;
 		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z),scale);
+		velocity = new Vector3f(0,0,0);
 	}
 
 	/**
@@ -104,39 +107,54 @@ public class Entity
 		
 		if(affectedByGravity)
 		{
-			collider.getPosition().y += GRAVITY;
+			//collider.getPosition().y += GRAVITY;
+			velocity.y += GRAVITY;
 		}
-		
-		for(Tile t: tiles)
-		{
-			if(t.isCollidingWithBox(collider))
-			{
-
-				System.out.println("Player with collider: " + collider + " is colliding with collider: " + t.getCollider());
-				System.out.println("Player is rendered at: (" + position.x + ", " + position.y + ", " + position.z + ") (" + scale.x + ", " + scale.y + ")");
-				
-				collider.setPosition(new Vector3f(position.x,position.y,position.z));
-				
-				System.out.println("New Collider position: " + collider);
-				
-				break;
-			}
-		}
-		position = new Vector3f(collider.getPosition().x,collider.getPosition().y,collider.getPosition().z);
 		
 		if(jumping)
 		{
-			if(jumpTimer >= 100)
+			if(jumpTimer >= 20)
 			{
 				jumpTimer = 0;
 				jumping = false;
 			}
 			else
 			{
-				collider.getPosition().y -= 2 * GRAVITY + 10 - jumpTimer;
+				//collider.getPosition().y -= 2 * GRAVITY + 10 - jumpTimer;
+				velocity.y = -6;
 				jumpTimer++;
+				System.out.println("Jumping... " + jumpTimer);
 			}
 		}
+		
+		if(velocity.y > MAX_SPEED)
+		{
+			velocity.y = MAX_SPEED;
+		}
+		else if(velocity.y < -MAX_SPEED)
+		{
+			velocity.y = -MAX_SPEED;
+		}
+
+		collider.getPosition().y += velocity.y;
+		
+		for(Tile t: tiles)
+		{
+			if(t.isCollidingWithBox(collider))
+			{
+				System.out.println(t.isColliding(collider));
+				//System.out.println("Player with collider: " + collider + " is colliding with collider: " + t.getCollider());
+				//System.out.println("Player is rendered at: (" + position.x + ", " + position.y + ", " + position.z + ") (" + scale.x + ", " + scale.y + ")");
+				//velocity.y = collider.getSize().y - (t.getPosition().y - collider.getPosition().y);
+				collider.setPosition(new Vector3f(position.x,position.y,position.z));
+				velocity = new Vector3f(0,0,0);
+				
+				//System.out.println("New Collider position: " + collider);
+				
+				break;
+			}
+		}
+		position = new Vector3f(collider.getPosition().x,collider.getPosition().y,collider.getPosition().z);
 	}
 	
 	/**
@@ -441,5 +459,13 @@ public class Entity
 	public void setCollider(RectangleBox collider)
 	{
 		this.collider = collider;
+	}
+
+	public Vector3f getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(Vector3f velocity) {
+		this.velocity = velocity;
 	}
 }

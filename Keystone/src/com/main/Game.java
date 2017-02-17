@@ -33,12 +33,12 @@ public class Game
 		test = new Player(new Vector3f(32,32,0),Textures.playerTest,new Vector2f(512,32),10,new Vector2f(32,32));
 		for(int i = 0; i < 10; i++)
 		{
-			Tile testTile = new Tile(new Vector3f(0 + (i * 64),128,0),new Vector2f(64,64),Textures.testTile);
+			Tile testTile = new Tile(new Vector3f(0 + (i * 64),500,0),new Vector2f(64,64),Textures.testTile);
 			tiles.add(testTile);
 		}
 		for(int i = 0; i < 10; i++)
 		{
-			Tile testTile = new Tile(new Vector3f(187 + (i * 64),256,0),new Vector2f(64,64),Textures.testTile);
+			Tile testTile = new Tile(new Vector3f(187 + (i * 64),550,0),new Vector2f(64,64),Textures.testTile);
 			tiles.add(testTile);
 		}
 	}

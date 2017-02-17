@@ -27,6 +27,18 @@ public class RectangleBox
 		this.position = position;
 		this.size = size;
 	}
+	
+	
+	public Vector2f isColliding(RectangleBox box)
+	{
+		if(isCollidingWithBox(box))
+		{
+			return new Vector2f(box.getSize().x - (getPosition().x - box.getPosition().x),box.getSize().y - (getPosition().y - box.getPosition().y));
+		}
+		return new Vector2f(0,0);
+	}
+	
+		
 
 	/**
 	 * Returns true if the current box overlaps with another box passed in
@@ -65,7 +77,7 @@ public class RectangleBox
 		{
 			return true;
 		}
-		// Checks if andy of the corners of the box are in the current box
+		// Checks if and y of the corners of the box are in the current box
 		// object
 		else if (xx > x && xx < x + sizex && yy > y && yy < y + sizey)
 		{
