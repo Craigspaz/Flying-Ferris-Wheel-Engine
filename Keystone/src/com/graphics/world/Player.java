@@ -17,8 +17,6 @@ import com.graphics.GFX;
 public class Player extends Entity
 {	
 	
-	private boolean canJump = true;
-	
 	/**
 	 * Creates a new player
 	 * @param position The initial position of the player
@@ -62,21 +60,24 @@ public class Player extends Entity
 			super.setSprinting(false);
 		}
 		
-		// If the left arrow key is down move the player left
-		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT) == false && Keyboard.isKeyDown(Keyboard.KEY_LEFT) == false)
 		{
-			super.moveLeft();
+			velocity.x = 0;
 		}
-		// If the right arrow is down move the player right
 		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 		{
 			super.moveRight();
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+		{
+			super.moveLeft();
 		}
 		
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) == false)
 		{
 			canJump = true;
+			jumping = false;
 		}
 		// If the space bar is pressed make the player jump
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))
@@ -87,7 +88,7 @@ public class Player extends Entity
 				canJump = false;
 			}
 		}
-		for(Tile t: tiles)
+		/*for(Tile t: tiles)
 		{
 			if(super.getCollider().isCollidingWithBox(t.getCollider()))
 			{
@@ -105,7 +106,7 @@ public class Player extends Entity
 				break;
 			}
 		}
-		super.setPosition(new Vector3f(super.getCollider().getPosition().x, super.getCollider().getPosition().y,super.getCollider().getPosition().z));
+		super.setPosition(new Vector3f(super.getCollider().getPosition().x, super.getCollider().getPosition().y,super.getCollider().getPosition().z));*/
 	}	
 	
 	public void update(ArrayList<Tile> tiles)

@@ -17,7 +17,8 @@ public class Entity
 {
 	
 	protected static final float GRAVITY = 0.8f;
-	protected static final float MAX_SPEED = 20.0f;
+	protected static final float MAX_SPEED_Y = 20.0f;
+	protected static final float MAX_SPEED_X = 10.0f;
 	protected Vector3f position;
 	protected Vector3f velocity;
 	private Texture texture;
@@ -39,6 +40,7 @@ public class Entity
 	protected boolean affectedByGravity = false;
 	protected boolean jumping = false;
 	protected int jumpTimer = 0;
+	protected boolean canJump = true;
 	
 	protected RectangleBox collider;
 
@@ -111,50 +113,82 @@ public class Entity
 			velocity.y += GRAVITY;
 		}
 		
-		if(jumping)
+		if(velocity.y > MAX_SPEED_Y)
 		{
-			if(jumpTimer >= 20)
-			{
-				jumpTimer = 0;
-				jumping = false;
-			}
-			else
-			{
-				//collider.getPosition().y -= 2 * GRAVITY + 10 - jumpTimer;
-				velocity.y = -6;
-				jumpTimer++;
-				System.out.println("Jumping... " + jumpTimer);
-			}
+			velocity.y = MAX_SPEED_Y;
+		}
+		else if(velocity.y < -MAX_SPEED_Y)
+		{
+			velocity.y = -MAX_SPEED_Y;
 		}
 		
-		if(velocity.y > MAX_SPEED)
+		if(velocity.x > MAX_SPEED_X)
 		{
-			velocity.y = MAX_SPEED;
+			velocity.x = MAX_SPEED_X;
 		}
-		else if(velocity.y < -MAX_SPEED)
+		else if(velocity.x < -MAX_SPEED_X)
 		{
-			velocity.y = -MAX_SPEED;
+			velocity.x = -MAX_SPEED_X;
 		}
 
+
+		/*collider.getPosition().x += velocity.x;
 		collider.getPosition().y += velocity.y;
 		
 		for(Tile t: tiles)
 		{
 			if(t.isCollidingWithBox(collider))
 			{
-				System.out.println(t.isColliding(collider));
+				//System.out.println(t.isColliding(collider));
+				//System.out.println(velocity.y);
 				//System.out.println("Player with collider: " + collider + " is colliding with collider: " + t.getCollider());
 				//System.out.println("Player is rendered at: (" + position.x + ", " + position.y + ", " + position.z + ") (" + scale.x + ", " + scale.y + ")");
 				//velocity.y = collider.getSize().y - (t.getPosition().y - collider.getPosition().y);
+				//collider.getPosition().y += velocity.y;
 				collider.setPosition(new Vector3f(position.x,position.y,position.z));
-				velocity = new Vector3f(0,0,0);
+				//velocity = new Vector3f(0,0,0);
 				
 				//System.out.println("New Collider position: " + collider);
 				
 				break;
 			}
 		}
-		position = new Vector3f(collider.getPosition().x,collider.getPosition().y,collider.getPosition().z);
+		position = new Vector3f(collider.getPosition().x,collider.getPosition().y,collider.getPosition().z);*/
+		
+		boolean isOnGround = false;
+		
+		for(Tile t : tiles)
+		{
+			if(t.isCollidingWithBox(collider))
+			{
+				float bottomOfPlayer = collider.getPosition().y + collider.getSize().y;
+				float topOfGround = t.getPosition().y;
+				
+				float yShift = Math.abs(bottomOfPlayer - topOfGround);
+				
+				//float ratio = yShift / velocity.y;
+				//float xShift = velocity.x * ratio;
+				//velocity.x -= xShift;
+				velocity.y -= yShift;
+				System.out.println(velocity.x + " " + velocity.y);
+				collider.getPosition().x += velocity.x;
+				collider.getPosition().y += velocity.y;
+				velocity.y = 0;
+				velocity.x = 0;
+				isOnGround = true;
+				break;
+			}
+		}
+		
+		if(isOnGround && jumping)
+		{
+			velocity.y = -6;
+		}
+		
+		collider.getPosition().x += velocity.x;
+		collider.getPosition().y += velocity.y;
+		position.x = collider.getPosition().x;
+		position.y = collider.getPosition().y;
 	}
 	
 	/**
@@ -175,11 +209,11 @@ public class Entity
 	{
 		if(isSprinting)
 		{
-			collider.getPosition().x -= sprintSpeed;
+			velocity.x = -sprintSpeed;
 		}
 		else
 		{
-			collider.getPosition().x -= walkSpeed;
+			velocity.x = -walkSpeed;
 		}
 	}
 	
@@ -190,11 +224,11 @@ public class Entity
 	{
 		if(isSprinting)
 		{
-			collider.getPosition().x += sprintSpeed;
+			velocity.x = sprintSpeed;
 		}
 		else
 		{
-			collider.getPosition().x += walkSpeed;
+			velocity.x = walkSpeed;
 		}
 	}
 	
@@ -205,11 +239,11 @@ public class Entity
 	{
 		if(isSprinting)
 		{
-			collider.getPosition().y -= sprintSpeed;
+			velocity.y -= sprintSpeed;
 		}
 		else
 		{
-			collider.getPosition().y -= walkSpeed;
+			velocity.y -= walkSpeed;
 		}
 	}
 	
@@ -220,11 +254,11 @@ public class Entity
 	{
 		if(isSprinting)
 		{
-			collider.getPosition().y += sprintSpeed;
+			velocity.y += sprintSpeed;
 		}
 		else
 		{
-			collider.getPosition().y += walkSpeed;
+			velocity.y += walkSpeed;
 		}
 	}
 
