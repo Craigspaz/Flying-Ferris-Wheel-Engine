@@ -33,8 +33,8 @@ public class Entity
 	protected float animateSpeed = 2.0f;
 	protected float animateTime = 0.0f;
 
-	protected float walkSpeed = 2.0f;
-	protected float sprintSpeed = 4.0f;
+	protected float walkSpeed = 4.0f;
+	protected float sprintSpeed = 8.0f;
 	protected boolean isSprinting = false;
 	
 	protected boolean affectedByGravity = false;
@@ -131,62 +131,128 @@ public class Entity
 			velocity.x = -MAX_SPEED_X;
 		}
 
-
-		/*collider.getPosition().x += velocity.x;
-		collider.getPosition().y += velocity.y;
-		
-		for(Tile t: tiles)
-		{
-			if(t.isCollidingWithBox(collider))
-			{
-				//System.out.println(t.isColliding(collider));
-				//System.out.println(velocity.y);
-				//System.out.println("Player with collider: " + collider + " is colliding with collider: " + t.getCollider());
-				//System.out.println("Player is rendered at: (" + position.x + ", " + position.y + ", " + position.z + ") (" + scale.x + ", " + scale.y + ")");
-				//velocity.y = collider.getSize().y - (t.getPosition().y - collider.getPosition().y);
-				//collider.getPosition().y += velocity.y;
-				collider.setPosition(new Vector3f(position.x,position.y,position.z));
-				//velocity = new Vector3f(0,0,0);
-				
-				//System.out.println("New Collider position: " + collider);
-				
-				break;
-			}
-		}
-		position = new Vector3f(collider.getPosition().x,collider.getPosition().y,collider.getPosition().z);*/
-		
 		boolean isOnGround = false;
+		/*float overLappingX = 0;
+		float overLappingY = 0;
 		
 		for(Tile t : tiles)
 		{
-			if(t.isCollidingWithBox(collider))
+			if(t.isCollidingWithBox(collider) && t.isCollidingWithBoxX(collider))
 			{
-				float bottomOfPlayer = collider.getPosition().y + collider.getSize().y;
+				
+				float leftSideOfWall = t.getPosition().x;
+				float rightSideOfWall = t.getPosition().x + t.getSize().x;
+				
+				
+				float leftOfPlayer = collider.getPosition().x;
+				float rightOfPlayer = collider.getPosition().x + collider.getSize().x;
+				
+		
+				if(velocity.x > 0)
+				{
+					float xShift = Math.abs(leftSideOfWall - rightOfPlayer);
+					collider.getPosition().x += -xShift;	
+					//overLappingX = -xShift;
+					//velocity.x = 0;
+				}
+				else if(velocity.x < 0)
+				{
+					float xShift = Math.abs(rightSideOfWall - leftOfPlayer);
+					//overLappingX = xShift;
+					collider.getPosition().x += xShift;	
+					//velocity.x = 0;
+				}
+				//System.out.println(velocity.x + " " + velocity.y);
+			}
+			if(t.isCollidingWithBox(collider) && t.isCollidingWithBoxY(collider))
+			{
 				float topOfGround = t.getPosition().y;
+				float bottomOfGround = t.getPosition().y + t.getSize().y;
 				
-				float yShift = Math.abs(bottomOfPlayer - topOfGround);
+				float topOfPlayer = collider.getPosition().y;
+				float bottomOfPlayer = collider.getPosition().y + collider.getSize().y;
+				if(velocity.y > 0)
+				{
+					float yShift = Math.abs(bottomOfPlayer - topOfGround);
+
+					//overLappingY = -yShift;
+					collider.getPosition().y += -yShift;
+					isOnGround = true;
+					velocity.y = 0;
+				}
+				else if(velocity.y < 0)
+				{
+					float yShift = Math.abs(topOfPlayer - bottomOfGround);
+					//overLappingY = yShift;
+					collider.getPosition().y += yShift;
+					velocity.y = 0;
+				}
 				
-				//float ratio = yShift / velocity.y;
-				//float xShift = velocity.x * ratio;
-				//velocity.x -= xShift;
-				velocity.y -= yShift;
-				System.out.println(velocity.x + " " + velocity.y);
-				collider.getPosition().x += velocity.x;
-				collider.getPosition().y += velocity.y;
-				velocity.y = 0;
-				velocity.x = 0;
-				isOnGround = true;
-				break;
+			}
+		}*/
+		
+
+		RectangleBox nBoxX = new RectangleBox(new Vector3f(collider.getPosition().x + velocity.x,position.y,position.z),collider.getSize());
+		RectangleBox nBoxY = new RectangleBox(new Vector3f(position.x,collider.getPosition().y + velocity.y,position.z),collider.getSize());
+		for(Tile t: tiles)
+		{			
+			if(t.isCollidingWithBox(nBoxX))
+			{
+				float leftSideOfWall = t.getPosition().x;
+				float rightSideOfWall = t.getPosition().x + t.getSize().x;
+				
+				
+				float leftOfPlayer = nBoxX.getPosition().x;
+				float rightOfPlayer = nBoxX.getPosition().x + nBoxX.getSize().x;
+				if(velocity.x > 0)
+				{
+					float xShift = Math.abs(leftSideOfWall - rightOfPlayer);
+					nBoxX.getPosition().x += -xShift;	
+				}
+				else if(velocity.x < 0)
+				{
+					float xShift = Math.abs(rightSideOfWall - leftOfPlayer);
+					nBoxX.getPosition().x += xShift;	
+				}
+			}
+			if(t.isCollidingWithBox(nBoxY))
+			{
+				float topOfGround = t.getPosition().y;
+				float bottomOfGround = t.getPosition().y + t.getSize().y;
+				
+				float topOfPlayer = nBoxY.getPosition().y;
+				float bottomOfPlayer = nBoxY.getPosition().y + nBoxY.getSize().y;
+				if(velocity.y > 0)
+				{
+					float yShift = Math.abs(bottomOfPlayer - topOfGround);
+
+					nBoxY.getPosition().y += -yShift;
+					isOnGround = true;
+					velocity.y = 0;
+				}
+				else if(velocity.y < 0)
+				{
+					float yShift = Math.abs(topOfPlayer - bottomOfGround);
+					nBoxY.getPosition().y += yShift;
+					velocity.y = 0;
+				}
 			}
 		}
 		
+		
+		
 		if(isOnGround && jumping)
 		{
-			velocity.y = -6;
+			velocity.y = -20;
 		}
 		
-		collider.getPosition().x += velocity.x;
-		collider.getPosition().y += velocity.y;
+		collider.setPosition(new Vector3f(nBoxX.getPosition().x,nBoxY.getPosition().y,position.z));
+		//collider.getPosition().x += velocity.x;
+		//collider.getPosition().x += overLappingX;
+		//collider.getPosition().y += velocity.y;
+		//collider.getPosition().y += overLappingY;
+		
+		
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
 	}

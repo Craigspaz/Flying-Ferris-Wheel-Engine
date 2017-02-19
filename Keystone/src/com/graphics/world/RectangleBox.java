@@ -38,6 +38,41 @@ public class RectangleBox
 		return new Vector2f(0,0);
 	}
 	
+	public boolean isCollidingWithBoxX(RectangleBox box)
+	{
+		float box1Left = position.x;
+		float box1Right = position.x + size.x;
+
+		float box2Left = box.position.x;
+		float box2Right = position.x + box.size.x;
+		
+		if(box1Left < box2Right || box1Right > box2Left)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public boolean isCollidingWithBoxY(RectangleBox box)
+	{
+		float box1Top = position.y;
+		float box1Bottom = position.y + size.y;
+
+		float box2Top = box.position.y;
+		float box2Bottom = position.y + box.size.y;
+		
+		if(box1Top < box2Bottom || box1Bottom > box2Top)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 		
 
 	/**

@@ -31,9 +31,16 @@ public class Game
 		
 		
 		test = new Player(new Vector3f(32,32,0),Textures.playerTest,new Vector2f(512,32),10,new Vector2f(32,32));
+		tiles.add(new Tile(new Vector3f(32,160,0),new Vector2f(64,64),Textures.testTile));
+		tiles.add(new Tile(new Vector3f(128,192,0),new Vector2f(64,64),Textures.testTile));
 		for(int i = 0; i < 10; i++)
 		{
 			Tile testTile = new Tile(new Vector3f(0 + (i * 64),500,0),new Vector2f(64,64),Textures.testTile);
+			tiles.add(testTile);
+		}
+		for(int i = 0; i < 10; i++)
+		{
+			Tile testTile = new Tile(new Vector3f(800 + (i * 64),500,0),new Vector2f(64,64),Textures.testTile);
 			tiles.add(testTile);
 		}
 		for(int i = 0; i < 10; i++)
