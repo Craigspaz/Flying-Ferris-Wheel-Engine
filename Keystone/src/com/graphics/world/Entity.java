@@ -90,8 +90,9 @@ public class Entity
 
 	/**
 	 * Updates the entity
+	 * @param colliders The colliders in the world to check for collisions with
 	 */
-	public void update(ArrayList<Tile> tiles)
+	public void update(ArrayList<RectangleBox> colliders)
 	{
 		if (animateTime >= 10)
 		{
@@ -109,7 +110,6 @@ public class Entity
 		
 		if(affectedByGravity)
 		{
-			//collider.getPosition().y += GRAVITY;
 			velocity.y += GRAVITY;
 		}
 		
@@ -132,69 +132,11 @@ public class Entity
 		}
 
 		boolean isOnGround = false;
-		/*float overLappingX = 0;
-		float overLappingY = 0;
 		
-		for(Tile t : tiles)
-		{
-			if(t.isCollidingWithBox(collider) && t.isCollidingWithBoxX(collider))
-			{
-				
-				float leftSideOfWall = t.getPosition().x;
-				float rightSideOfWall = t.getPosition().x + t.getSize().x;
-				
-				
-				float leftOfPlayer = collider.getPosition().x;
-				float rightOfPlayer = collider.getPosition().x + collider.getSize().x;
-				
-		
-				if(velocity.x > 0)
-				{
-					float xShift = Math.abs(leftSideOfWall - rightOfPlayer);
-					collider.getPosition().x += -xShift;	
-					//overLappingX = -xShift;
-					//velocity.x = 0;
-				}
-				else if(velocity.x < 0)
-				{
-					float xShift = Math.abs(rightSideOfWall - leftOfPlayer);
-					//overLappingX = xShift;
-					collider.getPosition().x += xShift;	
-					//velocity.x = 0;
-				}
-				//System.out.println(velocity.x + " " + velocity.y);
-			}
-			if(t.isCollidingWithBox(collider) && t.isCollidingWithBoxY(collider))
-			{
-				float topOfGround = t.getPosition().y;
-				float bottomOfGround = t.getPosition().y + t.getSize().y;
-				
-				float topOfPlayer = collider.getPosition().y;
-				float bottomOfPlayer = collider.getPosition().y + collider.getSize().y;
-				if(velocity.y > 0)
-				{
-					float yShift = Math.abs(bottomOfPlayer - topOfGround);
-
-					//overLappingY = -yShift;
-					collider.getPosition().y += -yShift;
-					isOnGround = true;
-					velocity.y = 0;
-				}
-				else if(velocity.y < 0)
-				{
-					float yShift = Math.abs(topOfPlayer - bottomOfGround);
-					//overLappingY = yShift;
-					collider.getPosition().y += yShift;
-					velocity.y = 0;
-				}
-				
-			}
-		}*/
-		
-
+		// Makes two predictive collision boxes
 		RectangleBox nBoxX = new RectangleBox(new Vector3f(collider.getPosition().x + velocity.x,position.y,position.z),collider.getSize());
 		RectangleBox nBoxY = new RectangleBox(new Vector3f(position.x,collider.getPosition().y + velocity.y,position.z),collider.getSize());
-		for(Tile t: tiles)
+		for(RectangleBox t: colliders)
 		{			
 			if(t.isCollidingWithBox(nBoxX))
 			{
@@ -207,12 +149,14 @@ public class Entity
 				if(velocity.x > 0)
 				{
 					float xShift = Math.abs(leftSideOfWall - rightOfPlayer);
-					nBoxX.getPosition().x += -xShift;	
+					nBoxX.getPosition().x += -xShift;
+					velocity.x = 0;
 				}
 				else if(velocity.x < 0)
 				{
 					float xShift = Math.abs(rightSideOfWall - leftOfPlayer);
-					nBoxX.getPosition().x += xShift;	
+					nBoxX.getPosition().x += xShift;
+					velocity.x = 0;
 				}
 			}
 			if(t.isCollidingWithBox(nBoxY))
@@ -238,21 +182,11 @@ public class Entity
 				}
 			}
 		}
-		
-		
-		
 		if(isOnGround && jumping)
 		{
 			velocity.y = -20;
 		}
-		
 		collider.setPosition(new Vector3f(nBoxX.getPosition().x,nBoxY.getPosition().y,position.z));
-		//collider.getPosition().x += velocity.x;
-		//collider.getPosition().x += overLappingX;
-		//collider.getPosition().y += velocity.y;
-		//collider.getPosition().y += overLappingY;
-		
-		
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
 	}
@@ -341,8 +275,14 @@ public class Entity
 		{
 			Vector2f offset = new Vector2f(((float) (32f * animSpriteFrame)) / sizeOfSpriteOnSheet.x, 0);
 			Vector2f sizey = new Vector2f((float) (32f / sizeOfSpriteOnSheet.x), 1);
-			//GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
-			GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
+			if(velocity.x < 0)
+			{
+				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
+			}
+			else
+			{
+				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
+			}
 		}
 	}
 

@@ -97,13 +97,13 @@ public class GFX
 		//Draws a rectangle
 		GL11.glBegin(GL11.GL_QUADS);
 
-		GL11.glTexCoord2f(texCoords.x, texCoords.y);
-		GL11.glVertex2f(xx, yy);
-		GL11.glTexCoord2f(texCoords.x, texCoords.y + size.y);
-		GL11.glVertex2f(xx, y + yy);
-		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y + size.y);
-		GL11.glVertex2f(x + xx, y + yy);
 		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y);
+		GL11.glVertex2f(xx, yy);
+		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y + size.y);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glTexCoord2f(texCoords.x, texCoords.y + size.y);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glTexCoord2f(texCoords.x, texCoords.y);
 		GL11.glVertex2f(x + xx, yy);
 
 		GL11.glEnd();

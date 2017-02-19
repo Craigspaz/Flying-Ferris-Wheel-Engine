@@ -46,9 +46,9 @@ public class Player extends Entity
 	
 	/**
 	 * Handles input from the user
-	 * @param tiles The world tiles to check for collisions
+	 * @param tiles The world collision boxes to check for collisions
 	 */
-	public void input(ArrayList<Tile> tiles)
+	public void input(ArrayList<RectangleBox> tiles)
 	{
 		//If left shift is held the player is sprinting
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
@@ -88,30 +88,11 @@ public class Player extends Entity
 				canJump = false;
 			}
 		}
-		/*for(Tile t: tiles)
-		{
-			if(super.getCollider().isCollidingWithBox(t.getCollider()))
-			{
-				//System.out.println("Player with collider: " + collider + " is colliding with collider: " + t.getCollider());
-				//System.out.println("Player is rendered at: (" + position.x + ", " + position.y + ", " + position.z + ") (" + getScale().x + ", " + getScale().y + ")");
-
-				super.getCollider().setPosition(new Vector3f(super.getPosition().x,super.getPosition().y, super.getPosition().z));
-				
-				//System.out.println("New Collider position: " + collider);
-				if(jumping)
-				{
-					jumping = false;
-					jumpTimer = 0;
-				}
-				break;
-			}
-		}
-		super.setPosition(new Vector3f(super.getCollider().getPosition().x, super.getCollider().getPosition().y,super.getCollider().getPosition().z));*/
 	}	
 	
-	public void update(ArrayList<Tile> tiles)
+	public void update(ArrayList<RectangleBox> colliders)
 	{
-		input(tiles);
-		super.update(tiles);
+		input(colliders);
+		super.update(colliders);
 	}
 }

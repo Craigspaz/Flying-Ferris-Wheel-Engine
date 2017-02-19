@@ -101,21 +101,6 @@ public class Tile
 		return collider.isCollidingWithBox(entity.getCollider());
 	}
 	
-	public Vector2f isColliding(RectangleBox box)
-	{
-		return collider.isColliding(box);
-	}
-	
-	public boolean isCollidingWithBoxX(RectangleBox box)
-	{
-		return collider.isCollidingWithBoxX(box);
-	}
-	
-	public boolean isCollidingWithBoxY(RectangleBox box)
-	{
-		return collider.isCollidingWithBoxY(box);
-	}
-	
 	/**
 	 * Returns true if the tile is colliding with the box
 	 * @param box The box to check if colliding with
