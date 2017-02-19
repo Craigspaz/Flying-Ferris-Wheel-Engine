@@ -24,9 +24,9 @@ public class Player extends Entity
 	 * @param size The size of the the sprite on the texture
 	 * @param scale The size to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Vector2f size, Vector2f scale)
+	public Player(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position,texture,size,scale);
+		super(position,texture,size,scale,sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 	}
 	
@@ -38,9 +38,9 @@ public class Player extends Entity
 	 * @param numberOfSprites The number of sprites on the texture
 	 * @param scale The size at which to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSprites, Vector2f scale)
+	public Player(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position,texture,sizeOfTexture,numberOfSprites,scale);
+		super(position,texture,sizeOfTexture,numberOfSpritesX,numberOfSpritesY,scale,sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 	}
 	

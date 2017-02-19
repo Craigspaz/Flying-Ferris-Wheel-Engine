@@ -31,7 +31,7 @@ public class Game
 		new Textures();
 		
 		
-		test = new Player(new Vector3f(32,32,0),Textures.playerTest,new Vector2f(512,32),10,new Vector2f(32,32));
+		test = new Player(new Vector3f(32,32,0),Textures.playerTest,new Vector2f(512,32),10,1,new Vector2f(64,64), new Vector2f(32,32));
 		tiles.add(new Tile(new Vector3f(32,160,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(128,192,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(0,550,0),new Vector2f(64,64),Textures.testTile));

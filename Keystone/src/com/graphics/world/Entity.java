@@ -22,11 +22,14 @@ public class Entity
 	protected Vector3f position;
 	protected Vector3f velocity;
 	private Texture texture;
-	protected int numberOfSprites;
+	protected int numberOfSpritesX;
+	protected int numberOfSpritesY;
 	private Vector2f sizeOfSpriteOnSheet;
+	private Vector2f sizeOfSpriteSheet;
 
 	private boolean isAnimated;
-	protected int animSpriteFrame;
+	protected int animSpriteFrameX;
+	protected int animSpriteFrameY;
 
 	private Vector2f scale;
 
@@ -51,15 +54,18 @@ public class Entity
 	 * @param size The size of the sprite on the texture
 	 * @param scale The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Vector2f size, Vector2f scale)
+	public Entity(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
 		this.position = position;
 		this.texture = texture;
 		this.scale = scale;
-		numberOfSprites = 1;
-		sizeOfSpriteOnSheet = size;
+		this.sizeOfSpriteOnSheet = sizeOfSpriteOnSheet;
+		numberOfSpritesX = 1;
+		numberOfSpritesY = 1;
+		sizeOfSpriteSheet = size;
 		isAnimated = false;
-		animSpriteFrame = 0;
+		animSpriteFrameX = 0;
+		animSpriteFrameY = 0;
 		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z),scale);
 		velocity = new Vector3f(0,0,0);
 	}
@@ -72,10 +78,11 @@ public class Entity
 	 * @param numberOfSprites The size of each individual sprite on the texture
 	 * @param scale The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSprites, Vector2f scale)
+	public Entity(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX,int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		this(position, texture, sizeOfTexture, scale);
-		this.numberOfSprites = numberOfSprites;
+		this(position, texture, sizeOfTexture, scale,sizeOfSpriteOnSheet);
+		this.numberOfSpritesX = numberOfSpritesX;
+		this.numberOfSpritesY = numberOfSpritesY;
 	}
 
 	/**
@@ -96,10 +103,10 @@ public class Entity
 	{
 		if (animateTime >= 10)
 		{
-			animSpriteFrame++;
-			if (animSpriteFrame >= numberOfSprites)
+			animSpriteFrameX++;
+			if (animSpriteFrameX >= numberOfSpritesX)
 			{
-				animSpriteFrame = 0;
+				animSpriteFrameX = 0;
 			}
 			animateTime = 0.0f;
 		}
@@ -267,14 +274,14 @@ public class Entity
 	 */
 	public void render()
 	{
-		if (numberOfSprites == 1)
+		if (numberOfSpritesX == 1)
 		{
 			GFX.drawEntireSprite(scale.x, scale.y, position.x, position.y, texture);
 		}
 		else
 		{
-			Vector2f offset = new Vector2f(((float) (32f * animSpriteFrame)) / sizeOfSpriteOnSheet.x, 0);
-			Vector2f sizey = new Vector2f((float) (32f / sizeOfSpriteOnSheet.x), 1);
+			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (sizeOfSpriteOnSheet.y * animSpriteFrameY)/sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.y));
 			if(velocity.x < 0)
 			{
 				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
@@ -338,24 +345,6 @@ public class Entity
 	public void setTexture(Texture texture)
 	{
 		this.texture = texture;
-	}
-
-	/**
-	 * Returns the number of sprites on the spritesheet
-	 * @return Returns the number of sprites on the spritesheet
-	 */
-	public int getNumberOfSprites()
-	{
-		return numberOfSprites;
-	}
-
-	/**
-	 * Sets the number of sprites on the spritesheet
-	 * @param numberOfSprites The number of sprites on the spritesheet
-	 */
-	public void setNumberOfSprites(int numberOfSprites)
-	{
-		this.numberOfSprites = numberOfSprites;
 	}
 
 	/**
@@ -501,11 +490,99 @@ public class Entity
 		this.collider = collider;
 	}
 
+	/**
+	 * Returns the velocity of the entity
+	 * @return Returns the velocity of the entity
+	 */
 	public Vector3f getVelocity() {
 		return velocity;
 	}
 
+	/**
+	 * Sets the velocity of the entity
+	 * @param velocity The new velocity
+	 */
 	public void setVelocity(Vector3f velocity) {
 		this.velocity = velocity;
+	}
+
+	/**
+	 * Returns the size of the spritesheet
+	 * @return Returns the size of the spritesheet
+	 */
+	public Vector2f getSizeOfSpriteSheet() {
+		return sizeOfSpriteSheet;
+	}
+
+	/**
+	 * Sets the size of the spritesheet
+	 * @param sizeOfSpriteSheet The size of the spritesheet
+	 */
+	public void setSizeOfSpriteSheet(Vector2f sizeOfSpriteSheet) {
+		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+	}
+
+	/**
+	 * Returns the animation frame counter in the x direction
+	 * @return Returns the animation frame counter in the x direction
+	 */
+	public int getAnimSpriteFrameX() {
+		return animSpriteFrameX;
+	}
+
+	/**
+	 * Sets the animation frame counter in the x direction
+	 * @param animSpriteFrameX The new animation frame in the x direction
+	 */
+	public void setAnimSpriteFrameX(int animSpriteFrameX) {
+		this.animSpriteFrameX = animSpriteFrameX;
+	}
+
+	/**
+	 * Returns the animation frame in the y direction
+	 * @return Returns the animation frame in the y direction
+	 */
+	public int getAnimSpriteFrameY() {
+		return animSpriteFrameY;
+	}
+
+	/**
+	 * Sets the animation frame in the y direction
+	 * @param animSpriteFrameY The new animation frame in the y direction
+	 */
+	public void setAnimSpriteFrameY(int animSpriteFrameY) {
+		this.animSpriteFrameY = animSpriteFrameY;
+	}
+
+	/**
+	 * Returns the number of sprites in the x direction of the spritesheet
+	 * @return Returns the number of sprites in the x direction of the spritesheet
+	 */
+	public int getNumberOfSpritesX() {
+		return numberOfSpritesX;
+	}
+
+	/**
+	 * Sets the number of sprites in the x direction
+	 * @param numberOfSpritesX The number of sprites in the x direction
+	 */
+	public void setNumberOfSpritesX(int numberOfSpritesX) {
+		this.numberOfSpritesX = numberOfSpritesX;
+	}
+
+	/**
+	 * Returns the number of sprites in the y direction 
+	 * @return Returns the numbe rof sprites in the y direction
+	 */
+	public int getNumberOfSpritesY() {
+		return numberOfSpritesY;
+	}
+
+	/**
+	 * Sets the number of sprites in the y direction 
+	 * @param numberOfSpritesY The number of sprites in the y direction
+	 */
+	public void setNumberOfSpritesY(int numberOfSpritesY) {
+		this.numberOfSpritesY = numberOfSpritesY;
 	}
 }
