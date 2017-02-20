@@ -14,10 +14,13 @@ public class Textures
 	public static Texture testTile;
 	public static Texture table;
 	
+	public static Texture sean;
+	
 	public Textures()
 	{
 		playerTest = Loader.loadTexture("sprint");
 		testTile = Loader.loadTexture("Floating_Platform_2");
 		table = Loader.loadTexture("table-v2");
+		sean = Loader.loadTexture("sean");
 	}
 }
