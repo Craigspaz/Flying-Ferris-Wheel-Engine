@@ -18,7 +18,9 @@ public class Entity
 	
 	protected static final float GRAVITY = 0.8f;
 	protected static final float MAX_SPEED_Y = 20.0f;
-	protected static final float MAX_SPEED_X = 10.0f;
+	protected static final float MAX_SPEED_X = 8.0f;
+	protected static final float HORIZONTAL_ACCEL = 0.8f;
+	protected static final float DECEL_VALUE = 0.3f;
 	protected Vector3f position;
 	protected Vector3f velocity;
 	private Texture texture;
@@ -129,14 +131,6 @@ public class Entity
 			velocity.y = -MAX_SPEED_Y;
 		}
 		
-		if(velocity.x > MAX_SPEED_X)
-		{
-			velocity.x = MAX_SPEED_X;
-		}
-		else if(velocity.x < -MAX_SPEED_X)
-		{
-			velocity.x = -MAX_SPEED_X;
-		}
 
 		boolean isOnGround = false;
 		
@@ -212,30 +206,46 @@ public class Entity
 	/**
 	 * Makes the entity move left;
 	 */
-	protected void moveLeft()
+	public void moveLeft()
 	{
 		if(isSprinting)
 		{
-			velocity.x = -sprintSpeed;
+			velocity.x -= 2 * HORIZONTAL_ACCEL;
+			if(velocity.x < 2 * -MAX_SPEED_X)
+			{
+				velocity.x = 2 * -MAX_SPEED_X;
+			}
 		}
 		else
 		{
-			velocity.x = -walkSpeed;
+			velocity.x -= HORIZONTAL_ACCEL;
+			if(velocity.x < -(MAX_SPEED_X))
+			{
+				velocity.x = -(MAX_SPEED_X);
+			}
 		}
 	}
 	
 	/**
 	 * Makes the entity move right
 	 */
-	protected void moveRight()
+	public void moveRight()
 	{
 		if(isSprinting)
 		{
-			velocity.x = sprintSpeed;
+			velocity.x += 2 * HORIZONTAL_ACCEL;
+			if(velocity.x > 2 * MAX_SPEED_X)
+			{
+				velocity.x = 2 * MAX_SPEED_X;
+			}
 		}
 		else
 		{
-			velocity.x = walkSpeed;
+			velocity.x += HORIZONTAL_ACCEL;
+			if(velocity.x > (MAX_SPEED_X))
+			{
+				velocity.x = (MAX_SPEED_X);
+			}
 		}
 	}
 	

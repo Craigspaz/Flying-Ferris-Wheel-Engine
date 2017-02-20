@@ -62,7 +62,18 @@ public class Player extends Entity
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT) == false && Keyboard.isKeyDown(Keyboard.KEY_LEFT) == false)
 		{
-			velocity.x = 0;
+			if(velocity.x > 0)
+			{
+				velocity.x -= DECEL_VALUE;
+			}
+			else if(velocity.x < 0)
+			{
+				velocity.x += DECEL_VALUE;
+			}
+			if(Math.abs(velocity.x) < DECEL_VALUE)
+			{
+				velocity.x = 0;
+			}
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 		{

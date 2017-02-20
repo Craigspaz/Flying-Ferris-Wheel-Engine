@@ -1,6 +1,7 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -8,6 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import com.graphics.Textures;
 import com.graphics.world.Camera;
+import com.graphics.world.Entity;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
@@ -22,6 +24,8 @@ public class Game
 	
 	private Player test;
 	
+	private Entity table;
+	
 	private ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	
@@ -35,10 +39,13 @@ public class Game
 		new Textures();
 		camera = new Camera(new Vector2f(0,0),new Vector2f(Window.width,Window.height));
 		
+		table = new Entity(new Vector3f(64,128,0), Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32));
+		table.setAffectedByGravity(true);
 		
-		test = new Player(new Vector3f(32,32,0),Textures.playerTest,new Vector2f(512,32),10,1,new Vector2f(64,64), new Vector2f(32,32));
-		tiles.add(new Tile(new Vector3f(32,160,0),new Vector2f(64,64),Textures.testTile));
-		tiles.add(new Tile(new Vector3f(128,192,0),new Vector2f(64,64),Textures.testTile));
+		
+		test = new Player(new Vector3f(32,60,0),Textures.playerTest,new Vector2f(512,32),10,1,new Vector2f(32,32), new Vector2f(32,32));
+		//tiles.add(new Tile(new Vector3f(64,256,0),new Vector2f(64,64),Textures.testTile));
+		//tiles.add(new Tile(new Vector3f(128,320,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(0,550,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(64,550,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(128,550,0),new Vector2f(64,64),Textures.testTile));
@@ -47,12 +54,19 @@ public class Game
 		tiles.add(new Tile(new Vector3f(256 + 64,550,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(256 + 128,550,0),new Vector2f(64,64),Textures.testTile));
 		tiles.add(new Tile(new Vector3f(256 + 192,550,0),new Vector2f(64,64),Textures.testTile));
-		tiles.add(new Tile(new Vector3f(512,550,0),new Vector2f(64,64),Textures.testTile));
+		
+		Tile tmp = new Tile(new Vector3f(-64,486,0),new Vector2f(64,64),Textures.testTile);
+		Tile tmp1 = new Tile(new Vector3f(512,486,0),new Vector2f(64,64), Textures.testTile);
+		
+		tiles.add(tmp);
+		tiles.add(tmp1);
 		
 		
-		colliders.add(new RectangleBox(new Vector3f(32,160,0),new Vector2f(64,64)));
-		colliders.add(new RectangleBox(new Vector3f(128,192,0),new Vector2f(64,64)));
+		//colliders.add(new RectangleBox(new Vector3f(64,256,0),new Vector2f(64,64)));
+		//colliders.add(new RectangleBox(new Vector3f(128,320,0),new Vector2f(64,64)));
 		colliders.add(new RectangleBox(new Vector3f(0,550,0),new Vector2f(512,64)));
+		colliders.add(tmp.getCollider());
+		colliders.add(tmp1.getCollider());
 		
 		
 		/*for(int i = 0; i < 10; i++)
@@ -78,6 +92,8 @@ public class Game
 	public void render()
 	{
 		GL11.glTranslatef(-camera.getPosition().x,-camera.getPosition().y,0.0f);
+
+		table.render();
 		test.render();
 		for(Tile t : tiles)
 		{
@@ -91,6 +107,15 @@ public class Game
 	public void update()
 	{
 		test.update(colliders);
+		table.update(colliders);
+		if(new Random().nextBoolean())
+		{
+			table.moveLeft();
+		}
+		else
+		{
+			table.moveRight();
+		}
 		for(Tile t : tiles)
 		{
 			t.update();
