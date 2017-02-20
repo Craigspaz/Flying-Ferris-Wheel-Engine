@@ -2,10 +2,12 @@ package com.main;
 
 import java.util.ArrayList;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.graphics.Textures;
+import com.graphics.world.Camera;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
@@ -23,12 +25,15 @@ public class Game
 	private ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	
+	private Camera camera;
+	
 	/**
 	 * Creates the game world
 	 */
 	public Game()
 	{
 		new Textures();
+		camera = new Camera(new Vector2f(0,0),new Vector2f(Window.width,Window.height));
 		
 		
 		test = new Player(new Vector3f(32,32,0),Textures.playerTest,new Vector2f(512,32),10,1,new Vector2f(64,64), new Vector2f(32,32));
@@ -72,6 +77,7 @@ public class Game
 	 */
 	public void render()
 	{
+		GL11.glTranslatef(-camera.getPosition().x,-camera.getPosition().y,0.0f);
 		test.render();
 		for(Tile t : tiles)
 		{
@@ -89,6 +95,8 @@ public class Game
 		{
 			t.update();
 		}
+		camera.setPositionToPlayer(test, Window.width, Window.height);
+		camera.update();
 	}
 
 	/**
