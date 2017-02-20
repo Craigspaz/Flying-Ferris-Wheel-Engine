@@ -14,6 +14,7 @@ public class Textures
 	public static Texture testTile;
 	public static Texture table;
 	
+	public static Texture testLine;
 	public static Texture sean;
 	
 	public Textures()
@@ -22,5 +23,6 @@ public class Textures
 		testTile = Loader.loadTexture("Floating_Platform_2");
 		table = Loader.loadTexture("table-v2");
 		sean = Loader.loadTexture("sean");
+		testLine = Loader.loadTexture("testLine");
 	}
 }

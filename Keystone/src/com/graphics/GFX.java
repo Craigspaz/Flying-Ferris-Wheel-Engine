@@ -1,5 +1,7 @@
 package com.graphics;
 
+import javax.print.attribute.standard.SheetCollate;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector2f;
@@ -28,6 +30,39 @@ public class GFX
 		GL11.glPushMatrix();
 
 		
+		// Draws a rectangle
+		GL11.glBegin(GL11.GL_QUADS);
+
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(xx, yy);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(x + xx, yy);
+
+		GL11.glEnd();
+		GL11.glPopMatrix();
+	}
+	
+	/**
+	 * Draws an entire sprite at an angle
+	 * @param x The width of the sprite on screen in pixels
+	 * @param y The height of the sprite on screen in pixels
+	 * @param xx The x position of the top left corner of the sprite
+	 * @param yy The y position of the top left corner of the sprite
+	 * @param texture The texture to be rendered at the specified location
+	 * @param angle The angle to rotate the texture
+	 */
+	public static void drawEntireSpriteAtAngle(float x, float y, float xx, float yy, Texture texture,float angle)
+	{
+		//First binds the texture
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+		GL11.glPushMatrix();
+
+		GL11.glRotatef(angle, 0,0,1);
 		// Draws a rectangle
 		GL11.glBegin(GL11.GL_QUADS);
 
@@ -78,6 +113,41 @@ public class GFX
 	}
 	
 	/**
+	 * Draws a sprite from a sprite sheet
+	 * @param x The width of the sprite on screen in pixels
+	 * @param y The height of the sprite on screen in pixels
+	 * @param xx The x position of the top left corner of the sprite
+	 * @param yy The y position of the top left corner of the sprite
+	 * @param texture The texture to render
+	 * @param texCoords The coordinates on the texture to render
+	 * @param size The width and height to render from the sprite
+	 * @param angle The angle at which to rotate the texture
+	 */
+	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size,float angle)
+	{
+		//Binds the texture
+		//GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+		GL11.glPushMatrix();
+
+		GL11.glRotatef(angle, 0,0,1);
+		//Draws a rectangle
+		GL11.glBegin(GL11.GL_QUADS);
+
+		GL11.glTexCoord2f(texCoords.x, texCoords.y);
+		GL11.glVertex2f(xx, yy);
+		GL11.glTexCoord2f(texCoords.x, texCoords.y + size.y);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y + size.y);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y);
+		GL11.glVertex2f(x + xx, yy);
+
+		GL11.glEnd();
+		GL11.glPopMatrix();
+	}
+	
+	/**
 	 * Draws a sprite from a sprite sheet backwards
 	 * @param x The width of the sprite on screen in pixels
 	 * @param y The height of the sprite on screen in pixels
@@ -94,6 +164,41 @@ public class GFX
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 		GL11.glPushMatrix();
 
+		//Draws a rectangle
+		GL11.glBegin(GL11.GL_QUADS);
+
+		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y);
+		GL11.glVertex2f(xx, yy);
+		GL11.glTexCoord2f(texCoords.x + size.x, texCoords.y + size.y);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glTexCoord2f(texCoords.x, texCoords.y + size.y);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glTexCoord2f(texCoords.x, texCoords.y);
+		GL11.glVertex2f(x + xx, yy);
+
+		GL11.glEnd();
+		GL11.glPopMatrix();
+	}
+	
+	/**
+	 * Draws a sprite from a sprite sheet backwards
+	 * @param x The width of the sprite on screen in pixels
+	 * @param y The height of the sprite on screen in pixels
+	 * @param xx The x position of the top left corner of the sprite
+	 * @param yy The y position of the top left corner of the sprite
+	 * @param texture The texture to render
+	 * @param texCoords The coordinates on the texture to render
+	 * @param size The width and height to render from the sprite sheet
+	 * @param angle The angle to rotate the texture
+	 */
+	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size,float angle)
+	{
+		//Binds the texture
+		//GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+		GL11.glPushMatrix();
+
+		GL11.glRotatef(angle, 0,0,1);
 		//Draws a rectangle
 		GL11.glBegin(GL11.GL_QUADS);
 

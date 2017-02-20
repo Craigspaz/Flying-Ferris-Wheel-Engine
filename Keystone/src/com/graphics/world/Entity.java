@@ -21,6 +21,8 @@ public class Entity
 	protected static final float MAX_SPEED_X = 8.0f;
 	protected static final float HORIZONTAL_ACCEL = 0.8f;
 	protected static final float DECEL_VALUE = 0.3f;
+	private int healthPoints = 100;
+	private boolean isDead = false;
 	protected Vector3f position;
 	protected Vector3f velocity;
 	private Texture texture;
@@ -252,30 +254,46 @@ public class Entity
 	/**
 	 * Makes the entity move up on the screen
 	 */
-	private void moveUp()
+	public void moveUp()
 	{
 		if(isSprinting)
 		{
-			velocity.y -= sprintSpeed;
+			velocity.y -= 2 * GRAVITY;
+			if(velocity.y < -2 * GRAVITY)
+			{
+				velocity.y = -2 * GRAVITY;
+			}
 		}
 		else
 		{
-			velocity.y -= walkSpeed;
+			velocity.y -= GRAVITY;
+			if(velocity.y < -(GRAVITY))
+			{
+				velocity.y = -(GRAVITY);
+			}
 		}
 	}
 	
 	/**
 	 * Makes the entity move down on the screen
 	 */
-	private void moveDown()
+	public void moveDown()
 	{
 		if(isSprinting)
 		{
-			velocity.y += sprintSpeed;
+			velocity.y += 2 * GRAVITY;
+			if(velocity.y > 2 * GRAVITY)
+			{
+				velocity.y = 2 * GRAVITY;
+			}
 		}
 		else
 		{
-			velocity.y += walkSpeed;
+			velocity.y += GRAVITY;
+			if(velocity.y > (GRAVITY))
+			{
+				velocity.y = (GRAVITY);
+			}
 		}
 	}
 
@@ -300,6 +318,15 @@ public class Entity
 			{
 				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
+		}
+	}
+	
+	public void takeDamage(int damage)
+	{
+		this.healthPoints -= damage;
+		if(healthPoints <= 0)
+		{
+			isDead = true;
 		}
 	}
 
@@ -594,5 +621,37 @@ public class Entity
 	 */
 	public void setNumberOfSpritesY(int numberOfSpritesY) {
 		this.numberOfSpritesY = numberOfSpritesY;
+	}
+
+	/**
+	 * Returns the number of health points
+	 * @return Returns the number of health points
+	 */
+	public int getHealthPoints() {
+		return healthPoints;
+	}
+
+	/**
+	 * Sets the number of health points
+	 * @param healthPoints The new number of health points
+	 */
+	public void setHealthPoints(int healthPoints) {
+		this.healthPoints = healthPoints;
+	}
+
+	/**
+	 * Returns true if the entity is dead
+	 * @return Returns true if the entity is dead
+	 */
+	public boolean isDead() {
+		return isDead;
+	}
+
+	/**
+	 * Sets if the entity is dead
+	 * @param isDead The new value of isDead
+	 */
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
 	}
 }

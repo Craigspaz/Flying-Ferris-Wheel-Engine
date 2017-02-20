@@ -27,7 +27,7 @@ public class Loader
 		Texture texture = null;
 		try
 		{
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"), GL11.GL_NEAREST);
 		}
 		catch (Exception e)
 		{

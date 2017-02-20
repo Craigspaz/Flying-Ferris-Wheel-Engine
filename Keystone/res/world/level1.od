@@ -1,6 +1,6 @@
 <LEVEL name="TestLevel1">
 	<TILES sizex="64" sizey="64">
-		<TILE x=-448" y="800" z="0" texName="testTile"/>
+		<TILE x="-448" y="800" z="0" texName="testTile"/>
 		<TILE x="-384" y="800" z="0" texName="testTile"/>
 		<TILE x="-320" y="800" z="0" texName="testTile"/>
 		<TILE x="-256" y="800" z="0" texName="testTile"/>
@@ -16,4 +16,7 @@
 		<TILE x="384" y="800" z="0" texName="testTile"/>
 		<TILE x="448" y="800" z="0" texName="testTile"/>
 	</TILES>
+	<COLLIDERS>
+		<COLLIDER x="-448" y="800" z="0" width="960" height="64"/>
+	</COLLIDERS>
 </LEVEL>
