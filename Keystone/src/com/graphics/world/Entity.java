@@ -20,7 +20,7 @@ public class Entity
 	protected static final float GRAVITY = 0.8f;
 	protected static final float MAX_SPEED_Y = 20.0f;
 	protected static final float MAX_SPEED_X = 4.0f;
-	protected static final float HORIZONTAL_ACCEL = 0.8f;
+	protected static final float HORIZONTAL_ACCEL = 0.4f;
 	protected static final float DECEL_VALUE = 0.3f;
 	protected boolean left = false;
 	private int healthPoints = 100;

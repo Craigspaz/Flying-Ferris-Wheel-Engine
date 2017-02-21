@@ -12,144 +12,208 @@ import com.graphics.world.projectile.Projectile;
 
 /**
  * Handles the player input and player specifics
+ * 
  * @author Craig Ferris
  *
  */
 public class Player extends Entity
-{	
+{
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	private int shootingDelay = 30;
 	private int shootingCounter = 0;
 	private boolean canShoot = true;
+	private float shootAngle = 0;
+	private float bulletSpeed = 8;
+
 	/**
 	 * Creates a new player
-	 * @param position The initial position of the player
-	 * @param texture The texture of the player
-	 * @param size The size of the the sprite on the texture
-	 * @param scale The size to draw the player
+	 * 
+	 * @param position
+	 *            The initial position of the player
+	 * @param texture
+	 *            The texture of the player
+	 * @param size
+	 *            The size of the the sprite on the texture
+	 * @param scale
+	 *            The size to draw the player
 	 */
 	public Player(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position,texture,size,scale,sizeOfSpriteOnSheet);
+		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 		super.type = EntityType.PLAYER;
 	}
-	
+
 	/**
 	 * Creates a new player
-	 * @param position The initial position of the player
-	 * @param texture The texture of the player
-	 * @param sizeOfTexture The size of the texture
-	 * @param numberOfSprites The number of sprites on the texture
-	 * @param scale The size at which to draw the player
+	 * 
+	 * @param position
+	 *            The initial position of the player
+	 * @param texture
+	 *            The texture of the player
+	 * @param sizeOfTexture
+	 *            The size of the texture
+	 * @param numberOfSprites
+	 *            The number of sprites on the texture
+	 * @param scale
+	 *            The size at which to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Player(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX,
+			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position,texture,sizeOfTexture,numberOfSpritesX,numberOfSpritesY,scale,sizeOfSpriteOnSheet);
+		super(position, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 		super.type = EntityType.PLAYER;
 	}
-	
+
 	/**
 	 * Handles input from the user
-	 * @param tiles The world collision boxes to check for collisions
+	 * 
+	 * @param tiles
+	 *            The world collision boxes to check for collisions
 	 */
 	public void input(ArrayList<RectangleBox> tiles)
 	{
-		//If left shift is held the player is sprinting
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+		// If left shift is held the player is sprinting
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 		{
 			super.setSprinting(true);
-		}
-		else
+		} else
 		{
 			super.setSprinting(false);
 		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT) == false && Keyboard.isKeyDown(Keyboard.KEY_LEFT) == false)
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) == false && Keyboard.isKeyDown(Keyboard.KEY_LEFT) == false)
 		{
-			if(velocity.x > 0)
+			if (velocity.x > 0)
 			{
 				velocity.x -= DECEL_VALUE;
-			}
-			else if(velocity.x < 0)
+			} else if (velocity.x < 0)
 			{
 				velocity.x += DECEL_VALUE;
 			}
-			if(Math.abs(velocity.x) < DECEL_VALUE)
+			if (Math.abs(velocity.x) < DECEL_VALUE)
 			{
 				velocity.x = 0;
 			}
+			if (!left)
+			{
+				shootAngle = 0;
+			} else
+			{
+				shootAngle = 180;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			{
+				shootAngle = 90;
+			}
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+
 		{
 			super.moveRight();
+			shootAngle = 0;
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			{
+				shootAngle = 45;
+			}
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+
 		{
 			super.moveLeft();
+			shootAngle = 180;
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			{
+				shootAngle = 135;
+			}
 		}
-		
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+		{
+			if (isInAir)
+				shootAngle = 270;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) == false)
 
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) == false)
 		{
 			canJump = true;
 			jumping = false;
 		}
 		// If the space bar is pressed make the player jump
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
+
 		{
-			if(canJump)
+			if (canJump)
 			{
 				super.jump();
 				canJump = false;
 			}
 		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_E))
+		if (Keyboard.isKeyDown(Keyboard.KEY_W))
+
 		{
-			if(canShoot)
+			if (!left)
+				shootAngle = 45;
+			else
+				shootAngle = 135;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_S))
+
+		{
+			if (!left)
+				shootAngle = 315;
+			else
+				shootAngle = 225;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_E))
+
+		{
+			if (canShoot)
 			{
-				projectiles.add(new Projectile(new Vector3f(super.position.x,super.position.y,0), Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32),315));
+				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.table,
+						new Vector2f(256, 32), 6, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
+						bulletSpeed, velocity.x, velocity.y));
 			}
 			canShoot = false;
 		}
 		shootingCounter++;
-		if(shootingCounter > shootingDelay)
+		if (shootingCounter > shootingDelay)
+
 		{
 			shootingCounter = 0;
 			canShoot = true;
 		}
-		
-		if(velocity.x > 0)
+
+		if (velocity.x > 0)
+
 		{
-			if(super.isSprinting)
+			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
 			{
 				super.numberOfSpritesX = 10;
 				super.numberOfSpritesY = 2;
-			}
-			else
+			} else
 			{
 				super.numberOfSpritesX = 10;
 				super.numberOfSpritesY = 1;
 			}
 			left = false;
 		}
-		if(velocity.x < 0)
+		if (velocity.x < 0)
+
 		{
-			if(super.isSprinting)
+			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
 			{
 				super.numberOfSpritesX = 10;
 				super.numberOfSpritesY = 2;
-			}
-			else
+			} else
 			{
 				super.numberOfSpritesX = 10;
 				super.numberOfSpritesY = 1;
 			}
 			left = true;
 		}
-		if(velocity.x == 0 && velocity.y == 0)
+		if (velocity.x == 0 && velocity.y == 0)
+
 		{
 			super.numberOfSpritesX = 0;
 			super.numberOfSpritesY = 0;
@@ -157,26 +221,26 @@ public class Player extends Entity
 			super.animSpriteFrameX = 0;
 			super.animSpriteFrameY = 0;
 		}
-		
-		
-		if(Math.abs(velocity.y) < 10 && isInAir)
+
+		if (Math.abs(velocity.y) < 10 && isInAir)
+
 		{
 			super.numberOfSpritesX = 0;
 			super.numberOfSpritesY = 4;
 			super.animateTime = 0;
 			super.animSpriteFrameX = 0;
 			super.animSpriteFrameY = 0;
-			System.out.println("Top of Jump");
-		}
-		else if(velocity.y < 0 && isInAir)
+			// System.out.println("Top of Jump");
+		} else if (velocity.y < 0 && isInAir)
+
 		{
 			super.numberOfSpritesX = 0;
 			super.numberOfSpritesY = 3;
 			super.animateTime = 0;
 			super.animSpriteFrameX = 0;
 			super.animSpriteFrameY = 0;
-		}
-		else if(velocity.y > 0 && isInAir)
+		} else if (velocity.y > 0 && isInAir)
+
 		{
 
 			super.numberOfSpritesX = 0;
@@ -184,9 +248,10 @@ public class Player extends Entity
 			super.animateTime = 0;
 			super.animSpriteFrameX = 0;
 			super.animSpriteFrameY = 0;
-		}	
-	}	
-	
+		}
+
+	}
+
 	/**
 	 * Updates the player
 	 */
@@ -198,17 +263,22 @@ public class Player extends Entity
 
 	/**
 	 * Returns the projectiles the player fired
+	 * 
 	 * @return Returns the projectiles the player fired
 	 */
-	public ArrayList<Projectile> getProjectiles() {
+	public ArrayList<Projectile> getProjectiles()
+	{
 		return projectiles;
 	}
 
 	/**
 	 * Sets the projectiles the player fired
-	 * @param projectiles The projectiles the player fired
+	 * 
+	 * @param projectiles
+	 *            The projectiles the player fired
 	 */
-	public void setProjectiles(ArrayList<Projectile> projectiles) {
+	public void setProjectiles(ArrayList<Projectile> projectiles)
+	{
 		this.projectiles = projectiles;
 	}
 }
