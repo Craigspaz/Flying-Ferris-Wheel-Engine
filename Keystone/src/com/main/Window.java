@@ -87,6 +87,7 @@ public class Window
 			loops = 0;
 			GL11.glViewport(0, 0, width, height);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			GL11.glClearColor(.2f, .2f, .2f, 1);
 			GL11.glLoadIdentity();
 			while(System.currentTimeMillis() > nextTick && loops < MAX_FRAMESKIP)
 			{

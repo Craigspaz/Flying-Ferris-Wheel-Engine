@@ -50,6 +50,7 @@ public class Entity
 	protected boolean jumping = false;
 	protected int jumpTimer = 0;
 	protected boolean canJump = true;
+	protected boolean isInAir = false;
 	
 	protected RectangleBox collider;
 	
@@ -201,6 +202,8 @@ public class Entity
 		{
 			velocity.y = -20;
 		}
+		
+		isInAir = !isOnGround;
 		collider.setPosition(new Vector3f(nBoxX.getPosition().x,nBoxY.getPosition().y,position.z));
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;

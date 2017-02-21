@@ -58,7 +58,7 @@ public class Game
 		//sean.setAffectedByGravity(true);
 		
 		
-		test = new Player(new Vector3f(32,60,0),Textures.playerTest,new Vector2f(512,128),0,0,new Vector2f(32,32), new Vector2f(32,32));
+		test = new Player(new Vector3f(32,60,0),Textures.playerTest,new Vector2f(512,256),0,0,new Vector2f(32,32), new Vector2f(32,32));
 		
 		
 		testWorld = new World();

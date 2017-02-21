@@ -157,6 +157,34 @@ public class Player extends Entity
 			super.animSpriteFrameX = 0;
 			super.animSpriteFrameY = 0;
 		}
+		
+		
+		if(Math.abs(velocity.y) < 10 && isInAir)
+		{
+			super.numberOfSpritesX = 0;
+			super.numberOfSpritesY = 4;
+			super.animateTime = 0;
+			super.animSpriteFrameX = 0;
+			super.animSpriteFrameY = 0;
+			System.out.println("Top of Jump");
+		}
+		else if(velocity.y < 0 && isInAir)
+		{
+			super.numberOfSpritesX = 0;
+			super.numberOfSpritesY = 3;
+			super.animateTime = 0;
+			super.animSpriteFrameX = 0;
+			super.animSpriteFrameY = 0;
+		}
+		else if(velocity.y > 0 && isInAir)
+		{
+
+			super.numberOfSpritesX = 0;
+			super.numberOfSpritesY = 5;
+			super.animateTime = 0;
+			super.animSpriteFrameX = 0;
+			super.animSpriteFrameY = 0;
+		}	
 	}	
 	
 	/**
