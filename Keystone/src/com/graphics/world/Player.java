@@ -7,7 +7,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
-import com.graphics.GFX;
+import com.graphics.Textures;
+import com.graphics.world.projectile.Projectile;
 
 /**
  * Handles the player input and player specifics
@@ -16,7 +17,10 @@ import com.graphics.GFX;
  */
 public class Player extends Entity
 {	
-	
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	private int shootingDelay = 30;
+	private int shootingCounter = 0;
+	private boolean canShoot = true;
 	/**
 	 * Creates a new player
 	 * @param position The initial position of the player
@@ -28,6 +32,7 @@ public class Player extends Entity
 	{
 		super(position,texture,size,scale,sizeOfSpriteOnSheet);
 		affectedByGravity = true;
+		super.type = EntityType.PLAYER;
 	}
 	
 	/**
@@ -42,6 +47,7 @@ public class Player extends Entity
 	{
 		super(position,texture,sizeOfTexture,numberOfSpritesX,numberOfSpritesY,scale,sizeOfSpriteOnSheet);
 		affectedByGravity = true;
+		super.type = EntityType.PLAYER;
 	}
 	
 	/**
@@ -99,11 +105,82 @@ public class Player extends Entity
 				canJump = false;
 			}
 		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_E))
+		{
+			if(canShoot)
+			{
+				projectiles.add(new Projectile(new Vector3f(super.position.x,super.position.y,0), Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32),315));
+			}
+			canShoot = false;
+		}
+		shootingCounter++;
+		if(shootingCounter > shootingDelay)
+		{
+			shootingCounter = 0;
+			canShoot = true;
+		}
+		
+		if(velocity.x > 0)
+		{
+			if(super.isSprinting)
+			{
+				super.numberOfSpritesX = 10;
+				super.numberOfSpritesY = 2;
+			}
+			else
+			{
+				super.numberOfSpritesX = 10;
+				super.numberOfSpritesY = 1;
+			}
+			left = false;
+		}
+		if(velocity.x < 0)
+		{
+			if(super.isSprinting)
+			{
+				super.numberOfSpritesX = 10;
+				super.numberOfSpritesY = 2;
+			}
+			else
+			{
+				super.numberOfSpritesX = 10;
+				super.numberOfSpritesY = 1;
+			}
+			left = true;
+		}
+		if(velocity.x == 0 && velocity.y == 0)
+		{
+			super.numberOfSpritesX = 0;
+			super.numberOfSpritesY = 0;
+			super.animateTime = 0;
+			super.animSpriteFrameX = 0;
+			super.animSpriteFrameY = 0;
+		}
 	}	
 	
+	/**
+	 * Updates the player
+	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
 		input(colliders);
 		super.update(colliders);
+	}
+
+	/**
+	 * Returns the projectiles the player fired
+	 * @return Returns the projectiles the player fired
+	 */
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
+	}
+
+	/**
+	 * Sets the projectiles the player fired
+	 * @param projectiles The projectiles the player fired
+	 */
+	public void setProjectiles(ArrayList<Projectile> projectiles) {
+		this.projectiles = projectiles;
 	}
 }

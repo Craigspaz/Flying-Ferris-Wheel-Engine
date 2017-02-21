@@ -1,5 +1,7 @@
 package com.graphics;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.opengl.Texture;
 
 /**
@@ -8,8 +10,7 @@ import org.newdawn.slick.opengl.Texture;
  *
  */
 public class Textures
-{
-	
+{	
 	public static Texture playerTest;
 	public static Texture testTile;
 	public static Texture table;
@@ -19,9 +20,9 @@ public class Textures
 	
 	public Textures()
 	{
-		playerTest = Loader.loadTexture("sprint");
+		playerTest = Loader.loadTexture("playerSpriteSheet");
 		testTile = Loader.loadTexture("Floating_Platform_2");
-		table = Loader.loadTexture("table-v2");
+		table = Loader.loadTexture("table-v3");
 		sean = Loader.loadTexture("sean");
 		testLine = Loader.loadTexture("testLine");
 	}

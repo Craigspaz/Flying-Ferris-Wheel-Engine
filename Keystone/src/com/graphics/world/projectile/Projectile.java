@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.world.Entity;
+import com.graphics.world.EntityType;
 import com.graphics.world.RectangleBox;
 
 /**
@@ -19,25 +20,53 @@ public class Projectile extends Entity
 	
 	private float angle;
 
+	/**
+	 * Creates a new projectile
+	 * @param position The position of the projectile
+	 * @param texture The texture of the projectile
+	 * @param size The size of the sprite on the texture
+	 * @param scale The size at which to draw the sprite
+	 * @param sizeOfSpriteOnSheet The size of the spritesheet
+	 * @param angle The angle to rotate the projectile
+	 */
 	public Projectile(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet,float angle) 
 	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
+		type = EntityType.PROJECTILE;
 	}
 
 	
+	/**
+	 * Creates a new projectile
+	 * @param position The position of the projectle
+	 * @param texture The texture of the projectle
+	 * @param sizeOfTexture The size of the texture
+	 * @param numberOfSpritesX The number of sprite animation frames in the x direction to animate
+	 * @param numberOfSpritesY The number of sprite animation frames in the y direction to animate
+	 * @param scale The size at which to render the sprite
+	 * @param sizeOfSpriteOnSheet The size of the sprite on the sprite sheet
+	 * @param angle The angle to rotate the projectile
+	 */
 	public Projectile(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet,float angle) 
 	{
 		super(position, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
+		type = EntityType.PROJECTILE;
 	}
 	
+	/**
+	 * Updates the projectle
+	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
 		super.update(colliders);
 		move();
 	}
 	
+	/**
+	 * Moves the projectile up and right
+	 */
 	public void moveUpRight()
 	{
 		velocity.x += walkSpeed;
@@ -52,6 +81,9 @@ public class Projectile extends Entity
 		}
 	}
 	
+	/**
+	 * Moves the projctile down and right
+	 */
 	public void moveDownRight()
 	{
 		velocity.x += walkSpeed;
@@ -66,6 +98,9 @@ public class Projectile extends Entity
 		}
 	}
 	
+	/**
+	 * Moves the projctile up and left
+	 */
 	public void moveUpLeft()
 	{
 		velocity.x -= walkSpeed;
@@ -80,6 +115,9 @@ public class Projectile extends Entity
 		}
 	}
 	
+	/**
+	 * Moves the projectile down and left
+	 */
 	public void moveDownLeft()
 	{
 		velocity.x -= walkSpeed;
@@ -94,6 +132,9 @@ public class Projectile extends Entity
 		}
 	}
 	
+	/**
+	 * Moves the projectile
+	 */
 	public void move()
 	{
 		if(angle == 0)
@@ -131,11 +172,19 @@ public class Projectile extends Entity
 	}
 
 
+	/**
+	 * Returns the angle of rotation
+	 * @return Returns the angle of rotation
+	 */
 	public float getAngle() {
 		return angle;
 	}
 
 
+	/**
+	 * Sets the angle of rotation
+	 * @param angle The angle of rotation
+	 */
 	public void setAngle(float angle) {
 		this.angle = angle;
 	}

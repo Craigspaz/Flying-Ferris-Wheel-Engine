@@ -11,6 +11,7 @@ import com.graphics.GFX;
 /**
  * Defines the basic behavior of enemies and players
  * @author Craig Ferris
+ * @author Kyle Falicov
  *
  */
 public class Entity
@@ -18,9 +19,10 @@ public class Entity
 	
 	protected static final float GRAVITY = 0.8f;
 	protected static final float MAX_SPEED_Y = 20.0f;
-	protected static final float MAX_SPEED_X = 8.0f;
+	protected static final float MAX_SPEED_X = 4.0f;
 	protected static final float HORIZONTAL_ACCEL = 0.8f;
 	protected static final float DECEL_VALUE = 0.3f;
+	protected boolean left = false;
 	private int healthPoints = 100;
 	private boolean isDead = false;
 	protected Vector3f position;
@@ -50,6 +52,8 @@ public class Entity
 	protected boolean canJump = true;
 	
 	protected RectangleBox collider;
+	
+	protected EntityType type = EntityType.ENEMY;
 
 	/**
 	 * Creates a new entity
@@ -143,6 +147,10 @@ public class Entity
 		{			
 			if(t.isCollidingWithBox(nBoxX))
 			{
+				if(type == EntityType.PROJECTILE)
+				{
+					isDead = true;
+				}
 				float leftSideOfWall = t.getPosition().x;
 				float rightSideOfWall = t.getPosition().x + t.getSize().x;
 				
@@ -164,6 +172,10 @@ public class Entity
 			}
 			if(t.isCollidingWithBox(nBoxY))
 			{
+				if(type == EntityType.PROJECTILE)
+				{
+					isDead = true;
+				}
 				float topOfGround = t.getPosition().y;
 				float bottomOfGround = t.getPosition().y + t.getSize().y;
 				
@@ -308,9 +320,9 @@ public class Entity
 		}
 		else
 		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (sizeOfSpriteOnSheet.y * animSpriteFrameY)/sizeOfSpriteSheet.y);
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.y));
-			if(velocity.x < 0)
+			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float)(sizeOfSpriteOnSheet.y * numberOfSpritesY)/sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float)(sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
+			if(velocity.x < 0 || left)
 			{
 				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
@@ -321,6 +333,10 @@ public class Entity
 		}
 	}
 	
+	/**
+	 * Lowers the entities HP
+	 * @param damage The amount to lower the HP
+	 */
 	public void takeDamage(int damage)
 	{
 		this.healthPoints -= damage;
@@ -653,5 +669,21 @@ public class Entity
 	 */
 	public void setDead(boolean isDead) {
 		this.isDead = isDead;
+	}
+
+	/**
+	 * Returns the type of entity
+	 * @return Returns the type of entity
+	 */
+	public EntityType getType() {
+		return type;
+	}
+
+	/**
+	 * Sets the type of entity
+	 * @param type The type of the entity
+	 */
+	public void setType(EntityType type) {
+		this.type = type;
 	}
 }

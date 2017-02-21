@@ -1,6 +1,7 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -8,11 +9,13 @@ import org.lwjgl.util.vector.Vector3f;
 
 import com.graphics.Textures;
 import com.graphics.world.Camera;
+import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
 import com.graphics.world.World;
+import com.graphics.world.projectile.Projectile;
 
 /**
  * Handles the operation of the game
@@ -24,11 +27,14 @@ public class Game
 	
 	private Player test;
 	
-	//private Entity table;
+	private Entity table;
 	//private Entity sean;
 	
 	private ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	
 	private Camera camera;
 	
@@ -45,13 +51,14 @@ public class Game
 		new Textures();
 		camera = new Camera(new Vector2f(0,0),new Vector2f(Window.width,Window.height));
 		
-		//table = new Entity(new Vector3f(64,128,0), Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32));
+		table = new Entity(new Vector3f(64,128,0), Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32));
 		//sean = new Entity(new Vector3f(64,256,0), Textures.sean, new Vector2f(32,32), 1, 1, new Vector2f(128,128), new Vector2f(32,32));
-		//table.setAffectedByGravity(true);
+		table.setAffectedByGravity(true);
+		entities.add(test);
 		//sean.setAffectedByGravity(true);
 		
 		
-		test = new Player(new Vector3f(32,60,0),Textures.playerTest,new Vector2f(512,32),10,1,new Vector2f(32,32), new Vector2f(32,32));
+		test = new Player(new Vector3f(32,60,0),Textures.playerTest,new Vector2f(512,128),0,0,new Vector2f(32,32), new Vector2f(32,32));
 		
 		
 		testWorld = new World();
@@ -110,12 +117,16 @@ public class Game
 	{
 		GL11.glTranslatef(-camera.getPosition().x,-camera.getPosition().y,0.0f);
 
-		//table.render();
+		table.render();
 		//sean.render();
 		test.render();
 		for(Tile t : tiles)
 		{
 			t.render();
+		}
+		for(Projectile p : projectiles)
+		{
+			p.render();
 		}
 		//testProjectile.render();
 	}
@@ -126,9 +137,9 @@ public class Game
 	public void update()
 	{
 		test.update(colliders);
-		//table.update(colliders);
+		table.update(colliders);
 		//sean.update(colliders);
-		/*if(new Random().nextBoolean())
+		if(new Random().nextBoolean())
 		{
 			table.moveLeft();
 		}
@@ -137,7 +148,7 @@ public class Game
 			table.moveRight();
 		}
 		
-		if(new Random().nextBoolean())
+		/*if(new Random().nextBoolean())
 		{
 			sean.moveLeft();
 		}
@@ -148,6 +159,37 @@ public class Game
 		for(Tile t : tiles)
 		{
 			t.update();
+		}
+		
+		if(!test.getProjectiles().isEmpty())
+		{
+			projectiles.addAll(test.getProjectiles());
+			test.getProjectiles().clear();
+		}
+		
+		for(Projectile p : projectiles)
+		{
+			p.update(colliders);
+			/*for(Entity e : entities)
+			{
+				if(p.isCollidingWithEntity2D(e))
+				{
+					// Entity takes damage
+				}
+			}*/
+		}
+		int i = 0;
+		while(i < projectiles.size())
+		{
+			while(i < projectiles.size())
+			{
+				if(projectiles.get(i).isDead())
+				{
+					projectiles.remove(i);
+					break;
+				}
+				i++;
+			}
 		}
 		//testProjectile.update(colliders);
 		camera.setPositionToPlayer(test, Window.width, Window.height);
