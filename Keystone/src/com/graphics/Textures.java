@@ -23,6 +23,9 @@ public class Textures
 	public static Texture testLine;
 	public static Texture sean;
 	
+	/**
+	 * Initializes all of the textures
+	 */
 	public Textures()
 	{
 		playerFront = Loader.loadTexture("playerSpriteSheet");

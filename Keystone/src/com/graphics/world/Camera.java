@@ -190,7 +190,7 @@ public class Camera
 
 	/**
 	 * Sets the start position of the camera
-	 * @param startPosition The start position of the camear
+	 * @param startPosition The start position of the camera
 	 */
 	public void setStartPosition(Vector2f startPosition) {
 		this.startPosition = startPosition;

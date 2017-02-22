@@ -25,14 +25,15 @@ import com.graphics.world.projectile.Projectile;
 public class Game
 {
 	
-	private Player test;
+	private Player player;
 	
 	private Entity table;
 	//private Entity sean;
 	
-	private ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
+	private ArrayList<RectangleBox> worldColliders = new ArrayList<RectangleBox>();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
-	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	private ArrayList<Projectile> playerProjectiles = new ArrayList<Projectile>();
+	private ArrayList<Projectile> enemyProjectiles = new ArrayList<Projectile>();
 	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	
@@ -54,16 +55,16 @@ public class Game
 		table = new Entity(new Vector3f(64,128,0), Textures.table, Textures.tableOutline, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32));
 		//sean = new Entity(new Vector3f(64,256,0), Textures.sean, new Vector2f(32,32), 1, 1, new Vector2f(128,128), new Vector2f(32,32));
 		table.setAffectedByGravity(true);
-		entities.add(test);
 		//sean.setAffectedByGravity(true);
 		
+		entities.add(table);
 		
-		test = new Player(new Vector3f(32,60,0),Textures.playerFront, Textures.playerOutline,new Vector2f(512,256),0,0,new Vector2f(32,32), new Vector2f(32,32));
+		player = new Player(new Vector3f(32,60,0),Textures.playerFront, Textures.playerOutline,new Vector2f(512,256),0,0,new Vector2f(32,32), new Vector2f(32,32));
 		
 		
 		testWorld = new World();
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
-		colliders = testLevel.getColliders();
+		worldColliders = testLevel.getColliders();
 		tiles = testLevel.getTiles();
 		//tiles.add(new Tile(new Vector3f(64,256,0),new Vector2f(64,64),Textures.testTile));
 		//tiles.add(new Tile(new Vector3f(128,320,0),new Vector2f(64,64),Textures.testTile));
@@ -116,15 +117,21 @@ public class Game
 	public void render()
 	{
 		GL11.glTranslatef(-camera.getPosition().x,-camera.getPosition().y,0.0f);
-
-		table.render();
 		//sean.render();
-		test.render();
+		player.render();
 		for(Tile t : tiles)
 		{
 			t.render();
 		}
-		for(Projectile p : projectiles)
+		for(Entity e : entities)
+		{
+			e.render();
+		}
+		for(Projectile p : playerProjectiles)
+		{
+			p.render();
+		}
+		for(Projectile p : enemyProjectiles)
 		{
 			p.render();
 		}
@@ -136,63 +143,74 @@ public class Game
 	 */
 	public void update()
 	{
-		test.update(colliders);
-		table.update(colliders);
-		//sean.update(colliders);
-		if(new Random().nextBoolean())
-		{
-			table.moveLeft();
-		}
-		else
-		{
-			table.moveRight();
-		}
-		
-		/*if(new Random().nextBoolean())
-		{
-			sean.moveLeft();
-		}
-		else
-		{
-			sean.moveRight();
-		}*/
+		player.update(worldColliders);
+		player.checkForCollisionWithProjectiles(enemyProjectiles);
 		for(Tile t : tiles)
 		{
 			t.update();
 		}
 		
-		if(!test.getProjectiles().isEmpty())
+		for(Entity e : entities)
 		{
-			projectiles.addAll(test.getProjectiles());
-			test.getProjectiles().clear();
+			e.update(worldColliders);
+			e.checkForCollisionWithProjectiles(playerProjectiles);
 		}
 		
-		for(Projectile p : projectiles)
+		if(!player.getProjectiles().isEmpty())
 		{
-			p.update(colliders);
-			/*for(Entity e : entities)
-			{
-				if(p.isCollidingWithEntity2D(e))
-				{
-					// Entity takes damage
-				}
-			}*/
+			playerProjectiles.addAll(player.getProjectiles());
+			player.getProjectiles().clear();
+		}
+		
+		for(Projectile p : playerProjectiles)
+		{
+			p.update(worldColliders);
+		}
+		for(Projectile p : enemyProjectiles)
+		{
+			p.update(worldColliders);
 		}
 		int i = 0;
-		while(i < projectiles.size())
+		while(i < playerProjectiles.size())
 		{
-			while(i < projectiles.size())
+			while(i < playerProjectiles.size())
 			{
-				if(projectiles.get(i).isDead())
+				if(playerProjectiles.get(i).isDead())
 				{
-					projectiles.remove(i);
+					playerProjectiles.remove(i);
+					break;
+				}
+				i++;
+			}
+		}
+		i = 0;
+		while(i < enemyProjectiles.size())
+		{
+			while(i < enemyProjectiles.size())
+			{
+				if(enemyProjectiles.get(i).isDead())
+				{
+					enemyProjectiles.remove(i);
+					break;
+				}
+				i++;
+			}
+		}
+		i = 0;
+		while(i < entities.size())
+		{
+			while(i < entities.size())
+			{
+				if(entities.get(i).isDead())
+				{
+					entities.remove(i);
 					break;
 				}
 				i++;
 			}
 		}
 		//testProjectile.update(colliders);
-		camera.setPositionToPlayer(test, Window.width, Window.height);
+		camera.setPositionToPlayer(player, Window.width, Window.height);
 		camera.update();
 	}
 

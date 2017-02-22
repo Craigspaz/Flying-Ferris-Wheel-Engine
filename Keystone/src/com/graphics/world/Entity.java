@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
+import com.graphics.world.projectile.Projectile;
 
 /**
  * Defines the basic behavior of enemies and players
@@ -53,8 +54,6 @@ public class Entity
 	protected boolean canJump = true;
 	protected boolean isInAir = false;	
 	protected RectangleBox collider;
-	
-	protected EntityType type = EntityType.ENEMY;
 
 	/**
 	 * Creates a new entity
@@ -150,10 +149,6 @@ public class Entity
 		{			
 			if(t.isCollidingWithBox(nBoxX))
 			{
-				if(type == EntityType.PROJECTILE)
-				{
-					isDead = true;
-				}
 				float leftSideOfWall = t.getPosition().x;
 				float rightSideOfWall = t.getPosition().x + t.getSize().x;
 				
@@ -175,10 +170,6 @@ public class Entity
 			}
 			if(t.isCollidingWithBox(nBoxY))
 			{
-				if(type == EntityType.PROJECTILE)
-				{
-					isDead = true;
-				}
 				float topOfGround = t.getPosition().y;
 				float bottomOfGround = t.getPosition().y + t.getSize().y;
 				
@@ -209,6 +200,23 @@ public class Entity
 		collider.setPosition(new Vector3f(nBoxX.getPosition().x,nBoxY.getPosition().y,position.z));
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
+	}
+	
+	/**
+	 * Checks for collisions with projectiles 
+	 * @param projectiles The projectiles to check
+	 */
+	public void checkForCollisionWithProjectiles(ArrayList<Projectile> projectiles)
+	{
+		for(Projectile p : projectiles)
+		{
+			if(p.isCollidingWithEntity2D(this))
+			{
+				p.setDead(true);
+				this.takeDamage(p.getDamage());
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -679,25 +687,17 @@ public class Entity
 	}
 
 	/**
-	 * Returns the type of entity
-	 * @return Returns the type of entity
+	 * Returns the outline texture
+	 * @return Returns the outline texture
 	 */
-	public EntityType getType() {
-		return type;
-	}
-
-	/**
-	 * Sets the type of entity
-	 * @param type The type of the entity
-	 */
-	public void setType(EntityType type) {
-		this.type = type;
-	}
-
 	public Texture getOutlineTexture() {
 		return outlineTexture;
 	}
 
+	/**
+	 * Sets the outline texture
+	 * @param outlineTexture The outline texture
+	 */
 	public void setOutlineTexture(Texture outlineTexture) {
 		this.outlineTexture = outlineTexture;
 	}

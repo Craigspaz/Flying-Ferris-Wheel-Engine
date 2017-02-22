@@ -19,7 +19,7 @@ import com.graphics.world.projectile.Projectile;
 public class Player extends Entity
 {
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-	private int shootingDelay = 30;
+	private int shootingDelay = 5;
 	private int shootingCounter = 0;
 	private boolean canShoot = true;
 	private float shootAngle = 0;
@@ -41,7 +41,6 @@ public class Player extends Entity
 	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
-		super.type = EntityType.PLAYER;
 	}
 
 	/**
@@ -64,7 +63,6 @@ public class Player extends Entity
 	{
 		super(position, texture,outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
-		super.type = EntityType.PLAYER;
 	}
 
 	/**
@@ -166,6 +164,19 @@ public class Player extends Entity
 			else
 				shootAngle = 225;
 		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_E) == false)
+		{
+			if (shootingCounter > shootingDelay)
+
+			{
+				shootingCounter = 0;
+				canShoot = true;
+			}
+			else
+			{
+				shootingCounter++;
+			}
+		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_E))
 
 		{
@@ -177,13 +188,7 @@ public class Player extends Entity
 			}
 			canShoot = false;
 		}
-		shootingCounter++;
-		if (shootingCounter > shootingDelay)
-
-		{
-			shootingCounter = 0;
-			canShoot = true;
-		}
+		
 
 		if (velocity.x > 0)
 

@@ -7,7 +7,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.world.Entity;
-import com.graphics.world.EntityType;
 import com.graphics.world.RectangleBox;
 
 /**
@@ -21,8 +20,9 @@ public class Projectile extends Entity
 
 	private float angle;
 	private float speed;
-	private float originSpeedX;
-	private float originSpeedY;
+	private static final float DISTANCE_FROM_PLAYER = 10.0f;
+	
+	private int damage = 10;
 
 	/**
 	 * Creates a new projectile
@@ -41,20 +41,13 @@ public class Projectile extends Entity
 	 *            The angle to rotate the projectile
 	 * @param speed
 	 *            The speed of the projectile
-	 * @param playerXSpeed
-	 *            The speed of the player in the X direction
-	 * @param playerYSpeed
-	 *            The speed of the player in the Y direction
 	 */
 	public Projectile(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet,
-			float angle, float speed, float playerXSpeed, float playerYSpeed)
+			float angle, float speed)
 	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
-		this.originSpeedX = playerXSpeed;
-		this.originSpeedY = playerYSpeed;
-		type = EntityType.PROJECTILE;
 	}
 
 	/**
@@ -79,10 +72,6 @@ public class Projectile extends Entity
 	 *            The angle to rotate the projectile
 	 * @param speed
 	 *            The speed of the projectile
-	 * @param playerXSpeed
-	 *            The speed of the player in the X direction
-	 * @param playerYSpeed
-	 *            The speed of the player in the Y direction
 	 */
 	public Projectile(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX,
 			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed,
@@ -91,86 +80,75 @@ public class Projectile extends Entity
 		super(position, texture,texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
-		this.originSpeedX = playerXSpeed;
-		this.originSpeedY = playerYSpeed;
-		type = EntityType.PROJECTILE;
+		
+		float x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * DISTANCE_FROM_PLAYER;
+		float y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * DISTANCE_FROM_PLAYER;
+		if (angle > 180)
+		{
+			y = -y;
+		}
+		if (angle > 90 && angle < 270)
+		{
+			x = -x;
+		}
+		if (angle == 90)
+		{
+			y = -4 * (DISTANCE_FROM_PLAYER);
+			x = 0;
+		} else if (angle == 270)
+		{
+			x = 0;
+			y = 4 * (DISTANCE_FROM_PLAYER);
+		}
+		super.position.x += x;
+		super.position.y += y;
 	}
-
+	
 	/**
-	 * Updates the projectle
+	 * Updates the projectile
+	 * @param colliders The colliders in the world to check for collisions with
 	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
-		super.update(colliders);
+		if (animateTime >= 10)
+		{
+			animSpriteFrameX++;
+			if (animSpriteFrameX >= numberOfSpritesX)
+			{
+				animSpriteFrameX = 0;
+			}
+			animateTime = 0.0f;
+		}
+		else
+		{
+			animateTime += animateSpeed;
+		}
+		
+		if(affectedByGravity)
+		{
+			velocity.y += GRAVITY;
+		}
+		
+		if(velocity.y > speed)
+		{
+			velocity.y = MAX_SPEED_Y;
+		}
+		else if(velocity.y < -MAX_SPEED_Y)
+		{
+			velocity.y = -MAX_SPEED_Y;
+		}
+		for(RectangleBox t: colliders)
+		{			
+			if(t.isCollidingWithBox(collider))
+			{
+				super.setDead(true);
+			}
+		}
+		collider.setPosition(new Vector3f(velocity.x + position.x, velocity.y + position.y,position.z));
+		position.x = collider.getPosition().x;
+		position.y = collider.getPosition().y;
+		
 		move();
-	}
-
-	/**
-	 * Moves the projectile up and right
-	 */
-	public void moveUpRight()
-	{
-		velocity.x += walkSpeed;
-		velocity.y -= walkSpeed;
-		if (velocity.x > MAX_SPEED_X)
-		{
-			velocity.x = MAX_SPEED_X;
-		}
-		if (velocity.y < -MAX_SPEED_X)
-		{
-			velocity.y = -MAX_SPEED_X;
-		}
-	}
-
-	/**
-	 * Moves the projctile down and right
-	 */
-	public void moveDownRight()
-	{
-		velocity.x += walkSpeed;
-		velocity.y += walkSpeed;
-		if (velocity.x > MAX_SPEED_X)
-		{
-			velocity.x = MAX_SPEED_X;
-		}
-		if (velocity.y > MAX_SPEED_X)
-		{
-			velocity.y = MAX_SPEED_X;
-		}
-	}
-
-	/**
-	 * Moves the projctile up and left
-	 */
-	public void moveUpLeft()
-	{
-		velocity.x -= walkSpeed;
-		velocity.y -= walkSpeed;
-		if (velocity.x < -MAX_SPEED_X)
-		{
-			velocity.x = -MAX_SPEED_X;
-		}
-		if (velocity.y < -MAX_SPEED_X)
-		{
-			velocity.y = -MAX_SPEED_X;
-		}
-	}
-
-	/**
-	 * Moves the projectile down and left
-	 */
-	public void moveDownLeft()
-	{
-		velocity.x -= walkSpeed;
-		velocity.y += walkSpeed;
-		if (velocity.x < -MAX_SPEED_X)
-		{
-			velocity.x = -MAX_SPEED_X;
-		}
-		if (velocity.y > MAX_SPEED_X)
-		{
-			velocity.y = MAX_SPEED_X;
-		}
 	}
 
 	/**
@@ -178,15 +156,6 @@ public class Projectile extends Entity
 	 */
 	public void move()
 	{
-		/*
-		 * craig what the fuck
-		 * 
-		 * 
-		 * if(angle == 0) { super.moveRight(); } else if(angle == 45) { this.moveUpRight(); } else if(angle == 90) {
-		 * super.moveUp(); } else if(angle == 135) { this.moveUpLeft(); } else if(angle == 180) { super.moveLeft(); }
-		 * else if(angle == 225) { this.moveDownLeft(); } else if(angle == 270) { super.moveDown(); } else if(angle ==
-		 * 315) { this.moveDownRight(); }
-		 */
 		velocity.x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * speed;
 		velocity.y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * speed;
 		if (angle > 180)
@@ -206,8 +175,6 @@ public class Projectile extends Entity
 			velocity.y = speed;
 			velocity.x = 0;
 		}
-		// velocity.x += originSpeedX;
-		// velocity.y += originSpeedY;
 
 	}
 
@@ -230,6 +197,22 @@ public class Projectile extends Entity
 	public void setAngle(float angle)
 	{
 		this.angle = angle;
+	}
+
+	/**
+	 * Returns the amount of damage it does
+	 * @return Returns the amount of damage it does
+	 */
+	public int getDamage() {
+		return damage;
+	}
+
+	/**
+	 * Sets the amount of damage it does
+	 * @param damage The amount of damage it does
+	 */
+	public void setDamage(int damage) {
+		this.damage = damage;
 	}
 
 }

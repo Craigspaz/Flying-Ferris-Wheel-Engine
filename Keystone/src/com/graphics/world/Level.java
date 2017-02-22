@@ -69,6 +69,4 @@ public class Level
 	public void setColliders(ArrayList<RectangleBox> colliders) {
 		this.colliders = colliders;
 	}
-	
-	
 }
