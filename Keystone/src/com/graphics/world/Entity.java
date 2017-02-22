@@ -28,6 +28,7 @@ public class Entity
 	protected Vector3f position;
 	protected Vector3f velocity;
 	private Texture texture;
+	private Texture outlineTexture;
 	protected int numberOfSpritesX;
 	protected int numberOfSpritesY;
 	private Vector2f sizeOfSpriteOnSheet;
@@ -50,8 +51,7 @@ public class Entity
 	protected boolean jumping = false;
 	protected int jumpTimer = 0;
 	protected boolean canJump = true;
-	protected boolean isInAir = false;
-	
+	protected boolean isInAir = false;	
 	protected RectangleBox collider;
 	
 	protected EntityType type = EntityType.ENEMY;
@@ -83,15 +83,17 @@ public class Entity
 	 * Creates a new entity
 	 * @param position The initial position of the entity
 	 * @param texture The texture of the entity
+	 * @param outlineTexture The texture with the outlines
 	 * @param sizeOfTexture The size of the texture
 	 * @param numberOfSprites The size of each individual sprite on the texture
 	 * @param scale The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX,int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX,int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
 		this(position, texture, sizeOfTexture, scale,sizeOfSpriteOnSheet);
 		this.numberOfSpritesX = numberOfSpritesX;
 		this.numberOfSpritesY = numberOfSpritesY;
+		this.outlineTexture = outlineTexture;
 	}
 
 	/**
@@ -327,10 +329,12 @@ public class Entity
 			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float)(sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
 			if(velocity.x < 0 || left)
 			{
+				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
 				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
 			else
 			{
+				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
 				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
 		}
@@ -688,5 +692,13 @@ public class Entity
 	 */
 	public void setType(EntityType type) {
 		this.type = type;
+	}
+
+	public Texture getOutlineTexture() {
+		return outlineTexture;
+	}
+
+	public void setOutlineTexture(Texture outlineTexture) {
+		this.outlineTexture = outlineTexture;
 	}
 }

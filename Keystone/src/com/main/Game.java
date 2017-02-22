@@ -51,14 +51,14 @@ public class Game
 		new Textures();
 		camera = new Camera(new Vector2f(0,0),new Vector2f(Window.width,Window.height));
 		
-		table = new Entity(new Vector3f(64,128,0), Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32));
+		table = new Entity(new Vector3f(64,128,0), Textures.table, Textures.tableOutline, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new Vector2f(32,32));
 		//sean = new Entity(new Vector3f(64,256,0), Textures.sean, new Vector2f(32,32), 1, 1, new Vector2f(128,128), new Vector2f(32,32));
 		table.setAffectedByGravity(true);
 		entities.add(test);
 		//sean.setAffectedByGravity(true);
 		
 		
-		test = new Player(new Vector3f(32,60,0),Textures.playerTest,new Vector2f(512,256),0,0,new Vector2f(32,32), new Vector2f(32,32));
+		test = new Player(new Vector3f(32,60,0),Textures.playerFront, Textures.playerOutline,new Vector2f(512,256),0,0,new Vector2f(32,32), new Vector2f(32,32));
 		
 		
 		testWorld = new World();

@@ -64,6 +64,7 @@ public class Projectile extends Entity
 	 *            The position of the projectle
 	 * @param texture
 	 *            The texture of the projectle
+	 * @param outlineTexture The texture that contains the outlines
 	 * @param sizeOfTexture
 	 *            The size of the texture
 	 * @param numberOfSpritesX
@@ -87,7 +88,7 @@ public class Projectile extends Entity
 			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed,
 			float playerXSpeed, float playerYSpeed)
 	{
-		super(position, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture,texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
 		this.originSpeedX = playerXSpeed;

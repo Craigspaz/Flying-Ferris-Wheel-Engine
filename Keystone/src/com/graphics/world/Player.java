@@ -51,6 +51,7 @@ public class Player extends Entity
 	 *            The initial position of the player
 	 * @param texture
 	 *            The texture of the player
+	 * @param outlineTexture The texture with the sprite outlines
 	 * @param sizeOfTexture
 	 *            The size of the texture
 	 * @param numberOfSprites
@@ -58,10 +59,10 @@ public class Player extends Entity
 	 * @param scale
 	 *            The size at which to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX,
+	public Player(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX,
 			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture,outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 		super.type = EntityType.PLAYER;
 	}
