@@ -14,6 +14,8 @@ public class Textures
 	public static Texture playerFront;
 	public static Texture playerOutline;
 	
+	public static Texture playerLaser;
+	
 	
 	public static Texture testTile;
 	
@@ -30,6 +32,7 @@ public class Textures
 	{
 		playerFront = Loader.loadTexture("playerSpriteSheet");
 		playerOutline = Loader.loadTexture("playerSpriteSheet_outline");
+		playerLaser = Loader.loadTexture("lasers-v3");
 		testTile = Loader.loadTexture("Floating_Platform_2");
 		table = Loader.loadTexture("table-v3");
 		tableOutline = Loader.loadTexture("table-v3-outline");

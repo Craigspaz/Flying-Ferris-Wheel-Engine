@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
+import com.graphics.GFX;
 import com.graphics.world.Entity;
 import com.graphics.world.RectangleBox;
 
@@ -20,8 +21,9 @@ public class Projectile extends Entity
 
 	private float angle;
 	private float speed;
-	private static final float DISTANCE_FROM_PLAYER = 10.0f;
-	
+	private static final float DISTANCE_FROM_PLAYER = 16.0f;
+	private float offsetX = 0;
+
 	private int damage = 10;
 
 	/**
@@ -57,7 +59,8 @@ public class Projectile extends Entity
 	 *            The position of the projectle
 	 * @param texture
 	 *            The texture of the projectle
-	 * @param outlineTexture The texture that contains the outlines
+	 * @param outlineTexture
+	 *            The texture that contains the outlines
 	 * @param sizeOfTexture
 	 *            The size of the texture
 	 * @param numberOfSpritesX
@@ -77,10 +80,11 @@ public class Projectile extends Entity
 			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed,
 			float playerXSpeed, float playerYSpeed)
 	{
-		super(position, texture,texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale,
+				sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
-		
+
 		float x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * DISTANCE_FROM_PLAYER;
 		float y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * DISTANCE_FROM_PLAYER;
 		if (angle > 180)
@@ -103,10 +107,12 @@ public class Projectile extends Entity
 		super.position.x += x;
 		super.position.y += y;
 	}
-	
+
 	/**
 	 * Updates the projectile
-	 * @param colliders The colliders in the world to check for collisions with
+	 * 
+	 * @param colliders
+	 *            The colliders in the world to check for collisions with
 	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
@@ -118,36 +124,34 @@ public class Projectile extends Entity
 				animSpriteFrameX = 0;
 			}
 			animateTime = 0.0f;
-		}
-		else
+		} else
 		{
 			animateTime += animateSpeed;
 		}
-		
-		if(affectedByGravity)
+
+		if (affectedByGravity)
 		{
 			velocity.y += GRAVITY;
 		}
-		
-		if(velocity.y > speed)
+
+		if (velocity.y > speed)
 		{
 			velocity.y = MAX_SPEED_Y;
-		}
-		else if(velocity.y < -MAX_SPEED_Y)
+		} else if (velocity.y < -MAX_SPEED_Y)
 		{
 			velocity.y = -MAX_SPEED_Y;
 		}
-		for(RectangleBox t: colliders)
-		{			
-			if(t.isCollidingWithBox(collider))
+		for (RectangleBox t : colliders)
+		{
+			if (t.isCollidingWithBox(collider))
 			{
 				super.setDead(true);
 			}
 		}
-		collider.setPosition(new Vector3f(velocity.x + position.x, velocity.y + position.y,position.z));
+		collider.setPosition(new Vector3f(velocity.x + position.x, velocity.y + position.y, position.z));
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
-		
+		offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
 		move();
 	}
 
@@ -201,18 +205,33 @@ public class Projectile extends Entity
 
 	/**
 	 * Returns the amount of damage it does
+	 * 
 	 * @return Returns the amount of damage it does
 	 */
-	public int getDamage() {
+	public int getDamage()
+	{
 		return damage;
 	}
 
 	/**
 	 * Sets the amount of damage it does
-	 * @param damage The amount of damage it does
+	 * 
+	 * @param damage
+	 *            The amount of damage it does
 	 */
-	public void setDamage(int damage) {
+	public void setDamage(int damage)
+	{
 		this.damage = damage;
+	}
+
+	public void render()
+	{
+
+		GFX.drawSpriteFromSpriteSheet(super.getScale().x, super.getScale().y, super.position.x, super.position.y,
+				super.getTexture(),
+				new Vector2f(-offsetX,
+						(float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y),
+				new Vector2f(1f, (float) 1 / 8));
 	}
 
 }
