@@ -111,20 +111,26 @@ public class Player extends Entity
 
 		{
 			super.moveRight();
-			shootAngle = 0;
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			if(velocity.x > 0)
 			{
-				shootAngle = 45;
+				shootAngle = 0;
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				{
+					shootAngle = 45;
+				}
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 
 		{
 			super.moveLeft();
-			shootAngle = 180;
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			if(velocity.x < 0)
 			{
-				shootAngle = 135;
+				shootAngle = 180;
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				{
+					shootAngle = 135;
+				}
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))

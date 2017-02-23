@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.Entity;
@@ -62,7 +63,7 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 60, 0), Textures.playerFront, Textures.playerOutline,
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
 				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32));
 
 		testWorld = new World();

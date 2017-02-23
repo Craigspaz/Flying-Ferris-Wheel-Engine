@@ -76,8 +76,15 @@ public class GFX
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 		GL11.glPushMatrix();
+		
+		//GL11.glLoadIdentity();
+		if(angle != 0 && angle != 180)
+		{
+			GL11.glTranslatef(xx + x/2, yy + y/2, 0);
+			GL11.glRotatef(-angle, 0, 0, 1);
+			GL11.glTranslatef(-xx - x/2, -yy - y/2, 0);
+		}
 
-		GL11.glRotatef(angle, 0, 0, 1);
 		// Draws a rectangle
 		GL11.glBegin(GL11.GL_QUADS);
 
@@ -169,6 +176,15 @@ public class GFX
 		// (float) -(Math.acos(angle * 180 / Math.PI) * yy) + yy, 0f);
 
 		// Draws a rectangle
+		//GL11.glLoadIdentity();
+		if(angle != 0 && angle != 180)
+		{
+			GL11.glTranslatef(xx + x/2, yy + y/2, 0);
+			GL11.glRotatef(-angle, 0, 0, 1);
+			GL11.glTranslatef(-xx - x/2, -yy - y/2, 0);
+		}
+		
+		
 		GL11.glBegin(GL11.GL_QUADS);
 
 		GL11.glTexCoord2f(texCoords.x, texCoords.y);
@@ -257,6 +273,13 @@ public class GFX
 		GL11.glRotatef(angle, 0, 0, 1);// TODO same as above
 		GL11.glPushMatrix();
 
+		if(angle != 0 && angle != 180)
+		{
+			GL11.glTranslatef(xx + x/2, yy + y/2, 0);
+			GL11.glRotatef(-angle, 0, 0, 1);
+			GL11.glTranslatef(-xx - x/2, -yy - y/2, 0);
+		}
+		
 		// Draws a rectangle
 		GL11.glBegin(GL11.GL_QUADS);
 

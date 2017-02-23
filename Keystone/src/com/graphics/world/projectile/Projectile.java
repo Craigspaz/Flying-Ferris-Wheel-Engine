@@ -227,11 +227,11 @@ public class Projectile extends Entity
 	public void render()
 	{
 
-		GFX.drawSpriteFromSpriteSheet(super.getScale().x, super.getScale().y, super.position.x, super.position.y,
+		GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y,
 				super.getTexture(),
 				new Vector2f(-offsetX,
 						(float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y),
-				new Vector2f(1f, (float) 1 / 8));
+				new Vector2f(1f, (float) 1 / 8),angle);
 	}
 
 }
