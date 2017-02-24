@@ -23,7 +23,7 @@ public class Player extends Entity
 	private int shootingCounter = 0;
 	private boolean canShoot = true;
 	private float shootAngle = 0;
-	private float bulletSpeed = 8;
+	private float bulletSpeed = 16;
 
 	/**
 	 * Creates a new player
@@ -111,20 +111,26 @@ public class Player extends Entity
 
 		{
 			super.moveRight();
-			shootAngle = 0;
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			if(velocity.x > 0)
 			{
-				shootAngle = 45;
+				shootAngle = 0;
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				{
+					shootAngle = 45;
+				}
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 
 		{
 			super.moveLeft();
-			shootAngle = 180;
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			if(velocity.x < 0)
 			{
-				shootAngle = 135;
+				shootAngle = 180;
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				{
+					shootAngle = 135;
+				}
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
@@ -182,8 +188,8 @@ public class Player extends Entity
 		{
 			if (canShoot)
 			{
-				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.table,
-						new Vector2f(256, 32), 6, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
+				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.playerLaser,
+						new Vector2f(32, 256), 0, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
 						bulletSpeed, velocity.x, velocity.y));
 			}
 			canShoot = false;

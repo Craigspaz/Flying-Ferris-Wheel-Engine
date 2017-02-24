@@ -337,16 +337,38 @@ public class Entity
 			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float)(sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
 			if(velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
 				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
 			else
 			{
-				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
 				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
 		}
 	}
+	/**
+	 * a separate method for drawing the outlines, will be used to make outlines in a background layer
+	 */
+	public void renderOutline()
+	{
+		if (numberOfSpritesX == 1)
+		{
+			GFX.drawEntireSprite(scale.x, scale.y, position.x, position.y, texture);
+		}
+		else
+		{
+			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float)(sizeOfSpriteOnSheet.y * numberOfSpritesY)/sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float)(sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
+			if(velocity.x < 0 || left)
+			{
+				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
+			}
+			else
+			{
+				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
+			}
+		}
+	}
+	
 	
 	/**
 	 * Lowers the entities HP
