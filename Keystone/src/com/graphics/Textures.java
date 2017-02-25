@@ -25,6 +25,8 @@ public class Textures
 	public static Texture testLine;
 	public static Texture sean;
 	
+	public static Texture particles;
+	
 	/**
 	 * Initializes all of the textures
 	 */
@@ -38,5 +40,6 @@ public class Textures
 		tableOutline = Loader.loadTexture("table-v3-outline");
 		sean = Loader.loadTexture("sean");
 		testLine = Loader.loadTexture("testLine");
+		particles = Loader.loadTexture("particle");
 	}
 }

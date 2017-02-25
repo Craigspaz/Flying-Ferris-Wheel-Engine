@@ -1,17 +1,16 @@
 package com.main;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
+import com.graphics.world.Particle;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
@@ -36,6 +35,7 @@ public class Game
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	private ArrayList<Projectile> playerProjectiles = new ArrayList<Projectile>();
 	private ArrayList<Projectile> enemyProjectiles = new ArrayList<Projectile>();
+	private ArrayList<Particle> particles = new ArrayList<Particle>();
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
@@ -43,6 +43,8 @@ public class Game
 
 	private Level testLevel;
 	private World testWorld;
+	
+	private Particle particle;
 
 	// private Projectile testProjectile;
 
@@ -59,6 +61,7 @@ public class Game
 		// sean = new Entity(new Vector3f(64,256,0), Textures.sean, new Vector2f(32,32), 1, 1, new Vector2f(128,128),
 		// new Vector2f(32,32));
 		table.setAffectedByGravity(true);
+		table.setAnimateFrameTime(10);
 		// sean.setAffectedByGravity(true);
 
 		entities.add(table);
@@ -70,6 +73,8 @@ public class Game
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
 		tiles = testLevel.getTiles();
+		
+		//particle = new Particle(new Vector2f(96,750),new Vector2f(16,16),Textures.particles,12,0,false, new Vector2f(16,16),new Vector2f(256,128));
 		// tiles.add(new Tile(new Vector3f(64,256,0),new Vector2f(64,64),Textures.testTile));
 		// tiles.add(new Tile(new Vector3f(128,320,0),new Vector2f(64,64),Textures.testTile));
 
@@ -143,7 +148,12 @@ public class Game
 		{
 			p.render();
 		}
+		for(Particle p : particles)
+		{
+			p.render();
+		}
 		// testProjectile.render();
+		
 	}
 
 	/**
@@ -169,6 +179,12 @@ public class Game
 			playerProjectiles.addAll(player.getProjectiles());
 			player.getProjectiles().clear();
 		}
+		
+		if(!player.getParticles().isEmpty())
+		{
+			particles.addAll(player.getParticles());
+			player.getParticles().clear();
+		}
 
 		for (Projectile p : playerProjectiles)
 		{
@@ -177,6 +193,11 @@ public class Game
 		for (Projectile p : enemyProjectiles)
 		{
 			p.update(worldColliders);
+		}
+		
+		for(Particle p : particles)
+		{
+			p.update();
 		}
 		int i = 0;
 		while (i < playerProjectiles.size())
@@ -212,6 +233,20 @@ public class Game
 				if (entities.get(i).isDead())
 				{
 					entities.remove(i);
+					break;
+				}
+				i++;
+			}
+		}
+		
+		i = 0;
+		while (i < particles.size())
+		{
+			while (i < particles.size())
+			{
+				if (particles.get(i).isDead())
+				{
+					particles.remove(i);
 					break;
 				}
 				i++;
