@@ -2,6 +2,7 @@ package com.main;
 
 import java.util.ArrayList;
 
+import org.lwjgl.input.Controllers;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -16,6 +17,7 @@ import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
 import com.graphics.world.World;
 import com.graphics.world.projectile.Projectile;
+import com.input.InputHandler;
 
 /**
  * Handles the operation of the game
@@ -23,54 +25,56 @@ import com.graphics.world.projectile.Projectile;
  * @author Craig Ferris
  *
  */
-public class Game {
+public class Game
+{
 
-	private Player player;
+	private Player					player;
 
-	private Entity table;
+	private Entity					table;
 	// private Entity sean;
 
-	private ArrayList<RectangleBox> worldColliders = new ArrayList<RectangleBox>();
-	private ArrayList<Tile> tiles = new ArrayList<Tile>();
-	private ArrayList<Projectile> playerProjectiles = new ArrayList<Projectile>();
-	private ArrayList<Projectile> enemyProjectiles = new ArrayList<Projectile>();
-	private ArrayList<Particle> particles = new ArrayList<Particle>();
+	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
+	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
+	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
+	private ArrayList<Projectile>	enemyProjectiles	= new ArrayList<Projectile>();
+	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
 
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
-	private Camera camera;
+	private Camera					camera;
 
-	private Level testLevel;
-	private World testWorld;
+	private Level					testLevel;
+	private World					testWorld;
 
-	private Particle particle;
+	private InputHandler			handler;
 
 	// private Projectile testProjectile;
 
 	/**
 	 * Creates the game world
 	 */
-	public Game() {
+	public Game()
+	{
 		new Textures();
+		handler = new InputHandler();
 		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 
-		 table = new Entity(new Vector3f(64, 256, 0), Textures.sean,
-		 Textures.sean, new Vector2f(128, 128), 1, 1,
-		 new Vector2f(32, 32), new Vector2f(32, 32));
-		//table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new Vector2f(32, 32), 1, 1, new Vector2f(128, 128),new Vector2f(32, 32));
+		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
+		// table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new
+		// Vector2f(32, 32), 1, 1, new Vector2f(128, 128),new Vector2f(32, 32));
 		table.setAffectedByGravity(true);
 		table.setAnimateFrameTime(10);
 		// sean.setAffectedByGravity(true);
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
-				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32));
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32),handler);
 
 		testWorld = new World();
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
 		tiles = testLevel.getTiles();
+		
 
 		// particle = new Particle(new Vector2f(96,750),new
 		// Vector2f(16,16),Textures.particles,12,0,false, new
@@ -136,27 +140,34 @@ public class Game {
 	/**
 	 * Draws objects to the screen. Is executed for every frame
 	 */
-	public void render() {
+	public void render()
+	{
 		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
 		// sean.render();
-		for (Entity e : entities) {
+		for (Entity e : entities)
+		{
 			e.renderOutline();
 		}
 		player.renderOutline();
 		player.render();
-		for (Tile t : tiles) {
+		for (Tile t : tiles)
+		{
 			t.render();
 		}
-		for (Entity e : entities) {
+		for (Entity e : entities)
+		{
 			e.render();
 		}
-		for (Projectile p : playerProjectiles) {
+		for (Projectile p : playerProjectiles)
+		{
 			p.render();
 		}
-		for (Projectile p : enemyProjectiles) {
+		for (Projectile p : enemyProjectiles)
+		{
 			p.render();
 		}
-		for (Particle p : particles) {
+		for (Particle p : particles)
+		{
 			p.render();
 		}
 		// testProjectile.render();
@@ -167,42 +178,53 @@ public class Game {
 	 * Updates objects and handles physics. Is executed a certain number of
 	 * times a second
 	 */
-	public void update() {
+	public void update()
+	{
 		player.update(worldColliders);
 		player.checkForCollisionWithProjectiles(enemyProjectiles);
-		for (Tile t : tiles) {
+		for (Tile t : tiles)
+		{
 			t.update();
 		}
 
-		for (Entity e : entities) {
+		for (Entity e : entities)
+		{
 			e.update(worldColliders);
 			e.checkForCollisionWithProjectiles(playerProjectiles);
 		}
 
-		if (!player.getProjectiles().isEmpty()) {
+		if (!player.getProjectiles().isEmpty())
+		{
 			playerProjectiles.addAll(player.getProjectiles());
 			player.getProjectiles().clear();
 		}
 
-		if (!player.getParticles().isEmpty()) {
+		if (!player.getParticles().isEmpty())
+		{
 			particles.addAll(player.getParticles());
 			player.getParticles().clear();
 		}
 
-		for (Projectile p : playerProjectiles) {
+		for (Projectile p : playerProjectiles)
+		{
 			p.update(worldColliders);
 		}
-		for (Projectile p : enemyProjectiles) {
+		for (Projectile p : enemyProjectiles)
+		{
 			p.update(worldColliders);
 		}
 
-		for (Particle p : particles) {
+		for (Particle p : particles)
+		{
 			p.update();
 		}
 		int i = 0;
-		while (i < playerProjectiles.size()) {
-			while (i < playerProjectiles.size()) {
-				if (playerProjectiles.get(i).isDead()) {
+		while (i < playerProjectiles.size())
+		{
+			while (i < playerProjectiles.size())
+			{
+				if (playerProjectiles.get(i).isDead())
+				{
 					playerProjectiles.remove(i);
 					break;
 				}
@@ -210,9 +232,12 @@ public class Game {
 			}
 		}
 		i = 0;
-		while (i < enemyProjectiles.size()) {
-			while (i < enemyProjectiles.size()) {
-				if (enemyProjectiles.get(i).isDead()) {
+		while (i < enemyProjectiles.size())
+		{
+			while (i < enemyProjectiles.size())
+			{
+				if (enemyProjectiles.get(i).isDead())
+				{
 					enemyProjectiles.remove(i);
 					break;
 				}
@@ -220,9 +245,12 @@ public class Game {
 			}
 		}
 		i = 0;
-		while (i < entities.size()) {
-			while (i < entities.size()) {
-				if (entities.get(i).isDead()) {
+		while (i < entities.size())
+		{
+			while (i < entities.size())
+			{
+				if (entities.get(i).isDead())
+				{
 					entities.remove(i);
 					break;
 				}
@@ -231,9 +259,12 @@ public class Game {
 		}
 
 		i = 0;
-		while (i < particles.size()) {
-			while (i < particles.size()) {
-				if (particles.get(i).isDead()) {
+		while (i < particles.size())
+		{
+			while (i < particles.size())
+			{
+				if (particles.get(i).isDead())
+				{
 					particles.remove(i);
 					break;
 				}
@@ -248,7 +279,8 @@ public class Game {
 	/**
 	 * Cleans up memory if needed
 	 */
-	public void cleanUPGame() {
+	public void cleanUPGame()
+	{
 
 	}
 }
