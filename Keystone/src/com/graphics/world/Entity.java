@@ -17,6 +17,9 @@ import com.graphics.world.projectile.Projectile;
  */
 public class Entity
 {
+
+	protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	protected ArrayList<Particle> particles = new ArrayList<Particle>();
 	
 	protected static final float GRAVITY = 0.8f;
 	protected static final float MAX_SPEED_Y = 20.0f;
@@ -731,5 +734,21 @@ public class Entity
 
 	public void setAnimateFrameTime(float animateFrameTime) {
 		this.animateFrameTime = animateFrameTime;
+	}
+
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
+	}
+
+	public void setProjectiles(ArrayList<Projectile> projectiles) {
+		this.projectiles = projectiles;
+	}
+
+	public ArrayList<Particle> getParticles() {
+		return particles;
+	}
+
+	public void setParticles(ArrayList<Particle> particles) {
+		this.particles = particles;
 	}
 }

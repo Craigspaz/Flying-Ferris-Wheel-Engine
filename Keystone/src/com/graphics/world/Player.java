@@ -18,13 +18,13 @@ import com.graphics.world.projectile.Projectile;
  */
 public class Player extends Entity
 {
-	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	private int shootingDelay = 5;
 	private int shootingCounter = 0;
 	private boolean canShoot = true;
 	private float shootAngle = 0;
 	private float bulletSpeed = 16;
 	private float bulletSpawnDistance = 48;
+	private boolean canGenerateSprintParticle = true;
 
 	/**
 	 * Creates a new player
@@ -80,9 +80,22 @@ public class Player extends Entity
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 		{
 			super.setSprinting(true);
+			if(!isInAir && canGenerateSprintParticle && Math.abs(velocity.x) > 0)
+			{
+				if(left)
+				{
+					particles.add(new Particle(new Vector2f(position.x + getScale().x - 16,position.y + getScale().y - 16),new Vector2f(16,16),Textures.particles,12,0,left, new Vector2f(16,16),new Vector2f(256,128),false));	
+				}
+				else
+				{
+					particles.add(new Particle(new Vector2f(position.x,position.y + getScale().y - 16),new Vector2f(16,16),Textures.particles,12,0,left, new Vector2f(16,16),new Vector2f(256,128),false));
+				}
+				canGenerateSprintParticle = false;
+			}
 		} else
 		{
 			super.setSprinting(false);
+			canGenerateSprintParticle = true;
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) == false && Keyboard.isKeyDown(Keyboard.KEY_LEFT) == false)
@@ -155,6 +168,10 @@ public class Player extends Entity
 			{
 				super.jump();
 				canJump = false;
+			}
+			if(!isInAir)
+			{
+				particles.add(new Particle(new Vector2f(position.x + (getScale().x/2) - 8,position.y + getScale().y - 16),new Vector2f(16,16),Textures.particles,12,1,left, new Vector2f(16,16),new Vector2f(256,128),false));		
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W))
@@ -303,26 +320,5 @@ public class Player extends Entity
 	{
 		input(colliders);
 		super.update(colliders);
-	}
-
-	/**
-	 * Returns the projectiles the player fired
-	 * 
-	 * @return Returns the projectiles the player fired
-	 */
-	public ArrayList<Projectile> getProjectiles()
-	{
-		return projectiles;
-	}
-
-	/**
-	 * Sets the projectiles the player fired
-	 * 
-	 * @param projectiles
-	 *            The projectiles the player fired
-	 */
-	public void setProjectiles(ArrayList<Projectile> projectiles)
-	{
-		this.projectiles = projectiles;
 	}
 }
