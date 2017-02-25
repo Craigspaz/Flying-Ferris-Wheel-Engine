@@ -23,6 +23,7 @@ public class Projectile extends Entity
 	private float speed;
 	private static final float DISTANCE_FROM_ORIGIN = 16.0f;
 	private float offsetX = 0;
+	private float offsetY = 0;
 
 	private int damage = 10;
 
@@ -135,7 +136,16 @@ public class Projectile extends Entity
 			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
 		} else
 		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) / super.getSizeOfSpriteOnSheet().x);
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x))
+					/ super.getSizeOfSpriteOnSheet().x);
+		}
+		if (angle == 90)
+		{
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y))
+					/ super.getSizeOfSpriteOnSheet().x);
+		} else if (angle == 270)
+		{
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.y) / super.getSizeOfSpriteOnSheet().x);
 		}
 		move();
 	}
@@ -247,10 +257,7 @@ public class Projectile extends Entity
 	public void render()
 	{
 		GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y,
-				super.getTexture(),
-				new Vector2f(-offsetX,
-						(float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y),
-				new Vector2f(1f, (float) 1 / 8), angle);
+				super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
 	}
 
 }
