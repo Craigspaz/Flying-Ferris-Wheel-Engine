@@ -10,34 +10,77 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.Textures;
 import com.graphics.world.projectile.Projectile;
 
+/**
+ * Handles enemy
+ * 
+ * @author Craig Ferris
+ *
+ */
 public class Enemy extends Entity
 {
-	private boolean moveLeft = false;
-	private boolean moveRight = false;
-	private boolean isJumping = false;
-	private boolean isUp = false;
-	
+	private boolean					moveLeft		= false;
+	private boolean					moveRight		= false;
+	private boolean					isJumping		= false;
+	private boolean					isUp			= false;
 
-	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-	private int shootingDelay = 5;
-	private int shootingCounter = 0;
-	private boolean canShoot = true;
-	private boolean shoot = false;
-	private float shootAngle = 0;
-	private float bulletSpeed = 16;
-	
-	public Enemy(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet) {
+	private ArrayList<Projectile>	projectiles		= new ArrayList<Projectile>();
+	private int						shootingDelay	= 5;
+	private int						shootingCounter	= 0;
+	private boolean					canShoot		= true;
+	private boolean					shoot			= false;
+	private float					shootAngle		= 0;
+	private float					bulletSpeed		= 16;
+
+	/**
+	 * Creates new Enemy
+	 * 
+	 * @param position
+	 *            The position of the enemy
+	 * @param texture
+	 *            The texture of the enemy
+	 * @param size
+	 *            The size of the spritesheet
+	 * @param scale
+	 *            The size to render the sprite
+	 * @param sizeOfSpriteOnSheet
+	 *            The size of the sprite on the sprite sheet
+	 */
+	public Enemy(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 	}
 
-	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture,
-			int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet) {
+	/**
+	 * Creates new Enemy
+	 * 
+	 * @param position
+	 *            The position of the enemy
+	 * @param texture
+	 *            The main texture of the enemy
+	 * @param outlineTexture
+	 *            The outline texture of the eney
+	 * @param sizeOfTexture
+	 *            The size of the spritesheet
+	 * @param numberOfSpritesX
+	 *            The number of sprites in the animation in the x direction
+	 * @param numberOfSpritesY
+	 *            The row in the spritesheet (zero based)
+	 * @param scale
+	 *            The size to render the sprite
+	 * @param sizeOfSpriteOnSheet
+	 *            The size of the sprite on the spritesheet
+	 */
+	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	{
 		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 	}
-	
+
+	/**
+	 * Handles movement
+	 */
 	private void movement()
 	{
-		if(!moveLeft && !moveRight)
+		if (!moveLeft && !moveRight)
 		{
 			if (velocity.x > 0)
 			{
@@ -62,11 +105,11 @@ public class Enemy extends Entity
 				shootAngle = 90;
 			}
 		}
-		
-		if(moveRight)
+
+		if (moveRight)
 		{
 			super.moveRight();
-			if(velocity.x > 0)
+			if (velocity.x > 0)
 			{
 				shootAngle = 0;
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -75,11 +118,11 @@ public class Enemy extends Entity
 				}
 			}
 		}
-		
-		if(moveLeft)
+
+		if (moveLeft)
 		{
 			moveLeft();
-			if(velocity.x < 0)
+			if (velocity.x < 0)
 			{
 				shootAngle = 180;
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -88,14 +131,14 @@ public class Enemy extends Entity
 				}
 			}
 		}
-		
-		if(!isJumping)
+
+		if (!isJumping)
 		{
 			canJump = true;
 			jumping = false;
 		}
-		
-		if(isJumping)
+
+		if (isJumping)
 		{
 			if (canJump)
 			{
@@ -103,41 +146,37 @@ public class Enemy extends Entity
 				canJump = false;
 			}
 		}
-		
-		if(isUp)
+
+		if (isUp)
 		{
 			if (!left)
 				shootAngle = 45;
 			else
 				shootAngle = 135;
 		}
-		
-		
-		if(!shoot)
+
+		if (!shoot)
 		{
 			if (shootingCounter > shootingDelay)
 
 			{
 				shootingCounter = 0;
 				canShoot = true;
-			}
-			else
+			} else
 			{
 				shootingCounter++;
 			}
 		}
-		
-		if(shoot)
+
+		if (shoot)
 		{
 			if (canShoot)
 			{
-				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.playerLaser,
-						new Vector2f(32, 256), 0, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
-						bulletSpeed, velocity.x, velocity.y));
+				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.playerLaser, new Vector2f(32, 256), 0, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle, bulletSpeed, velocity.x, velocity.y));
 			}
 			canShoot = false;
 		}
-		
+
 		if (velocity.x > 0)
 
 		{
@@ -166,8 +205,7 @@ public class Enemy extends Entity
 			}
 			left = true;
 		}
-		
-		
+
 		if (velocity.x == 0 && velocity.y == 0)
 
 		{
@@ -206,153 +244,249 @@ public class Enemy extends Entity
 			super.animSpriteFrameY = 0;
 		}
 
-		
 	}
 
+	/**
+	 * Updates the enemy
+	 * 
+	 * @param colliders
+	 *            The colliders to check agains the enemy
+	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
 		movement();
 		super.update(colliders);
 	}
 
-	public boolean isMoveLeft() {
+	/**
+	 * Returns if the enemy is moving left
+	 * 
+	 * @return Returns if the enemy is moving left
+	 */
+	public boolean isMoveLeft()
+	{
 		return moveLeft;
 	}
 
-	public void setMoveLeft(boolean moveLeft) {
+	/**
+	 * Sets if the enemy is moving left
+	 * 
+	 * @param moveLeft
+	 *            The value to set
+	 */
+	public void setMoveLeft(boolean moveLeft)
+	{
 		this.moveLeft = moveLeft;
 	}
 
-	public boolean isMoveRight() {
+	/**
+	 * Returns if the enemy is moving right
+	 * 
+	 * @return Returns if the enemy is moving right
+	 */
+	public boolean isMoveRight()
+	{
 		return moveRight;
 	}
 
-	public void setMoveRight(boolean moveRight) {
+	/**
+	 * Sets if the enemy is moving right
+	 * 
+	 * @param moveRight
+	 *            The value to set
+	 */
+	public void setMoveRight(boolean moveRight)
+	{
 		this.moveRight = moveRight;
 	}
 
-	public boolean isJumping() {
+	/**
+	 * Returns if the enemy is jumping
+	 * 
+	 * @return Returns if the enemy is jumping
+	 */
+	public boolean isJumping()
+	{
 		return isJumping;
 	}
 
-	public void setJumping(boolean isJumping) {
+	/**
+	 * Sets if the enemy is jumping
+	 * 
+	 * @param isJumping
+	 *            The value to set
+	 */
+	public void setJumping(boolean isJumping)
+	{
 		this.isJumping = isJumping;
 	}
 
-	public boolean isUp() {
+	/**
+	 * Returns if the enemy is moving up
+	 * 
+	 * @return Returns if the enemy is moving up
+	 */
+	public boolean isUp()
+	{
 		return isUp;
 	}
 
-	public void setUp(boolean isUp) {
+	/**
+	 * Sets if the player is moving up
+	 * 
+	 * @param isUp
+	 *            The value to set
+	 */
+	public void setUp(boolean isUp)
+	{
 		this.isUp = isUp;
 	}
 
-	public ArrayList<Projectile> getProjectiles() {
+	/**
+	 * Returns the projectiles fired
+	 * 
+	 * @return Returns the projectiles fired
+	 */
+	public ArrayList<Projectile> getProjectiles()
+	{
 		return projectiles;
 	}
 
 	/**
 	 * Sets the projectiles the enemy is firing
-	 * @param projectiles The projectiles the enemy is firing
+	 * 
+	 * @param projectiles
+	 *            The projectiles the enemy is firing
 	 */
-	public void setProjectiles(ArrayList<Projectile> projectiles) {
+	public void setProjectiles(ArrayList<Projectile> projectiles)
+	{
 		this.projectiles = projectiles;
 	}
 
 	/**
 	 * Returns the shooting delay
+	 * 
 	 * @return Returns the shooting delay
 	 */
-	public int getShootingDelay() {
+	public int getShootingDelay()
+	{
 		return shootingDelay;
 	}
 
 	/**
 	 * Sets the shooting delay
-	 * @param shootingDelay The delay between each projecitle
+	 * 
+	 * @param shootingDelay
+	 *            The delay between each projecitle
 	 */
-	public void setShootingDelay(int shootingDelay) {
+	public void setShootingDelay(int shootingDelay)
+	{
 		this.shootingDelay = shootingDelay;
 	}
 
 	/**
 	 * Returns the shooting counter
+	 * 
 	 * @return Returns the shooting counter
 	 */
-	public int getShootingCounter() {
+	public int getShootingCounter()
+	{
 		return shootingCounter;
 	}
 
 	/**
 	 * Sets the shooting counter
-	 * @param shootingCounter The new time in the counter
+	 * 
+	 * @param shootingCounter
+	 *            The new time in the counter
 	 */
-	public void setShootingCounter(int shootingCounter) {
+	public void setShootingCounter(int shootingCounter)
+	{
 		this.shootingCounter = shootingCounter;
 	}
 
 	/**
 	 * Returns true if the enemy can shoot
+	 * 
 	 * @return Returns if the enemy can shoot
 	 */
-	public boolean isCanShoot() {
+	public boolean isCanShoot()
+	{
 		return canShoot;
 	}
 
 	/**
 	 * Sets if the enemy is shooting
-	 * @param canShoot The value to set shoot
+	 * 
+	 * @param canShoot
+	 *            The value to set shoot
 	 */
-	public void setCanShoot(boolean canShoot) {
+	public void setCanShoot(boolean canShoot)
+	{
 		this.canShoot = canShoot;
 	}
 
 	/**
 	 * Returns true if the enemy is shooting
+	 * 
 	 * @return Returns true if the enemy is shooting
 	 */
-	public boolean isShoot() {
+	public boolean isShoot()
+	{
 		return shoot;
 	}
 
 	/**
 	 * Sets shoot which if true shoots and if false does not
-	 * @param shoot Sets if shooting
+	 * 
+	 * @param shoot
+	 *            Sets if shooting
 	 */
-	public void setShoot(boolean shoot) {
+	public void setShoot(boolean shoot)
+	{
 		this.shoot = shoot;
 	}
 
 	/**
 	 * Returns the shoot angle in degrees
+	 * 
 	 * @return Returns the shoot angle in degrees
 	 */
-	public float getShootAngle() {
+	public float getShootAngle()
+	{
 		return shootAngle;
 	}
 
 	/**
 	 * Sets shoot angle in degrees
-	 * @param shootAngle The shoot angle in degreess
+	 * 
+	 * @param shootAngle
+	 *            The shoot angle in degreess
 	 */
-	public void setShootAngle(float shootAngle) {
+	public void setShootAngle(float shootAngle)
+	{
 		this.shootAngle = shootAngle;
 	}
 
 	/**
 	 * Returns bullet speed
+	 * 
 	 * @return Returns bullet speed
 	 */
-	public float getBulletSpeed() {
+	public float getBulletSpeed()
+	{
 		return bulletSpeed;
 	}
 
 	/**
 	 * Sets the bulletspeed
-	 * @param bulletSpeed The speed of the bullet
+	 * 
+	 * @param bulletSpeed
+	 *            The speed of the bullet
 	 */
-	public void setBulletSpeed(float bulletSpeed) {
+	public void setBulletSpeed(float bulletSpeed)
+	{
 		this.bulletSpeed = bulletSpeed;
 	}
-	
+
 }

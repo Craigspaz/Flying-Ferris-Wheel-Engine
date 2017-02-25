@@ -11,8 +11,8 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class RectangleBox
 {
-	private Vector3f position;
-	private Vector2f size;
+	private Vector3f	position;
+	private Vector2f	size;
 
 	/**
 	 * Creates a new RectangleBox
@@ -26,7 +26,7 @@ public class RectangleBox
 	{
 		this.position = position;
 		this.size = size;
-	}		
+	}
 
 	/**
 	 * Returns true if the current box overlaps with another box passed in
@@ -52,16 +52,13 @@ public class RectangleBox
 		if (x > xx && x < xx + sizexx && y > yy && y < yy + sizeyy)
 		{
 			return true;
-		}
-		else if (x > xx && x < xx + sizexx && y + sizey > yy && y < yy + sizeyy)
+		} else if (x > xx && x < xx + sizexx && y + sizey > yy && y < yy + sizeyy)
 		{
 			return true;
-		}
-		else if (x + sizex > xx && x + sizex < xx + sizexx && y > yy && y < yy + sizeyy)
+		} else if (x + sizex > xx && x + sizex < xx + sizexx && y > yy && y < yy + sizeyy)
 		{
 			return true;
-		}
-		else if (x + sizex > xx && x + sizex < xx + sizexx && y + sizey > yy && y < yy + sizeyy)
+		} else if (x + sizex > xx && x + sizex < xx + sizexx && y + sizey > yy && y < yy + sizeyy)
 		{
 			return true;
 		}
@@ -70,20 +67,16 @@ public class RectangleBox
 		else if (xx > x && xx < x + sizex && yy > y && yy < y + sizey)
 		{
 			return true;
-		}
-		else if (xx > x && xx < x + sizex && yy + sizeyy > y && yy < y + sizey)
+		} else if (xx > x && xx < x + sizex && yy + sizeyy > y && yy < y + sizey)
 		{
 			return true;
-		}
-		else if (xx + sizexx > x && xx + sizexx < x + sizex && yy > y && yy < y + sizey)
+		} else if (xx + sizexx > x && xx + sizexx < x + sizex && yy > y && yy < y + sizey)
 		{
 			return true;
-		}
-		else if (xx + sizexx > x && xx + sizexx < x + sizex && yy + sizeyy > y && yy < y + sizey)
+		} else if (xx + sizexx > x && xx + sizexx < x + sizex && yy + sizeyy > y && yy < y + sizey)
 		{
 			return true;
-		}
-		else
+		} else
 		{
 			return false;
 		}
@@ -91,6 +84,7 @@ public class RectangleBox
 
 	/**
 	 * Returns the position of the top left corner of the box
+	 * 
 	 * @return Returns the position of the top left corner of the box
 	 */
 	public Vector3f getPosition()
@@ -100,7 +94,9 @@ public class RectangleBox
 
 	/**
 	 * Sets the position of the top left corner of the box
-	 * @param position The position to set the top left corner of the box
+	 * 
+	 * @param position
+	 *            The position to set the top left corner of the box
 	 */
 	public void setPosition(Vector3f position)
 	{
@@ -109,6 +105,7 @@ public class RectangleBox
 
 	/**
 	 * Returns the size of the box
+	 * 
 	 * @return Returns the size of the box
 	 */
 	public Vector2f getSize()
@@ -118,14 +115,15 @@ public class RectangleBox
 
 	/**
 	 * Sets the size of the box
-	 * @param size The size to set the box 
+	 * 
+	 * @param size
+	 *            The size to set the box
 	 */
 	public void setSize(Vector2f size)
 	{
 		this.size = size;
 	}
-	
-	
+
 	public String toString()
 	{
 		return "(" + position.x + " , " + position.y + " , " + position.z + ") (" + size.x + " , " + size.y + ")";

@@ -68,14 +68,13 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32),handler);
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
 		testWorld = new World();
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
 		tiles = testLevel.getTiles();
 		entities.addAll(testLevel.getEnemies());
-		
 
 		// particle = new Particle(new Vector2f(96,750),new
 		// Vector2f(16,16),Textures.particles,12,0,false, new

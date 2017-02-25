@@ -6,27 +6,27 @@ import org.newdawn.slick.opengl.Texture;
 
 /**
  * Loads and stores textures
+ * 
  * @author Craig Ferris
  *
  */
 public class Textures
-{	
-	public static Texture playerFront;
-	public static Texture playerOutline;
-	
-	public static Texture playerLaser;
-	
-	
-	public static Texture testTile;
-	
-	public static Texture table;
-	public static Texture tableOutline;
-	
-	public static Texture testLine;
-	public static Texture sean;
-	
-	public static Texture particles;
-	
+{
+	public static Texture	playerFront;
+	public static Texture	playerOutline;
+
+	public static Texture	playerLaser;
+
+	public static Texture	testTile;
+
+	public static Texture	table;
+	public static Texture	tableOutline;
+
+	public static Texture	testLine;
+	public static Texture	sean;
+
+	public static Texture	particles;
+
 	/**
 	 * Initializes all of the textures
 	 */

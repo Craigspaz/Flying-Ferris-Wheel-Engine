@@ -8,16 +8,17 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * Create the window and handles the main game loop
+ * 
  * @author Craig Ferris
  *
  */
 public class Window
 {
 
-	public static int width = 1366;
-	public static int height = 768;
+	public static int	width	= 1366;
+	public static int	height	= 768;
 
-	private Game game;
+	private Game		game;
 
 	/**
 	 * Creates the window
@@ -32,8 +33,7 @@ public class Window
 
 			Display.create();
 			Keyboard.create();
-		}
-		catch (LWJGLException e)
+		} catch (LWJGLException e)
 		{
 			e.printStackTrace();
 		}
@@ -80,7 +80,7 @@ public class Window
 		final int TICKS_PER_SECOND = 60;
 		final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 		final int MAX_FRAMESKIP = 5;
-		
+
 		double nextTick = System.currentTimeMillis();
 		int loops;
 		while (!Display.isCloseRequested())
@@ -89,7 +89,7 @@ public class Window
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glClearColor(.4f, .4f, .4f, 1);
 			GL11.glLoadIdentity();
-			while(System.currentTimeMillis() > nextTick && loops < MAX_FRAMESKIP)
+			while (System.currentTimeMillis() > nextTick && loops < MAX_FRAMESKIP)
 			{
 				update();
 				nextTick += SKIP_TICKS;
@@ -98,7 +98,7 @@ public class Window
 			render();
 			Display.update();// This needs to be the last line of code in the
 								// while loop
-			//Display.sync(60);
+			// Display.sync(60);
 		}
 		game.cleanUPGame();
 		Display.destroy();
@@ -107,17 +107,20 @@ public class Window
 
 	/**
 	 * Sets the displaymode. Allows the displaymode to be changed
-	 * @param width The width of the window
-	 * @param height The height of the window
-	 * @param fullscreen If the window is to be fullscreen
+	 * 
+	 * @param width
+	 *            The width of the window
+	 * @param height
+	 *            The height of the window
+	 * @param fullscreen
+	 *            If the window is to be fullscreen
 	 * @author LWJGL WIKI
 	 */
 	public void setDisplayMode(int width, int height, boolean fullscreen)
 	{
 
 		// return if requested DisplayMode is already set
-		if ((Display.getDisplayMode().getWidth() == width) && (Display.getDisplayMode().getHeight() == height)
-				&& (Display.isFullscreen() == fullscreen))
+		if ((Display.getDisplayMode().getWidth() == width) && (Display.getDisplayMode().getHeight() == height) && (Display.isFullscreen() == fullscreen))
 		{
 			return;
 		}
@@ -139,8 +142,7 @@ public class Window
 					{
 						if ((targetDisplayMode == null) || (current.getFrequency() >= freq))
 						{
-							if ((targetDisplayMode == null)
-									|| (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel()))
+							if ((targetDisplayMode == null) || (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel()))
 							{
 								targetDisplayMode = current;
 								freq = targetDisplayMode.getFrequency();
@@ -152,16 +154,14 @@ public class Window
 						// original display mode then it's probably best to go
 						// for this one
 						// since it's most likely compatible with the monitor
-						if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel())
-								&& (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency()))
+						if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) && (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency()))
 						{
 							targetDisplayMode = current;
 							break;
 						}
 					}
 				}
-			}
-			else
+			} else
 			{
 				targetDisplayMode = new DisplayMode(width, height);
 			}
@@ -175,8 +175,7 @@ public class Window
 			Display.setDisplayMode(targetDisplayMode);
 			Display.setFullscreen(fullscreen);
 
-		}
-		catch (LWJGLException e)
+		} catch (LWJGLException e)
 		{
 			System.out.println("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullscreen + e);
 		}
@@ -184,7 +183,9 @@ public class Window
 
 	/**
 	 * Main method
-	 * @param args The commandline arguments
+	 * 
+	 * @param args
+	 *            The commandline arguments
 	 */
 	public static void main(String[] args)
 	{
