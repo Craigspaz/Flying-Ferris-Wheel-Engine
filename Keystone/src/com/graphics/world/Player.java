@@ -240,7 +240,7 @@ public class Player extends Entity
 								super.position.y + (super.getScale().y / 2f) + displacey, 0),
 						Textures.playerLaser, new Vector2f(64, 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32),
 						shootAngle, bulletSpeed, velocity.x, velocity.y));
-				System.out.println(shootAngle / 180 + "n");
+				//System.out.println(shootAngle / 180 + "n");
 			}
 			canShoot = false;
 		}
