@@ -11,6 +11,7 @@ import com.graphics.world.projectile.Projectile;
 
 /**
  * Defines the basic behavior of enemies and players
+ * 
  * @author Craig Ferris
  * @author Kyle Falicov
  *
@@ -20,12 +21,13 @@ public class Entity
 
 	protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	protected ArrayList<Particle> particles = new ArrayList<Particle>();
-	
+
 	protected static final float GRAVITY = 0.8f;
 	protected static final float MAX_SPEED_Y = 20.0f;
 	protected static final float MAX_SPEED_X = 4.0f;
 	protected static final float HORIZONTAL_ACCEL = 0.4f;
 	protected static final float DECEL_VALUE = 0.3f;
+	protected static final float JUMP_VALUE = -15;
 	private float animateFrameTime = 5;
 	protected boolean left = false;
 	private int healthPoints = 100;
@@ -51,20 +53,25 @@ public class Entity
 	protected float walkSpeed = 4.0f;
 	protected float sprintSpeed = 8.0f;
 	protected boolean isSprinting = false;
-	
+
 	protected boolean affectedByGravity = false;
 	protected boolean jumping = false;
 	protected int jumpTimer = 0;
 	protected boolean canJump = true;
-	protected boolean isInAir = false;	
+	protected boolean isInAir = false;
 	protected RectangleBox collider;
 
 	/**
 	 * Creates a new entity
-	 * @param position The initial position of the entity
-	 * @param texture The texture of the entity
-	 * @param size The size of the sprite on the texture
-	 * @param scale The size at which to draw the object
+	 * 
+	 * @param position
+	 *            The initial position of the entity
+	 * @param texture
+	 *            The texture of the entity
+	 * @param size
+	 *            The size of the sprite on the texture
+	 * @param scale
+	 *            The size at which to draw the object
 	 */
 	public Entity(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
@@ -78,22 +85,30 @@ public class Entity
 		isAnimated = false;
 		animSpriteFrameX = 0;
 		animSpriteFrameY = 0;
-		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z),scale);
-		velocity = new Vector3f(0,0,0);
+		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z), scale);
+		velocity = new Vector3f(0, 0, 0);
 	}
 
 	/**
 	 * Creates a new entity
-	 * @param position The initial position of the entity
-	 * @param texture The texture of the entity
-	 * @param outlineTexture The texture with the outlines
-	 * @param sizeOfTexture The size of the texture
-	 * @param numberOfSprites The size of each individual sprite on the texture
-	 * @param scale The size at which to draw the object
+	 * 
+	 * @param position
+	 *            The initial position of the entity
+	 * @param texture
+	 *            The texture of the entity
+	 * @param outlineTexture
+	 *            The texture with the outlines
+	 * @param sizeOfTexture
+	 *            The size of the texture
+	 * @param numberOfSprites
+	 *            The size of each individual sprite on the texture
+	 * @param scale
+	 *            The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX,int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture,
+			int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		this(position, texture, sizeOfTexture, scale,sizeOfSpriteOnSheet);
+		this(position, texture, sizeOfTexture, scale, sizeOfSpriteOnSheet);
 		this.numberOfSpritesX = numberOfSpritesX;
 		this.numberOfSpritesY = numberOfSpritesY;
 		this.outlineTexture = outlineTexture;
@@ -101,7 +116,9 @@ public class Entity
 
 	/**
 	 * Returns true if two entities are colliding
-	 * @param entity The entity to check if colliding with
+	 * 
+	 * @param entity
+	 *            The entity to check if colliding with
 	 * @return Returns true if the paramater entity is colliding with the current object entity
 	 */
 	public boolean isCollidingWithEntity2D(Entity entity)
@@ -111,7 +128,9 @@ public class Entity
 
 	/**
 	 * Updates the entity
-	 * @param colliders The colliders in the world to check for collisions with
+	 * 
+	 * @param colliders
+	 *            The colliders in the world to check for collisions with
 	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
@@ -123,71 +142,67 @@ public class Entity
 				animSpriteFrameX = 0;
 			}
 			animateTime = 0.0f;
-		}
-		else
+		} else
 		{
 			animateTime += animateSpeed;
 		}
-		
-		if(affectedByGravity)
+
+		if (affectedByGravity)
 		{
 			velocity.y += GRAVITY;
 		}
-		
-		if(velocity.y > MAX_SPEED_Y)
+
+		if (velocity.y > MAX_SPEED_Y)
 		{
 			velocity.y = MAX_SPEED_Y;
-		}
-		else if(velocity.y < -MAX_SPEED_Y)
+		} else if (velocity.y < -MAX_SPEED_Y)
 		{
 			velocity.y = -MAX_SPEED_Y;
 		}
-		
 
 		boolean isOnGround = false;
-		
+
 		// Makes two predictive collision boxes
-		RectangleBox nBoxX = new RectangleBox(new Vector3f(collider.getPosition().x + velocity.x,position.y,position.z),collider.getSize());
-		RectangleBox nBoxY = new RectangleBox(new Vector3f(position.x,collider.getPosition().y + velocity.y,position.z),collider.getSize());
-		for(RectangleBox t: colliders)
-		{			
-			if(t.isCollidingWithBox(nBoxX))
+		RectangleBox nBoxX = new RectangleBox(
+				new Vector3f(collider.getPosition().x + velocity.x, position.y, position.z), collider.getSize());
+		RectangleBox nBoxY = new RectangleBox(
+				new Vector3f(position.x, collider.getPosition().y + velocity.y, position.z), collider.getSize());
+		for (RectangleBox t : colliders)
+		{
+			if (t.isCollidingWithBox(nBoxX))
 			{
 				float leftSideOfWall = t.getPosition().x;
 				float rightSideOfWall = t.getPosition().x + t.getSize().x;
-				
-				
+
 				float leftOfPlayer = nBoxX.getPosition().x;
 				float rightOfPlayer = nBoxX.getPosition().x + nBoxX.getSize().x;
-				if(velocity.x > 0)
+				if (velocity.x > 0)
 				{
 					float xShift = Math.abs(leftSideOfWall - rightOfPlayer);
 					nBoxX.getPosition().x += -xShift;
 					velocity.x = 0;
-				}
-				else if(velocity.x < 0)
+				} else if (velocity.x < 0)
 				{
 					float xShift = Math.abs(rightSideOfWall - leftOfPlayer);
 					nBoxX.getPosition().x += xShift;
 					velocity.x = 0;
 				}
 			}
-			if(t.isCollidingWithBox(nBoxY))
+			if (t.isCollidingWithBox(nBoxY))
 			{
 				float topOfGround = t.getPosition().y;
 				float bottomOfGround = t.getPosition().y + t.getSize().y;
-				
+
 				float topOfPlayer = nBoxY.getPosition().y;
 				float bottomOfPlayer = nBoxY.getPosition().y + nBoxY.getSize().y;
-				if(velocity.y > 0)
+				if (velocity.y > 0)
 				{
 					float yShift = Math.abs(bottomOfPlayer - topOfGround);
 
 					nBoxY.getPosition().y += -yShift;
 					isOnGround = true;
 					velocity.y = 0;
-				}
-				else if(velocity.y < 0)
+				} else if (velocity.y < 0)
 				{
 					float yShift = Math.abs(topOfPlayer - bottomOfGround);
 					nBoxY.getPosition().y += yShift;
@@ -195,26 +210,28 @@ public class Entity
 				}
 			}
 		}
-		if(isOnGround && jumping)
+		if (isOnGround && jumping)
 		{
-			velocity.y = -20;
+			velocity.y = JUMP_VALUE;
 		}
-		
+
 		isInAir = !isOnGround;
-		collider.setPosition(new Vector3f(nBoxX.getPosition().x,nBoxY.getPosition().y,position.z));
+		collider.setPosition(new Vector3f(nBoxX.getPosition().x, nBoxY.getPosition().y, position.z));
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
 	}
-	
+
 	/**
-	 * Checks for collisions with projectiles 
-	 * @param projectiles The projectiles to check
+	 * Checks for collisions with projectiles
+	 * 
+	 * @param projectiles
+	 *            The projectiles to check
 	 */
 	public void checkForCollisionWithProjectiles(ArrayList<Projectile> projectiles)
 	{
-		for(Projectile p : projectiles)
+		for (Projectile p : projectiles)
 		{
-			if(p.isCollidingWithEntity2D(this))
+			if (p.isCollidingWithEntity2D(this))
 			{
 				p.setDead(true);
 				this.takeDamage(p.getDamage());
@@ -222,13 +239,13 @@ public class Entity
 			}
 		}
 	}
-	
+
 	/**
 	 * Makes the entity jump
 	 */
 	protected void jump()
 	{
-		if(!jumping)
+		if (!jumping)
 		{
 			jumping = true;
 		}
@@ -239,87 +256,83 @@ public class Entity
 	 */
 	public void moveLeft()
 	{
-		if(isSprinting)
+		if (isSprinting)
 		{
 			velocity.x -= 2 * HORIZONTAL_ACCEL;
-			if(velocity.x < 2 * -MAX_SPEED_X)
+			if (velocity.x < 2 * -MAX_SPEED_X)
 			{
 				velocity.x = 2 * -MAX_SPEED_X;
 			}
-		}
-		else
+		} else
 		{
 			velocity.x -= HORIZONTAL_ACCEL;
-			if(velocity.x < -(MAX_SPEED_X))
+			if (velocity.x < -(MAX_SPEED_X))
 			{
 				velocity.x = -(MAX_SPEED_X);
 			}
 		}
 	}
-	
+
 	/**
 	 * Makes the entity move right
 	 */
 	public void moveRight()
 	{
-		if(isSprinting)
+		if (isSprinting)
 		{
 			velocity.x += 2 * HORIZONTAL_ACCEL;
-			if(velocity.x > 2 * MAX_SPEED_X)
+			if (velocity.x > 2 * MAX_SPEED_X)
 			{
 				velocity.x = 2 * MAX_SPEED_X;
 			}
-		}
-		else
+		} else
 		{
 			velocity.x += HORIZONTAL_ACCEL;
-			if(velocity.x > (MAX_SPEED_X))
+			if (velocity.x > (MAX_SPEED_X))
 			{
 				velocity.x = (MAX_SPEED_X);
 			}
 		}
 	}
-	
+
 	/**
 	 * Makes the entity move up on the screen
 	 */
 	public void moveUp()
 	{
-		if(isSprinting)
+		if (isSprinting)
 		{
 			velocity.y -= 2 * GRAVITY;
-			if(velocity.y < -2 * GRAVITY)
+			if (velocity.y < -2 * GRAVITY)
 			{
 				velocity.y = -2 * GRAVITY;
 			}
-		}
-		else
+		} else
 		{
 			velocity.y -= GRAVITY;
-			if(velocity.y < -(GRAVITY))
+			if (velocity.y < -(GRAVITY))
 			{
 				velocity.y = -(GRAVITY);
 			}
 		}
 	}
-	
+
 	/**
 	 * Makes the entity move down on the screen
 	 */
 	public void moveDown()
 	{
-		if(isSprinting)
+		if (isSprinting)
 		{
 			velocity.y += 2 * GRAVITY;
-			if(velocity.y > 2 * GRAVITY)
+			if (velocity.y > 2 * GRAVITY)
 			{
 				velocity.y = 2 * GRAVITY;
 			}
-		}
-		else
+		} else
 		{
 			velocity.y += GRAVITY;
-			if(velocity.y > (GRAVITY))
+			if (velocity.y > (GRAVITY))
 			{
 				velocity.y = (GRAVITY);
 			}
@@ -334,21 +347,22 @@ public class Entity
 		if (numberOfSpritesX == 1)
 		{
 			GFX.drawEntireSprite(scale.x, scale.y, position.x, position.y, texture);
-		}
-		else
+		} else
 		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float)(sizeOfSpriteOnSheet.y * numberOfSpritesY)/sizeOfSpriteSheet.y);
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float)(sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
-			if(velocity.x < 0 || left)
+			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x,
+					(float) (sizeOfSpriteOnSheet.y * numberOfSpritesY) / sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x),
+					(float) (sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
+			if (velocity.x < 0 || left)
 			{
 				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
-			}
-			else
+			} else
 			{
 				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
 			}
 		}
 	}
+
 	/**
 	 * a separate method for drawing the outlines, will be used to make outlines in a background layer
 	 */
@@ -357,31 +371,33 @@ public class Entity
 		if (numberOfSpritesX == 1)
 		{
 			GFX.drawEntireSprite(scale.x, scale.y, position.x, position.y, texture);
-		}
-		else
+		} else
 		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float)(sizeOfSpriteOnSheet.y * numberOfSpritesY)/sizeOfSpriteSheet.y);
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float)(sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
-			if(velocity.x < 0 || left)
+			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x,
+					(float) (sizeOfSpriteOnSheet.y * numberOfSpritesY) / sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x),
+					(float) (sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
+			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
-			}
-			else
+				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, outlineTexture, offset,
+						sizey);
+			} else
 			{
 				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Lowers the entities HP
-	 * @param damage The amount to lower the HP
+	 * 
+	 * @param damage
+	 *            The amount to lower the HP
 	 */
 	public void takeDamage(int damage)
 	{
 		this.healthPoints -= damage;
-		if(healthPoints <= 0)
+		if (healthPoints <= 0)
 		{
 			isDead = true;
 		}
@@ -389,6 +405,7 @@ public class Entity
 
 	/**
 	 * Returns the size at which the entity is rendered on the screen
+	 * 
 	 * @return Returns the size at which the entity is rendered on the screen
 	 */
 	public Vector2f getScale()
@@ -398,7 +415,9 @@ public class Entity
 
 	/**
 	 * Sets the size at which the entity is rendered on screen
-	 * @param scale The value to set the scale to
+	 * 
+	 * @param scale
+	 *            The value to set the scale to
 	 */
 	public void setScale(Vector2f scale)
 	{
@@ -407,6 +426,7 @@ public class Entity
 
 	/**
 	 * Returns the position of the entity
+	 * 
 	 * @return Returns the position of the entity
 	 */
 	public Vector3f getPosition()
@@ -416,7 +436,9 @@ public class Entity
 
 	/**
 	 * Sets the position of the entity
-	 * @param position The new position
+	 * 
+	 * @param position
+	 *            The new position
 	 */
 	public void setPosition(Vector3f position)
 	{
@@ -425,6 +447,7 @@ public class Entity
 
 	/**
 	 * Returns the texture of the entity
+	 * 
 	 * @return Returns the texture of the entity
 	 */
 	public Texture getTexture()
@@ -434,7 +457,9 @@ public class Entity
 
 	/**
 	 * Sets the texture of the entity
-	 * @param texture The new texture of the entity
+	 * 
+	 * @param texture
+	 *            The new texture of the entity
 	 */
 	public void setTexture(Texture texture)
 	{
@@ -443,6 +468,7 @@ public class Entity
 
 	/**
 	 * Returns the size of an individual sprite on the spritesheet
+	 * 
 	 * @return Returns the size of an individual sprite on the spritesheet
 	 */
 	public Vector2f getSizeOfSpriteOnSheet()
@@ -452,7 +478,9 @@ public class Entity
 
 	/**
 	 * Sets the size of the sprite on the spritesheet
-	 * @param sizeOfSpriteOnSheet The size of the sprite on the spritesheet
+	 * 
+	 * @param sizeOfSpriteOnSheet
+	 *            The size of the sprite on the spritesheet
 	 */
 	public void setSizeOfSpriteOnSheet(Vector2f sizeOfSpriteOnSheet)
 	{
@@ -461,6 +489,7 @@ public class Entity
 
 	/**
 	 * Returns true if the entity has animations
+	 * 
 	 * @return Returns true if the entity has animations
 	 */
 	public boolean isAnimated()
@@ -470,7 +499,9 @@ public class Entity
 
 	/**
 	 * Sets the animation mode. The default is false which means no animations
-	 * @param isAnimated The new animation mode
+	 * 
+	 * @param isAnimated
+	 *            The new animation mode
 	 */
 	public void setAnimated(boolean isAnimated)
 	{
@@ -479,6 +510,7 @@ public class Entity
 
 	/**
 	 * Returns the animation speed
+	 * 
 	 * @return Returns the animation speed
 	 */
 	public float getAnimateSpeed()
@@ -488,7 +520,9 @@ public class Entity
 
 	/**
 	 * Sets the animation speed
-	 * @param animateSpeed The new animatin speed
+	 * 
+	 * @param animateSpeed
+	 *            The new animatin speed
 	 */
 	public void setAnimateSpeed(float animateSpeed)
 	{
@@ -497,15 +531,19 @@ public class Entity
 
 	/**
 	 * Returns true if the entity is sprinting
+	 * 
 	 * @return Returns true if the entity is sprinting
 	 */
 	public boolean isSprinting()
 	{
 		return isSprinting;
 	}
+
 	/**
 	 * Sets the entity's sprint mode
-	 * @param isSprinting The new sprint mode
+	 * 
+	 * @param isSprinting
+	 *            The new sprint mode
 	 */
 	public void setSprinting(boolean isSprinting)
 	{
@@ -514,16 +552,19 @@ public class Entity
 
 	/**
 	 * Returns the walk speed of the entity
+	 * 
 	 * @return Returns the walk speed of the entity
 	 */
 	public float getWalkSpeed()
 	{
 		return walkSpeed;
 	}
-	
+
 	/**
 	 * Sets the walk speed of the entity
-	 * @param walkSpeed The new walk speed
+	 * 
+	 * @param walkSpeed
+	 *            The new walk speed
 	 */
 	public void setWalkSpeed(float walkSpeed)
 	{
@@ -532,6 +573,7 @@ public class Entity
 
 	/**
 	 * Returns the sprint speed
+	 * 
 	 * @return Returns the sprint speed
 	 */
 	public float getSprintSpeed()
@@ -541,7 +583,9 @@ public class Entity
 
 	/**
 	 * Sets the sprint speed
-	 * @param sprintSpeed Sets the sprint speed
+	 * 
+	 * @param sprintSpeed
+	 *            Sets the sprint speed
 	 */
 	public void setSprintSpeed(float sprintSpeed)
 	{
@@ -550,6 +594,7 @@ public class Entity
 
 	/**
 	 * Returns true if the entity is affected by gravity
+	 * 
 	 * @return Returns true if the entity is affected by gravity
 	 */
 	public boolean isAffectedByGravity()
@@ -559,6 +604,7 @@ public class Entity
 
 	/**
 	 * Sets the gravity mode (Default is gravity is off)
+	 * 
 	 * @param affectedByGravity
 	 */
 	public void setAffectedByGravity(boolean affectedByGravity)
@@ -568,6 +614,7 @@ public class Entity
 
 	/**
 	 * Returns the rectangular collider
+	 * 
 	 * @return Returns the rectangular collider
 	 */
 	public RectangleBox getCollider()
@@ -577,7 +624,9 @@ public class Entity
 
 	/**
 	 * Sets the rectangular collider
-	 * @param collider The new rectangular collider
+	 * 
+	 * @param collider
+	 *            The new rectangular collider
 	 */
 	public void setCollider(RectangleBox collider)
 	{
@@ -586,169 +635,220 @@ public class Entity
 
 	/**
 	 * Returns the velocity of the entity
+	 * 
 	 * @return Returns the velocity of the entity
 	 */
-	public Vector3f getVelocity() {
+	public Vector3f getVelocity()
+	{
 		return velocity;
 	}
 
 	/**
 	 * Sets the velocity of the entity
-	 * @param velocity The new velocity
+	 * 
+	 * @param velocity
+	 *            The new velocity
 	 */
-	public void setVelocity(Vector3f velocity) {
+	public void setVelocity(Vector3f velocity)
+	{
 		this.velocity = velocity;
 	}
 
 	/**
 	 * Returns the size of the spritesheet
+	 * 
 	 * @return Returns the size of the spritesheet
 	 */
-	public Vector2f getSizeOfSpriteSheet() {
+	public Vector2f getSizeOfSpriteSheet()
+	{
 		return sizeOfSpriteSheet;
 	}
 
 	/**
 	 * Sets the size of the spritesheet
-	 * @param sizeOfSpriteSheet The size of the spritesheet
+	 * 
+	 * @param sizeOfSpriteSheet
+	 *            The size of the spritesheet
 	 */
-	public void setSizeOfSpriteSheet(Vector2f sizeOfSpriteSheet) {
+	public void setSizeOfSpriteSheet(Vector2f sizeOfSpriteSheet)
+	{
 		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
 	}
 
 	/**
 	 * Returns the animation frame counter in the x direction
+	 * 
 	 * @return Returns the animation frame counter in the x direction
 	 */
-	public int getAnimSpriteFrameX() {
+	public int getAnimSpriteFrameX()
+	{
 		return animSpriteFrameX;
 	}
 
 	/**
 	 * Sets the animation frame counter in the x direction
-	 * @param animSpriteFrameX The new animation frame in the x direction
+	 * 
+	 * @param animSpriteFrameX
+	 *            The new animation frame in the x direction
 	 */
-	public void setAnimSpriteFrameX(int animSpriteFrameX) {
+	public void setAnimSpriteFrameX(int animSpriteFrameX)
+	{
 		this.animSpriteFrameX = animSpriteFrameX;
 	}
 
 	/**
 	 * Returns the animation frame in the y direction
+	 * 
 	 * @return Returns the animation frame in the y direction
 	 */
-	public int getAnimSpriteFrameY() {
+	public int getAnimSpriteFrameY()
+	{
 		return animSpriteFrameY;
 	}
 
 	/**
 	 * Sets the animation frame in the y direction
-	 * @param animSpriteFrameY The new animation frame in the y direction
+	 * 
+	 * @param animSpriteFrameY
+	 *            The new animation frame in the y direction
 	 */
-	public void setAnimSpriteFrameY(int animSpriteFrameY) {
+	public void setAnimSpriteFrameY(int animSpriteFrameY)
+	{
 		this.animSpriteFrameY = animSpriteFrameY;
 	}
 
 	/**
 	 * Returns the number of sprites in the x direction of the spritesheet
+	 * 
 	 * @return Returns the number of sprites in the x direction of the spritesheet
 	 */
-	public int getNumberOfSpritesX() {
+	public int getNumberOfSpritesX()
+	{
 		return numberOfSpritesX;
 	}
 
 	/**
 	 * Sets the number of sprites in the x direction
-	 * @param numberOfSpritesX The number of sprites in the x direction
+	 * 
+	 * @param numberOfSpritesX
+	 *            The number of sprites in the x direction
 	 */
-	public void setNumberOfSpritesX(int numberOfSpritesX) {
+	public void setNumberOfSpritesX(int numberOfSpritesX)
+	{
 		this.numberOfSpritesX = numberOfSpritesX;
 	}
 
 	/**
-	 * Returns the number of sprites in the y direction 
+	 * Returns the number of sprites in the y direction
+	 * 
 	 * @return Returns the numbe rof sprites in the y direction
 	 */
-	public int getNumberOfSpritesY() {
+	public int getNumberOfSpritesY()
+	{
 		return numberOfSpritesY;
 	}
 
 	/**
-	 * Sets the number of sprites in the y direction 
-	 * @param numberOfSpritesY The number of sprites in the y direction
+	 * Sets the number of sprites in the y direction
+	 * 
+	 * @param numberOfSpritesY
+	 *            The number of sprites in the y direction
 	 */
-	public void setNumberOfSpritesY(int numberOfSpritesY) {
+	public void setNumberOfSpritesY(int numberOfSpritesY)
+	{
 		this.numberOfSpritesY = numberOfSpritesY;
 	}
 
 	/**
 	 * Returns the number of health points
+	 * 
 	 * @return Returns the number of health points
 	 */
-	public int getHealthPoints() {
+	public int getHealthPoints()
+	{
 		return healthPoints;
 	}
 
 	/**
 	 * Sets the number of health points
-	 * @param healthPoints The new number of health points
+	 * 
+	 * @param healthPoints
+	 *            The new number of health points
 	 */
-	public void setHealthPoints(int healthPoints) {
+	public void setHealthPoints(int healthPoints)
+	{
 		this.healthPoints = healthPoints;
 	}
 
 	/**
 	 * Returns true if the entity is dead
+	 * 
 	 * @return Returns true if the entity is dead
 	 */
-	public boolean isDead() {
+	public boolean isDead()
+	{
 		return isDead;
 	}
 
 	/**
 	 * Sets if the entity is dead
-	 * @param isDead The new value of isDead
+	 * 
+	 * @param isDead
+	 *            The new value of isDead
 	 */
-	public void setDead(boolean isDead) {
+	public void setDead(boolean isDead)
+	{
 		this.isDead = isDead;
 	}
 
 	/**
 	 * Returns the outline texture
+	 * 
 	 * @return Returns the outline texture
 	 */
-	public Texture getOutlineTexture() {
+	public Texture getOutlineTexture()
+	{
 		return outlineTexture;
 	}
 
 	/**
 	 * Sets the outline texture
-	 * @param outlineTexture The outline texture
+	 * 
+	 * @param outlineTexture
+	 *            The outline texture
 	 */
-	public void setOutlineTexture(Texture outlineTexture) {
+	public void setOutlineTexture(Texture outlineTexture)
+	{
 		this.outlineTexture = outlineTexture;
 	}
 
-	public float getAnimateFrameTime() {
+	public float getAnimateFrameTime()
+	{
 		return animateFrameTime;
 	}
 
-	public void setAnimateFrameTime(float animateFrameTime) {
+	public void setAnimateFrameTime(float animateFrameTime)
+	{
 		this.animateFrameTime = animateFrameTime;
 	}
 
-	public ArrayList<Projectile> getProjectiles() {
+	public ArrayList<Projectile> getProjectiles()
+	{
 		return projectiles;
 	}
 
-	public void setProjectiles(ArrayList<Projectile> projectiles) {
+	public void setProjectiles(ArrayList<Projectile> projectiles)
+	{
 		this.projectiles = projectiles;
 	}
 
-	public ArrayList<Particle> getParticles() {
+	public ArrayList<Particle> getParticles()
+	{
 		return particles;
 	}
 
-	public void setParticles(ArrayList<Particle> particles) {
+	public void setParticles(ArrayList<Particle> particles)
+	{
 		this.particles = particles;
 	}
 }
