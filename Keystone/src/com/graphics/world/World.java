@@ -20,6 +20,7 @@ public class World
 {
 	private ArrayList<Tile> tiles;
 	private ArrayList<RectangleBox> colliders;
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	
 	
 	/**
@@ -119,6 +120,52 @@ public class World
 					colliders.add(box);
 					System.out.println("New Collider: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
 				}
+				else if(line.trim().startsWith("<ENEMY "))
+				{
+					String param = line.substring(line.indexOf("x=\"") + 3);
+					String x = param.substring(0,param.indexOf("\""));
+					
+					String param1 = param.substring(param.indexOf("y=\"") + 3);
+					String y = param1.substring(0,param1.indexOf("\""));
+					
+					String param2 = param1.substring(param1.indexOf("z=\"") + 3);
+					String z = param2.substring(0,param2.indexOf("\""));
+					
+					String param3 = param2.substring(param2.indexOf("width=\"") + 7);
+					String width1 = param3.substring(0,param3.indexOf("\""));
+					
+					String param4 = param3.substring(param3.indexOf("height=\"") + 8);
+					String height1 = param4.substring(0,param4.indexOf("\""));
+					
+					String param5 = param4.substring(param4.indexOf("texName=\"") + 9);
+					String tex1 = param5.substring(0,param5.indexOf("\""));
+					
+					String param6 = param5.substring(param5.indexOf("outlineName=\"") + 13);
+					String tex2 = param6.substring(0,param6.indexOf("\""));
+					
+					int nx = 0;
+					int ny = 0;
+					
+					
+					//tex names
+					Texture t1 = null;
+					Texture t2 = null;
+					
+					
+					if(tex1.equals("table"))
+					{
+						t1 = Textures.table;
+					}
+					
+					if(tex2.equals("tableOutline"))
+					{
+						t2 = Textures.tableOutline;
+					}
+					
+					Enemy entity = new Enemy(new Vector3f(Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(z)),t1,t2,new Vector2f(t1.getTextureWidth(),t1.getTextureHeight()),nx,ny,new Vector2f(Integer.parseInt(width1),Integer.parseInt(height1)),new Vector2f(32,32));
+					enemies.add(entity);
+					System.out.println("New Enemy: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
+				}
 			}
 			
 			scanner.close();
@@ -129,6 +176,7 @@ public class World
 		
 		newLevel.setColliders(colliders);
 		newLevel.setTiles(sortTiles());
+		newLevel.setEnemies(enemies);
 		return newLevel;
 	}
 	

@@ -74,6 +74,7 @@ public class Game
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
 		tiles = testLevel.getTiles();
+		entities.addAll(testLevel.getEnemies());
 		
 
 		// particle = new Particle(new Vector2f(96,750),new

@@ -12,6 +12,7 @@ public class Level
 	private String name;
 	private ArrayList<Tile> tiles;
 	private ArrayList<RectangleBox> colliders;
+	private ArrayList<Enemy> enemies;
 	
 	/**
 	 * Creates a new level
@@ -68,5 +69,15 @@ public class Level
 	 */
 	public void setColliders(ArrayList<RectangleBox> colliders) {
 		this.colliders = colliders;
+	}
+
+	public ArrayList<Enemy> getEnemies()
+	{
+		return enemies;
+	}
+
+	public void setEnemies(ArrayList<Enemy> enemies)
+	{
+		this.enemies = enemies;
 	}
 }
