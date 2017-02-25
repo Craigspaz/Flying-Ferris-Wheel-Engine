@@ -60,8 +60,6 @@ public class Particle
 		{
 			animateTimer += animateSpeed;
 		}
-		System.out.println(animFrameX);
-		System.out.println(animateTimer);
 	}
 	
 	public void render()
