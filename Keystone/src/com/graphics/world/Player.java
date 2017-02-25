@@ -25,6 +25,7 @@ public class Player extends Entity
 	private float bulletSpeed = 16;
 	private float bulletSpawnDistance = 48;
 	private boolean canGenerateSprintParticle = true;
+	private boolean canGenerateSkidParticle = false;
 
 	/**
 	 * Creates a new player
@@ -80,15 +81,19 @@ public class Player extends Entity
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 		{
 			super.setSprinting(true);
-			if(!isInAir && canGenerateSprintParticle && Math.abs(velocity.x) > 0)
+			if (!isInAir && canGenerateSprintParticle && Math.abs(velocity.x) > 0)
 			{
-				if(left)
+				if (left)
 				{
-					particles.add(new Particle(new Vector2f(position.x + getScale().x - 16,position.y + getScale().y - 16),new Vector2f(16,16),Textures.particles,12,0,left, new Vector2f(16,16),new Vector2f(256,128),false));	
-				}
-				else
+					particles.add(
+							new Particle(new Vector2f(position.x + getScale().x - 16, position.y + getScale().y - 16),
+									new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16),
+									new Vector2f(256, 128), false));
+				} else
 				{
-					particles.add(new Particle(new Vector2f(position.x,position.y + getScale().y - 16),new Vector2f(16,16),Textures.particles,12,0,left, new Vector2f(16,16),new Vector2f(256,128),false));
+					particles.add(new Particle(new Vector2f(position.x, position.y + getScale().y - 16),
+							new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16),
+							new Vector2f(256, 128), false));
 				}
 				canGenerateSprintParticle = false;
 			}
@@ -122,6 +127,25 @@ public class Player extends Entity
 			{
 				shootAngle = 90;
 			}
+			if (canGenerateSkidParticle == true && Math.abs(velocity.x) < 1)
+			{
+				if (left)
+				{
+					particles
+							.add(new Particle(new Vector2f(position.x - 8 + velocity.x, position.y + getScale().y - 16),
+									new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16),
+									new Vector2f(256, 128), false));
+					canGenerateSkidParticle = false;
+				} else
+				{
+					particles.add(new Particle(
+							new Vector2f(position.x + 8 + getScale().x / 2 + velocity.x,
+									position.y + getScale().y - 16),
+							new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16),
+							new Vector2f(256, 128), false));
+					canGenerateSkidParticle = false;
+				}
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 
@@ -134,6 +158,16 @@ public class Player extends Entity
 				{
 					shootAngle = 45;
 				}
+				if (Math.abs(velocity.x) > MAX_SPEED_X * 1 / 2)
+				{
+					canGenerateSkidParticle = true;
+				}
+			} else if (!isInAir && Math.abs(velocity.x) < 0.8 && canGenerateSkidParticle == true)
+			{
+				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + getScale().y - 16),
+						new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16),
+						new Vector2f(256, 128), false));
+				canGenerateSkidParticle = false;
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
@@ -147,6 +181,19 @@ public class Player extends Entity
 				{
 					shootAngle = 135;
 				}
+				if (Math.abs(velocity.x) > MAX_SPEED_X * 1 / 2)
+				{
+					canGenerateSkidParticle = true;
+				}
+			} else if (!isInAir && Math.abs(velocity.x) < 0.8 && canGenerateSkidParticle == true)
+			{
+				particles
+						.add(new Particle(
+								new Vector2f(position.x + getScale().x / 2 + velocity.x,
+										position.y + getScale().y - 16),
+								new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16),
+								new Vector2f(256, 128), false));
+				canGenerateSkidParticle = false;
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
@@ -169,9 +216,12 @@ public class Player extends Entity
 				super.jump();
 				canJump = false;
 			}
-			if(!isInAir)
+			if (!isInAir)
 			{
-				particles.add(new Particle(new Vector2f(position.x + (getScale().x/2) - 8,position.y + getScale().y - 16),new Vector2f(16,16),Textures.particles,12,1,left, new Vector2f(16,16),new Vector2f(256,128),false));		
+				particles.add(
+						new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16),
+								new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16),
+								new Vector2f(256, 128), false));
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W))
@@ -240,7 +290,7 @@ public class Player extends Entity
 								super.position.y + (super.getScale().y / 2f) + displacey, 0),
 						Textures.playerLaser, new Vector2f(64, 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32),
 						shootAngle, bulletSpeed, velocity.x, velocity.y));
-				//System.out.println(shootAngle / 180 + "n");
+				// System.out.println(shootAngle / 180 + "n");
 			}
 			canShoot = false;
 		}
