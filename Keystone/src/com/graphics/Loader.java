@@ -12,6 +12,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 /**
  * Load files and textures
+ * 
  * @author Craig Ferris
  *
  */
@@ -19,7 +20,9 @@ public class Loader
 {
 	/**
 	 * Load a texture into memory from a file
-	 * @param fileName The name of the file to be loaded. Must be in "./res/" folder
+	 * 
+	 * @param fileName
+	 *            The name of the file to be loaded. Must be in "./res/" folder
 	 * @return Returns a texture object which points to the images location
 	 */
 	public static Texture loadTexture(String fileName)
@@ -28,8 +31,7 @@ public class Loader
 		try
 		{
 			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"), GL11.GL_NEAREST);
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 			System.err.println("Failed to load: " + fileName + ".png");

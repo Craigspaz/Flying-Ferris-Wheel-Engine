@@ -2,7 +2,6 @@ package com.graphics.world;
 
 import java.util.ArrayList;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
@@ -124,8 +123,8 @@ public class Player extends Entity
 			{
 				shootAngle = 180;
 			}
-			//if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-			if(handler.up())
+			// if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			if (handler.up())
 			{
 				shootAngle = 90;
 			}
@@ -149,8 +148,8 @@ public class Player extends Entity
 			if (velocity.x > 0)
 			{
 				shootAngle = 0;
-				//if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-				if(handler.up())
+				// if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				if (handler.up())
 				{
 					shootAngle = 45;
 				}
@@ -171,8 +170,8 @@ public class Player extends Entity
 			if (velocity.x < 0)
 			{
 				shootAngle = 180;
-				//if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-				if(handler.up())
+				// if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				if (handler.up())
 				{
 					shootAngle = 135;
 				}
@@ -186,21 +185,21 @@ public class Player extends Entity
 				canGenerateSkidParticle = false;
 			}
 		}
-		//if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-		if(handler.down())
+		// if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+		if (handler.down())
 		{
 			if (isInAir)
 				shootAngle = 270;
 		}
-		//if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) == false)
-		if(!handler.jump())
+		// if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) == false)
+		if (!handler.jump())
 		{
 			canJump = true;
 			jumping = false;
 		}
 		// If the space bar is pressed make the player jump
-		//if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
-		if(handler.jump())
+		// if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
+		if (handler.jump())
 		{
 			if (canJump)
 			{
@@ -212,16 +211,16 @@ public class Player extends Entity
 				particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 			}
 		}
-		//if (Keyboard.isKeyDown(Keyboard.KEY_W))
-		if(handler.up())
+		// if (Keyboard.isKeyDown(Keyboard.KEY_W))
+		if (handler.up())
 		{
 			if (!left)
 				shootAngle = 45;
 			else
 				shootAngle = 135;
 		}
-		//if (Keyboard.isKeyDown(Keyboard.KEY_S))
-		if(handler.aimDown())
+		// if (Keyboard.isKeyDown(Keyboard.KEY_S))
+		if (handler.aimDown())
 		{
 			if (!left)
 				shootAngle = 315;

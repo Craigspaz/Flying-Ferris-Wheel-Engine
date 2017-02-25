@@ -19,13 +19,13 @@ import com.graphics.world.RectangleBox;
 public class Projectile extends Entity
 {
 
-	private float angle;
-	private float speed;
-	private static final float DISTANCE_FROM_ORIGIN = 16.0f;
-	private float offsetX = 0;
-	private float offsetY = 0;
+	private float				angle;
+	private float				speed;
+	private static final float	DISTANCE_FROM_ORIGIN	= 16.0f;
+	private float				offsetX					= 0;
+	private float				offsetY					= 0;
 
-	private int damage = 10;
+	private int					damage					= 10;
 
 	/**
 	 * Creates a new projectile
@@ -45,8 +45,7 @@ public class Projectile extends Entity
 	 * @param speed
 	 *            The speed of the projectile
 	 */
-	public Projectile(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet,
-			float angle, float speed)
+	public Projectile(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed)
 	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
@@ -65,9 +64,11 @@ public class Projectile extends Entity
 	 * @param sizeOfTexture
 	 *            The size of the texture
 	 * @param numberOfSpritesX
-	 *            The number of sprite animation frames in the x direction to animate
+	 *            The number of sprite animation frames in the x direction to
+	 *            animate
 	 * @param numberOfSpritesY
-	 *            The number of sprite animation frames in the y direction to animate
+	 *            The number of sprite animation frames in the y direction to
+	 *            animate
 	 * @param scale
 	 *            The size at which to render the sprite
 	 * @param sizeOfSpriteOnSheet
@@ -77,12 +78,9 @@ public class Projectile extends Entity
 	 * @param speed
 	 *            The speed of the projectile
 	 */
-	public Projectile(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX,
-			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed,
-			float playerXSpeed, float playerYSpeed)
+	public Projectile(Vector3f position, Texture texture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed, float playerXSpeed, float playerYSpeed)
 	{
-		super(new Vector3f(position.x - (scale.x / 2f), position.y - (scale.y / 2f), position.z), texture, texture,
-				sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(new Vector3f(position.x - (scale.x / 2f), position.y - (scale.y / 2f), position.z), texture, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
 	}
@@ -136,13 +134,11 @@ public class Projectile extends Entity
 			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
 		} else
 		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x))
-					/ super.getSizeOfSpriteOnSheet().x);
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) / super.getSizeOfSpriteOnSheet().x);
 		}
 		if (angle == 90)
 		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y))
-					/ super.getSizeOfSpriteOnSheet().x);
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y)) / super.getSizeOfSpriteOnSheet().x);
 		} else if (angle == 270)
 		{
 			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.y) / super.getSizeOfSpriteOnSheet().x);
@@ -156,7 +152,8 @@ public class Projectile extends Entity
 	public void move()
 	{
 		// velocity.x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * speed;
-		// velocity.y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * speed;
+		// velocity.y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) *
+		// speed;
 		// if (angle > 180)
 		// {
 		// velocity.y = -velocity.y;
@@ -176,38 +173,38 @@ public class Projectile extends Entity
 		// }
 		switch ((int) angle)
 		{
-		case 0:
-			velocity.x = speed;
-			velocity.y = 0;
-			break;
-		case 45:
-			velocity.x = speed / (float) Math.sqrt(2);
-			velocity.y = -speed / (float) Math.sqrt(2);
-			break;
-		case 90:
-			velocity.x = 0;
-			velocity.y = -speed;
-			break;
-		case 135:
-			velocity.x = -speed / (float) Math.sqrt(2);
-			velocity.y = -speed / (float) Math.sqrt(2);
-			break;
-		case 180:
-			velocity.x = -speed;
-			velocity.y = 0;
-			break;
-		case 225:
-			velocity.x = -speed / (float) Math.sqrt(2);
-			velocity.y = speed / (float) Math.sqrt(2);
-			break;
-		case 270:
-			velocity.x = 0;
-			velocity.y = speed;
-			break;
-		case 315:
-			velocity.x = speed / (float) Math.sqrt(2);
-			velocity.y = speed / (float) Math.sqrt(2);
-			break;
+			case 0:
+				velocity.x = speed;
+				velocity.y = 0;
+				break;
+			case 45:
+				velocity.x = speed / (float) Math.sqrt(2);
+				velocity.y = -speed / (float) Math.sqrt(2);
+				break;
+			case 90:
+				velocity.x = 0;
+				velocity.y = -speed;
+				break;
+			case 135:
+				velocity.x = -speed / (float) Math.sqrt(2);
+				velocity.y = -speed / (float) Math.sqrt(2);
+				break;
+			case 180:
+				velocity.x = -speed;
+				velocity.y = 0;
+				break;
+			case 225:
+				velocity.x = -speed / (float) Math.sqrt(2);
+				velocity.y = speed / (float) Math.sqrt(2);
+				break;
+			case 270:
+				velocity.x = 0;
+				velocity.y = speed;
+				break;
+			case 315:
+				velocity.x = speed / (float) Math.sqrt(2);
+				velocity.y = speed / (float) Math.sqrt(2);
+				break;
 		}
 
 	}
@@ -254,10 +251,12 @@ public class Projectile extends Entity
 		this.damage = damage;
 	}
 
+	/**
+	 * Renders the projectile
+	 */
 	public void render()
 	{
-		GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y,
-				super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
+		GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
 	}
 
 }

@@ -71,11 +71,19 @@ public class Level
 		this.colliders = colliders;
 	}
 
+	/**
+	 * Returns the enemies in the level
+	 * @return Returns the enemies in the level
+	 */
 	public ArrayList<Enemy> getEnemies()
 	{
 		return enemies;
 	}
 
+	/**
+	 * Sets the enemies in the level
+	 * @param enemies The enemies in the level
+	 */
 	public void setEnemies(ArrayList<Enemy> enemies)
 	{
 		this.enemies = enemies;

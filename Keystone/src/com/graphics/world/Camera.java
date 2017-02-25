@@ -10,16 +10,16 @@ import org.lwjgl.util.vector.Vector2f;
  */
 public class Camera
 {
-	private Vector2f position;
-	private Vector2f size;
+	private Vector2f	position;
+	private Vector2f	size;
 
-	private Vector2f offset;
-	private Vector2f previousPosition;
+	private Vector2f	offset;
+	private Vector2f	previousPosition;
 
-	private Vector2f totalCameraOffset;
-	private Vector2f startPosition;
+	private Vector2f	totalCameraOffset;
+	private Vector2f	startPosition;
 
-	private float movementSpeed;
+	private float		movementSpeed;
 
 	/**
 	 * Creates a new camera
@@ -153,7 +153,8 @@ public class Camera
 	/**
 	 * Returns the offset of the camera relative to it's previous position
 	 * 
-	 * @return Returns the offset of the camera relative to it's previous position
+	 * @return Returns the offset of the camera relative to it's previous
+	 *         position
 	 */
 	public Vector2f getOffset()
 	{
