@@ -21,7 +21,7 @@ public class Projectile extends Entity
 
 	private float angle;
 	private float speed;
-	private static final float DISTANCE_FROM_PLAYER = 16.0f;
+	private static final float DISTANCE_FROM_ORIGIN = 16.0f;
 	private float offsetX = 0;
 
 	private int damage = 10;
@@ -80,32 +80,10 @@ public class Projectile extends Entity
 			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed,
 			float playerXSpeed, float playerYSpeed)
 	{
-		super(position, texture, texture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale,
-				sizeOfSpriteOnSheet);
+		super(new Vector3f(position.x - (scale.x / 2f), position.y - (scale.y / 2f), position.z), texture, texture,
+				sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
-
-		float x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * DISTANCE_FROM_PLAYER;
-		float y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * DISTANCE_FROM_PLAYER;
-		if (angle > 180)
-		{
-			y = -y;
-		}
-		if (angle > 90 && angle < 270)
-		{
-			x = -x;
-		}
-		if (angle == 90)
-		{
-			y = -4 * (DISTANCE_FROM_PLAYER);
-			x = 0;
-		} else if (angle == 270)
-		{
-			x = 0;
-			y = 4 * (DISTANCE_FROM_PLAYER);
-		}
-		super.position.x += x;
-		super.position.y += y;
 	}
 
 	/**
@@ -151,7 +129,14 @@ public class Projectile extends Entity
 		collider.setPosition(new Vector3f(velocity.x + position.x, velocity.y + position.y, position.z));
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
-		offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
+
+		if (angle == 180)
+		{
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
+		} else
+		{
+			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) / super.getSizeOfSpriteOnSheet().x);
+		}
 		move();
 	}
 
@@ -160,24 +145,59 @@ public class Projectile extends Entity
 	 */
 	public void move()
 	{
-		velocity.x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * speed;
-		velocity.y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * speed;
-		if (angle > 180)
+		// velocity.x = (float) Math.acos(angle % 90 * (Math.PI / 180)) * speed;
+		// velocity.y = -(float) Math.asin(angle % 90 * (Math.PI / 180)) * speed;
+		// if (angle > 180)
+		// {
+		// velocity.y = -velocity.y;
+		// }
+		// if (angle > 90 && angle < 270)
+		// {
+		// velocity.x = -velocity.x;
+		// }
+		// if (angle == 90)
+		// {
+		// velocity.y = -speed;
+		// velocity.x = 0;
+		// } else if (angle == 270)
+		// {
+		// velocity.y = speed;
+		// velocity.x = 0;
+		// }
+		switch ((int) angle)
 		{
-			velocity.y = -velocity.y;
-		}
-		if (angle > 90 && angle < 270)
-		{
-			velocity.x = -velocity.x;
-		}
-		if (angle == 90)
-		{
+		case 0:
+			velocity.x = speed;
+			velocity.y = 0;
+			break;
+		case 45:
+			velocity.x = speed / (float) Math.sqrt(2);
+			velocity.y = -speed / (float) Math.sqrt(2);
+			break;
+		case 90:
+			velocity.x = 0;
 			velocity.y = -speed;
+			break;
+		case 135:
+			velocity.x = -speed / (float) Math.sqrt(2);
+			velocity.y = -speed / (float) Math.sqrt(2);
+			break;
+		case 180:
+			velocity.x = -speed;
+			velocity.y = 0;
+			break;
+		case 225:
+			velocity.x = -speed / (float) Math.sqrt(2);
+			velocity.y = speed / (float) Math.sqrt(2);
+			break;
+		case 270:
 			velocity.x = 0;
-		} else if (angle == 270)
-		{
 			velocity.y = speed;
-			velocity.x = 0;
+			break;
+		case 315:
+			velocity.x = speed / (float) Math.sqrt(2);
+			velocity.y = speed / (float) Math.sqrt(2);
+			break;
 		}
 
 	}
@@ -226,12 +246,11 @@ public class Projectile extends Entity
 
 	public void render()
 	{
-
 		GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y,
 				super.getTexture(),
 				new Vector2f(-offsetX,
 						(float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y),
-				new Vector2f(1f, (float) 1 / 8),angle);
+				new Vector2f(1f, (float) 1 / 8), angle);
 	}
 
 }

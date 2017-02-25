@@ -24,6 +24,7 @@ public class Player extends Entity
 	private boolean canShoot = true;
 	private float shootAngle = 0;
 	private float bulletSpeed = 16;
+	private float bulletSpawnDistance = 48;
 
 	/**
 	 * Creates a new player
@@ -50,7 +51,8 @@ public class Player extends Entity
 	 *            The initial position of the player
 	 * @param texture
 	 *            The texture of the player
-	 * @param outlineTexture The texture with the sprite outlines
+	 * @param outlineTexture
+	 *            The texture with the sprite outlines
 	 * @param sizeOfTexture
 	 *            The size of the texture
 	 * @param numberOfSprites
@@ -58,10 +60,11 @@ public class Player extends Entity
 	 * @param scale
 	 *            The size at which to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX,
-			int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Player(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture,
+			int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture,outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale,
+				sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 	}
 
@@ -111,7 +114,7 @@ public class Player extends Entity
 
 		{
 			super.moveRight();
-			if(velocity.x > 0)
+			if (velocity.x > 0)
 			{
 				shootAngle = 0;
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -124,7 +127,7 @@ public class Player extends Entity
 
 		{
 			super.moveLeft();
-			if(velocity.x < 0)
+			if (velocity.x < 0)
 			{
 				shootAngle = 180;
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -177,8 +180,7 @@ public class Player extends Entity
 			{
 				shootingCounter = 0;
 				canShoot = true;
-			}
-			else
+			} else
 			{
 				shootingCounter++;
 			}
@@ -188,13 +190,43 @@ public class Player extends Entity
 		{
 			if (canShoot)
 			{
-				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.playerLaser,
-						new Vector2f(32, 256), 0, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
-						bulletSpeed, velocity.x, velocity.y));
+
+				float displacex = (float) Math.acos(shootAngle % 90 * (Math.PI / 180)) * bulletSpawnDistance;
+				float displacey = -(float) Math.asin(shootAngle % 90 * (Math.PI / 180)) * bulletSpawnDistance;
+				if (shootAngle > 180)
+				{
+					displacey = -displacey;
+				}
+				if (shootAngle > 90 && shootAngle < 270)
+				{
+					displacex = -displacex;
+				}
+				if (shootAngle == 90)
+				{
+					displacey = -bulletSpawnDistance;
+					displacex = 0;
+				} else if (shootAngle == 270)
+				{
+					displacex = 0;
+					displacey = bulletSpawnDistance;
+				} else if (shootAngle == 0)
+				{
+					displacex = bulletSpawnDistance;
+					displacey = 0;
+				} else if (shootAngle == 180)
+				{
+					displacex = -bulletSpawnDistance;
+					displacey = 0;
+				}
+				projectiles.add(new Projectile(
+						new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex,
+								super.position.y + (super.getScale().y / 2f) + displacey, 0),
+						Textures.playerLaser, new Vector2f(64, 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32),
+						shootAngle, bulletSpeed, velocity.x, velocity.y));
+				System.out.println(shootAngle / 180 + "n");
 			}
 			canShoot = false;
 		}
-		
 
 		if (velocity.x > 0)
 

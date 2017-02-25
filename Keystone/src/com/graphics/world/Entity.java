@@ -111,7 +111,7 @@ public class Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
-		if (animateTime >= 10)
+		if (animateTime >= 5)
 		{
 			animSpriteFrameX++;
 			if (animSpriteFrameX >= numberOfSpritesX)
