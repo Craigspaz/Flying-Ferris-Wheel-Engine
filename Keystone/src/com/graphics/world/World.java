@@ -91,10 +91,6 @@ public class World
 					{
 						texture = Textures.testTile;
 					}
-					else if(tex.equals("sean"))
-					{
-						texture = Textures.sean;
-					}
 					
 					int xPos = Integer.parseInt(x);
 					int yPos = Integer.parseInt(y);

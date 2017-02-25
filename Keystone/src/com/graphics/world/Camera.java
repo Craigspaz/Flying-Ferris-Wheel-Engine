@@ -53,8 +53,6 @@ public class Camera
 	 */
 	public void setPositionToPlayer(Entity entity, int width, int height)
 	{
-		previousPosition.x = position.x;
-		previousPosition.y = position.y;
 		float playerPositionX = entity.getPosition().x;
 		float playerPositionY = entity.getPosition().y;
 
@@ -65,9 +63,6 @@ public class Camera
 		float newCameraPositionY = halfMarkY - (height / 2);
 		position.x = newCameraPositionX;
 		position.y = newCameraPositionY;
-		
-		offset.x = position.x - previousPosition.x;
-		offset.y = position.y - previousPosition.y;
 	}
 
 	/**

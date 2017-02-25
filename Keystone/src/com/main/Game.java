@@ -7,9 +7,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
-import com.graphics.world.Enemy;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Player;
@@ -29,7 +29,7 @@ public class Game
 
 	private Player player;
 
-	private Enemy table;
+	private Entity table;
 	// private Entity sean;
 
 	private ArrayList<RectangleBox> worldColliders = new ArrayList<RectangleBox>();
@@ -54,15 +54,11 @@ public class Game
 		new Textures();
 		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 
-		//table = new Entity(new Vector3f(32, 32, 0), Textures.sean, Textures.sean, new Vector2f(32, 32), 0, 0,
-		//		new Vector2f(32, 32), new Vector2f(32, 32));
+		table = new Entity(new Vector3f(64, 128, 0), Textures.table, Textures.tableOutline, new Vector2f(256, 32), 6, 1,
+				new Vector2f(32, 32), new Vector2f(32, 32));
 		// sean = new Entity(new Vector3f(64,256,0), Textures.sean, new Vector2f(32,32), 1, 1, new Vector2f(128,128),
 		// new Vector2f(32,32));
-		
-		table = new Enemy(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
-				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32));
 		table.setAffectedByGravity(true);
-		table.setAnimateFrameTime(10);
 		// sean.setAffectedByGravity(true);
 
 		entities.add(table);
@@ -125,23 +121,19 @@ public class Game
 	{
 		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
 		// sean.render();
-		for (Tile t : tiles)
-		{
-			t.render();
-		}
 		for (Entity e : entities)
 		{
 			e.renderOutline();
 		}
 		player.renderOutline();
 		player.render();
-		/*for (Entity e : entities)
+		for (Tile t : tiles)
+		{
+			t.render();
+		}
+		for (Entity e : entities)
 		{
 			e.render();
-		}*/
-		if(!table.isDead())
-		{
-			table.render();
 		}
 		for (Projectile p : playerProjectiles)
 		{
@@ -161,53 +153,17 @@ public class Game
 	{
 		player.update(worldColliders);
 		player.checkForCollisionWithProjectiles(enemyProjectiles);
-		if(player.isDead())
-		{
-			System.out.println("Player is Dead");
-		}
 		for (Tile t : tiles)
 		{
 			t.update();
 		}
 
-		/*for (Entity e : entities)
+		for (Entity e : entities)
 		{
 			e.update(worldColliders);
-			if(e.isEnemy())
-			{
-				enemyProjectiles.addAll(((Enemy)e).getProjectiles());
-			}
 			e.checkForCollisionWithProjectiles(playerProjectiles);
-		}*/
-		
-		if(new Random().nextBoolean())
-		{
-			table.setMoveLeft(true);
-			table.setMoveRight(false);
 		}
-		else
-		{
-			table.setMoveRight(true);
-			table.setMoveLeft(false);
-		}
-		
-		if(new Random().nextBoolean())
-		{
-			table.setShoot(true);
-		}
-		else
-		{
-			table.setShoot(false);
-		}
-		
-		if(!table.isDead())
-		{
-			table.update(worldColliders);
-			enemyProjectiles.addAll(table.getProjectiles());
-			table.checkForCollisionWithProjectiles(playerProjectiles);
-		}
-		
-		
+
 		if (!player.getProjectiles().isEmpty())
 		{
 			playerProjectiles.addAll(player.getProjectiles());
