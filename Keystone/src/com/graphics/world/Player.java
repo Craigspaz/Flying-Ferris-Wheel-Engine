@@ -189,7 +189,7 @@ public class Player extends Entity
 			if (canShoot)
 			{
 				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.playerLaser,
-						new Vector2f(32, 256), 0, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
+						new Vector2f(32, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle,
 						bulletSpeed, velocity.x, velocity.y));
 			}
 			canShoot = false;
