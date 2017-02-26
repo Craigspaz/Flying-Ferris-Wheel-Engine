@@ -31,6 +31,12 @@ public class Enemy extends Entity
 	private float					shootAngle		= 0;
 	private float					bulletSpeed		= 16;
 
+	public Enemy(Entity e)
+	{
+		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getSizeOfSpriteSheet(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
+		super.affectedByGravity = true;
+	}
+
 	/**
 	 * Creates new Enemy
 	 * 

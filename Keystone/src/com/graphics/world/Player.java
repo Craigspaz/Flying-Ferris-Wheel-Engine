@@ -128,18 +128,7 @@ public class Player extends Entity
 			{
 				shootAngle = 90;
 			}
-			if (canGenerateSkidParticle == true && Math.abs(velocity.x) < 1)
-			{
-				if (left)
-				{
-					particles.add(new Particle(new Vector2f(position.x - 8 + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
-					canGenerateSkidParticle = false;
-				} else
-				{
-					particles.add(new Particle(new Vector2f(position.x + 8 + getScale().x / 2 + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
-					canGenerateSkidParticle = false;
-				}
-			}
+			
 		}
 		// if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 		if (handler.right())
@@ -153,7 +142,7 @@ public class Player extends Entity
 				{
 					shootAngle = 45;
 				}
-				if (Math.abs(velocity.x) > MAX_SPEED_X * 1 / 2)
+				if (Math.abs(velocity.x) > MAX_SPEED_X)
 				{
 					canGenerateSkidParticle = true;
 				}
@@ -175,7 +164,7 @@ public class Player extends Entity
 				{
 					shootAngle = 135;
 				}
-				if (Math.abs(velocity.x) > MAX_SPEED_X * 1 / 2)
+				if (Math.abs(velocity.x) > MAX_SPEED_X)
 				{
 					canGenerateSkidParticle = true;
 				}

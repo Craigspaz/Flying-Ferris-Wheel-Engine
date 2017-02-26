@@ -1,14 +1,16 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import org.lwjgl.input.Controllers;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
+import com.graphics.world.Enemy;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Particle;
@@ -38,6 +40,7 @@ public class Game
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
 	private ArrayList<Projectile>	enemyProjectiles	= new ArrayList<Projectile>();
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
+	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
 
 	private ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
@@ -57,6 +60,8 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
+		GFX.initString();
+
 		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
@@ -74,7 +79,16 @@ public class Game
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
 		tiles = testLevel.getTiles();
-		entities.addAll(testLevel.getEnemies());
+		entities.addAll(testLevel.getEntities());
+
+		for (Entity e : entities)
+		{
+			if (e.isHostileToPlayer())
+			{
+				enemies.add(new Enemy(e));
+				e.setDead(true);
+			}
+		}
 
 		// particle = new Particle(new Vector2f(96,750),new
 		// Vector2f(16,16),Textures.particles,12,0,false, new
@@ -148,6 +162,10 @@ public class Game
 		{
 			e.renderOutline();
 		}
+		for(Enemy e : enemies)
+		{
+			e.renderOutline();
+		}
 		player.renderOutline();
 		player.render();
 		for (Tile t : tiles)
@@ -155,6 +173,10 @@ public class Game
 			t.render();
 		}
 		for (Entity e : entities)
+		{
+			e.render();
+		}
+		for (Enemy e : enemies)
 		{
 			e.render();
 		}
@@ -171,6 +193,7 @@ public class Game
 			p.render();
 		}
 		// testProjectile.render();
+		// GFX.drawString(64,600, "Press Enter to continue!");
 
 	}
 
@@ -191,6 +214,23 @@ public class Game
 		{
 			e.update(worldColliders);
 			e.checkForCollisionWithProjectiles(playerProjectiles);
+		}
+		for (Enemy e : enemies)
+		{
+			e.update(worldColliders);
+			e.checkForCollisionWithProjectiles(playerProjectiles);
+			if (new Random().nextBoolean())
+			{
+				if (new Random().nextBoolean())
+				{
+					e.setMoveLeft(false);
+					e.setMoveRight(true);
+				} else
+				{
+					e.setMoveRight(false);
+					e.setMoveLeft(true);
+				}
+			}
 		}
 
 		if (!player.getProjectiles().isEmpty())
@@ -266,6 +306,19 @@ public class Game
 				if (particles.get(i).isDead())
 				{
 					particles.remove(i);
+					break;
+				}
+				i++;
+			}
+		}
+		i = 0;
+		while (i < enemies.size())
+		{
+			while (i < enemies.size())
+			{
+				if (enemies.get(i).isDead())
+				{
+					enemies.remove(i);
 					break;
 				}
 				i++;
