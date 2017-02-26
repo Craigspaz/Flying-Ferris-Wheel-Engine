@@ -3,6 +3,7 @@ package com.graphics.world;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -21,7 +22,7 @@ public class World
 {
 	private ArrayList<Tile>			tiles;
 	private ArrayList<RectangleBox>	colliders;
-	private ArrayList<Enemy>		enemies	= new ArrayList<Enemy>();
+	private ArrayList<Entity>		entities	= new ArrayList<Entity>();
 
 	/**
 	 * Creates a new world Initializes a few variables
@@ -146,19 +147,33 @@ public class World
 					// tex names
 					Texture t1 = null;
 					Texture t2 = null;
+					boolean isEnemy = false;
+					Vector2f size = new Vector2f(0,0);
+					Vector2f spriteSheet = new Vector2f(0,0);
 
-					if (tex1.equals("table"))
+					if (tex1.equals("crabMan"))
 					{
-						t1 = Textures.table;
+						t1 = Textures.crabman;
+						t2 = Textures.crabman;
+						nx = 10;
+						isEnemy = true;
+						size = new Vector2f(64,64);
+						spriteSheet = new Vector2f(256,128);
+					}
+					if(tex1.equals("player"))
+					{
+						t1 = Textures.playerFront;
+						t2 = Textures.playerOutline;
+						isEnemy = true;
+						size = new Vector2f(32,32);
+						spriteSheet = new Vector2f(512,256);
+						nx = 10;
 					}
 
-					if (tex2.equals("tableOutline"))
-					{
-						t2 = Textures.tableOutline;
-					}
-
-					Enemy entity = new Enemy(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), t1, t2, new Vector2f(t1.getTextureWidth(), t1.getTextureHeight()), nx, ny, new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)), new Vector2f(32, 32));
-					enemies.add(entity);
+					Entity entity = new Entity(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), t1, t2, new Vector2f(t1.getTextureWidth(), t1.getTextureHeight()), nx, ny, new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)), size);
+					entity.setAffectedByGravity(true);
+					entity.setHostileToPlayer(isEnemy);
+					entities.add(entity);
 					System.out.println("New Enemy: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
 				}
 			}
@@ -170,8 +185,8 @@ public class World
 		}
 
 		newLevel.setColliders(colliders);
-		newLevel.setTiles(sortTiles());
-		newLevel.setEnemies(enemies);
+		newLevel.setTiles(sortTiles(tiles));
+		newLevel.setEntities(entities);
 		return newLevel;
 	}
 
@@ -181,29 +196,21 @@ public class World
 	 * @return Returns a sorted array where the first items have the lowest z
 	 *         values
 	 */
-	private ArrayList<Tile> sortTiles()
+	public static ArrayList<Tile> sortTiles(ArrayList<Tile> tiles)
 	{
-		ArrayList<Tile> result = new ArrayList<Tile>();
-		while (!tiles.isEmpty())
+		tiles.sort(new TileComparator());
+		return tiles;
+	}
+	
+	private static class TileComparator implements Comparator<Tile>
+	{
+
+		@Override
+		public int compare(Tile o1, Tile o2)
 		{
-			float minimum = Float.MAX_VALUE;
-			Tile min = null;
-			int id = -1;
-			int counter = 0;
-			for (Tile t : tiles)
-			{
-				if (t.getPosition().z < minimum)
-				{
-					min = t;
-					minimum = t.getPosition().z;
-					id = counter;
-				}
-				counter++;
-			}
-			result.add(min);
-			tiles.remove(id);
+			return (int)(o2.getPosition().z - o1.getPosition().z);
 		}
-		return result;
+		
 	}
 
 }

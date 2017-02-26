@@ -1,14 +1,16 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import org.lwjgl.input.Controllers;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
+import com.graphics.world.Enemy;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Particle;
@@ -38,6 +40,7 @@ public class Game
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
 	private ArrayList<Projectile>	enemyProjectiles	= new ArrayList<Projectile>();
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
+	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
 
 	private ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
@@ -48,6 +51,11 @@ public class Game
 
 	private InputHandler			handler;
 
+	private Tile					testTile0;
+	private Tile					testTile1;
+	private Tile					testTile2;
+	private Tile					sky;
+
 	// private Projectile testProjectile;
 
 	/**
@@ -57,7 +65,8 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
-		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
+		GFX.initString();
+
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
 		// table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new
@@ -70,11 +79,39 @@ public class Game
 
 		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
+
+		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
+		camera.setPositionToPlayer(player, Window.width, Window.height);
+		
+		
+		sky = new Tile(new Vector3f(32,288,100),new Vector2f(512,512),Textures.sky);
+		testTile2 = new Tile(new Vector3f(32,288,10),new Vector2f(512,512),Textures.desert2);
+		testTile1 = new Tile(new Vector3f(32,288,5),new Vector2f(512,512),Textures.desert1);
+		testTile0 = new Tile(new Vector3f(32,288,2),new Vector2f(512,512),Textures.desert0);
+		
 		testWorld = new World();
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
+		
 		tiles = testLevel.getTiles();
-		entities.addAll(testLevel.getEnemies());
+
+		tiles.add(sky);
+		tiles.add(testTile2);
+		tiles.add(testTile1);
+		tiles.add(testTile0);
+		
+		tiles = World.sortTiles(tiles);
+		
+		entities.addAll(testLevel.getEntities());
+
+		for (Entity e : entities)
+		{
+			if (e.isHostileToPlayer())
+			{
+				enemies.add(new Enemy(e));
+				e.setDead(true);
+			}
+		}
 
 		// particle = new Particle(new Vector2f(96,750),new
 		// Vector2f(16,16),Textures.particles,12,0,false, new
@@ -144,17 +181,29 @@ public class Game
 	{
 		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
 		// sean.render();
+
+		for (Tile t : tiles)
+		{
+			if(t.getPosition().z > 0)
+			{
+				t.render();
+			}
+		}
 		for (Entity e : entities)
+		{
+			e.renderOutline();
+		}
+		for (Enemy e : enemies)
 		{
 			e.renderOutline();
 		}
 		player.renderOutline();
 		player.render();
-		for (Tile t : tiles)
-		{
-			t.render();
-		}
 		for (Entity e : entities)
+		{
+			e.render();
+		}
+		for (Enemy e : enemies)
 		{
 			e.render();
 		}
@@ -170,7 +219,15 @@ public class Game
 		{
 			p.render();
 		}
+		for (Tile t : tiles)
+		{
+			if(t.getPosition().z <= 0)
+			{
+				t.render();
+			}
+		}
 		// testProjectile.render();
+		// GFX.drawString(64,600, "Press Enter to continue!");
 
 	}
 
@@ -191,6 +248,23 @@ public class Game
 		{
 			e.update(worldColliders);
 			e.checkForCollisionWithProjectiles(playerProjectiles);
+		}
+		for (Enemy e : enemies)
+		{
+			e.update(worldColliders);
+			e.checkForCollisionWithProjectiles(playerProjectiles);
+			if (new Random().nextBoolean())
+			{
+				if (new Random().nextBoolean())
+				{
+					e.setMoveLeft(false);
+					e.setMoveRight(true);
+				} else
+				{
+					e.setMoveRight(false);
+					e.setMoveLeft(true);
+				}
+			}
 		}
 
 		if (!player.getProjectiles().isEmpty())
@@ -271,8 +345,33 @@ public class Game
 				i++;
 			}
 		}
+		i = 0;
+		while (i < enemies.size())
+		{
+			while (i < enemies.size())
+			{
+				if (enemies.get(i).isDead())
+				{
+					enemies.remove(i);
+					break;
+				}
+				i++;
+			}
+		}
 		// testProjectile.update(colliders);
 		camera.setPositionToPlayer(player, Window.width, Window.height);
+		for(Tile t : tiles)
+		{
+			if(t.getPosition().z > 1 )
+			{
+				t.getPosition().x -= camera.getOffset().x / t.getPosition().z;
+				//System.out.println(camera.getOffset().x);
+			}
+			else if(t.getPosition().z < 0)
+			{
+				t.getPosition().x += camera.getOffset().x / t.getPosition().z;
+			}
+		}
 		camera.update();
 	}
 
