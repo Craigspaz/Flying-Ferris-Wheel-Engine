@@ -51,6 +51,11 @@ public class Game
 
 	private InputHandler			handler;
 
+	private Tile					testTile0;
+	private Tile					testTile1;
+	private Tile					testTile2;
+	private Tile					sky;
+
 	// private Projectile testProjectile;
 
 	/**
@@ -62,7 +67,6 @@ public class Game
 		handler = new InputHandler();
 		GFX.initString();
 
-		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
 		// table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new
@@ -75,10 +79,29 @@ public class Game
 
 		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
+
+		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
+		camera.setPositionToPlayer(player, Window.width, Window.height);
+		
+		
+		sky = new Tile(new Vector3f(32,288,100),new Vector2f(512,512),Textures.sky);
+		testTile2 = new Tile(new Vector3f(32,288,10),new Vector2f(512,512),Textures.desert2);
+		testTile1 = new Tile(new Vector3f(32,288,5),new Vector2f(512,512),Textures.desert1);
+		testTile0 = new Tile(new Vector3f(32,288,2),new Vector2f(512,512),Textures.desert0);
+		
 		testWorld = new World();
 		testLevel = testWorld.loadWorld("./res/world/level1.od");
 		worldColliders = testLevel.getColliders();
+		
 		tiles = testLevel.getTiles();
+
+		tiles.add(sky);
+		tiles.add(testTile2);
+		tiles.add(testTile1);
+		tiles.add(testTile0);
+		
+		tiles = World.sortTiles(tiles);
+		
 		entities.addAll(testLevel.getEntities());
 
 		for (Entity e : entities)
@@ -158,20 +181,24 @@ public class Game
 	{
 		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
 		// sean.render();
+
+		for (Tile t : tiles)
+		{
+			if(t.getPosition().z > 0)
+			{
+				t.render();
+			}
+		}
 		for (Entity e : entities)
 		{
 			e.renderOutline();
 		}
-		for(Enemy e : enemies)
+		for (Enemy e : enemies)
 		{
 			e.renderOutline();
 		}
 		player.renderOutline();
 		player.render();
-		for (Tile t : tiles)
-		{
-			t.render();
-		}
 		for (Entity e : entities)
 		{
 			e.render();
@@ -191,6 +218,13 @@ public class Game
 		for (Particle p : particles)
 		{
 			p.render();
+		}
+		for (Tile t : tiles)
+		{
+			if(t.getPosition().z <= 0)
+			{
+				t.render();
+			}
 		}
 		// testProjectile.render();
 		// GFX.drawString(64,600, "Press Enter to continue!");
@@ -326,6 +360,18 @@ public class Game
 		}
 		// testProjectile.update(colliders);
 		camera.setPositionToPlayer(player, Window.width, Window.height);
+		for(Tile t : tiles)
+		{
+			if(t.getPosition().z > 1 )
+			{
+				t.getPosition().x -= camera.getOffset().x / t.getPosition().z;
+				//System.out.println(camera.getOffset().x);
+			}
+			else if(t.getPosition().z < 0)
+			{
+				t.getPosition().x += camera.getOffset().x / t.getPosition().z;
+			}
+		}
 		camera.update();
 	}
 
