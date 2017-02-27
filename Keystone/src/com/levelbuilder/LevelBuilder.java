@@ -1,4 +1,4 @@
-package com.main;
+package com.levelbuilder;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -6,24 +6,16 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-/**
- * Create the window and handles the main game loop
- * 
- * @author Craig Ferris
- *
- */
-public class Window
+public class LevelBuilder
 {
 
 	public static int	width	= 1366;
 	public static int	height	= 768;
 	
-	private Game		game;
-
-	/**
-	 * Creates the window
-	 */
-	public Window()
+	private LevelBuilderGame game;
+	
+	
+	public LevelBuilder()
 	{
 		try
 		{
@@ -37,41 +29,21 @@ public class Window
 		{
 			e.printStackTrace();
 		}
+		
+		game = new LevelBuilderGame();
 
-		game = new Game();
 	}
-
-	/**
-	 * Initializes opengl
-	 */
-	public void initOpenGL()
-	{
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0, width, height, 0, 1, -1);
-		GL11.glViewport(0, 0, width, height);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	}
-
-	/**
-	 * Updates the game a certain number of times a second
-	 */
+	
 	private void update()
 	{
 		game.update();
 	}
-
-	/**
-	 * Renders the game to the screen
-	 */
+	
 	private void render()
 	{
 		game.render();
 	}
-
+	
 	/**
 	 * The main game loop
 	 */
@@ -100,11 +72,22 @@ public class Window
 								// while loop
 			// Display.sync(60);
 		}
-		game.cleanUPGame();
 		Display.destroy();
 		System.exit(0);
 	}
-
+	
+	public void initOpenGL()
+	{
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(0, width, height, 0, 1, -1);
+		GL11.glViewport(0, 0, width, height);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	}
+	
 	/**
 	 * Sets the displaymode. Allows the displaymode to be changed
 	 * 
@@ -181,16 +164,10 @@ public class Window
 		}
 	}
 
-	/**
-	 * Main method
-	 * 
-	 * @param args
-	 *            The commandline arguments
-	 */
 	public static void main(String[] args)
 	{
-		Window window = new Window();
-		window.initOpenGL();
-		window.run();
+		LevelBuilder builder = new LevelBuilder();
+		builder.initOpenGL();
+		builder.run();
 	}
 }
