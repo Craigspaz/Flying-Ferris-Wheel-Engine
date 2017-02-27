@@ -12,7 +12,7 @@ public class Level
 	private String name;
 	private ArrayList<Tile> tiles;
 	private ArrayList<RectangleBox> colliders;
-	private ArrayList<Enemy> enemies;
+	private ArrayList<Entity> entities;
 	
 	/**
 	 * Creates a new level
@@ -75,17 +75,17 @@ public class Level
 	 * Returns the enemies in the level
 	 * @return Returns the enemies in the level
 	 */
-	public ArrayList<Enemy> getEnemies()
+	public ArrayList<Entity> getEntities()
 	{
-		return enemies;
+		return entities;
 	}
 
 	/**
 	 * Sets the enemies in the level
 	 * @param enemies The enemies in the level
 	 */
-	public void setEnemies(ArrayList<Enemy> enemies)
+	public void setEntities(ArrayList<Entity> entities)
 	{
-		this.enemies = enemies;
+		this.entities = entities;
 	}
 }
