@@ -60,6 +60,7 @@ public class Entity
 	protected boolean				canJump				= true;
 	protected boolean				isInAir				= false;
 	protected RectangleBox			collider;
+	protected boolean				isHostileToPlayer	= false;
 
 	/**
 	 * Creates a new entity
@@ -229,7 +230,7 @@ public class Entity
 	{
 		for (Projectile p : projectiles)
 		{
-			if (p.isCollidingWithEntity2D(this))
+			if (!p.isDead() && p.isCollidingWithEntity2D(this))
 			{
 				p.setDead(true);
 				this.takeDamage(p.getDamage());
@@ -878,5 +879,23 @@ public class Entity
 	public void setParticles(ArrayList<Particle> particles)
 	{
 		this.particles = particles;
+	}
+
+	/**
+	 * Returns true if the entity is hostile to the player
+	 * @return Returns true if the entity is hostile to the player
+	 */
+	public boolean isHostileToPlayer()
+	{
+		return isHostileToPlayer;
+	}
+
+	/**
+	 * Sets if the entity is hostile to the player
+	 * @param isHostileToPlayer Is the entity hostile towards the player
+	 */
+	public void setHostileToPlayer(boolean isHostileToPlayer)
+	{
+		this.isHostileToPlayer = isHostileToPlayer;
 	}
 }

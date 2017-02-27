@@ -1,9 +1,10 @@
 <LEVEL name="TestLevel1">
 	<ENEMIES>
-		<ENEMY x="32" y="768" z="0" width="32" height="32" texName="table" outlineName="tableOutline"/>
-		<ENEMY x="64" y="768" z="0" width="32" height="32" texName="table" outlineName="tableOutline"/>
-		<ENEMY x="96" y="768" z="0" width="32" height="32" texName="table" outlineName="tableOutline"/>
-		<ENEMY x="128" y="768" z="0" width="32" height="32" texName="table" outlineName="tableOutline"/>
+		<ENEMY x="32" y="767" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"/>
+		<ENEMY x="64" y="767" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"/>
+		<ENEMY x="96" y="767" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"/>
+		<ENEMY x="128" y="767" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"/>
+		<ENEMY x="192" y="767" z="0" width="32" height="32" texName="player" outlineName="playerOutline"/>
 	</ENEMIES>
 	<TILES sizex="64" sizey="64">
 		<TILE x="-448" y="800" z="0" texName="testTile"/>

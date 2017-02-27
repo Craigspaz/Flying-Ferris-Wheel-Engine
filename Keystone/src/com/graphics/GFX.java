@@ -1,13 +1,14 @@
 package com.graphics;
 
-import javax.print.attribute.standard.SheetCollate;
+import java.awt.Font;
+import java.io.InputStream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
-
-import com.main.Window;
+import org.newdawn.slick.util.ResourceLoader;
 
 /**
  * A helper class full of static methods to render rectangles
@@ -17,6 +18,43 @@ import com.main.Window;
  */
 public class GFX
 {
+	public static TrueTypeFont font2;
+
+	
+	public static void drawString(float x, float y, String string)
+	{
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, Textures.black.getTextureID());
+		/*GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_TEXTURE);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);*/
+		//GL11.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+		font2.drawString(x, y, string);
+		/*GL11.glEnable(GL11.GL_TEXTURE);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glPopMatrix();*/
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
+	/**
+	 * Call to initialize font2
+	 */
+	public static void initString(){
+		try {
+			InputStream inputStream	= ResourceLoader.getResourceAsStream("res/Cash_Currency.ttf");
+	 
+			Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+			awtFont2 = awtFont2.deriveFont(24f); // set font size
+			font2 = new TrueTypeFont(awtFont2, false);
+	 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		//Font awtFont = new Font("Times New Roman", Font.BOLD, 24); //name, style (PLAIN, BOLD, or ITALIC), size
+		//font2 = new TrueTypeFont(awtFont, false); //base Font, anti-aliasing true/false
+	}
+
 	/**
 	 * Draws an entire sprite to the screen
 	 * 
@@ -52,6 +90,8 @@ public class GFX
 
 		GL11.glEnd();
 		GL11.glPopMatrix();
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	/**
@@ -99,6 +139,7 @@ public class GFX
 
 		GL11.glEnd();
 		GL11.glPopMatrix();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	/**
@@ -119,8 +160,7 @@ public class GFX
 	 * @param size
 	 *            The width and height to render from the sprite sheet
 	 */
-	public static void drawSpriteFromSpriteSheet(float x, float y, float xx, float yy, Texture texture,
-			Vector2f texCoords, Vector2f size)
+	public static void drawSpriteFromSpriteSheet(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size)
 	{
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -141,6 +181,7 @@ public class GFX
 
 		GL11.glEnd();
 		GL11.glPopMatrix();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	/**
@@ -163,20 +204,11 @@ public class GFX
 	 * @param angle
 	 *            The angle at which to rotate the texture
 	 */
-	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture,
-			Vector2f texCoords, Vector2f size, float angle)
+	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle)
 	{
-		// Binds the texture
-		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 
 		GL11.glPushMatrix();
-		// GL11.glRotatef(angle, 0, 0, 1f);// TODO move this to the end if broken
-		// GL11.glTranslatef((float) -(Math.acos(angle * 180 / Math.PI) * xx) + xx,
-		// (float) -(Math.acos(angle * 180 / Math.PI) * yy) + yy, 0f);
-
-		// Draws a rectangle
-		// GL11.glLoadIdentity();
 		if (angle != 0 && angle != 180)
 		{
 			GL11.glTranslatef(xx + x / 2, yy + y / 2, 0);
@@ -198,6 +230,7 @@ public class GFX
 		GL11.glEnd();
 
 		GL11.glPopMatrix();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
 	}
 
@@ -219,8 +252,7 @@ public class GFX
 	 * @param size
 	 *            The width and height to render from the sprite sheet
 	 */
-	public static void drawSpriteFromSpriteSheetInverse(float x, float y, float xx, float yy, Texture texture,
-			Vector2f texCoords, Vector2f size)
+	public static void drawSpriteFromSpriteSheetInverse(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size)
 	{
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -241,6 +273,7 @@ public class GFX
 
 		GL11.glEnd();
 		GL11.glPopMatrix();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	/**
@@ -263,8 +296,7 @@ public class GFX
 	 * @param angle
 	 *            The angle to rotate the texture
 	 */
-	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture,
-			Vector2f texCoords, Vector2f size, float angle)
+	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle)
 	{
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -293,6 +325,7 @@ public class GFX
 		GL11.glEnd();
 
 		GL11.glPopMatrix();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
 	}
 }

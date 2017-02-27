@@ -26,7 +26,17 @@ public class Textures
 	public static Texture	sean;
 
 	public static Texture	particles;
+	
+	public static Texture black;
 
+	
+	public static Texture crabman;
+	
+	public static Texture desert0;
+	public static Texture desert1;
+	public static Texture desert2;
+	public static Texture sky;
+	
 	/**
 	 * Initializes all of the textures
 	 */
@@ -41,5 +51,13 @@ public class Textures
 		sean = Loader.loadTexture("sean");
 		testLine = Loader.loadTexture("testLine");
 		particles = Loader.loadTexture("particle");
+		
+		black = Loader.loadTexture("black");
+		crabman = Loader.loadTexture("crabman");
+		
+		desert0 = Loader.loadTexture("desert0");
+		desert1 = Loader.loadTexture("desert1");
+		desert2 = Loader.loadTexture("desert2");
+		sky = Loader.loadTexture("sky");
 	}
 }
