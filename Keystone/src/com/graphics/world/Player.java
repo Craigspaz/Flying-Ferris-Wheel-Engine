@@ -127,8 +127,7 @@ public class Player extends Entity
 			if (handler.up())
 			{
 				shootAngle = 90;
-			}
-			
+      }
 		}
 		// if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 		if (handler.right())

@@ -16,8 +16,13 @@ public class InputHandler
 	/**
 	 * Creates a new Input Handler
 	 */
+
+	StringBuilder cmd;
+
 	public InputHandler()
 	{
+
+		cmd = new StringBuilder();
 		if (!Keyboard.isCreated())
 		{
 			try
@@ -142,4 +147,56 @@ public class InputHandler
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_E);
 	}
+
+	public boolean tildedown()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_GRAVE);
+	}
+
+	public boolean escape()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
+	}
+
+	public boolean enter()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_RETURN);
+	}
+
+	public boolean backspace()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_BACK);
+	}
+
+	public String getCommand()
+	{
+		while (Keyboard.next())
+		{
+			if (Keyboard.getEventKeyState())
+			{
+				if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14
+						&& Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28 && Keyboard.getEventKey() != 29
+						&& Keyboard.getEventKey() != 41 && Keyboard.getEventKey() != 42)
+						|| Keyboard.getEventKey() == 57)
+				{
+					cmd.append(Keyboard.getEventCharacter());
+				}
+				if (Keyboard.getEventKey() == 14 && cmd.length() > 0)
+				{
+					cmd.deleteCharAt(cmd.length() - 1);
+				}
+				System.out.println(cmd);
+			}
+		}
+		return cmd.toString();
+	}
+
+	public void clearBuffer()
+	{
+		cmd.delete(0, cmd.length());
+		while (Keyboard.next())
+		{
+		}
+	}
+
 }

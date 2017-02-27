@@ -20,6 +20,7 @@ import com.graphics.world.Tile;
 import com.graphics.world.World;
 import com.graphics.world.projectile.Projectile;
 import com.input.InputHandler;
+import com.input.Terminal;
 
 /**
  * Handles the operation of the game
@@ -30,11 +31,10 @@ import com.input.InputHandler;
 public class Game
 {
 
-	private Player					player;
+	private Player player;
 
-	private Entity					table;
+	private Entity table;
 	// private Entity sean;
-
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
@@ -42,14 +42,15 @@ public class Game
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
 	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
 
-	private ArrayList<Entity>		entities			= new ArrayList<Entity>();
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
-	private Camera					camera;
+	private Camera camera;
 
-	private Level					testLevel;
-	private World					testWorld;
+	private Level testLevel;
+	private World testWorld;
 
-	private InputHandler			handler;
+	private InputHandler handler;
+	private Terminal terminal;
 
 	private Tile					testTile0;
 	private Tile					testTile1;
@@ -65,10 +66,12 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
+		terminal = new Terminal(handler);
+		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 		GFX.initString();
 
-
-		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
+		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1,
+				new Vector2f(32, 32), new Vector2f(32, 32));
 		// table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new
 		// Vector2f(32, 32), 1, 1, new Vector2f(128, 128),new Vector2f(32, 32));
 		table.setAffectedByGravity(true);
@@ -77,7 +80,8 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
+				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
 
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
@@ -122,21 +126,16 @@ public class Game
 		// Vector2f(64,64),Textures.testTile));
 
 		/*
-		 * tiles.add(new Tile(new Vector3f(0,550,0),new
-		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new
-		 * Vector3f(64,550,0),new Vector2f(64,64),Textures.testTile));
-		 * tiles.add(new Tile(new Vector3f(128,550,0),new
-		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new
-		 * Vector3f(192,550,0),new Vector2f(64,64),Textures.testTile));
-		 * tiles.add(new Tile(new Vector3f(256,550,0),new
-		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new
-		 * Vector3f(256 + 64,550,0),new Vector2f(64,64),Textures.testTile));
-		 * tiles.add(new Tile(new Vector3f(256 + 128,550,0),new
-		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new
-		 * Vector3f(256 + 192,550,0),new Vector2f(64,64),Textures.testTile));
+		 * tiles.add(new Tile(new Vector3f(0,550,0),new Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new
+		 * Vector3f(64,550,0),new Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new Vector3f(128,550,0),new
+		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new Vector3f(192,550,0),new
+		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new Vector3f(256,550,0),new
+		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new Vector3f(256 + 64,550,0),new
+		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new Vector3f(256 + 128,550,0),new
+		 * Vector2f(64,64),Textures.testTile)); tiles.add(new Tile(new Vector3f(256 + 192,550,0),new
+		 * Vector2f(64,64),Textures.testTile));
 		 * 
-		 * Tile tmp = new Tile(new Vector3f(-64,486,0),new
-		 * Vector2f(64,64),Textures.testTile); Tile tmp1 = new Tile(new
+		 * Tile tmp = new Tile(new Vector3f(-64,486,0),new Vector2f(64,64),Textures.testTile); Tile tmp1 = new Tile(new
 		 * Vector3f(512,486,0),new Vector2f(64,64), Textures.testTile);
 		 * 
 		 * 
@@ -148,28 +147,23 @@ public class Game
 		// colliders.add(new RectangleBox(new Vector3f(128,320,0),new
 		// Vector2f(64,64)));
 		/*
-		 * colliders.add(new RectangleBox(new Vector3f(0,550,0),new
-		 * Vector2f(512,64))); colliders.add(tmp.getCollider());
-		 * colliders.add(tmp1.getCollider());
+		 * colliders.add(new RectangleBox(new Vector3f(0,550,0),new Vector2f(512,64)));
+		 * colliders.add(tmp.getCollider()); colliders.add(tmp1.getCollider());
 		 * 
-		 * testProjectile = new Projectile(new Vector3f(64,400,0),
-		 * Textures.table, new Vector2f(256,32), 6, 1, new Vector2f(32,32), new
-		 * Vector2f(32,32),0);
+		 * testProjectile = new Projectile(new Vector3f(64,400,0), Textures.table, new Vector2f(256,32), 6, 1, new
+		 * Vector2f(32,32), new Vector2f(32,32),0);
 		 */
 
 		/*
-		 * for(int i = 0; i < 10; i++) { Tile testTile = new Tile(new Vector3f(0
-		 * + (i * 64),500,0),new Vector2f(64,64),Textures.testTile);
-		 * tiles.add(testTile); }
-		 */
-		/*
-		 * for(int i = 0; i < 10; i++) { Tile testTile = new Tile(new
-		 * Vector3f(800 + (i * 64),500,0),new
+		 * for(int i = 0; i < 10; i++) { Tile testTile = new Tile(new Vector3f(0 + (i * 64),500,0),new
 		 * Vector2f(64,64),Textures.testTile); tiles.add(testTile); }
 		 */
 		/*
-		 * for(int i = 0; i < 10; i++) { Tile testTile = new Tile(new
-		 * Vector3f(187 + (i * 64),550,0),new
+		 * for(int i = 0; i < 10; i++) { Tile testTile = new Tile(new Vector3f(800 + (i * 64),500,0),new
+		 * Vector2f(64,64),Textures.testTile); tiles.add(testTile); }
+		 */
+		/*
+		 * for(int i = 0; i < 10; i++) { Tile testTile = new Tile(new Vector3f(187 + (i * 64),550,0),new
 		 * Vector2f(64,64),Textures.testTile); tiles.add(testTile); }
 		 */
 	}
@@ -218,7 +212,7 @@ public class Game
 		for (Particle p : particles)
 		{
 			p.render();
-		}
+    }
 		for (Tile t : tiles)
 		{
 			if(t.getPosition().z <= 0)
@@ -228,21 +222,24 @@ public class Game
 		}
 		// testProjectile.render();
 		// GFX.drawString(64,600, "Press Enter to continue!");
-
+    terminal.render();
 	}
 
 	/**
-	 * Updates objects and handles physics. Is executed a certain number of
-	 * times a second
+	 * Updates objects and handles physics. Is executed a certain number of times a second
 	 */
 	public void update()
 	{
-		player.update(worldColliders);
-		player.checkForCollisionWithProjectiles(enemyProjectiles);
-		for (Tile t : tiles)
+		terminal.update();
+		if (!terminal.active())
 		{
-			t.update();
-		}
+			player.update(worldColliders);
+			player.checkForCollisionWithProjectiles(enemyProjectiles);
+			for (Tile t : tiles)
+			{
+				t.update();
+			}
+
 
 		for (Entity e : entities)
 		{
@@ -267,83 +264,87 @@ public class Game
 			}
 		}
 
-		if (!player.getProjectiles().isEmpty())
-		{
-			playerProjectiles.addAll(player.getProjectiles());
-			player.getProjectiles().clear();
-		}
+			if (!player.getProjectiles().isEmpty())
+			{
+				playerProjectiles.addAll(player.getProjectiles());
+				player.getProjectiles().clear();
+			}
 
-		if (!player.getParticles().isEmpty())
-		{
-			particles.addAll(player.getParticles());
-			player.getParticles().clear();
-		}
+			if (!player.getParticles().isEmpty())
+			{
+				particles.addAll(player.getParticles());
+				player.getParticles().clear();
+			}
 
-		for (Projectile p : playerProjectiles)
-		{
-			p.update(worldColliders);
-		}
-		for (Projectile p : enemyProjectiles)
-		{
-			p.update(worldColliders);
-		}
+			for (Projectile p : playerProjectiles)
+			{
+				p.update(worldColliders);
+			}
+			for (Projectile p : enemyProjectiles)
+			{
+				p.update(worldColliders);
+			}
 
-		for (Particle p : particles)
-		{
-			p.update();
-		}
-		int i = 0;
-		while (i < playerProjectiles.size())
-		{
+			for (Particle p : particles)
+			{
+				p.update();
+			}
+			int i = 0;
 			while (i < playerProjectiles.size())
 			{
-				if (playerProjectiles.get(i).isDead())
+				while (i < playerProjectiles.size())
 				{
-					playerProjectiles.remove(i);
-					break;
+					if (playerProjectiles.get(i).isDead())
+					{
+						playerProjectiles.remove(i);
+						break;
+					}
+					i++;
 				}
-				i++;
 			}
-		}
-		i = 0;
-		while (i < enemyProjectiles.size())
-		{
+			i = 0;
 			while (i < enemyProjectiles.size())
 			{
-				if (enemyProjectiles.get(i).isDead())
+				while (i < enemyProjectiles.size())
 				{
-					enemyProjectiles.remove(i);
-					break;
+					if (enemyProjectiles.get(i).isDead())
+					{
+						enemyProjectiles.remove(i);
+						break;
+					}
+					i++;
 				}
-				i++;
 			}
-		}
-		i = 0;
-		while (i < entities.size())
-		{
+			i = 0;
 			while (i < entities.size())
 			{
-				if (entities.get(i).isDead())
+				while (i < entities.size())
 				{
-					entities.remove(i);
-					break;
+					if (entities.get(i).isDead())
+					{
+						entities.remove(i);
+						break;
+					}
+					i++;
 				}
-				i++;
 			}
-		}
 
-		i = 0;
-		while (i < particles.size())
-		{
+			i = 0;
 			while (i < particles.size())
 			{
-				if (particles.get(i).isDead())
+				while (i < particles.size())
 				{
-					particles.remove(i);
-					break;
+					if (particles.get(i).isDead())
+					{
+						particles.remove(i);
+						break;
+					}
+					i++;
 				}
-				i++;
 			}
+			// testProjectile.update(colliders);
+			camera.setPositionToPlayer(player, Window.width, Window.height);
+			camera.update();
 		}
 		i = 0;
 		while (i < enemies.size())
