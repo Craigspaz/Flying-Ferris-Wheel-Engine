@@ -69,7 +69,7 @@ public class Game
 		new Textures();
 		handler = new InputHandler();
 		GFX.initString();
-		
+
 		terminal = new Terminal(handler);
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
@@ -180,7 +180,7 @@ public class Game
 	public void update()
 	{
 		terminal.update();
-		if(!terminal.active())
+		if (!terminal.active())
 		{
 			player.update(worldColliders);
 			player.checkForCollisionWithProjectiles(enemyProjectiles);
@@ -318,7 +318,7 @@ public class Game
 			}
 			camera.update();
 		}
-		
+
 	}
 
 	/**
