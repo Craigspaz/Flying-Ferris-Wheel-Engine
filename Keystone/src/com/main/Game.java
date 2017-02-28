@@ -6,6 +6,7 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.Color;
 
 import com.graphics.GFX;
 import com.graphics.Textures;
@@ -168,9 +169,8 @@ public class Game
 				t.render();
 			}
 		}
-		// testProjectile.render();
-		// GFX.drawString(64,600, "Press Enter to continue!");
 		terminal.render();
+		GFX.drawString(60, 500, "Test");
 	}
 
 	/**

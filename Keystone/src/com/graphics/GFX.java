@@ -23,19 +23,10 @@ public class GFX
 	
 	public static void drawString(float x, float y, String string)
 	{
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, Textures.black.getTextureID());
-		/*GL11.glPushMatrix();
-		GL11.glDisable(GL11.GL_TEXTURE);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);*/
-		//GL11.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-		font2.drawString(x, y, string);
-		/*GL11.glEnable(GL11.GL_TEXTURE);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glPopMatrix();*/
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		GL11.glPushMatrix();
+		Textures.black.bind();
+		GFX.font2.drawString(-400, 500, "Test");
+		GL11.glPopMatrix();
 	}
 	/**
 	 * Call to initialize font2
