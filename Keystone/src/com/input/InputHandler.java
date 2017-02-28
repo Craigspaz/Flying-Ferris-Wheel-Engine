@@ -170,24 +170,29 @@ public class InputHandler
 
 	public String getCommand()
 	{
+
 		while (Keyboard.next())
 		{
 			if (Keyboard.getEventKeyState())
 			{
-				if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14
-						&& Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28 && Keyboard.getEventKey() != 29
-						&& Keyboard.getEventKey() != 41 && Keyboard.getEventKey() != 42)
-						|| Keyboard.getEventKey() == 57)
+				if (cmd.length() < 60)//fits in terminal window
 				{
-					cmd.append(Keyboard.getEventCharacter());
+					if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14
+							&& Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28
+							&& Keyboard.getEventKey() != 29 && Keyboard.getEventKey() != 41
+							&& Keyboard.getEventKey() != 42) || Keyboard.getEventKey() == 57)
+					{
+
+						cmd.append(Keyboard.getEventCharacter());
+					}
 				}
 				if (Keyboard.getEventKey() == 14 && cmd.length() > 0)
 				{
 					cmd.deleteCharAt(cmd.length() - 1);
 				}
-				System.out.println(cmd);
 			}
 		}
+
 		return cmd.toString();
 	}
 

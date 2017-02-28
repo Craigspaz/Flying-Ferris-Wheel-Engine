@@ -26,7 +26,7 @@ public class Textures
 	public static Texture	particles;
 	
 	public static Texture black;
-
+	public static Texture terminalWindow;
 	
 	public static Texture crabman;
 	
@@ -52,6 +52,8 @@ public class Textures
 		
 		black = Loader.loadTexture("black");
 		crabman = Loader.loadTexture("crabman");
+		
+		terminalWindow = Loader.loadTexture("terminal");
 		
 		desert0 = Loader.loadTexture("desert0");
 		desert1 = Loader.loadTexture("desert1");

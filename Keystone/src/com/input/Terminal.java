@@ -3,6 +3,7 @@ package com.input;
 import java.util.ArrayList;
 
 import com.graphics.GFX;
+import com.graphics.Textures;
 
 public class Terminal
 {
@@ -70,9 +71,10 @@ public class Terminal
 		lineheight = GFX.font2.getLineHeight();
 		if (active)
 		{
+			GFX.drawEntireSprite(512, 128, x, y - 128, Textures.terminalWindow);
 			for (int i = 0; i < messages.size(); i++)
 			{
-				GFX.drawString(x + 10, (y - 2 * lineheight) - (lineheight * i) - 10, messages.get(i));
+				GFX.drawString(x + 10, (y - 2 * lineheight) - (lineheight * i) - 11, messages.get(i));
 			}
 			GFX.drawString(x + 10, y - lineheight - 10, command);
 		}
