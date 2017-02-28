@@ -4,6 +4,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector2f;
+
+import com.main.Window;
 
 /**
  * Handles input from the user
@@ -148,26 +151,66 @@ public class InputHandler
 		return Keyboard.isKeyDown(Keyboard.KEY_E);
 	}
 
+	/**
+	 * Returns if tilde is down
+	 * @return Returns if tilde is down
+	 */
 	public boolean tildedown()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_GRAVE);
 	}
 
+	/**
+	 * Returns if escape is down
+	 * @return Returns if escape is down
+	 */
 	public boolean escape()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 	}
 
+	/**
+	 * Returns if enter is down
+	 * @return Returns if enter is down
+	 */
 	public boolean enter()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_RETURN);
 	}
 
+	/**
+	 * Returns if backspace is down
+	 * @return Returns if backspace is down
+	 */
 	public boolean backspace()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_BACK);
 	}
+	
+	public boolean cameraLeft()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_LEFT);
+	}
+	
+	public boolean cameraRight()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_RIGHT);
+	}
+	
+	public boolean cameraUp()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_UP);
+	}
+	
+	public boolean cameraDown()
+	{
+		return Keyboard.isKeyDown(Keyboard.KEY_DOWN);
+	}
 
+	/**
+	 * Returns the command entered
+	 * @return Returns the command entered
+	 */
 	public String getCommand()
 	{
 		while (Keyboard.next())
@@ -191,6 +234,9 @@ public class InputHandler
 		return cmd.toString();
 	}
 
+	/**
+	 * Clears the terminal buffer and keyboard buffer
+	 */
 	public void clearBuffer()
 	{
 		cmd.delete(0, cmd.length());
@@ -199,4 +245,10 @@ public class InputHandler
 		}
 	}
 
+	public Vector2f getMousePosition()
+	{
+        int Mousex = Mouse.getX();
+    	int Mousey = Window.height - Mouse.getY() - 1;
+		return new Vector2f(Mousex,Mousey);
+	}
 }
