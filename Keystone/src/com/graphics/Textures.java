@@ -1,7 +1,5 @@
 package com.graphics;
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.opengl.Texture;
 
 /**
