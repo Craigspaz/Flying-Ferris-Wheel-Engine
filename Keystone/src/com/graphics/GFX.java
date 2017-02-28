@@ -24,9 +24,9 @@ public class GFX
 	public static void drawString(float x, float y, String string)
 	{
 		GL11.glPushMatrix();
-		Textures.black.bind();
-		GFX.font2.drawString(-400, 500, "Test");
-		GL11.glPopMatrix();
+        Textures.black.bind();
+        GFX.font2.drawString(x,y,string);
+        GL11.glPopMatrix();
 	}
 	/**
 	 * Call to initialize font2
