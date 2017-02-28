@@ -57,8 +57,6 @@ public class Game
 	private Tile					testTile2;
 	private Tile					sky;
 
-	private Terminal				terminal;
-
 	// private Projectile testProjectile;
 
 	/**
