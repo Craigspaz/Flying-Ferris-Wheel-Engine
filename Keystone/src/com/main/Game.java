@@ -31,11 +31,10 @@ import com.input.Terminal;
 public class Game
 {
 
-	private Player					player;
+	private Player player;
 
-	private Entity					table;
+	private Entity table;
 	// private Entity sean;
-
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
@@ -43,14 +42,15 @@ public class Game
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
 	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
 
-	private ArrayList<Entity>		entities			= new ArrayList<Entity>();
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
-	private Camera					camera;
+	private Camera camera;
 
-	private Level					testLevel;
-	private World					testWorld;
+	private Level testLevel;
+	private World testWorld;
 
-	private InputHandler			handler;
+	private InputHandler handler;
+	private Terminal terminal;
 
 	private Tile					testTile0;
 	private Tile					testTile1;
@@ -68,8 +68,9 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
+		terminal = new Terminal(handler);
+		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 		GFX.initString();
-
 		terminal = new Terminal(handler);
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
@@ -81,7 +82,8 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
+				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(player, Window.width, Window.height);
@@ -160,7 +162,7 @@ public class Game
 		for (Particle p : particles)
 		{
 			p.render();
-		}
+    }
 		for (Tile t : tiles)
 		{
 			if (t.getPosition().z <= 0)
@@ -174,8 +176,7 @@ public class Game
 	}
 
 	/**
-	 * Updates objects and handles physics. Is executed a certain number of
-	 * times a second
+	 * Updates objects and handles physics. Is executed a certain number of times a second
 	 */
 	public void update()
 	{
