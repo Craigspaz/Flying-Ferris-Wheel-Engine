@@ -4,6 +4,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector2f;
+
+import com.main.Window;
 
 /**
  * Handles input from the user
@@ -197,6 +200,18 @@ public class InputHandler
 		while (Keyboard.next())
 		{
 		}
+	}
+	
+	public boolean isMouseLeftClicking()
+	{
+		return Mouse.isButtonDown(0);
+	}
+	
+	public Vector2f getMousePosition()
+	{
+        int Mousex = Mouse.getX();
+    	int Mousey = Window.height - Mouse.getY() - 1;
+    	return new Vector2f(Mousex,Mousey);
 	}
 
 }
