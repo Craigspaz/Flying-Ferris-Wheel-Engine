@@ -35,6 +35,8 @@ public class Textures
 	public static Texture desert2;
 	public static Texture sky;
 	
+	public static Texture highlight;
+	
 	/**
 	 * Initializes all of the textures
 	 */
@@ -57,5 +59,7 @@ public class Textures
 		desert1 = Loader.loadTexture("desert1");
 		desert2 = Loader.loadTexture("desert2");
 		sky = Loader.loadTexture("sky");
+		
+		highlight = Loader.loadTexture("highlight");
 	}
 }

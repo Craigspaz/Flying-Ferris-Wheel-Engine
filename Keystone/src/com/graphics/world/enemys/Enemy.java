@@ -1,4 +1,4 @@
-package com.graphics.world;
+package com.graphics.world.enemys;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,8 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.Textures;
+import com.graphics.world.Entity;
+import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
 
 /**
@@ -30,11 +32,14 @@ public class Enemy extends Entity
 	private boolean					shoot			= false;
 	private float					shootAngle		= 0;
 	private float					bulletSpeed		= 16;
+	private int						id;
+	protected String				name			= "";
 
 	public Enemy(Entity e)
 	{
 		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getSizeOfSpriteSheet(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
 		super.affectedByGravity = true;
+		this.id = -1;
 	}
 
 	/**
@@ -54,6 +59,7 @@ public class Enemy extends Entity
 	public Enemy(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
+		this.id = -1;
 	}
 
 	/**
@@ -79,6 +85,7 @@ public class Enemy extends Entity
 	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
 		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		this.id = -1;
 	}
 
 	/**
@@ -250,6 +257,18 @@ public class Enemy extends Entity
 			super.animSpriteFrameY = 0;
 		}
 
+	}
+
+	public static Enemy generateBasicEnemyBasedOnID(int id, int x, int y)
+	{
+		switch (id)
+		{
+			case Enemies.ENTITY_CRABMAN:
+				// return new CrabMan(x,y);
+				break;
+
+		}
+		return null;
 	}
 
 	/**
@@ -493,6 +512,21 @@ public class Enemy extends Entity
 	public void setBulletSpeed(float bulletSpeed)
 	{
 		this.bulletSpeed = bulletSpeed;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+	
+	public String toString()
+	{
+		return name;
 	}
 
 }
