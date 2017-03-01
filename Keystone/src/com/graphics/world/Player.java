@@ -26,7 +26,7 @@ public class Player extends Entity
 	private float bulletSpawnDistance = 48;
 	private boolean canGenerateSprintParticle = true;
 	private boolean canGenerateSkidParticle = false;
-	private int jumpCount = 1; //starts at 1 for easy diagnostic of how many jumps used
+	private int jumpCount = 1; // starts at 1 for easy diagnostic of how many jumps used
 
 	private InputHandler handler;
 
@@ -225,7 +225,7 @@ public class Player extends Entity
 							new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16),
 							new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16),
 							new Vector2f(256, 128), false));
-					jumpCount = 1; //sets jumpCount to 0 if you're on the ground, essentially ignoring first jump
+					jumpCount = 1; // sets jumpCount to 0 if you're on the ground, essentially ignoring first jump
 				}
 				System.out.println("jump " + jumpCount);
 			}
@@ -385,5 +385,19 @@ public class Player extends Entity
 	{
 		input(colliders);
 		super.update(colliders);
+	}
+
+	/**
+	 * Terminal stuff
+	 */
+	
+	public boolean isImmune()
+	{
+		return immune;
+	}
+
+	public void setImmune(boolean immune)
+	{
+		this.immune = immune;
 	}
 }

@@ -65,6 +65,9 @@ public class Entity
 	protected RectangleBox collider;
 	protected boolean isHostileToPlayer = false;
 
+	/* Terminal stuff */
+	protected boolean immune = false; // whether the current entity can take damage
+
 	/**
 	 * Creates a new entity
 	 * 
@@ -401,7 +404,10 @@ public class Entity
 	 */
 	public void takeDamage(int damage)
 	{
-		this.healthPoints -= damage;
+		if (!immune)
+		{
+			this.healthPoints -= damage;
+		}
 		if (healthPoints <= 0)
 		{
 			isDead = true;

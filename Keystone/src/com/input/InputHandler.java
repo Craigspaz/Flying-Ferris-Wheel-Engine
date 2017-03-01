@@ -170,12 +170,11 @@ public class InputHandler
 
 	public String getCommand()
 	{
-
 		while (Keyboard.next())
 		{
 			if (Keyboard.getEventKeyState())
 			{
-				if (cmd.length() < 60)//fits in terminal window
+				if (cmd.length() < 58)// fits in terminal window
 				{
 					if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14
 							&& Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28

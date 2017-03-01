@@ -1,9 +1,9 @@
 package com.input;
 
 import java.util.ArrayList;
-
 import com.graphics.GFX;
 import com.graphics.Textures;
+import com.graphics.world.Player;
 
 public class Terminal
 {
@@ -15,10 +15,13 @@ public class Terminal
 	private ArrayList<String> messages;
 	int lineheight;
 
-	public Terminal(InputHandler handler)
+	private Player player;
+
+	public Terminal(InputHandler handler, Player player)
 	{
 		this.handler = handler;
 		messages = new ArrayList<String>(5);
+		this.player = player;
 	}
 
 	public boolean active()
@@ -76,14 +79,57 @@ public class Terminal
 			{
 				GFX.drawString(x + 10, (y - 2 * lineheight) - (lineheight * i) - 11, messages.get(i));
 			}
-			GFX.drawString(x + 10, y - lineheight - 10, command);
+			GFX.drawString(x + 10, y - lineheight - 10, "> " + command);
 		}
 	}
 
 	private void read(String cmd)
 	{
-		messages.add(0, cmd);
-		if (messages.size() > 5)
+		String[] commands = cmd.split(" ");
+		if (commands.length == 0)
+		{
+			messages.add(0, "please enter a command");
+		} else
+		{
+			messages.add(0, "> " + cmd);
+			if (commands[0].equals("nodamage"))
+			{
+				player.setImmune(!player.isImmune());
+				messages.add(0, "nodamage is now " + player.isImmune());
+			} else if (commands[0].equals("spawn"))
+			{
+				if (commands.length >= 4)
+				{
+					int x, y;
+					try
+					{
+						x = Integer.parseInt(commands[2]);
+						y = Integer.parseInt(commands[3]);
+					} catch (NumberFormatException e)
+					{
+						messages.add(0, "failed to read integers");
+						return;
+					}
+					// TODO create enemy with ID, X, and Y coords
+					messages.add(0, "spawned " + commands[1] + " at " + x + ", " + y);
+				} else
+				{
+					messages.add(0, "invalid arguments");
+				}
+			} else if (commands[0].equals("hello"))
+			{
+				messages.add(0, "hello :)");
+			} else if (commands[0].equals("help"))
+			{
+				messages.add(0, "nodamage: toggles whether player can receive damage");
+				messages.add(0, "spawn [ID] [x] [y]: spawns entity at x, y from camera corner");
+			} else
+			{
+				// messages.add(0, "unknown command");
+			}
+
+		}
+		while (messages.size() > 5)
 		{
 			messages.remove(messages.size() - 1);
 		}
