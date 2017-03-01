@@ -38,6 +38,13 @@ public class Textures
 	
 	public static Texture highlight;
 	
+	public static Texture air;
+	public static Texture bridge;
+	public static Texture dirt2;
+	public static Texture dirt;
+	public static Texture grass;
+	public static Texture grassTop;
+	
 	/**
 	 * Initializes all of the textures
 	 */
@@ -63,5 +70,12 @@ public class Textures
 		
 		highlight = Loader.loadTexture("highlight");
 		terminalWindow = Loader.loadTexture("terminal");
+		
+		air = Loader.loadTexture("air");
+		bridge = Loader.loadTexture("bridge");
+		dirt2 = Loader.loadTexture("Dirt (2)");
+		dirt = Loader.loadTexture("dirt");
+		grass = Loader.loadTexture("grass");
+		grassTop = Loader.loadTexture("grassTop");
 	}
 }

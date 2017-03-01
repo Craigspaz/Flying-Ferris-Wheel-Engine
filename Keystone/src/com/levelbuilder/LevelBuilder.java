@@ -9,12 +9,11 @@ import org.lwjgl.opengl.GL11;
 public class LevelBuilder
 {
 
-	public static int	width	= 1366;
-	public static int	height	= 768;
-	
-	private LevelBuilderGame game;
-	
-	
+	public static int			width	= 1366;
+	public static int			height	= 768;
+
+	private LevelBuilderGame	game;
+
 	public LevelBuilder()
 	{
 		try
@@ -29,21 +28,21 @@ public class LevelBuilder
 		{
 			e.printStackTrace();
 		}
-		
+
 		game = new LevelBuilderGame();
 
 	}
-	
+
 	private void update()
 	{
 		game.update();
 	}
-	
+
 	private void render()
 	{
 		game.render();
 	}
-	
+
 	/**
 	 * The main game loop
 	 */
@@ -75,7 +74,7 @@ public class LevelBuilder
 		Display.destroy();
 		System.exit(0);
 	}
-	
+
 	public void initOpenGL()
 	{
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -87,7 +86,7 @@ public class LevelBuilder
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
-	
+
 	/**
 	 * Sets the displaymode. Allows the displaymode to be changed
 	 * 
