@@ -18,17 +18,18 @@ import com.input.InputHandler;
  */
 public class Player extends Entity
 {
-	private int shootingDelay = 5;
-	private int shootingCounter = 0;
-	private boolean canShoot = true;
-	private float shootAngle = 0;
-	private float bulletSpeed = 16;
-	private float bulletSpawnDistance = 48;
-	private boolean canGenerateSprintParticle = true;
-	private boolean canGenerateSkidParticle = false;
-	private int jumpCount = 1; // starts at 1 for easy diagnostic of how many jumps used
+	private int				shootingDelay				= 5;
+	private int				shootingCounter				= 0;
+	private boolean			canShoot					= true;
+	private float			shootAngle					= 0;
+	private float			bulletSpeed					= 16;
+	private float			bulletSpawnDistance			= 48;
+	private boolean			canGenerateSprintParticle	= true;
+	private boolean			canGenerateSkidParticle		= false;
+	private int				jumpCount					= 0;	// starts at 1 for easy diagnostic of how many jumps
+																// used
 
-	private InputHandler handler;
+	private InputHandler	handler;
 
 	/**
 	 * Creates a new player
@@ -42,8 +43,7 @@ public class Player extends Entity
 	 * @param scale
 	 *            The size to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet,
-			InputHandler handler)
+	public Player(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet, InputHandler handler)
 	{
 		super(position, texture, size, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
@@ -66,12 +66,9 @@ public class Player extends Entity
 	 * @param scale
 	 *            The size at which to draw the player
 	 */
-	public Player(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture,
-			int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet,
-			InputHandler handler)
+	public Player(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, InputHandler handler)
 	{
-		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale,
-				sizeOfSpriteOnSheet);
+		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		affectedByGravity = true;
 		this.handler = handler;
 	}
@@ -93,15 +90,10 @@ public class Player extends Entity
 			{
 				if (left)
 				{
-					particles.add(
-							new Particle(new Vector2f(position.x + getScale().x - 16, position.y + getScale().y - 16),
-									new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16),
-									new Vector2f(256, 128), false));
+					particles.add(new Particle(new Vector2f(position.x + getScale().x - 16, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 				} else
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y + getScale().y - 16),
-							new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16),
-							new Vector2f(256, 128), false));
+					particles.add(new Particle(new Vector2f(position.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 				}
 				canGenerateSprintParticle = false;
 			}
@@ -157,9 +149,7 @@ public class Player extends Entity
 				}
 			} else if (!isInAir && Math.abs(velocity.x) < 0.8 && canGenerateSkidParticle == true)
 			{
-				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + getScale().y - 16),
-						new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16),
-						new Vector2f(256, 128), false));
+				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 				canGenerateSkidParticle = false;
 			}
 		}
@@ -181,12 +171,7 @@ public class Player extends Entity
 				}
 			} else if (!isInAir && Math.abs(velocity.x) < 0.8 && canGenerateSkidParticle == true)
 			{
-				particles
-						.add(new Particle(
-								new Vector2f(position.x + getScale().x / 2 + velocity.x,
-										position.y + getScale().y - 16),
-								new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16),
-								new Vector2f(256, 128), false));
+				particles.add(new Particle(new Vector2f(position.x + getScale().x / 2 + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 				canGenerateSkidParticle = false;
 			}
 		}
@@ -201,14 +186,22 @@ public class Player extends Entity
 		// released and the jump count is still below max
 		if (!handler.jump())
 		{
-			if (jumpCount < MAX_JUMPS)
-			{
-				canJump = true;
-			}
 			if (!isInAir)
+			{
+				jumpCount = 0;
+			}
+			if (isInAir && jumpCount == 0)
 			{
 				jumpCount = 1;
 			}
+			if (jumpCount < MAX_JUMPS)
+			{
+				canJump = true;
+			} else
+			{
+				canJump = false;
+			}
+
 		}
 		// If the space bar is pressed and canJump make the player jump
 		// if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
@@ -216,26 +209,17 @@ public class Player extends Entity
 		{
 			if (canJump)
 			{
+
 				jumpCount++;
 				super.jump();
 				canJump = false;
 				if (!isInAir)
 				{
-					particles.add(new Particle(
-							new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16),
-							new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16),
-							new Vector2f(256, 128), false));
-					jumpCount = 1; // sets jumpCount to 0 if you're on the ground, essentially ignoring first jump
+					particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+					// jumpCount = 0;
 				}
 				System.out.println("jump " + jumpCount);
 			}
-			// else if (canDoubleJump && isInAir && jumpCount < MAX_JUMPS)
-			// {
-			// super.jump();
-			// canDoubleJump = false;
-			// System.out.println("doublejumped");
-			// jumpCount++;
-			// }
 
 		}
 		// if (Keyboard.isKeyDown(Keyboard.KEY_W))
@@ -300,11 +284,8 @@ public class Player extends Entity
 					displacex = -bulletSpawnDistance;
 					displacey = 0;
 				}
-				projectiles.add(new Projectile(
-						new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex,
-								super.position.y + (super.getScale().y / 2f) + displacey, 0),
-						Textures.playerLaser, new Vector2f(64, 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32),
-						shootAngle, bulletSpeed, velocity.x, velocity.y));
+				projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex, super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.playerLaser, new Vector2f(64, 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32), shootAngle, bulletSpeed,
+						velocity.x, velocity.y));
 				// System.out.println(shootAngle / 180 + "n");
 			}
 			canShoot = false;
@@ -390,7 +371,7 @@ public class Player extends Entity
 	/**
 	 * Terminal stuff
 	 */
-	
+
 	public boolean isImmune()
 	{
 		return immune;

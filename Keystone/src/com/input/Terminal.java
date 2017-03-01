@@ -121,7 +121,7 @@ public class Terminal
 					Enemy ee = Enemy.generateBasicEnemyBasedOnID(commands[1].toLowerCase(), x + camera.getPosition().x, y + camera.getPosition().y);
 					if (ee == null)
 					{
-						messages.add(0, "not a valid enemy type");
+						messages.add(0, "requested entity does not exist");
 						return;
 					} else
 					{
