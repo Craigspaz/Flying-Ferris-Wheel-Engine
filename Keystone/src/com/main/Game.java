@@ -31,9 +31,9 @@ import com.input.Terminal;
 public class Game
 {
 
-	private Player player;
+	private Player					player;
 
-	private Entity table;
+	private Entity					table;
 	// private Entity sean;
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
@@ -42,15 +42,15 @@ public class Game
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
 	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
 
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	public static ArrayList<Entity>	entities			= new ArrayList<Entity>();
 
-	private Camera camera;
+	private Camera					camera;
 
-	private Level testLevel;
-	private World testWorld;
+	private Level					testLevel;
+	private World					testWorld;
 
-	private InputHandler handler;
-	private Terminal terminal;
+	private InputHandler			handler;
+	private Terminal				terminal;
 
 	private Tile					testTile0;
 	private Tile					testTile1;
@@ -66,7 +66,7 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
-		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
+		// camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 		GFX.initString();
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
@@ -78,13 +78,11 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
-				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
-		terminal = new Terminal(handler,player);
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(player, Window.width, Window.height);
-
+		terminal = new Terminal(handler, player, camera);
 		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
 		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
@@ -159,7 +157,7 @@ public class Game
 		for (Particle p : particles)
 		{
 			p.render();
-    }
+		}
 		for (Tile t : tiles)
 		{
 			if (t.getPosition().z <= 0)

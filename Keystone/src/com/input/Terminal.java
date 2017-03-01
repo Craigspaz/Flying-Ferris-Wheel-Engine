@@ -1,27 +1,33 @@
 package com.input;
 
 import java.util.ArrayList;
+
 import com.graphics.GFX;
 import com.graphics.Textures;
+import com.graphics.world.Camera;
 import com.graphics.world.Player;
+import com.graphics.world.enemys.Enemy;
+import com.main.Game;
 
 public class Terminal
 {
-	private boolean active;
-	private InputHandler handler;
-	private boolean canToggle = true;
-	private boolean canEnter = true;
-	private String command = "";
-	private ArrayList<String> messages;
-	int lineheight;
+	private boolean				active;
+	private InputHandler		handler;
+	private boolean				canToggle	= true;
+	private boolean				canEnter	= true;
+	private String				command		= "";
+	private ArrayList<String>	messages;
+	int							lineheight;
 
-	private Player player;
+	private Player				player;
+	private Camera				camera;
 
-	public Terminal(InputHandler handler, Player player)
+	public Terminal(InputHandler handler, Player player, Camera camera)
 	{
 		this.handler = handler;
 		messages = new ArrayList<String>(5);
 		this.player = player;
+		this.camera = camera;
 	}
 
 	public boolean active()
@@ -33,6 +39,7 @@ public class Terminal
 	{
 		if (active)
 		{
+
 			if (handler.enter() && canEnter && !command.isEmpty())
 			{
 				read(command);
@@ -42,7 +49,6 @@ public class Terminal
 			} else if (handler.escape())
 			{
 				active = false;
-				handler.clearBuffer();
 				command = "";
 			} else
 			{
@@ -105,13 +111,23 @@ public class Terminal
 					{
 						x = Integer.parseInt(commands[2]);
 						y = Integer.parseInt(commands[3]);
-					} catch (NumberFormatException e)
+					} catch (NumberFormatException | NullPointerException e)
 					{
 						messages.add(0, "failed to read integers");
 						return;
 					}
+
+					Enemy ee = Enemy.generateBasicEnemyBasedOnID(commands[1].toLowerCase(), x + camera.getPosition().x, y + camera.getPosition().y);
+					if (ee == null)
+					{
+						messages.add(0, "not a valid enemy type");
+						return;
+					} else
+					{
+						Game.entities.add(ee);
+					}
 					// TODO create enemy with ID, X, and Y coords
-					messages.add(0, "spawned " + commands[1] + " at " + x + ", " + y);
+					messages.add(0, "spawned " + commands[1].toLowerCase() + " at " + x + ", " + y);
 				} else
 				{
 					messages.add(0, "invalid arguments");

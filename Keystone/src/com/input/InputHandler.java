@@ -20,7 +20,7 @@ public class InputHandler
 	 * Creates a new Input Handler
 	 */
 
-	StringBuilder cmd;
+	StringBuilder	cmd;
 
 	public InputHandler()
 	{
@@ -179,10 +179,8 @@ public class InputHandler
 			{
 				if (cmd.length() < 58)// fits in terminal window
 				{
-					if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14
-							&& Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28
-							&& Keyboard.getEventKey() != 29 && Keyboard.getEventKey() != 41
-							&& Keyboard.getEventKey() != 42) || Keyboard.getEventKey() == 57)
+					if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14 && Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28 && Keyboard.getEventKey() != 29 && Keyboard.getEventKey() != 41 && Keyboard.getEventKey() != 42)
+							|| Keyboard.getEventKey() == 57)
 					{
 
 						cmd.append(Keyboard.getEventCharacter());
@@ -194,7 +192,6 @@ public class InputHandler
 				}
 			}
 		}
-
 		return cmd.toString();
 	}
 
@@ -205,17 +202,17 @@ public class InputHandler
 		{
 		}
 	}
-	
+
 	public boolean isMouseLeftClicking()
 	{
 		return Mouse.isButtonDown(0);
 	}
-	
+
 	public Vector2f getMousePosition()
 	{
-        int Mousex = Mouse.getX();
-    	int Mousey = Window.height - Mouse.getY() - 1;
-    	return new Vector2f(Mousex,Mousey);
+		int Mousex = Mouse.getX();
+		int Mousey = Window.height - Mouse.getY() - 1;
+		return new Vector2f(Mousex, Mousey);
 	}
 
 }
