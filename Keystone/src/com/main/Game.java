@@ -66,10 +66,8 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
-		terminal = new Terminal(handler);
 		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 		GFX.initString();
-		terminal = new Terminal(handler);
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
 		// table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new
@@ -83,6 +81,7 @@ public class Game
 		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
 				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
+		terminal = new Terminal(handler,player);
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(player, Window.width, Window.height);
 

@@ -26,6 +26,7 @@ public class Textures
 	public static Texture	particles;
 	
 	public static Texture black;
+	public static Texture terminalWindow;
 
 	
 	public static Texture crabman;
@@ -61,5 +62,6 @@ public class Textures
 		sky = Loader.loadTexture("sky");
 		
 		highlight = Loader.loadTexture("highlight");
+		terminalWindow = Loader.loadTexture("terminal");
 	}
 }
