@@ -43,6 +43,7 @@ public class Terminal
 			if (handler.enter() && canEnter && !command.isEmpty())
 			{
 				read(command);
+				handler.setPrevious(command);
 				command = "";
 				handler.clearBuffer();
 				canEnter = false;

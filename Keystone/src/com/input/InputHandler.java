@@ -21,6 +21,7 @@ public class InputHandler
 	 */
 
 	StringBuilder	cmd;
+	String			previous;
 
 	public InputHandler()
 	{
@@ -186,6 +187,10 @@ public class InputHandler
 						cmd.append(Keyboard.getEventCharacter());
 					}
 				}
+				if (Keyboard.getEventKey() == Keyboard.KEY_UP)
+				{
+					cmd.replace(0, cmd.length(), previous);
+				}
 				if (Keyboard.getEventKey() == 14 && cmd.length() > 0)
 				{
 					cmd.deleteCharAt(cmd.length() - 1);
@@ -193,6 +198,11 @@ public class InputHandler
 			}
 		}
 		return cmd.toString();
+	}
+
+	public void setPrevious(String str)
+	{
+		this.previous = str;
 	}
 
 	public void clearBuffer()
