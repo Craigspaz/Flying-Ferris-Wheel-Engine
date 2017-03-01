@@ -33,10 +33,10 @@ public class GFX
 	 */
 	public static void initString(){
 		try {
-			InputStream inputStream	= ResourceLoader.getResourceAsStream("res/Cash_Currency.ttf");
+			InputStream inputStream	= ResourceLoader.getResourceAsStream("res/Px437_IBM_PS2thin4.ttf");
 	 
 			Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-			awtFont2 = awtFont2.deriveFont(24f); // set font size
+			awtFont2 = awtFont2.deriveFont(16f); // set font size
 			font2 = new TrueTypeFont(awtFont2, false);
 	 
 		} catch (Exception e) {
