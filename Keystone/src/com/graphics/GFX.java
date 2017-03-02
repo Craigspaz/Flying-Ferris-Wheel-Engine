@@ -18,32 +18,46 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class GFX
 {
-	public static TrueTypeFont font2;
+	public static TrueTypeFont	font2, font3;
 
-	
 	public static void drawString(float x, float y, String string)
 	{
 		GL11.glPushMatrix();
-        Textures.black.bind();
-        GFX.font2.drawString(x,y,string);
-        GL11.glPopMatrix();
+		Textures.black.bind();
+		GFX.font2.drawString(x, y, string);
+		GL11.glPopMatrix();
 	}
+
+	public static void drawString2(float x, float y, String string)
+	{
+		GL11.glPushMatrix();
+		Textures.black.bind();
+		GFX.font3.drawString(x, y, string);
+		GL11.glPopMatrix();
+	}
+	
 	/**
 	 * Call to initialize font2
 	 */
-	public static void initString(){
-		try {
-			InputStream inputStream	= ResourceLoader.getResourceAsStream("res/Px437_IBM_PS2thin4.ttf");
-	 
+	public static void initString()
+	{
+		try
+		{
+			InputStream inputStream = ResourceLoader.getResourceAsStream("res/Px437_IBM_PS2thin4.ttf");
+
 			Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 			awtFont2 = awtFont2.deriveFont(16f); // set font size
 			font2 = new TrueTypeFont(awtFont2, false);
-	 
-		} catch (Exception e) {
+			
+			awtFont2 = awtFont2.deriveFont(24f); // set font size
+			font3 = new TrueTypeFont(awtFont2, false);
+
+		} catch (Exception e)
+		{
 			e.printStackTrace();
-		}	
-		//Font awtFont = new Font("Times New Roman", Font.BOLD, 24); //name, style (PLAIN, BOLD, or ITALIC), size
-		//font2 = new TrueTypeFont(awtFont, false); //base Font, anti-aliasing true/false
+		}
+		// Font awtFont = new Font("Times New Roman", Font.BOLD, 24); //name, style (PLAIN, BOLD, or ITALIC), size
+		// font2 = new TrueTypeFont(awtFont, false); //base Font, anti-aliasing true/false
 	}
 
 	/**

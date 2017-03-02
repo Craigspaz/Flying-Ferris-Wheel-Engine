@@ -30,4 +30,12 @@
 		<COLLIDER x="-448" y="736" z="0" width="64" height="64"/>
 		<COLLIDER x="448" y="736" z="0" width="64" height="64"/>
 	</COLLIDERS>
+	<DIALOG>
+		<TEXT speakerName="Test" texFace="testImg" texBox="standard">
+		This is a test of dialogue
+		Hopefully when including trim
+		it'll ignore the indents and whitespace
+		also wordwrap needs to be included
+		</TEXT>
+	</DIALOG>
 </LEVEL>

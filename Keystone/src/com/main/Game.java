@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
+import com.graphics.world.DialogBox;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Particle;
@@ -41,6 +42,7 @@ public class Game
 	private ArrayList<Projectile>	enemyProjectiles	= new ArrayList<Projectile>();
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
 	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
+	private ArrayList<DialogBox>	dialogue;
 
 	public static ArrayList<Entity>	entities			= new ArrayList<Entity>();
 
@@ -93,6 +95,7 @@ public class Game
 		worldColliders = testLevel.getColliders();
 
 		tiles = testLevel.getTiles();
+		dialogue = testLevel.getDialogue();
 
 		tiles.add(sky);
 		tiles.add(testTile2);
@@ -167,6 +170,7 @@ public class Game
 		}
 		// testProjectile.render();
 		// GFX.drawString(64,600, "Press Enter to continue!");
+		dialogue.get(0).render(camera);
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 	}
 

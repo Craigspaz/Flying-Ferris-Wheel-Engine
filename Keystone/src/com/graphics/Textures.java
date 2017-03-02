@@ -38,6 +38,9 @@ public class Textures
 	
 	public static Texture highlight;
 	
+	public static Texture portraits;
+	public static Texture textBoxes;
+	
 	/**
 	 * Initializes all of the textures
 	 */
@@ -63,5 +66,7 @@ public class Textures
 		
 		highlight = Loader.loadTexture("highlight");
 		terminalWindow = Loader.loadTexture("terminal");
+		portraits = Loader.loadTexture("portraits");
+		textBoxes = Loader.loadTexture("textboxes");
 	}
 }
