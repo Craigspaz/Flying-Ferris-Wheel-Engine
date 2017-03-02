@@ -152,26 +152,55 @@ public class InputHandler
 		return Keyboard.isKeyDown(Keyboard.KEY_E);
 	}
 
+	/**
+	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to account for different keyboards
+	 * 
+	 * @return true if the tilde key is pressed
+	 */
 	public boolean tildedown()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_GRAVE);
 	}
 
+	/**
+	 * Returns if escape is pressed
+	 * 
+	 * @return true if escape is currently being pressed
+	 */
 	public boolean escape()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 	}
 
+	/**
+	 * Returns if enter is being pressed
+	 * 
+	 * @return true if enter is being pressed
+	 */
 	public boolean enter()
 	{
 		return Keyboard.isKeyDown(Keyboard.KEY_RETURN);
 	}
 
-	public boolean backspace()
+//	public boolean backspace()
+//	{
+//		return Keyboard.isKeyDown(Keyboard.KEY_BACK);
+//	}
+
+	/**
+	 * ses the specified key to determine dialogue progression
+	 * @return true if the "next page" predetermined key is being pressed
+	 */
+	public boolean nextPage()
 	{
-		return Keyboard.isKeyDown(Keyboard.KEY_BACK);
+		return Keyboard.isKeyDown(Keyboard.KEY_F);
 	}
 
+	/**
+	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality (keycode 14) and up arrow recognition to re-buffer the previous command
+	 * 
+	 * @return the currently typed string in the buffer
+	 */
 	public String getCommand()
 	{
 		while (Keyboard.next())
@@ -181,7 +210,7 @@ public class InputHandler
 				if (cmd.length() < 58)// fits in terminal window
 				{
 					if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14 && Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28 && Keyboard.getEventKey() != 29 && Keyboard.getEventKey() != 41 && Keyboard.getEventKey() != 42)
-							|| Keyboard.getEventKey() == 57)
+							|| Keyboard.getEventKey() == 57)// discounts everything not on the main keyboard, as well as some special characters on the main board. 57 is spacebar
 					{
 
 						cmd.append(Keyboard.getEventCharacter());
@@ -189,22 +218,31 @@ public class InputHandler
 				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP)
 				{
-					cmd.replace(0, cmd.length(), previous);
+					cmd.replace(0, cmd.length(), previous);// if up is pressed, the entire command becomes the previous command
 				}
 				if (Keyboard.getEventKey() == 14 && cmd.length() > 0)
 				{
-					cmd.deleteCharAt(cmd.length() - 1);
+					cmd.deleteCharAt(cmd.length() - 1);// backspace functionality
 				}
 			}
 		}
 		return cmd.toString();
 	}
 
+	/**
+	 * sets the previous entered terminal command, this is called in Terminal
+	 * 
+	 * @param str
+	 *            the command entered
+	 */
 	public void setPrevious(String str)
 	{
 		this.previous = str;
 	}
 
+	/**
+	 * used to clear from the Terminal when exiting
+	 */
 	public void clearBuffer()
 	{
 		cmd.delete(0, cmd.length());

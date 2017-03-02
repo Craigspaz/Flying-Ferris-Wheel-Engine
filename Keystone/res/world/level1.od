@@ -31,11 +31,19 @@
 		<COLLIDER x="448" y="736" z="0" width="64" height="64"/>
 	</COLLIDERS>
 	<DIALOG>
-		<TEXT speakerName="Test" texFace="testImg" texBox="standard">
-		This is a test of dialogue
-		Hopefully when including trim
-		it'll ignore the indents and whitespace
-		also wordwrap needs to be included
+		<TEXT speakerName="Kyle" texFace="testImg" texBox="standard">
+		this is a test.
+		this is another test.
+		this is the third test.
+		these tests are getting repetitive.
+		yet another test.
+		this should be the first line on the second page
+		second page, second line
+		look! another test line!
+		this is pretty fun
+		aww, this page is filled up
+		guess I'll move to this page
+		and end it because that's enough testing for now.
 		</TEXT>
 	</DIALOG>
 </LEVEL>

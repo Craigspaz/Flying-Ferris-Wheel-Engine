@@ -59,6 +59,7 @@ public class Game
 	private Tile					testTile2;
 	private Tile					sky;
 
+	private DialogBox				currentDialogue;
 	// private Projectile testProjectile;
 
 	/**
@@ -96,6 +97,8 @@ public class Game
 
 		tiles = testLevel.getTiles();
 		dialogue = testLevel.getDialogue();
+		currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
+		currentDialogue.activate();
 
 		tiles.add(sky);
 		tiles.add(testTile2);
@@ -170,7 +173,12 @@ public class Game
 		}
 		// testProjectile.render();
 		// GFX.drawString(64,600, "Press Enter to continue!");
-		dialogue.get(0).render(camera);
+		if (currentDialogue.active())
+		{
+			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not world
+			float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
+			currentDialogue.render(textBoxX, textBoxY);
+		}
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 	}
 
@@ -180,8 +188,12 @@ public class Game
 	public void update()
 	{
 		terminal.update();
-		if (!terminal.active())
+		if (!terminal.active())// pauses game while terminal is active
 		{
+			if (currentDialogue.active())
+			{
+				currentDialogue.update(handler);
+			}
 			player.update(worldColliders);
 			player.checkForCollisionWithProjectiles(enemyProjectiles);
 			for (Tile t : tiles)

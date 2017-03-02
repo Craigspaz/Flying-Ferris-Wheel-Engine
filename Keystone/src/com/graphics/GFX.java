@@ -28,6 +28,12 @@ public class GFX
 		GL11.glPopMatrix();
 	}
 
+	/**
+	 * Uses a second, larger font for drawing strings of dialogue
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param string the message to draw
+	 */
 	public static void drawString2(float x, float y, String string)
 	{
 		GL11.glPushMatrix();
