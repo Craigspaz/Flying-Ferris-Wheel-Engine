@@ -44,6 +44,9 @@ public class Textures
 	public static Texture dirt;
 	public static Texture grass;
 	public static Texture grassTop;
+
+	public static Texture portraits;
+	public static Texture textBoxes;
 	
 	/**
 	 * Initializes all of the textures
@@ -77,5 +80,7 @@ public class Textures
 		dirt = Loader.loadTexture("dirt");
 		grass = Loader.loadTexture("grass");
 		grassTop = Loader.loadTexture("grassTop");
+		portraits = Loader.loadTexture("portraits");
+		textBoxes = Loader.loadTexture("textboxes");
 	}
 }
