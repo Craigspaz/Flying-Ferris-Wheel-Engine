@@ -12,6 +12,7 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.GFX;
 import com.graphics.Loader;
 import com.graphics.Textures;
+import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
 import com.graphics.world.enemys.Enemy;
@@ -28,6 +29,8 @@ public class LevelBuilderGame
 {
 	private ArrayList<Tile>		tiles			= new ArrayList<Tile>();
 	private ArrayList<Enemy>	enemies			= new ArrayList<Enemy>();
+
+	private Player				player;
 
 	private InputHandler		handler;
 	private Texture				tileToPlace;
@@ -136,6 +139,9 @@ public class LevelBuilderGame
 			} else if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 640 && handler.getMousePosition().y < 672)
 			{
 				tileToPlace = upright;
+			} else if (handler.getMousePosition().x > Window.width - 64 && handler.getMousePosition().x <= Window.width - 32 && handler.getMousePosition().y >= 0 && handler.getMousePosition().y < 32)
+			{
+				tileToPlace = Textures.playerFront;
 			} else if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 672 && handler.getMousePosition().y < 704)
 			{
 				saveLevel();
@@ -143,20 +149,44 @@ public class LevelBuilderGame
 			{
 				if (tileToPlace != null)
 				{
-					Vector2f pos = new Vector2f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16);
-					boolean createTile = true;
-					for (Tile t : tiles)
+					if (tileToPlace == Textures.playerFront)
 					{
-						if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+						if (player == null)
 						{
-							tiles.remove(t);
-							createTile = false;
-							break;
+							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, new Vector2f(512, 256), 0, 0, new Vector2f(16, 16), new Vector2f(32, 32),
+									handler);
+						} else
+						{
+							for (Tile t : tiles)
+							{
+								if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+								{
+									tiles.remove(t);
+									break;
+								}
+							}
+							if (handler.getMousePosition().x - handler.getMousePosition().x % 16 == player.getPosition().x && handler.getMousePosition().y - handler.getMousePosition().y % 16 == player.getPosition().y)
+							{
+								player = null;
+							}
 						}
-					}
-					if (createTile)
+					} else
 					{
-						tiles.add(new Tile(new Vector3f(pos.x, pos.y, 0), new Vector2f(16, 16), tileToPlace));
+						Vector2f pos = new Vector2f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16);
+						boolean createTile = true;
+						for (Tile t : tiles)
+						{
+							if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+							{
+								tiles.remove(t);
+								createTile = false;
+								break;
+							}
+						}
+						if (createTile)
+						{
+							tiles.add(new Tile(new Vector3f(pos.x, pos.y, 0), new Vector2f(16, 16), tileToPlace));
+						}
 					}
 				}
 			}
@@ -171,6 +201,10 @@ public class LevelBuilderGame
 		for (Tile t : tiles)
 		{
 			t.render();
+		}
+		if (player != null)
+		{
+			player.render();
 		}
 
 		GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.highlight);
@@ -198,13 +232,19 @@ public class LevelBuilderGame
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 608, upleft);
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 640, upright);
 
-		// TODO: Handle enemys
+		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 0, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
 
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel);
 
 		if (tileToPlace != null)
 		{
-			GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace);
+			if (tileToPlace == Textures.playerFront)
+			{
+				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
+			} else
+			{
+				GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace);
+			}
 		}
 	}
 
