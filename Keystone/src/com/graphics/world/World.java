@@ -178,7 +178,8 @@ public class World
 					entity.setHostileToPlayer(isEnemy);
 					entities.add(entity);
 					System.out.println("New Enemy: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
-				} else if (line.trim().startsWith("<TEXT "))//reads speech for dialogue boxes from the level.  accepts a name, portrait index, and box background.
+				} else if (line.trim().startsWith("<TEXT "))// reads speech for dialogue boxes from the level. accepts a
+															// name, portrait index, and box background.
 				{
 					String param = line.substring(line.indexOf("speakerName=\"") + 13);
 					String speakerName = param.substring(0, param.indexOf("\""));
@@ -195,7 +196,7 @@ public class World
 					{
 						line = scanner.nextLine();
 					}
-					while (!line.trim().startsWith("</TEXT"))//within 2 TEXT tags, it counts all lines as readable text
+					while (!line.trim().startsWith("</TEXT"))// within 2 TEXT tags, it counts all lines as readable text
 					{
 						text.add(line.trim());
 						if (scanner.hasNextLine())
@@ -208,16 +209,16 @@ public class World
 					}
 					int portraitnum = 0;
 					int boxnum = 0;
-					if (tex1.equals("testImg"))//this will be added to when more portraits become available
+					if (tex1.equals("testImg"))// this will be added to when more portraits become available
 					{
 						portraitnum = 0;
 					}
-					if (tex2.equals("standard"))//this will be added to when more text boxes become available
+					if (tex2.equals("standard"))// this will be added to when more text boxes become available
 					{
 						boxnum = 0;
 					}
 					String[] text2 = new String[text.size()];
-					text.toArray(text2);//sends an array instead of an arraylist, to avoid having lists of lists
+					text.toArray(text2);// sends an array instead of an arraylist, to avoid having lists of lists
 					dialogue.add(new DialogBox(text2, speakerName, portraitnum, boxnum));
 					System.out.println("New Dialogue: (" + speakerName + ", saying " + text2.length + " lines), using portrait \"" + tex1 + "\" and text box \"" + tex2 + "\"");
 				}
@@ -247,9 +248,17 @@ public class World
 		return tiles;
 	}
 
+	/**
+	 * Compares tiles
+	 */
 	private static class TileComparator implements Comparator<Tile>
 	{
 
+		/**
+		 * @param o1 The first tile to compare
+		 * @param o2 The second tile to compare
+		 * @return Returns the difference in the two tiles
+		 */
 		@Override
 		public int compare(Tile o1, Tile o2)
 		{

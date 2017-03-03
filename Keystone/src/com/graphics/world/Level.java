@@ -14,7 +14,7 @@ public class Level
 	private ArrayList<Tile>			tiles;
 	private ArrayList<RectangleBox>	colliders;
 	private ArrayList<Entity>		entities;
-	private ArrayList<DialogBox>		dialogue;
+	private ArrayList<DialogBox>	dialogue;
 
 	/**
 	 * Creates a new level

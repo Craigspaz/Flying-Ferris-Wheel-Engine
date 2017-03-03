@@ -33,8 +33,7 @@ public class RectangleBox
 	 * 
 	 * @param box
 	 *            The box to check if colliding with
-	 * @return Returns true if the current box overlaps with another box passed
-	 *         in and false otherwise
+	 * @return Returns true if the current box overlaps with another box passed in and false otherwise
 	 */
 	public boolean isCollidingWithBox(RectangleBox box)
 	{
@@ -124,6 +123,11 @@ public class RectangleBox
 		this.size = size;
 	}
 
+	/**
+	 * Over rides the two string method
+	 * 
+	 * @return Returns a string representation of this object
+	 */
 	public String toString()
 	{
 		return "(" + position.x + " , " + position.y + " , " + position.z + ") (" + size.x + " , " + size.y + ")";

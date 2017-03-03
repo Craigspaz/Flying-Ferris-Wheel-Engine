@@ -18,8 +18,18 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class GFX
 {
-	public static TrueTypeFont	font2, font3;
+	public static TrueTypeFont font2, font3;
 
+	/**
+	 * Draws a string of text at a position x,y
+	 * 
+	 * @param x
+	 *            The x coordinate
+	 * @param y
+	 *            The y coordinate
+	 * @param string
+	 *            The string to draw
+	 */
 	public static void drawString(float x, float y, String string)
 	{
 		GL11.glPushMatrix();
@@ -30,9 +40,13 @@ public class GFX
 
 	/**
 	 * Uses a second, larger font for drawing strings of dialogue
-	 * @param x the x coordinate
-	 * @param y the y coordinate
-	 * @param string the message to draw
+	 * 
+	 * @param x
+	 *            the x coordinate
+	 * @param y
+	 *            the y coordinate
+	 * @param string
+	 *            the message to draw
 	 */
 	public static void drawString2(float x, float y, String string)
 	{
@@ -41,7 +55,7 @@ public class GFX
 		GFX.font3.drawString(x, y, string);
 		GL11.glPopMatrix();
 	}
-	
+
 	/**
 	 * Call to initialize font2
 	 */
@@ -54,7 +68,7 @@ public class GFX
 			Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 			awtFont2 = awtFont2.deriveFont(16f); // set font size
 			font2 = new TrueTypeFont(awtFont2, false);
-			
+
 			awtFont2 = awtFont2.deriveFont(24f); // set font size
 			font3 = new TrueTypeFont(awtFont2, false);
 

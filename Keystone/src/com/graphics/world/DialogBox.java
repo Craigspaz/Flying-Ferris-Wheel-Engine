@@ -26,6 +26,18 @@ public class DialogBox
 	private boolean		canTurn		= true;
 	private boolean		isActive	= false;
 
+	/**
+	 * Creates a new dialogbox
+	 * 
+	 * @param messages
+	 *            The messages to display in the box
+	 * @param speaker
+	 *            The speaker saying the messages
+	 * @param portraitNumber
+	 *            The id of the portorate in the sprite sheet
+	 * @param textBoxNumber
+	 *            The id of the background texture
+	 */
 	public DialogBox(String[] messages, String speaker, int portraitNumber, int textBoxNumber)
 	{
 		this.messages = messages;
@@ -34,20 +46,34 @@ public class DialogBox
 		this.textBoxNumber = textBoxNumber;
 	}
 
-	// renders the chosen text box background, the portrait of the speaker, and any text
+	/**
+	 * renders the chosen text box background, the portrait of the speaker, and any text
+	 * 
+	 * @param textBoxX
+	 *            The position to render the dialog box in the x direction
+	 * @param textBoxY
+	 *            The position to render the dialog box in the y direction
+	 */
 	public void render(float textBoxX, float textBoxY)
 	{
 		if (isActive)
 		{
 			int lineheight = GFX.font3.getLineHeight();
-			GFX.drawSpriteFromSpriteSheet(1024, 256, textBoxX, textBoxY, textBoxes, new Vector2f(0, textBoxNumber), new Vector2f(1, 1));// TODO fix it so it's not hardcoded
+			GFX.drawSpriteFromSpriteSheet(1024, 256, textBoxX, textBoxY, textBoxes, new Vector2f(0, textBoxNumber), new Vector2f(1, 1));// TODO
+																																		// fix
+																																		// it
+																																		// so
+																																		// it's
+																																		// not
+																																		// hardcoded
 			GFX.drawSpriteFromSpriteSheet(128, 128, textBoxX + 2, textBoxY + 26, portraits, new Vector2f(portraitNumber, 0), new Vector2f(.5f, 1));
 			// GFX.drawEntireSprite(1024, 256, textBoxX, textBoxY, textBoxes);
 			// GFX.drawEntireSprite(256, 128, textBoxX + 2, textBoxY + 26, portraits);
 			GFX.drawString2(textBoxX + 4, textBoxY + 4, speaker);
 			for (int i = 0; i < 5; i++)
 			{
-				if (i + (5 * pageNumber) < messages.length)// only renders 5 lines per page, and doesn't try to retrieve if index is out of bounds
+				if (i + (5 * pageNumber) < messages.length)// only renders 5 lines per page, and doesn't try to retrieve
+															// if index is out of bounds
 				{
 					GFX.drawString2(textBoxX + 138, textBoxY + 32 + (i * lineheight), messages[i + (5 * pageNumber)]);
 				} else
