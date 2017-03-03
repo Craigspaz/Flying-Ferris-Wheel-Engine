@@ -259,16 +259,16 @@ public class Enemy extends Entity
 
 	}
 
-	public static Enemy generateBasicEnemyBasedOnID(int id, int x, int y)
+	public static Enemy generateBasicEnemyBasedOnID(String id, float x, float y)
 	{
+		Enemy e = null;
 		switch (id)
 		{
-			case Enemies.ENTITY_CRABMAN:
-				// return new CrabMan(x,y);
+			case "table":
+				e = new Table(x, y);
 				break;
-
 		}
-		return null;
+		return e;
 	}
 
 	/**
@@ -523,7 +523,7 @@ public class Enemy extends Entity
 	{
 		this.id = id;
 	}
-	
+
 	public String toString()
 	{
 		return name;

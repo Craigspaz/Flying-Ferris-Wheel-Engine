@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
+import com.graphics.world.DialogBox;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Particle;
@@ -31,9 +32,9 @@ import com.input.Terminal;
 public class Game
 {
 
-	private Player player;
+	private Player					player;
 
-	private Entity table;
+	private Entity					table;
 	// private Entity sean;
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
@@ -41,22 +42,24 @@ public class Game
 	private ArrayList<Projectile>	enemyProjectiles	= new ArrayList<Projectile>();
 	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
 	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
+	private ArrayList<DialogBox>	dialogue;
 
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	public static ArrayList<Entity>	entities			= new ArrayList<Entity>();
 
-	private Camera camera;
+	private Camera					camera;
 
-	private Level testLevel;
-	private World testWorld;
+	private Level					testLevel;
+	private World					testWorld;
 
-	private InputHandler handler;
-	private Terminal terminal;
+	private InputHandler			handler;
+	private Terminal				terminal;
 
 	private Tile					testTile0;
 	private Tile					testTile1;
 	private Tile					testTile2;
 	private Tile					sky;
 
+	private DialogBox				currentDialogue;
 	// private Projectile testProjectile;
 
 	/**
@@ -66,7 +69,7 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
-		camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
+		// camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 		GFX.initString();
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
@@ -78,13 +81,11 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline,
-				new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
+		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
 
-		terminal = new Terminal(handler,player);
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(player, Window.width, Window.height);
-
+		terminal = new Terminal(handler, player, camera);
 		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
 		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
@@ -95,6 +96,9 @@ public class Game
 		worldColliders = testLevel.getColliders();
 
 		tiles = testLevel.getTiles();
+		dialogue = testLevel.getDialogue();
+		currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
+		currentDialogue.activate();
 
 		tiles.add(sky);
 		tiles.add(testTile2);
@@ -159,7 +163,7 @@ public class Game
 		for (Particle p : particles)
 		{
 			p.render();
-    }
+		}
 		for (Tile t : tiles)
 		{
 			if (t.getPosition().z <= 0)
@@ -169,6 +173,12 @@ public class Game
 		}
 		// testProjectile.render();
 		// GFX.drawString(64,600, "Press Enter to continue!");
+		if (currentDialogue.active())
+		{
+			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not world
+			float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
+			currentDialogue.render(textBoxX, textBoxY);
+		}
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 	}
 
@@ -178,8 +188,12 @@ public class Game
 	public void update()
 	{
 		terminal.update();
-		if (!terminal.active())
+		if (!terminal.active())// pauses game while terminal is active
 		{
+			if (currentDialogue.active())
+			{
+				currentDialogue.update(handler);
+			}
 			player.update(worldColliders);
 			player.checkForCollisionWithProjectiles(enemyProjectiles);
 			for (Tile t : tiles)
