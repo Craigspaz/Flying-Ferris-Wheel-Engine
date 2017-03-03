@@ -6,21 +6,29 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Creates a new level
+ * 
+ * @author Craig Ferris
+ *
+ */
 public class LevelBuilder
 {
 
-	public static int	width	= 1366;
-	public static int	height	= 768;
-	
-	private LevelBuilderGame game;
-	
-	
+	public static int			width	= 1366;
+	public static int			height	= 768;
+
+	private LevelBuilderGame	game;
+
+	/**
+	 * Creates a level
+	 */
 	public LevelBuilder()
 	{
 		try
 		{
 			setDisplayMode(width, height, false);
-			Display.setTitle("Keystone");
+			Display.setTitle("Flying Ferris Wheel Engine - Level Builder");
 			Display.setResizable(false);
 
 			Display.create();
@@ -29,21 +37,27 @@ public class LevelBuilder
 		{
 			e.printStackTrace();
 		}
-		
+
 		game = new LevelBuilderGame();
 
 	}
-	
+
+	/**
+	 * Updates the game
+	 */
 	private void update()
 	{
 		game.update();
 	}
-	
+
+	/**
+	 * Renders the game
+	 */
 	private void render()
 	{
 		game.render();
 	}
-	
+
 	/**
 	 * The main game loop
 	 */
@@ -75,7 +89,10 @@ public class LevelBuilder
 		Display.destroy();
 		System.exit(0);
 	}
-	
+
+	/**
+	 * Initializes opengl
+	 */
 	public void initOpenGL()
 	{
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -87,7 +104,7 @@ public class LevelBuilder
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
-	
+
 	/**
 	 * Sets the displaymode. Allows the displaymode to be changed
 	 * 
@@ -164,6 +181,12 @@ public class LevelBuilder
 		}
 	}
 
+	/**
+	 * Launches the level builder
+	 * 
+	 * @param args
+	 *            The commandline parameters
+	 */
 	public static void main(String[] args)
 	{
 		LevelBuilder builder = new LevelBuilder();

@@ -17,7 +17,7 @@ public class Window
 
 	public static int	width	= 1366;
 	public static int	height	= 768;
-	
+
 	private Game		game;
 
 	/**
@@ -28,7 +28,7 @@ public class Window
 		try
 		{
 			setDisplayMode(width, height, false);
-			Display.setTitle("Keystone");
+			Display.setTitle("Flying Ferris Wheel Engine");
 			Display.setResizable(false);
 
 			Display.create();

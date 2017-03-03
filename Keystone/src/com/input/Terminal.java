@@ -28,6 +28,16 @@ public class Terminal
 	private Player				player;
 	private Camera				camera;
 
+	/**
+	 * Creates a new terminal
+	 * 
+	 * @param handler
+	 *            A pointer to the input handler
+	 * @param player
+	 *            A pointer to the player
+	 * @param camera
+	 *            A pointer to the camera
+	 */
 	public Terminal(InputHandler handler, Player player, Camera camera)
 	{
 		this.handler = handler;
@@ -38,6 +48,7 @@ public class Terminal
 
 	/**
 	 * used to determine in Game whether to call update on things
+	 * 
 	 * @return true if terminal is up
 	 */
 	public boolean active()
@@ -91,8 +102,11 @@ public class Terminal
 
 	/**
 	 * draws the terminal box and the current typed text, plus 5 additional lines of previous input and output
-	 * @param x the coordinate of the camera
-	 * @param y the coordinate of the camera
+	 * 
+	 * @param x
+	 *            the coordinate of the camera
+	 * @param y
+	 *            the coordinate of the camera
 	 */
 	public void render(float x, float y)
 	{
@@ -110,7 +124,9 @@ public class Terminal
 
 	/**
 	 * interprets the entered command
-	 * @param cmd the entered command
+	 * 
+	 * @param cmd
+	 *            the entered command
 	 */
 	private void read(String cmd)
 	{
@@ -121,11 +137,12 @@ public class Terminal
 		} else
 		{
 			messages.add(0, "> " + cmd);
-			if (commands[0].equals("nodamage"))//toggles invulnerability, takes no arguments
+			if (commands[0].equals("nodamage"))// toggles invulnerability, takes no arguments
 			{
 				player.setImmune(!player.isImmune());
 				messages.add(0, "nodamage is now " + player.isImmune());
-			} else if (commands[0].equals("spawn"))//spawns the specified entity at the specified coordinates.  Requires valid integers and a valid entity name.
+			} else if (commands[0].equals("spawn"))// spawns the specified entity at the specified coordinates. Requires
+													// valid integers and a valid entity name.
 			{
 				if (commands.length >= 4)
 				{
@@ -155,10 +172,10 @@ public class Terminal
 				{
 					messages.add(0, "invalid arguments");
 				}
-			} else if (commands[0].equals("hello"))//a silly test command, we're keeping this in
+			} else if (commands[0].equals("hello"))// a silly test command, we're keeping this in
 			{
 				messages.add(0, "hello :)");
-			} else if (commands[0].equals("help"))//gives information on other commands
+			} else if (commands[0].equals("help"))// gives information on other commands
 			{
 				messages.add(0, "nodamage: toggles whether player can receive damage");
 				messages.add(0, "spawn [ID] [x] [y]: spawns entity at x, y from camera corner");
@@ -168,7 +185,7 @@ public class Terminal
 			}
 
 		}
-		while (messages.size() > 5)//determines which messages to draw on screen
+		while (messages.size() > 5)// determines which messages to draw on screen
 		{
 			messages.remove(messages.size() - 1);
 		}

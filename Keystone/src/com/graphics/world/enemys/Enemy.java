@@ -35,6 +35,12 @@ public class Enemy extends Entity
 	private int						id;
 	protected String				name			= "";
 
+	/**
+	 * Creates a new enemy based on an already created entity
+	 * 
+	 * @param e
+	 *            The entity
+	 */
 	public Enemy(Entity e)
 	{
 		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getSizeOfSpriteSheet(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
@@ -259,6 +265,17 @@ public class Enemy extends Entity
 
 	}
 
+	/**
+	 * Creates a new enemy based on an ID and sets it's initial position to x,y
+	 * 
+	 * @param id
+	 *            The ID of the enemy to return
+	 * @param x
+	 *            The x position of the enemy
+	 * @param y
+	 *            The y position of the enemy
+	 * @return Returns the created enemy
+	 */
 	public static Enemy generateBasicEnemyBasedOnID(String id, float x, float y)
 	{
 		Enemy e = null;
@@ -514,16 +531,32 @@ public class Enemy extends Entity
 		this.bulletSpeed = bulletSpeed;
 	}
 
+	/**
+	 * Returns the id of the enemy
+	 * 
+	 * @return Returns the id of the enemy
+	 */
 	public int getId()
 	{
 		return id;
 	}
 
+	/**
+	 * Sets the id of the enemy
+	 * 
+	 * @param id
+	 *            The id of the enemy
+	 */
 	public void setId(int id)
 	{
 		this.id = id;
 	}
 
+	/**
+	 * Overrides the toString
+	 * 
+	 * @return Returns a string representation of this object
+	 */
 	public String toString()
 	{
 		return name;

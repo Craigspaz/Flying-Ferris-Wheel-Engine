@@ -55,7 +55,7 @@ public class Camera
 	{
 		float playerPositionX = entity.getPosition().x;
 		float playerPositionY = entity.getPosition().y;
-		
+
 		previousPosition.x = position.x;
 		previousPosition.y = position.y;
 
@@ -66,7 +66,7 @@ public class Camera
 		float newCameraPositionY = halfMarkY - (height / 2);
 		position.x = newCameraPositionX;
 		position.y = newCameraPositionY;
-		
+
 		offset.x = position.x - previousPosition.x;
 		offset.y = position.y - previousPosition.y;
 	}
@@ -159,8 +159,7 @@ public class Camera
 	/**
 	 * Returns the offset of the camera relative to it's previous position
 	 * 
-	 * @return Returns the offset of the camera relative to it's previous
-	 *         position
+	 * @return Returns the offset of the camera relative to it's previous position
 	 */
 	public Vector2f getOffset()
 	{
