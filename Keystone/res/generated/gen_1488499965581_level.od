@@ -1,0 +1,8 @@
+<TILES sizex="64" sizey="64">
+	<TILE x="448" y="96" z="0" texName="testTile"/>
+	<TILE x="464" y="96" z="0" texName="testTile"/>
+	<TILE x="480" y="96" z="0" texName="testTile"/>
+</TILES>
+<COLLIDERS>
+	<COLLIDER x="480" y="96" z="0" width="384" height="64"/>
+</COLLIDERS>

@@ -159,7 +159,7 @@ public class Game
 		for (Particle p : particles)
 		{
 			p.render();
-    }
+		}
 		for (Tile t : tiles)
 		{
 			if (t.getPosition().z <= 0)
