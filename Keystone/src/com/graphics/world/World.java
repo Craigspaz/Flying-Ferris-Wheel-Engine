@@ -3,7 +3,9 @@ package com.graphics.world;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -23,6 +25,7 @@ public class World
 	private ArrayList<Tile>			tiles;
 	private ArrayList<RectangleBox>	colliders;
 	private ArrayList<Entity>		entities	= new ArrayList<Entity>();
+	private ArrayList<DialogBox>	dialogue	= new ArrayList<DialogBox>();
 
 	/**
 	 * Creates a new world Initializes a few variables
@@ -148,8 +151,8 @@ public class World
 					Texture t1 = null;
 					Texture t2 = null;
 					boolean isEnemy = false;
-					Vector2f size = new Vector2f(0,0);
-					Vector2f spriteSheet = new Vector2f(0,0);
+					Vector2f size = new Vector2f(0, 0);
+					Vector2f spriteSheet = new Vector2f(0, 0);
 
 					if (tex1.equals("crabMan"))
 					{
@@ -157,16 +160,16 @@ public class World
 						t2 = Textures.crabman;
 						nx = 10;
 						isEnemy = true;
-						size = new Vector2f(64,64);
-						spriteSheet = new Vector2f(256,128);
+						size = new Vector2f(64, 64);
+						spriteSheet = new Vector2f(256, 128);
 					}
-					if(tex1.equals("player"))
+					if (tex1.equals("player"))
 					{
 						t1 = Textures.playerFront;
 						t2 = Textures.playerOutline;
 						isEnemy = true;
-						size = new Vector2f(32,32);
-						spriteSheet = new Vector2f(512,256);
+						size = new Vector2f(32, 32);
+						spriteSheet = new Vector2f(512, 256);
 						nx = 10;
 					}
 
@@ -175,6 +178,48 @@ public class World
 					entity.setHostileToPlayer(isEnemy);
 					entities.add(entity);
 					System.out.println("New Enemy: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
+				} else if (line.trim().startsWith("<TEXT "))//reads speech for dialogue boxes from the level.  accepts a name, portrait index, and box background.
+				{
+					String param = line.substring(line.indexOf("speakerName=\"") + 13);
+					String speakerName = param.substring(0, param.indexOf("\""));
+
+					String param1 = param.substring(param.indexOf("texFace=\"") + 9);
+					String tex1 = param1.substring(0, param1.indexOf("\""));
+
+					String param2 = param1.substring(param1.indexOf("texBox=\"") + 8);
+					String tex2 = param2.substring(0, param2.indexOf("\""));
+
+					ArrayList<String> text = new ArrayList<String>();
+
+					if (scanner.hasNextLine())
+					{
+						line = scanner.nextLine();
+					}
+					while (!line.trim().startsWith("</TEXT"))//within 2 TEXT tags, it counts all lines as readable text
+					{
+						text.add(line.trim());
+						if (scanner.hasNextLine())
+						{
+							line = scanner.nextLine();
+						} else
+						{
+							break;
+						}
+					}
+					int portraitnum = 0;
+					int boxnum = 0;
+					if (tex1.equals("testImg"))//this will be added to when more portraits become available
+					{
+						portraitnum = 0;
+					}
+					if (tex2.equals("standard"))//this will be added to when more text boxes become available
+					{
+						boxnum = 0;
+					}
+					String[] text2 = new String[text.size()];
+					text.toArray(text2);//sends an array instead of an arraylist, to avoid having lists of lists
+					dialogue.add(new DialogBox(text2, speakerName, portraitnum, boxnum));
+					System.out.println("New Dialogue: (" + speakerName + ", saying " + text2.length + " lines), using portrait \"" + tex1 + "\" and text box \"" + tex2 + "\"");
 				}
 			}
 
@@ -187,30 +232,30 @@ public class World
 		newLevel.setColliders(colliders);
 		newLevel.setTiles(sortTiles(tiles));
 		newLevel.setEntities(entities);
+		newLevel.setDialogue(dialogue);
 		return newLevel;
 	}
 
 	/**
 	 * Sorts the array of tiles by putting farther tiles in the array first
 	 * 
-	 * @return Returns a sorted array where the first items have the lowest z
-	 *         values
+	 * @return Returns a sorted array where the first items have the lowest z values
 	 */
 	public static ArrayList<Tile> sortTiles(ArrayList<Tile> tiles)
 	{
 		tiles.sort(new TileComparator());
 		return tiles;
 	}
-	
+
 	private static class TileComparator implements Comparator<Tile>
 	{
 
 		@Override
 		public int compare(Tile o1, Tile o2)
 		{
-			return (int)(o2.getPosition().z - o1.getPosition().z);
+			return (int) (o2.getPosition().z - o1.getPosition().z);
 		}
-		
+
 	}
 
 }
