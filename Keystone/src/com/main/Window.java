@@ -28,7 +28,7 @@ public class Window
 		try
 		{
 			setDisplayMode(width, height, false);
-			Display.setTitle("Keystone");
+			Display.setTitle("Flying Ferris Wheel Engine");
 			Display.setResizable(false);
 
 			Display.create();
