@@ -6,6 +6,12 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Creates a new level
+ * 
+ * @author Craig Ferris
+ *
+ */
 public class LevelBuilder
 {
 
@@ -14,6 +20,9 @@ public class LevelBuilder
 
 	private LevelBuilderGame	game;
 
+	/**
+	 * Creates a level
+	 */
 	public LevelBuilder()
 	{
 		try
@@ -33,11 +42,17 @@ public class LevelBuilder
 
 	}
 
+	/**
+	 * Updates the game
+	 */
 	private void update()
 	{
 		game.update();
 	}
 
+	/**
+	 * Renders the game
+	 */
 	private void render()
 	{
 		game.render();
@@ -75,6 +90,9 @@ public class LevelBuilder
 		System.exit(0);
 	}
 
+	/**
+	 * Initializes opengl
+	 */
 	public void initOpenGL()
 	{
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -163,6 +181,12 @@ public class LevelBuilder
 		}
 	}
 
+	/**
+	 * Launches the level builder
+	 * 
+	 * @param args
+	 *            The commandline parameters
+	 */
 	public static void main(String[] args)
 	{
 		LevelBuilder builder = new LevelBuilder();

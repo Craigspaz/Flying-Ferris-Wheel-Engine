@@ -153,7 +153,8 @@ public class InputHandler
 	}
 
 	/**
-	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to account for different keyboards
+	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to
+	 * account for different keyboards
 	 * 
 	 * @return true if the tilde key is pressed
 	 */
@@ -182,13 +183,14 @@ public class InputHandler
 		return Keyboard.isKeyDown(Keyboard.KEY_RETURN);
 	}
 
-//	public boolean backspace()
-//	{
-//		return Keyboard.isKeyDown(Keyboard.KEY_BACK);
-//	}
+	// public boolean backspace()
+	// {
+	// return Keyboard.isKeyDown(Keyboard.KEY_BACK);
+	// }
 
 	/**
 	 * ses the specified key to determine dialogue progression
+	 * 
 	 * @return true if the "next page" predetermined key is being pressed
 	 */
 	public boolean nextPage()
@@ -197,7 +199,8 @@ public class InputHandler
 	}
 
 	/**
-	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality (keycode 14) and up arrow recognition to re-buffer the previous command
+	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality
+	 * (keycode 14) and up arrow recognition to re-buffer the previous command
 	 * 
 	 * @return the currently typed string in the buffer
 	 */
@@ -210,7 +213,8 @@ public class InputHandler
 				if (cmd.length() < 58)// fits in terminal window
 				{
 					if ((Keyboard.getEventKey() < 54 && Keyboard.getEventKey() > 1 && Keyboard.getEventKey() != 14 && Keyboard.getEventKey() != 15 && Keyboard.getEventKey() != 28 && Keyboard.getEventKey() != 29 && Keyboard.getEventKey() != 41 && Keyboard.getEventKey() != 42)
-							|| Keyboard.getEventKey() == 57)// discounts everything not on the main keyboard, as well as some special characters on the main board. 57 is spacebar
+							|| Keyboard.getEventKey() == 57)// discounts everything not on the main keyboard, as well as
+															// some special characters on the main board. 57 is spacebar
 					{
 
 						cmd.append(Keyboard.getEventCharacter());
@@ -218,7 +222,8 @@ public class InputHandler
 				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP)
 				{
-					cmd.replace(0, cmd.length(), previous);// if up is pressed, the entire command becomes the previous command
+					cmd.replace(0, cmd.length(), previous);// if up is pressed, the entire command becomes the previous
+															// command
 				}
 				if (Keyboard.getEventKey() == 14 && cmd.length() > 0)
 				{
@@ -251,11 +256,21 @@ public class InputHandler
 		}
 	}
 
+	/**
+	 * Returns if the left mouse button is down
+	 * 
+	 * @return Returns if the left mouse button is down
+	 */
 	public boolean isMouseLeftClicking()
 	{
 		return Mouse.isButtonDown(0);
 	}
 
+	/**
+	 * Returns the position of the mouse
+	 * 
+	 * @return Returns the position of the mouse
+	 */
 	public Vector2f getMousePosition()
 	{
 		int Mousex = Mouse.getX();

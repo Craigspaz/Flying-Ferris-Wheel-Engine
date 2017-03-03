@@ -17,7 +17,7 @@ public class Window
 
 	public static int	width	= 1366;
 	public static int	height	= 768;
-	
+
 	private Game		game;
 
 	/**

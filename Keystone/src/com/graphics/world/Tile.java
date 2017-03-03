@@ -31,8 +31,7 @@ public class Tile
 	}
 
 	/**
-	 * Creates a new tile at the position passed in with size (0,0) and no
-	 * texture
+	 * Creates a new tile at the position passed in with size (0,0) and no texture
 	 * 
 	 * @param position
 	 *            The position of the tile
@@ -72,8 +71,7 @@ public class Tile
 	}
 
 	/**
-	 * Creates a new tile at the specified position with the specified size and
-	 * texture
+	 * Creates a new tile at the specified position with the specified size and texture
 	 * 
 	 * @param position
 	 *            The position of the tile

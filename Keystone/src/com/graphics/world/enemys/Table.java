@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import com.graphics.Textures;
 import com.graphics.world.projectile.Projectile;
+
 /**
  * The Table test object
  * 
@@ -14,6 +15,14 @@ import com.graphics.world.projectile.Projectile;
 public class Table extends Enemy
 {
 
+	/**
+	 * Creates a new table
+	 * 
+	 * @param x
+	 *            The x position of the table
+	 * @param y
+	 *            The y position of the table
+	 */
 	public Table(float x, float y)
 	{
 		super(new Vector3f(x, y, 0), Textures.table, Textures.tableOutline, new Vector2f(256, 32), 6, 0, new Vector2f(32, 32), new Vector2f(32, 32));

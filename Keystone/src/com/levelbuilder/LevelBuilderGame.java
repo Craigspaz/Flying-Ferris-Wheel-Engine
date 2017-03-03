@@ -18,6 +18,12 @@ import com.graphics.world.enemys.Enemy;
 import com.input.InputHandler;
 import com.main.Window;
 
+/**
+ * Lets the user build a level
+ * 
+ * @author Craig Ferris
+ *
+ */
 public class LevelBuilderGame
 {
 	private ArrayList<Tile>		tiles			= new ArrayList<Tile>();
@@ -44,12 +50,18 @@ public class LevelBuilderGame
 	private Texture				upright			= Loader.loadTexture("borders/upright");
 	private Texture				saveLevel		= Loader.loadTexture("saveLevel");
 
+	/**
+	 * Creates a new level builder
+	 */
 	public LevelBuilderGame()
 	{
 		new Textures();
 		handler = new InputHandler();
 	}
 
+	/**
+	 * Updates the level builder
+	 */
 	public void update()
 	{
 		if (handler.isMouseLeftClicking() == false)
@@ -151,6 +163,9 @@ public class LevelBuilderGame
 		}
 	}
 
+	/**
+	 * Renders the level builder
+	 */
 	public void render()
 	{
 		for (Tile t : tiles)
@@ -182,11 +197,9 @@ public class LevelBuilderGame
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 576, updownright);
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 608, upleft);
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 640, upright);
-	
-		
-		//TODO: Handle enemys
-		
-		
+
+		// TODO: Handle enemys
+
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel);
 
 		if (tileToPlace != null)
@@ -194,14 +207,19 @@ public class LevelBuilderGame
 			GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace);
 		}
 	}
-	
+
+	/**
+	 * Generates colliders
+	 * 
+	 * @return Returns an arraylist of colliders
+	 */
 	private ArrayList<RectangleBox> generateColliders()
 	{
 		ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
-		for(Tile t : tiles)
+		for (Tile t : tiles)
 		{
 			Texture te = t.getTexture();
-			if(te == down || te == downleft || te == downleftright || te == downright || te == left || te == leftright || te == leftupright || te == right || te == rightupdown || te == topdown || te == up || te == updownleftright || te == updownright || te == upleft || te == upright)
+			if (te == down || te == downleft || te == downleftright || te == downright || te == left || te == leftright || te == leftupright || te == right || te == rightupdown || te == topdown || te == up || te == updownleftright || te == updownright || te == upleft || te == upright)
 			{
 				continue;
 			}
@@ -209,179 +227,159 @@ public class LevelBuilderGame
 			float x = (t.getPosition().x);
 			float y = (t.getPosition().y);
 			System.out.println("Number of tiles: " + tiles.size());
-			for(RectangleBox box : colliders)
+			for (RectangleBox box : colliders)
 			{
-				if(t.getPosition().y == box.getPosition().y)
+				if (t.getPosition().y == box.getPosition().y)
 				{
-					if(t.getPosition().x - 8 > box.getPosition().x && t.getPosition().x  - 8 < box.getPosition().x + box.getSize().x)
+					if (t.getPosition().x - 8 > box.getPosition().x && t.getPosition().x - 8 < box.getPosition().x + box.getSize().x)
 					{
 						box.setPosition(t.getPosition());
-						box.setSize(new Vector2f(t.getSize().x + box.getSize().x,box.getSize().y));
+						box.setSize(new Vector2f(t.getSize().x + box.getSize().x, box.getSize().y));
 						addedToColliders = true;
 						break;
-					}
-					else if(t.getPosition().x + 8 > box.getPosition().x && t.getPosition().x + 8 < box.getPosition().x + box.getSize().x)
+					} else if (t.getPosition().x + 8 > box.getPosition().x && t.getPosition().x + 8 < box.getPosition().x + box.getSize().x)
 					{
-						box.setSize(new Vector2f(box.getSize().x + 16,box.getSize().y));
+						box.setSize(new Vector2f(box.getSize().x + 16, box.getSize().y));
 						addedToColliders = true;
 						break;
 					}
 				}
 			}
-			if(!addedToColliders)
+			if (!addedToColliders)
 			{
-				RectangleBox box = new RectangleBox(new Vector3f(t.getPosition().x,t.getPosition().y,t.getPosition().z),new Vector2f(16,16));
+				RectangleBox box = new RectangleBox(new Vector3f(t.getPosition().x, t.getPosition().y, t.getPosition().z), new Vector2f(16, 16));
 				colliders.add(box);
 			}
 		}
 		System.out.println("Number of colliders in colliders: " + colliders.size() + " with : " + colliders.get(0));
 		ArrayList<RectangleBox> finalColliders = new ArrayList<RectangleBox>();
-		for(RectangleBox c : colliders)
+		for (RectangleBox c : colliders)
 		{
 			boolean foundOverlap = false;
-			for(RectangleBox c2 : colliders)
+			for (RectangleBox c2 : colliders)
 			{
-				if(c.getPosition().x == c2.getPosition().x && c.getPosition().y == c2.getPosition().y && c.getSize().x == c2.getSize().x && c.getSize().y == c2.getSize().y)
+				if (c.getPosition().x == c2.getPosition().x && c.getPosition().y == c2.getPosition().y && c.getSize().x == c2.getSize().x && c.getSize().y == c2.getSize().y)
 				{
 					continue;
 				}
-				if(c.getPosition().x - 8 > c2.getPosition().x && c.getPosition().x - 8 < c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y)
+				if (c.getPosition().x - 8 > c2.getPosition().x && c.getPosition().x - 8 < c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y)
 				{
-					RectangleBox result = new RectangleBox(c2.getPosition(),new Vector2f(c.getSize().x + c2.getSize().x,16));
+					RectangleBox result = new RectangleBox(c2.getPosition(), new Vector2f(c.getSize().x + c2.getSize().x, 16));
 					finalColliders.add(result);
 					foundOverlap = true;
-				}
-				else if(c.getPosition().x + 8 > c2.getPosition().x && c.getPosition().x + 8 < c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y)
+				} else if (c.getPosition().x + 8 > c2.getPosition().x && c.getPosition().x + 8 < c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y)
 				{
-					RectangleBox result = new RectangleBox(c.getPosition(),new Vector2f(c.getSize().x + c2.getSize().x,16));
+					RectangleBox result = new RectangleBox(c.getPosition(), new Vector2f(c.getSize().x + c2.getSize().x, 16));
 					finalColliders.add(result);
 					foundOverlap = true;
 				}
 			}
-			if(!foundOverlap)
+			if (!foundOverlap)
 			{
 				finalColliders.add(c);
 			}
 		}
-		
-		for(RectangleBox c : finalColliders)
+
+		for (RectangleBox c : finalColliders)
 		{
 			System.out.println(c.getSize());
-			c.setSize(new Vector2f((float)(c.getSize().x / 16) * 64,(float)(c.getSize().y) / 16 * 64));
+			c.setSize(new Vector2f((float) (c.getSize().x / 16) * 64, (float) (c.getSize().y) / 16 * 64));
 		}
 		return finalColliders;
 	}
 
+	/**
+	 * Saves the level
+	 */
 	private void saveLevel()
 	{
 		System.out.println("Generating Colliders...");
 		ArrayList<RectangleBox> colliders = generateColliders();
-		
+
 		System.out.println("Saving...");
 		try
 		{
 			PrintWriter writer = new PrintWriter(new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.od"));
-			
+
 			writer.println("<TILES sizex=\"64\" sizey=\"64\">");
-			for(Tile t : tiles)
+			for (Tile t : tiles)
 			{
 				String textureName = "";
 				Texture tex = t.getTexture();
-				if(tex == Textures.testTile)
+				if (tex == Textures.testTile)
 				{
 					textureName = "testTile";
-				}
-				else if(tex == Textures.grass)
+				} else if (tex == Textures.grass)
 				{
 					textureName = "grass";
-				}
-				else if(tex == Textures.grassTop)
+				} else if (tex == Textures.grassTop)
 				{
 					textureName = "grassTop";
-				}
-				else if(tex == Textures.dirt2)
+				} else if (tex == Textures.dirt2)
 				{
 					textureName = "dirt2";
-				}
-				else if(tex == Textures.dirt)
+				} else if (tex == Textures.dirt)
 				{
 					textureName = "dirt";
-				}
-				else if(tex == Textures.air)
+				} else if (tex == Textures.air)
 				{
 					textureName = "air";
-				}
-				else if(tex == down)
+				} else if (tex == down)
 				{
 					textureName = "down";
-				}
-				else if(tex == downleft)
+				} else if (tex == downleft)
 				{
 					textureName = "downleft";
-				}
-				else if(tex == downleftright)
+				} else if (tex == downleftright)
 				{
 					textureName = "downleftright";
-				}
-				else if(tex == downright)
+				} else if (tex == downright)
 				{
 					textureName = "downright";
-				}
-				else if(tex == left)
+				} else if (tex == left)
 				{
 					textureName = "left";
-				}
-				else if(tex == leftright)
+				} else if (tex == leftright)
 				{
 					textureName = "leftright";
-				}
-				else if(tex == leftupright)
+				} else if (tex == leftupright)
 				{
 					textureName = "leftupright";
-				}
-				else if(tex == right)
+				} else if (tex == right)
 				{
 					textureName = "right";
-				}
-				else if(tex == rightupdown)
+				} else if (tex == rightupdown)
 				{
 					textureName = "rightupdown";
-				}
-				else if(tex == topdown)
+				} else if (tex == topdown)
 				{
 					textureName = "topdown";
-				}
-				else if(tex == up)
+				} else if (tex == up)
 				{
 					textureName = "up";
-				}
-				else if(tex == updownleftright)
+				} else if (tex == updownleftright)
 				{
 					textureName = "updownleftright";
-				}
-				else if(tex == updownright)
+				} else if (tex == updownright)
 				{
 					textureName = "updownright";
-				}
-				else if(tex == upleft)
+				} else if (tex == upleft)
 				{
 					textureName = "upleft";
-				}
-				else if(tex == upright)
+				} else if (tex == upright)
 				{
 					textureName = "upright";
 				}
-				writer.println("\t<TILE x=\"" + (int)t.getPosition().x + "\" y=\"" + (int) t.getPosition().y + "\" z=\"" + (int)t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
+				writer.println("\t<TILE x=\"" + (int) t.getPosition().x + "\" y=\"" + (int) t.getPosition().y + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
 			}
 			writer.println("</TILES>");
 			writer.println("<COLLIDERS>");
-			for(RectangleBox box : colliders)
+			for (RectangleBox box : colliders)
 			{
-				writer.println("\t<COLLIDER x=\"" + (int)box.getPosition().x + "\" y=\"" + (int) box.getPosition().y + "\" z=\"" + (int)box.getPosition().z + "\" width=\"" + (int)box.getSize().x + "\" height=\"" + (int)box.getSize().y + "\"/>");
+				writer.println("\t<COLLIDER x=\"" + (int) box.getPosition().x + "\" y=\"" + (int) box.getPosition().y + "\" z=\"" + (int) box.getPosition().z + "\" width=\"" + (int) box.getSize().x + "\" height=\"" + (int) box.getSize().y + "\"/>");
 			}
 			writer.println("</COLLIDERS>");
-			
-			
+
 			writer.close();
 		} catch (FileNotFoundException e)
 		{

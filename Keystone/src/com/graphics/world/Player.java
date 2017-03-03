@@ -370,6 +370,7 @@ public class Player extends Entity
 
 	/**
 	 * Terminal stuff, only changed via Terminal
+	 * 
 	 * @return true if the player is invulnerable
 	 */
 	public boolean isImmune()
@@ -379,6 +380,7 @@ public class Player extends Entity
 
 	/**
 	 * Terminal stuff, only changed via Terminal
+	 * 
 	 * @param immune
 	 */
 	public void setImmune(boolean immune)

@@ -64,11 +64,9 @@ public class Projectile extends Entity
 	 * @param sizeOfTexture
 	 *            The size of the texture
 	 * @param numberOfSpritesX
-	 *            The number of sprite animation frames in the x direction to
-	 *            animate
+	 *            The number of sprite animation frames in the x direction to animate
 	 * @param numberOfSpritesY
-	 *            The number of sprite animation frames in the y direction to
-	 *            animate
+	 *            The number of sprite animation frames in the y direction to animate
 	 * @param scale
 	 *            The size at which to render the sprite
 	 * @param sizeOfSpriteOnSheet

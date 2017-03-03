@@ -403,11 +403,9 @@ public class Particle
 	}
 
 	/**
-	 * Returns if the animation should continue after making it to the end of
-	 * the animation
+	 * Returns if the animation should continue after making it to the end of the animation
 	 * 
-	 * @return Returns if the animation should continue after making it to the
-	 *         end of the animation
+	 * @return Returns if the animation should continue after making it to the end of the animation
 	 */
 	public boolean isLoop()
 	{
@@ -415,8 +413,7 @@ public class Particle
 	}
 
 	/**
-	 * Sets if the animation should continue after making it to the end of the
-	 * animation
+	 * Sets if the animation should continue after making it to the end of the animation
 	 * 
 	 * @param loop
 	 *            The value of loop
