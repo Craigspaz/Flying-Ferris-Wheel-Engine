@@ -142,6 +142,9 @@ public class LevelBuilderGame
 			} else if (handler.getMousePosition().x > Window.width - 64 && handler.getMousePosition().x <= Window.width - 32 && handler.getMousePosition().y >= 0 && handler.getMousePosition().y < 32)
 			{
 				tileToPlace = Textures.playerFront;
+			} else if (handler.getMousePosition().x > Window.width - 64 && handler.getMousePosition().x <= Window.width - 32 && handler.getMousePosition().y >= 32 && handler.getMousePosition().y < 64)
+			{
+				tileToPlace = Textures.crabman;
 			} else if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 672 && handler.getMousePosition().y < 704)
 			{
 				saveLevel();
@@ -165,11 +168,51 @@ public class LevelBuilderGame
 									break;
 								}
 							}
+							for (Enemy e : enemies)
+							{
+								if (e.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && e.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+								{
+									enemies.remove(e);
+									break;
+								}
+							}
 							if (handler.getMousePosition().x - handler.getMousePosition().x % 16 == player.getPosition().x && handler.getMousePosition().y - handler.getMousePosition().y % 16 == player.getPosition().y)
 							{
 								player = null;
 							}
 						}
+					} else if (tileToPlace == Textures.crabman)
+					{
+						boolean removedItem = false;
+						for (Tile t : tiles)
+						{
+							if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+							{
+								tiles.remove(t);
+								removedItem = true;
+								break;
+							}
+						}
+						for (Enemy e : enemies)
+						{
+							if (e.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && e.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+							{
+								enemies.remove(e);
+								removedItem = true;
+								break;
+							}
+						}
+						if (player != null && handler.getMousePosition().x - handler.getMousePosition().x % 16 == player.getPosition().x && handler.getMousePosition().y - handler.getMousePosition().y % 16 == player.getPosition().y)
+						{
+							player = null;
+							removedItem = true;
+						}
+						if (!removedItem)
+						{
+							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, new Vector2f(512, 128), 0, 0, new Vector2f(16, 16),
+									new Vector2f(64, 64)));
+						}
+
 					} else
 					{
 						Vector2f pos = new Vector2f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16);
@@ -179,6 +222,21 @@ public class LevelBuilderGame
 							if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
 							{
 								tiles.remove(t);
+								createTile = false;
+								break;
+							}
+						}
+
+						if (player != null && handler.getMousePosition().x - handler.getMousePosition().x % 16 == player.getPosition().x && handler.getMousePosition().y - handler.getMousePosition().y % 16 == player.getPosition().y)
+						{
+							player = null;
+							createTile = false;
+						}
+						for (Enemy e : enemies)
+						{
+							if (e.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && e.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
+							{
+								enemies.remove(e);
 								createTile = false;
 								break;
 							}
@@ -236,15 +294,24 @@ public class LevelBuilderGame
 
 		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel);
 
+		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 32, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
+
 		if (tileToPlace != null)
 		{
 			if (tileToPlace == Textures.playerFront)
 			{
 				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
+			} else if (tileToPlace == Textures.crabman)
+			{
+				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
 			} else
 			{
 				GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace);
 			}
+		}
+		for (Enemy e : enemies)
+		{
+			e.render();
 		}
 	}
 
@@ -339,9 +406,10 @@ public class LevelBuilderGame
 		System.out.println("Saving...");
 		try
 		{
-			PrintWriter writer = new PrintWriter(new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.od"));
-
-			writer.println("<TILES sizex=\"64\" sizey=\"64\">");
+			File output = new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.od");
+			PrintWriter writer = new PrintWriter(output);
+			writer.println("<LEVEL name=\"" + output.getName() + "\"");
+			writer.println("\t<TILES sizex=\"64\" sizey=\"64\">");
 			for (Tile t : tiles)
 			{
 				String textureName = "";
@@ -410,16 +478,32 @@ public class LevelBuilderGame
 				{
 					textureName = "upright";
 				}
-				writer.println("\t<TILE x=\"" + (int) t.getPosition().x + "\" y=\"" + (int) t.getPosition().y + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
+				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x + "\" y=\"" + (int) t.getPosition().y + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
 			}
-			writer.println("</TILES>");
-			writer.println("<COLLIDERS>");
+			writer.println("\t</TILES>");
+			writer.println("\t<COLLIDERS>");
 			for (RectangleBox box : colliders)
 			{
 				writer.println("\t<COLLIDER x=\"" + (int) box.getPosition().x + "\" y=\"" + (int) box.getPosition().y + "\" z=\"" + (int) box.getPosition().z + "\" width=\"" + (int) box.getSize().x + "\" height=\"" + (int) box.getSize().y + "\"/>");
 			}
-			writer.println("</COLLIDERS>");
+			writer.println("\t</COLLIDERS>");
 
+			writer.println("\t<ENEMIES>");
+			for (Enemy e : enemies)
+			{
+				String textureName = "";
+				String outlineName = "";
+				if (e.getTexture() == Textures.crabman)
+				{
+					textureName = "crabMan";
+					outlineName = "crabMan";
+				}
+				writer.println(
+						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getScale().x + "\" height=\"" + (int) e.getScale().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
+			}
+
+			writer.println("\t</ENEMIES>");
+			writer.println("</LEVEL>");
 			writer.close();
 		} catch (FileNotFoundException e)
 		{
