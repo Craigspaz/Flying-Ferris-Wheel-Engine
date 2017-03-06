@@ -1,6 +1,7 @@
 package com.graphics;
 
 import org.newdawn.slick.opengl.Texture;
+import com.graphics.Textures;
 
 /**
  * Loads and stores textures
