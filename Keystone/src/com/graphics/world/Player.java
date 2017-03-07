@@ -26,8 +26,8 @@ public class Player extends Entity
 	private float			bulletSpawnDistance			= 48;
 	private boolean			canGenerateSprintParticle	= true;
 	private boolean			canGenerateSkidParticle		= false;
-	private int				jumpCount					= 0;	// starts at 1 for easy diagnostic of how many jumps
-																// used
+	private int				jumpCount					= 0;	// starts at 0
+	private boolean			flipping;							// for double jump animation
 
 	private InputHandler	handler;
 
@@ -209,8 +209,11 @@ public class Player extends Entity
 		{
 			if (canJump)
 			{
-
 				jumpCount++;
+				if (jumpCount > 1)
+				{
+					flipping = true;
+				}
 				super.jump();
 				canJump = false;
 				if (!isInAir)
@@ -329,32 +332,40 @@ public class Player extends Entity
 			super.animSpriteFrameY = 0;
 		}
 
-		if (Math.abs(velocity.y) < 10 && isInAir)
-
+		if (jumpCount > 1 && getAnimSpriteFrameX() < 9 && flipping)
 		{
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 4;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
-			// System.out.println("Top of Jump");
-		} else if (velocity.y < 0 && isInAir)
-
+			super.numberOfSpritesX = 10;
+			super.numberOfSpritesY = 6;
+		} else
 		{
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 3;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
-		} else if (velocity.y > 0 && isInAir)
+			flipping = false;
+			if (Math.abs(velocity.y) < 10 && isInAir)
 
-		{
+			{
+				super.numberOfSpritesX = 0;
+				super.numberOfSpritesY = 4;
+				super.animateTime = 0;
+				super.animSpriteFrameX = 0;
+				super.animSpriteFrameY = 0;
+				// System.out.println("Top of Jump");
+			} else if (velocity.y < 0 && isInAir)
 
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 5;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
+			{
+				super.numberOfSpritesX = 0;
+				super.numberOfSpritesY = 3;
+				super.animateTime = 0;
+				super.animSpriteFrameX = 0;
+				super.animSpriteFrameY = 0;
+			} else if (velocity.y > 0 && isInAir)
+
+			{
+
+				super.numberOfSpritesX = 0;
+				super.numberOfSpritesY = 5;
+				super.animateTime = 0;
+				super.animSpriteFrameX = 0;
+				super.animSpriteFrameY = 0;
+			}
 		}
 
 	}

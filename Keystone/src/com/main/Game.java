@@ -82,6 +82,7 @@ public class Game
 		entities.add(table);
 
 		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
+		player.setAnimateFrameTime(3.0f);
 
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(player, Window.width, Window.height);
