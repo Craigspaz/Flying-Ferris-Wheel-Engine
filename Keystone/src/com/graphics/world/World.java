@@ -97,6 +97,10 @@ public class World
 					{
 						texture = Textures.testTile;
 					}
+					else if(tex.equals("grass"))
+					{
+						texture = Textures.grass;
+					}
 
 					int xPos = Integer.parseInt(x);
 					int yPos = Integer.parseInt(y);
