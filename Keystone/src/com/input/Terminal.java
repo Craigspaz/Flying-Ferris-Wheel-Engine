@@ -1,11 +1,13 @@
 package com.input;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.Player;
+import com.graphics.world.World;
 import com.graphics.world.enemys.Enemy;
 import com.main.Game;
 
@@ -27,6 +29,7 @@ public class Terminal
 
 	private Player				player;
 	private Camera				camera;
+	private Game				game;
 
 	/**
 	 * Creates a new terminal
@@ -38,12 +41,13 @@ public class Terminal
 	 * @param camera
 	 *            A pointer to the camera
 	 */
-	public Terminal(InputHandler handler, Player player, Camera camera)
+	public Terminal(InputHandler handler, Player player, Camera camera, Game game)
 	{
 		this.handler = handler;
 		messages = new ArrayList<String>(5);
 		this.player = player;
 		this.camera = camera;
+		this.game = game;
 	}
 
 	/**
@@ -168,6 +172,22 @@ public class Terminal
 					}
 					// TODO create enemy with ID, X, and Y coords
 					messages.add(0, "spawned " + commands[1].toLowerCase() + " at " + x + ", " + y);
+				} else
+				{
+					messages.add(0, "invalid arguments");
+				}
+			} else if (commands[0].equals("load"))// gives information on other commands
+			{
+				if (commands.length >= 2)
+				{
+					if (game.loadNewLevel("./res/world/" + commands[1] + ".od"))
+					{
+						messages.add(0, "loaded " + commands[1]);
+					} else
+					{
+						messages.add(0, "could not load level");
+					}
+
 				} else
 				{
 					messages.add(0, "invalid arguments");

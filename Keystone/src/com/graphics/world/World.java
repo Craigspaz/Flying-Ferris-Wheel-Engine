@@ -22,10 +22,10 @@ import com.graphics.Textures;
  */
 public class World
 {
-	private ArrayList<Tile>			tiles;
-	private ArrayList<RectangleBox>	colliders;
-	private ArrayList<Entity>		entities	= new ArrayList<Entity>();
-	private ArrayList<DialogBox>	dialogue	= new ArrayList<DialogBox>();
+	private static ArrayList<Tile>			tiles;
+	private static ArrayList<RectangleBox>	colliders;
+	private static ArrayList<Entity>		entities	= new ArrayList<Entity>();
+	private static ArrayList<DialogBox>		dialogue	= new ArrayList<DialogBox>();
 
 	/**
 	 * Creates a new world Initializes a few variables
@@ -43,17 +43,19 @@ public class World
 	 *            The name of the file
 	 * @return Returns a level with the values from the file
 	 */
-	public Level loadWorld(String filename)
+	public static Level loadWorld(String filename)
 	{
 		tiles = new ArrayList<Tile>();
 		colliders = new ArrayList<RectangleBox>();
+		entities = new ArrayList<Entity>();
+		dialogue = new ArrayList<DialogBox>();
 		Level newLevel = null;
 		int width = 0;
 		int height = 0;
 
-		File file = new File(filename);
 		try
 		{
+			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
 			String line = "";
 			while (scanner.hasNextLine())
@@ -227,9 +229,13 @@ public class World
 			scanner.close();
 		} catch (FileNotFoundException e)
 		{
+			System.out.println("yuo are dumb");
 			e.printStackTrace();
 		}
-
+		if (newLevel == null)
+		{
+			return null;
+		}
 		newLevel.setColliders(colliders);
 		newLevel.setTiles(sortTiles(tiles));
 		newLevel.setEntities(entities);
@@ -255,8 +261,10 @@ public class World
 	{
 
 		/**
-		 * @param o1 The first tile to compare
-		 * @param o2 The second tile to compare
+		 * @param o1
+		 *            The first tile to compare
+		 * @param o2
+		 *            The second tile to compare
 		 * @return Returns the difference in the two tiles
 		 */
 		@Override

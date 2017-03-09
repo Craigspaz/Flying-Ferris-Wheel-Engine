@@ -48,8 +48,7 @@ public class Game
 
 	private Camera					camera;
 
-	private Level					testLevel;
-	private World					testWorld;
+	private Level					currentLevel;
 
 	private InputHandler			handler;
 	private Terminal				terminal;
@@ -86,38 +85,38 @@ public class Game
 
 		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(player, Window.width, Window.height);
-		terminal = new Terminal(handler, player, camera);
+		terminal = new Terminal(handler, player, camera, this);
 		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
 		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
-		testWorld = new World();
-		testLevel = testWorld.loadWorld("./res/world/level1.od");
-		worldColliders = testLevel.getColliders();
-
-		tiles = testLevel.getTiles();
-		dialogue = testLevel.getDialogue();
-		currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
-		currentDialogue.activate();
-
-		tiles.add(sky);
-		tiles.add(testTile2);
-		tiles.add(testTile1);
-		tiles.add(testTile0);
-
-		tiles = World.sortTiles(tiles);
-
-		entities.addAll(testLevel.getEntities());
-
-		for (Entity e : entities)
-		{
-			if (e.isHostileToPlayer())
-			{
-				enemies.add(new Enemy(e));
-				e.setDead(true);
-			}
-		}
+		loadNewLevel("./res/world/level1.od");
+		// currentLevel = World.loadWorld("./res/world/level1.od");
+		// worldColliders = currentLevel.getColliders();
+		//
+		// tiles = currentLevel.getTiles();
+		// dialogue = currentLevel.getDialogue();
+		// currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
+		// currentDialogue.activate();
+		//
+		// tiles.add(sky);
+		// tiles.add(testTile2);
+		// tiles.add(testTile1);
+		// tiles.add(testTile0);
+		//
+		// tiles = World.sortTiles(tiles);
+		//
+		// entities.addAll(currentLevel.getEntities());
+		//
+		// for (Entity e : entities)
+		// {
+		// if (e.isHostileToPlayer())
+		// {
+		// enemies.add(new Enemy(e));
+		// e.setDead(true);
+		// }
+		// }
 	}
 
 	/**
@@ -340,5 +339,40 @@ public class Game
 	public void cleanUPGame()
 	{
 
+	}
+
+	public boolean loadNewLevel(String name)
+	{
+		currentLevel = World.loadWorld(name);
+		if (currentLevel == null)
+		{
+			return false;
+		}
+
+		worldColliders = currentLevel.getColliders();
+
+		tiles = currentLevel.getTiles();
+		dialogue = currentLevel.getDialogue();
+		currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
+		currentDialogue.activate();
+
+		tiles.add(sky);
+		tiles.add(testTile2);
+		tiles.add(testTile1);
+		tiles.add(testTile0);
+
+		tiles = World.sortTiles(tiles);
+
+		entities.addAll(currentLevel.getEntities());
+
+		for (Entity e : entities)
+		{
+			if (e.isHostileToPlayer())
+			{
+				enemies.add(new Enemy(e));
+				e.setDead(true);
+			}
+		}
+		return true;
 	}
 }
