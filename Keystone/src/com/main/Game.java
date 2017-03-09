@@ -11,6 +11,7 @@ import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.DialogBox;
+import com.graphics.world.Door;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Particle;
@@ -80,12 +81,12 @@ public class Game
 
 		entities.add(table);
 
-		player = new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler);
-		player.setAnimateFrameTime(3.0f);
+		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+		getPlayer().setAnimateFrameTime(3.0f);
 
-		camera = new Camera(new Vector2f(player.getPosition().x, player.getPosition().y), new Vector2f(Window.width, Window.height));
-		camera.setPositionToPlayer(player, Window.width, Window.height);
-		terminal = new Terminal(handler, player, camera, this);
+		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
+		camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
+		terminal = new Terminal(handler, getPlayer(), camera, this);
 		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
 		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
@@ -142,8 +143,8 @@ public class Game
 		{
 			e.renderOutline();
 		}
-		player.renderOutline();
-		player.render();
+		getPlayer().renderOutline();
+		getPlayer().render();
 		for (Entity e : entities)
 		{
 			e.render();
@@ -194,8 +195,8 @@ public class Game
 			{
 				currentDialogue.update(handler);
 			}
-			player.update(worldColliders);
-			player.checkForCollisionWithProjectiles(enemyProjectiles);
+			getPlayer().update(worldColliders);
+			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
 			for (Tile t : tiles)
 			{
 				t.update();
@@ -224,16 +225,16 @@ public class Game
 				}
 			}
 
-			if (!player.getProjectiles().isEmpty())
+			if (!getPlayer().getProjectiles().isEmpty())
 			{
-				playerProjectiles.addAll(player.getProjectiles());
-				player.getProjectiles().clear();
+				playerProjectiles.addAll(getPlayer().getProjectiles());
+				getPlayer().getProjectiles().clear();
 			}
 
-			if (!player.getParticles().isEmpty())
+			if (!getPlayer().getParticles().isEmpty())
 			{
-				particles.addAll(player.getParticles());
-				player.getParticles().clear();
+				particles.addAll(getPlayer().getParticles());
+				getPlayer().getParticles().clear();
 			}
 
 			for (Projectile p : playerProjectiles)
@@ -316,7 +317,7 @@ public class Game
 				}
 			}
 			// testProjectile.update(colliders);
-			camera.setPositionToPlayer(player, Window.width, Window.height);
+			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
 			for (Tile t : tiles)
 			{
 				if (t.getPosition().z > 1)
@@ -374,5 +375,20 @@ public class Game
 			}
 		}
 		return true;
+	}
+
+	public void exitDoor(Vector3f destination)
+	{
+		player.setPosition(destination);
+	}
+
+	public Player getPlayer()
+	{
+		return player;
+	}
+
+	public void setPlayer(Player player)
+	{
+		this.player = player;
 	}
 }
