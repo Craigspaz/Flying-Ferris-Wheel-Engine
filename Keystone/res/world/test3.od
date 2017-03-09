@@ -1,0 +1,67 @@
+<LEVEL name="Test3">
+<TILES sizex="64" sizey="64">
+	<TILE x="0" y="80" z="0" texName="testTile"/>
+	<TILE x="16" y="80" z="0" texName="testTile"/>
+	<TILE x="48" y="80" z="0" texName="testTile"/>
+	<TILE x="32" y="80" z="0" texName="testTile"/>
+	<TILE x="64" y="80" z="0" texName="testTile"/>
+	<TILE x="80" y="80" z="0" texName="testTile"/>
+	<TILE x="96" y="80" z="0" texName="testTile"/>
+	<TILE x="112" y="80" z="0" texName="testTile"/>
+	<TILE x="128" y="64" z="0" texName="testTile"/>
+	<TILE x="0" y="64" z="0" texName="testTile"/>
+	<TILE x="144" y="112" z="0" texName="testTile"/>
+	<TILE x="144" y="96" z="0" texName="testTile"/>
+	<TILE x="128" y="112" z="0" texName="testTile"/>
+	<TILE x="112" y="112" z="0" texName="testTile"/>
+	<TILE x="96" y="112" z="0" texName="testTile"/>
+	<TILE x="80" y="128" z="0" texName="testTile"/>
+	<TILE x="32" y="160" z="0" texName="testTile"/>
+	<TILE x="48" y="160" z="0" texName="testTile"/>
+	<TILE x="64" y="160" z="0" texName="testTile"/>
+	<TILE x="80" y="160" z="0" texName="testTile"/>
+	<TILE x="112" y="240" z="0" texName="testTile"/>
+	<TILE x="128" y="240" z="0" texName="testTile"/>
+	<TILE x="144" y="240" z="0" texName="testTile"/>
+	<TILE x="96" y="240" z="0" texName="testTile"/>
+	<TILE x="160" y="240" z="0" texName="testTile"/>
+	<TILE x="176" y="224" z="0" texName="testTile"/>
+	<TILE x="96" y="208" z="0" texName="testTile"/>
+	<TILE x="112" y="208" z="0" texName="testTile"/>
+	<TILE x="144" y="176" z="0" texName="testTile"/>
+</TILES>
+<COLLIDERS>
+	<COLLIDER x="112" y="80" z="0" width="448" height="64"/>
+	<COLLIDER x="32" y="80" z="0" width="64" height="64"/>
+	<COLLIDER x="128" y="64" z="0" width="64" height="64"/>
+	<COLLIDER x="0" y="64" z="0" width="64" height="64"/>
+	<COLLIDER x="128" y="112" z="0" width="128" height="64"/>
+	<COLLIDER x="144" y="96" z="0" width="64" height="64"/>
+	<COLLIDER x="112" y="112" z="0" width="128" height="64"/>
+	<COLLIDER x="96" y="112" z="0" width="128" height="64"/>
+	<COLLIDER x="96" y="112" z="0" width="64" height="64"/>
+	<COLLIDER x="80" y="128" z="0" width="64" height="64"/>
+	<COLLIDER x="80" y="160" z="0" width="256" height="64"/>
+	<COLLIDER x="160" y="240" z="0" width="256" height="64"/>
+	<COLLIDER x="96" y="240" z="0" width="64" height="64"/>
+	<COLLIDER x="176" y="224" z="0" width="64" height="64"/>
+	<COLLIDER x="112" y="208" z="0" width="128" height="64"/>
+	<COLLIDER x="144" y="176" z="0" width="64" height="64"/>
+</COLLIDERS>
+<DIALOG>
+		<TEXT speakerName="Kyle" texFace="testImg" texBox="standard">
+		this is a test.
+		this is another test.
+		this is the third test.
+		these tests are getting repetitive.
+		yet another test.
+		this should be the first line on the second page
+		second page, second line
+		look! another test line!
+		this is pretty fun
+		aww, this page is filled up
+		guess I'll move to this page
+		and end it because that's enough testing for now.
+		</TEXT>
+	</DIALOG>
+</LEVEL>
