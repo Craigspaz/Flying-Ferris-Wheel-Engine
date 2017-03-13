@@ -135,6 +135,13 @@ public class Game
 				t.render();
 			}
 		}
+		
+		for(Tile t : tiles)
+		{
+			if(t.getCollider().getPosition().z <= 0)
+			GFX.drawEntireSprite(t.getCollider().getSize().x, t.getCollider().getSize().y, t.getPosition().x, t.getPosition().y, Textures.dirt2);
+		}
+		
 		for (Entity e : entities)
 		{
 			e.renderOutline();
@@ -181,6 +188,7 @@ public class Game
 			currentDialogue.render(textBoxX, textBoxY);
 		}
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
+		
 	}
 
 	/**
