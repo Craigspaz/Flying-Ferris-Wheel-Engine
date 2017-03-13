@@ -558,6 +558,21 @@ public class LevelBuilderGame
 				writer.println(
 						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getScale().x + "\" height=\"" + (int) e.getScale().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
 			}
+			writer.println("\t</COLLIDERS>");
+
+			writer.println("\t<ENEMIES>");
+			for (Enemy e : enemies)
+			{
+				String textureName = "";
+				String outlineName = "";
+				if (e.getTexture() == Textures.crabman)
+				{
+					textureName = "crabMan";
+					outlineName = "crabMan";
+				}
+				writer.println(
+						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getScale().x + "\" height=\"" + (int) e.getScale().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
+			}
 
 			writer.println("\t</ENEMIES>");
 			writer.println("</LEVEL>");
