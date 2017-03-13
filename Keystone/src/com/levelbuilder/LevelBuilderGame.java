@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -323,76 +324,132 @@ public class LevelBuilderGame
 	private ArrayList<RectangleBox> generateColliders()
 	{
 		ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
-		for (Tile t : tiles)
+
+		for(Tile t : tiles)
 		{
-			Texture te = t.getTexture();
-			if (te == down || te == downleft || te == downleftright || te == downright || te == left || te == leftright || te == leftupright || te == right || te == rightupdown || te == topdown || te == up || te == updownleftright || te == updownright || te == upleft || te == upright)
+			colliders.add(t.getCollider());
+		}
+		
+		class ColliderComparatorX implements Comparator<RectangleBox>
+		{
+
+			@Override
+			public int compare(RectangleBox o1, RectangleBox o2)
 			{
-				continue;
+				return (int) (o2.getPosition().x - o1.getPosition().x);
 			}
-			boolean addedToColliders = false;
-			float x = (t.getPosition().x);
-			float y = (t.getPosition().y);
-			System.out.println("Number of tiles: " + tiles.size());
-			for (RectangleBox box : colliders)
+
+		}
+		class ColliderComparatorY implements Comparator<RectangleBox>
+		{
+
+			@Override
+			public int compare(RectangleBox o1, RectangleBox o2)
 			{
-				if (t.getPosition().y == box.getPosition().y)
+				return (int) (o2.getPosition().y - o1.getPosition().y);
+			}
+
+		}
+		
+
+		colliders.sort(new ColliderComparatorY());
+		colliders.sort(new ColliderComparatorX());
+		
+		
+		for(int k = 0; k < 4; k++)
+		{
+			for(int i = 1; i < colliders.size(); i++)
+			{
+				RectangleBox currentBox = colliders.get(i);
+				RectangleBox previousBox = colliders.get(i - 1);
+				
+				if(currentBox.getPosition().y == previousBox.getPosition().y)
 				{
-					if (t.getPosition().x - 8 > box.getPosition().x && t.getPosition().x - 8 < box.getPosition().x + box.getSize().x)
+					if(currentBox.getPosition().x - 8 > previousBox.getPosition().x && currentBox.getPosition().x - 8 < previousBox.getPosition().x + previousBox.getSize().x)
 					{
-						box.setPosition(t.getPosition());
-						box.setSize(new Vector2f(t.getSize().x + box.getSize().x, box.getSize().y));
-						addedToColliders = true;
-						break;
-					} else if (t.getPosition().x + 8 > box.getPosition().x && t.getPosition().x + 8 < box.getPosition().x + box.getSize().x)
-					{
-						box.setSize(new Vector2f(box.getSize().x + 16, box.getSize().y));
-						addedToColliders = true;
-						break;
+						colliders.get(i-1).setSize(new Vector2f(previousBox.getSize().x + currentBox.getSize().x,previousBox.getSize().y));
+						colliders.remove(i);
+						i--;
 					}
 				}
 			}
-			if (!addedToColliders)
-			{
-				RectangleBox box = new RectangleBox(new Vector3f(t.getPosition().x, t.getPosition().y, t.getPosition().z), new Vector2f(16, 16));
-				colliders.add(box);
-			}
 		}
-		System.out.println("Number of colliders in colliders: " + colliders.size() + " with : " + colliders.get(0));
-		ArrayList<RectangleBox> finalColliders = new ArrayList<RectangleBox>();
-		for (RectangleBox c : colliders)
+		
+		for(int i = 0; i < colliders.size(); i++)
 		{
-			boolean foundOverlap = false;
-			for (RectangleBox c2 : colliders)
-			{
-				if (c.getPosition().x == c2.getPosition().x && c.getPosition().y == c2.getPosition().y && c.getSize().x == c2.getSize().x && c.getSize().y == c2.getSize().y)
-				{
-					continue;
-				}
-				if (c.getPosition().x - 8 > c2.getPosition().x && c.getPosition().x - 8 < c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y)
-				{
-					RectangleBox result = new RectangleBox(c2.getPosition(), new Vector2f(c.getSize().x + c2.getSize().x, 16));
-					finalColliders.add(result);
-					foundOverlap = true;
-				} else if (c.getPosition().x + 8 > c2.getPosition().x && c.getPosition().x + 8 < c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y)
-				{
-					RectangleBox result = new RectangleBox(c.getPosition(), new Vector2f(c.getSize().x + c2.getSize().x, 16));
-					finalColliders.add(result);
-					foundOverlap = true;
-				}
-			}
-			if (!foundOverlap)
-			{
-				finalColliders.add(c);
-			}
+			colliders.get(i).setSize(new Vector2f(colliders.get(i).getSize().x * 4,colliders.get(i).getSize().y * 4));
 		}
+		
+		return colliders;
+		
+		
+		/*
+		 * Tile[] tmpTiles = null; tiles.toArray(tmpTiles);
+		 * 
+		 * for (int i = 0; i < tmpTiles.length; i++) { if (tmpTiles[i] == null) { continue; } int x = (int)
+		 * (tmpTiles[i].getCollider().getPosition().x % 16); int y = (int) (tmpTiles[i].getCollider().getPosition().y %
+		 * 16); int xS = (int) (tmpTiles[i].getCollider().getSize().x % 16); int yS = (int)
+		 * (tmpTiles[i].getCollider().getSize().y % 16); for (int j = 0; j < tmpTiles.length; j++) { if (tmpTiles[i] ==
+		 * null) { break; } else if (tmpTiles[j] == null) { continue; } int xx = (int)
+		 * (tmpTiles[j].getCollider().getPosition().x % 16); int yy = (int) (tmpTiles[j].getCollider().getPosition().y %
+		 * 16); int xxS = (int) (tmpTiles[j].getCollider().getSize().x % 16); int yyS = (int)
+		 * (tmpTiles[j].getCollider().getSize().y % 16);
+		 * 
+		 * if(y == yy) { if(x - 1 == xx) {
+		 * 
+		 * } else if(x + 1 == xx) {
+		 * 
+		 * } else if(x < xx && tmpTiles[i].isCollidingWithBox(tmpTiles[j].getCollider())) {
+		 * 
+		 * } else if(x > xx && tmpTiles[i].isCollidingWithBox(tmpTiles[j].getCollider())) } } }
+		 */
+		/*
+		 * for(Tile t : tiles) { int x = (int) (t.getCollider().getPosition().x % 16); int y = (int)
+		 * (t.getCollider().getPosition().y % 16); for(Tile t1 : tiles) { int xx = (int)
+		 * (t1.getCollider().getPosition().x % 16); int yy = (int) (t1.getCollider().getPosition().y % 16);
+		 * 
+		 * if(x == xx && y == yy) { continue; }
+		 * 
+		 * if(y == yy) { if(x + 1 == xx) { colliders.add(new RectangleBox(new
+		 * Vector3f(t.getCollider().getPosition().x,t.getCollider().getPosition().y,t.getCollider().getPosition().z),new
+		 * Vector2f(t.getCollider().getSize().x + t1.getCollider().getSize().x,t.getCollider().getSize().y))); } else
+		 * if(x - 1 == xx) { colliders.add(new RectangleBox(new
+		 * Vector3f(t1.getCollider().getPosition().x,t1.getCollider().getPosition().y,t1.getCollider().getPosition().z),
+		 * new Vector2f(t1.getCollider().getSize().x + t.getCollider().getSize().x,t1.getCollider().getSize().y))); } }
+		 * } }
+		 */
 
-		for (RectangleBox c : finalColliders)
-		{
-			System.out.println(c.getSize());
-			c.setSize(new Vector2f((float) (c.getSize().x / 16) * 64, (float) (c.getSize().y) / 16 * 64));
-		}
-		return finalColliders;
+		/*
+		 * ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>(); for (Tile t : tiles) { Texture te =
+		 * t.getTexture(); if (te == down || te == downleft || te == downleftright || te == downright || te == left ||
+		 * te == leftright || te == leftupright || te == right || te == rightupdown || te == topdown || te == up || te
+		 * == updownleftright || te == updownright || te == upleft || te == upright) { continue; } boolean
+		 * addedToColliders = false; float x = (t.getPosition().x); float y = (t.getPosition().y);
+		 * System.out.println("Number of tiles: " + tiles.size()); for (RectangleBox box : colliders) { if
+		 * (t.getPosition().y == box.getPosition().y) { if (t.getPosition().x - 8 > box.getPosition().x &&
+		 * t.getPosition().x - 8 < box.getPosition().x + box.getSize().x) { box.setPosition(new
+		 * Vector3f(t.getPosition().x,t.getPosition().y,t.getPosition().z)); box.setSize(new Vector2f(t.getSize().x +
+		 * box.getSize().x, box.getSize().y)); addedToColliders = true; break; } else if (t.getPosition().x + 8 >
+		 * box.getPosition().x && t.getPosition().x + 8 < box.getPosition().x + box.getSize().x) { box.setSize(new
+		 * Vector2f(box.getSize().x + 16, box.getSize().y)); addedToColliders = true; break; } } } if
+		 * (!addedToColliders) { RectangleBox box = new RectangleBox(new Vector3f(t.getPosition().x, t.getPosition().y,
+		 * t.getPosition().z), new Vector2f(16, 16)); colliders.add(box); } }
+		 * System.out.println("Number of colliders in colliders: " + colliders.size() + " with : " + colliders.get(0));
+		 * ArrayList<RectangleBox> finalColliders = new ArrayList<RectangleBox>(); for (RectangleBox c : colliders) {
+		 * boolean foundOverlap = false; for (RectangleBox c2 : colliders) { if (c.getPosition().x == c2.getPosition().x
+		 * && c.getPosition().y == c2.getPosition().y && c.getSize().x == c2.getSize().x && c.getSize().y ==
+		 * c2.getSize().y) { continue; } if (c.getPosition().x - 8 > c2.getPosition().x && c.getPosition().x - 8 <
+		 * c2.getPosition().x + c2.getSize().x && c.getPosition().y == c2.getPosition().y) { RectangleBox result = new
+		 * RectangleBox(new Vector3f(c2.getPosition().x,c2.getPosition().y,c2.getPosition().z), new
+		 * Vector2f(c.getSize().x + c2.getSize().x, 16)); finalColliders.add(result); foundOverlap = true; } else if
+		 * (c.getPosition().x + 8 > c2.getPosition().x && c.getPosition().x + 8 < c2.getPosition().x + c2.getSize().x &&
+		 * c.getPosition().y == c2.getPosition().y) { RectangleBox result = new RectangleBox(new
+		 * Vector3f(c.getPosition().x,c.getPosition().y,c.getPosition().z), new Vector2f(c.getSize().x + c2.getSize().x,
+		 * 16)); finalColliders.add(result); foundOverlap = true; } } if (!foundOverlap) { finalColliders.add(c); } }
+		 * 
+		 * for (RectangleBox c : finalColliders) { System.out.println(c.getSize()); c.setSize(new Vector2f((float)
+		 * (c.getSize().x / 16) * 64, (float) (c.getSize().y) / 16 * 64)); } return finalColliders;
+		 */
 	}
 
 	/**
@@ -408,7 +465,7 @@ public class LevelBuilderGame
 		{
 			File output = new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.od");
 			PrintWriter writer = new PrintWriter(output);
-			writer.println("<LEVEL name=\"" + output.getName() + "\"");
+			writer.println("<LEVEL name=\"" + output.getName() + "\">");
 			writer.println("\t<TILES sizex=\"64\" sizey=\"64\">");
 			for (Tile t : tiles)
 			{
@@ -478,13 +535,28 @@ public class LevelBuilderGame
 				{
 					textureName = "upright";
 				}
-				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x + "\" y=\"" + (int) t.getPosition().y + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
+				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
 			}
 			writer.println("\t</TILES>");
 			writer.println("\t<COLLIDERS>");
 			for (RectangleBox box : colliders)
 			{
-				writer.println("\t<COLLIDER x=\"" + (int) box.getPosition().x + "\" y=\"" + (int) box.getPosition().y + "\" z=\"" + (int) box.getPosition().z + "\" width=\"" + (int) box.getSize().x + "\" height=\"" + (int) box.getSize().y + "\"/>");
+				writer.println("\t<COLLIDER x=\"" + (int) box.getPosition().x * 4 + "\" y=\"" + (int) box.getPosition().y * 4 + "\" z=\"" + (int) box.getPosition().z + "\" width=\"" + (int) box.getSize().x + "\" height=\"" + (int) box.getSize().y + "\"/>");
+			}
+			writer.println("\t</COLLIDERS>");
+
+			writer.println("\t<ENEMIES>");
+			for (Enemy e : enemies)
+			{
+				String textureName = "";
+				String outlineName = "";
+				if (e.getTexture() == Textures.crabman)
+				{
+					textureName = "crabMan";
+					outlineName = "crabMan";
+				}
+				writer.println(
+						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getScale().x + "\" height=\"" + (int) e.getScale().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
 			}
 			writer.println("\t</COLLIDERS>");
 
