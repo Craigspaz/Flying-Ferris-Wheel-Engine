@@ -221,7 +221,7 @@ public class Player extends Entity
 					particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 					// jumpCount = 0;
 				}
-				System.out.println("jump " + jumpCount);
+				// System.out.println("jump " + jumpCount);
 			}
 
 		}
