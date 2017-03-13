@@ -227,6 +227,29 @@ public class World
 					text.toArray(text2);// sends an array instead of an arraylist, to avoid having lists of lists
 					dialogue.add(new DialogBox(text2, speakerName, portraitnum, boxnum));
 					System.out.println("New Dialogue: (" + speakerName + ", saying " + text2.length + " lines), using portrait \"" + tex1 + "\" and text box \"" + tex2 + "\"");
+				} else if(line.trim().startsWith("<PLAYER"))
+				{
+					String param = line.substring(line.indexOf("x=\"") + 3);
+					String x = param.substring(0, param.indexOf("\""));
+
+					String param1 = param.substring(param.indexOf("y=\"") + 3);
+					String y = param1.substring(0, param1.indexOf("\""));
+
+					String param2 = param1.substring(param1.indexOf("z=\"") + 3);
+					String z = param2.substring(0, param2.indexOf("\""));
+
+					String param3 = param2.substring(param2.indexOf("width=\"") + 7);
+					String width1 = param3.substring(0, param3.indexOf("\""));
+
+					String param4 = param3.substring(param3.indexOf("height=\"") + 8);
+					String height1 = param4.substring(0, param4.indexOf("\""));
+
+					String param5 = param4.substring(param4.indexOf("tex=\"") + 5);
+					String tex1 = param5.substring(0, param5.indexOf("\""));
+
+					String param6 = param5.substring(param5.indexOf("texOut=\"") + 8);
+					String tex2 = param6.substring(0, param6.indexOf("\""));
+					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x),Float.parseFloat(y),Float.parseFloat(z)));
 				}
 			}
 
