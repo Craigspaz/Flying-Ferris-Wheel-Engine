@@ -181,7 +181,7 @@ public class Game
 		}
 		// testProjectile.render();
 		// GFX.drawString(64,600, "Press Enter to continue!");
-		if (currentDialogue.active())
+		if (currentDialogue != null && currentDialogue.active())
 		{
 			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not world
 			float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
@@ -199,9 +199,10 @@ public class Game
 		terminal.update();
 		if (!terminal.active())// pauses game while terminal is active
 		{
-			if (currentDialogue.active())
+			if (currentDialogue != null)
 			{
-				currentDialogue.update(handler);
+				if (currentDialogue.active())
+					currentDialogue.update(handler);
 			}
 			getPlayer().update(worldColliders);
 			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
@@ -362,9 +363,11 @@ public class Game
 
 		tiles = currentLevel.getTiles();
 		dialogue = currentLevel.getDialogue();
-		currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
-		currentDialogue.activate();
-
+		if (dialogue != null && dialogue.size() > 0)
+		{
+			currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
+			currentDialogue.activate();
+		}
 		tiles.add(sky);
 		tiles.add(testTile2);
 		tiles.add(testTile1);
