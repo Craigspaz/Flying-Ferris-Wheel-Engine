@@ -2,6 +2,8 @@ package com.graphics.world;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Vector3f;
+
 /**
  * Stores the information about a level
  * 
@@ -15,6 +17,7 @@ public class Level
 	private ArrayList<RectangleBox>	colliders;
 	private ArrayList<Entity>		entities;
 	private ArrayList<DialogBox>	dialogue;
+	private Vector3f				playerSpawnLocation;
 
 	/**
 	 * Creates a new level
@@ -125,5 +128,15 @@ public class Level
 	public ArrayList<DialogBox> getDialogue()
 	{
 		return dialogue;
+	}
+
+	public Vector3f getPlayerSpawnLocation()
+	{
+		return playerSpawnLocation;
+	}
+
+	public void setPlayerSpawnLocation(Vector3f playerSpawnLocation)
+	{
+		this.playerSpawnLocation = playerSpawnLocation;
 	}
 }

@@ -135,13 +135,13 @@ public class Game
 				t.render();
 			}
 		}
-		
-		for(Tile t : tiles)
+
+		for (Tile t : tiles)
 		{
-			if(t.getCollider().getPosition().z <= 0)
-			GFX.drawEntireSprite(t.getCollider().getSize().x, t.getCollider().getSize().y, t.getPosition().x, t.getPosition().y, Textures.dirt2);
+			if (t.getCollider().getPosition().z <= 0)
+				GFX.drawEntireSprite(t.getCollider().getSize().x, t.getCollider().getSize().y, t.getPosition().x, t.getPosition().y, Textures.dirt2);
 		}
-		
+
 		for (Entity e : entities)
 		{
 			e.renderOutline();
@@ -188,7 +188,7 @@ public class Game
 			currentDialogue.render(textBoxX, textBoxY);
 		}
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
-		
+
 	}
 
 	/**
@@ -385,6 +385,10 @@ public class Game
 				e.setDead(true);
 			}
 		}
+		if (getPlayer() != null && currentLevel.getPlayerSpawnLocation() != null)
+		{
+			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+		}
 		return true;
 	}
 
@@ -401,5 +405,10 @@ public class Game
 	public void setPlayer(Player player)
 	{
 		this.player = player;
+	}
+
+	public InputHandler getHandler()
+	{
+		return handler;
 	}
 }

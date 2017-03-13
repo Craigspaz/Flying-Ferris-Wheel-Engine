@@ -325,11 +325,11 @@ public class LevelBuilderGame
 	{
 		ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
 
-		for(Tile t : tiles)
+		for (Tile t : tiles)
 		{
 			colliders.add(t.getCollider());
 		}
-		
+
 		class ColliderComparatorX implements Comparator<RectangleBox>
 		{
 
@@ -350,39 +350,36 @@ public class LevelBuilderGame
 			}
 
 		}
-		
 
 		colliders.sort(new ColliderComparatorY());
 		colliders.sort(new ColliderComparatorX());
-		
-		
-		for(int k = 0; k < 4; k++)
+
+		for (int k = 0; k < 4; k++)
 		{
-			for(int i = 1; i < colliders.size(); i++)
+			for (int i = 1; i < colliders.size(); i++)
 			{
 				RectangleBox currentBox = colliders.get(i);
 				RectangleBox previousBox = colliders.get(i - 1);
-				
-				if(currentBox.getPosition().y == previousBox.getPosition().y)
+
+				if (currentBox.getPosition().y == previousBox.getPosition().y)
 				{
-					if(currentBox.getPosition().x - 8 > previousBox.getPosition().x && currentBox.getPosition().x - 8 < previousBox.getPosition().x + previousBox.getSize().x)
+					if (currentBox.getPosition().x - 8 > previousBox.getPosition().x && currentBox.getPosition().x - 8 < previousBox.getPosition().x + previousBox.getSize().x)
 					{
-						colliders.get(i-1).setSize(new Vector2f(previousBox.getSize().x + currentBox.getSize().x,previousBox.getSize().y));
+						colliders.get(i - 1).setSize(new Vector2f(previousBox.getSize().x + currentBox.getSize().x, previousBox.getSize().y));
 						colliders.remove(i);
 						i--;
 					}
 				}
 			}
 		}
-		
-		for(int i = 0; i < colliders.size(); i++)
+
+		for (int i = 0; i < colliders.size(); i++)
 		{
-			colliders.get(i).setSize(new Vector2f(colliders.get(i).getSize().x * 4,colliders.get(i).getSize().y * 4));
+			colliders.get(i).setSize(new Vector2f(colliders.get(i).getSize().x * 4, colliders.get(i).getSize().y * 4));
 		}
-		
+
 		return colliders;
-		
-		
+
 		/*
 		 * Tile[] tmpTiles = null; tiles.toArray(tmpTiles);
 		 * 
@@ -466,6 +463,11 @@ public class LevelBuilderGame
 			File output = new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.od");
 			PrintWriter writer = new PrintWriter(output);
 			writer.println("<LEVEL name=\"" + output.getName() + "\">");
+			if (player != null)
+			{
+				writer.println(
+						"<PLAYER x=\"" + (int) player.getPosition().x + "\" y=\"" + (int) player.getPosition().y + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getScale().x + "\" height=\"" + (int) player.getScale().y + "\" tex=\"playerFront\" texOut=\"playerOutline\"/>");
+			}
 			writer.println("\t<TILES sizex=\"64\" sizey=\"64\">");
 			for (Tile t : tiles)
 			{
@@ -542,21 +544,6 @@ public class LevelBuilderGame
 			for (RectangleBox box : colliders)
 			{
 				writer.println("\t<COLLIDER x=\"" + (int) box.getPosition().x * 4 + "\" y=\"" + (int) box.getPosition().y * 4 + "\" z=\"" + (int) box.getPosition().z + "\" width=\"" + (int) box.getSize().x + "\" height=\"" + (int) box.getSize().y + "\"/>");
-			}
-			writer.println("\t</COLLIDERS>");
-
-			writer.println("\t<ENEMIES>");
-			for (Enemy e : enemies)
-			{
-				String textureName = "";
-				String outlineName = "";
-				if (e.getTexture() == Textures.crabman)
-				{
-					textureName = "crabMan";
-					outlineName = "crabMan";
-				}
-				writer.println(
-						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getScale().x + "\" height=\"" + (int) e.getScale().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
 			}
 			writer.println("\t</COLLIDERS>");
 
