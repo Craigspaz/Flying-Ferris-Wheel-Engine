@@ -19,13 +19,11 @@ import com.graphics.world.RectangleBox;
 public class Projectile extends Entity
 {
 
-	private float				angle;
-	private float				speed;
-	private static final float	DISTANCE_FROM_ORIGIN	= 16.0f;
-	private float				offsetX					= 0;
-	private float				offsetY					= 0;
+	private float	angle;
+	private float	speed;
+	private float	offsetX	= 0;
 
-	private int					damage					= 10;
+	private int		damage	= 10;
 
 	/**
 	 * Creates a new projectile

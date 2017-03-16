@@ -3,9 +3,7 @@ package com.graphics.world;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -43,6 +41,7 @@ public class World
 	 *            The name of the file
 	 * @return Returns a level with the values from the file
 	 */
+	@SuppressWarnings("unused")
 	public static Level loadWorld(String filename)
 	{
 		tiles = new ArrayList<Tile>();
