@@ -2,4 +2,4 @@
 
 The greatest ferris wheel that has ever flown.
 
-![alt tag](https://dl.dropboxusercontent.com/u/91333158/flying-ferris-wheel-v3.png)
+![alt text](https://raw.githubusercontent.com/Craigspaz/Flying-Ferris-Wheel-Engine/master/Tables/res/githubImages/flying-ferris-wheel-v3.png?raw=true)
