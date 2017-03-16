@@ -125,16 +125,32 @@ public class Level
 		this.dialogue = dialogue;
 	}
 
+	/**
+	 * Returns the dialogue in the level
+	 * 
+	 * @return Returns the dialogue in the level
+	 */
 	public ArrayList<DialogBox> getDialogue()
 	{
 		return dialogue;
 	}
 
+	/**
+	 * Returns the player spawn location in the level
+	 * 
+	 * @return Returns the player spawn location in the level
+	 */
 	public Vector3f getPlayerSpawnLocation()
 	{
 		return playerSpawnLocation;
 	}
 
+	/**
+	 * Sets the players spawn location in the level
+	 * 
+	 * @param playerSpawnLocation
+	 *            The location to spawn the player
+	 */
 	public void setPlayerSpawnLocation(Vector3f playerSpawnLocation)
 	{
 		this.playerSpawnLocation = playerSpawnLocation;

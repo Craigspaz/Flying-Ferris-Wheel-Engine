@@ -11,7 +11,6 @@ import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.DialogBox;
-import com.graphics.world.Door;
 import com.graphics.world.Entity;
 import com.graphics.world.Level;
 import com.graphics.world.Particle;
@@ -36,7 +35,6 @@ public class Game
 	private Player					player;
 
 	private Entity					table;
-	// private Entity sean;
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
@@ -69,15 +67,11 @@ public class Game
 	{
 		new Textures();
 		handler = new InputHandler();
-		// camera = new Camera(new Vector2f(0, 0), new Vector2f(Window.width, Window.height));
 		GFX.initString();
 
 		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
-		// table = new Entity(new Vector3f(64, 256, 0), Textures.sean, new
-		// Vector2f(32, 32), 1, 1, new Vector2f(128, 128),new Vector2f(32, 32));
 		table.setAffectedByGravity(true);
 		table.setAnimateFrameTime(10);
-		// sean.setAffectedByGravity(true);
 
 		entities.add(table);
 
@@ -93,31 +87,6 @@ public class Game
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
 		loadNewLevel("./res/world/level1.od");
-		// currentLevel = World.loadWorld("./res/world/level1.od");
-		// worldColliders = currentLevel.getColliders();
-		//
-		// tiles = currentLevel.getTiles();
-		// dialogue = currentLevel.getDialogue();
-		// currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
-		// currentDialogue.activate();
-		//
-		// tiles.add(sky);
-		// tiles.add(testTile2);
-		// tiles.add(testTile1);
-		// tiles.add(testTile0);
-		//
-		// tiles = World.sortTiles(tiles);
-		//
-		// entities.addAll(currentLevel.getEntities());
-		//
-		// for (Entity e : entities)
-		// {
-		// if (e.isHostileToPlayer())
-		// {
-		// enemies.add(new Enemy(e));
-		// e.setDead(true);
-		// }
-		// }
 	}
 
 	/**
@@ -126,7 +95,6 @@ public class Game
 	public void render()
 	{
 		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
-		// sean.render();
 
 		for (Tile t : tiles)
 		{
@@ -179,8 +147,6 @@ public class Game
 				t.render();
 			}
 		}
-		// testProjectile.render();
-		// GFX.drawString(64,600, "Press Enter to continue!");
 		if (currentDialogue != null && currentDialogue.active())
 		{
 			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not world
@@ -351,6 +317,11 @@ public class Game
 
 	}
 
+	/**
+	 * Loads a new level
+	 * @param name The name of the level to load
+	 * @return Returns true if the level loaded successfully else returns false
+	 */
 	public boolean loadNewLevel(String name)
 	{
 		currentLevel = World.loadWorld(name);
@@ -392,21 +363,37 @@ public class Game
 		return true;
 	}
 
+	/**
+	 * Sets a player to the exit door location in the next level
+	 * @param destination The location to set the player
+	 */
 	public void exitDoor(Vector3f destination)
 	{
 		player.setPosition(destination);
 	}
 
+	/**
+	 * Returns a pointer to the player
+	 * @return Returns a pointer to the player
+	 */
 	public Player getPlayer()
 	{
 		return player;
 	}
 
+	/**
+	 * Sets the player
+	 * @param player The player to set
+	 */
 	public void setPlayer(Player player)
 	{
 		this.player = player;
 	}
 
+	/**
+	 * Returns a pointer to the input handler
+	 * @return Returns a pointer to the input handler
+	 */
 	public InputHandler getHandler()
 	{
 		return handler;
