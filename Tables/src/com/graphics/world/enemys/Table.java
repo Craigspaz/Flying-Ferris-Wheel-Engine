@@ -1,10 +1,9 @@
 package com.graphics.world.enemys;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
 import com.graphics.Textures;
-import com.graphics.world.projectile.Projectile;
 
 /**
  * The Table test object

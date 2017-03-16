@@ -137,7 +137,8 @@ public class DialogBox
 				pageNumber++;
 				currentLetter = 0;
 				currentLine = 0;
-				currentString = "";// does this because otherwise it briefly displays the current string when going to a new page, before it's overwritten above
+				currentString = "";// does this because otherwise it briefly displays the current string when going to a
+									// new page, before it's overwritten above
 			}
 		}
 	}

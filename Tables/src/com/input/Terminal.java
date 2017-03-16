@@ -1,13 +1,11 @@
 package com.input;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.Player;
-import com.graphics.world.World;
 import com.graphics.world.enemys.Enemy;
 import com.main.Game;
 
