@@ -68,7 +68,18 @@ public class World
 					levelName = nameParam.substring(0, nameParam.indexOf("\""));
 					newLevel = new Level(levelName);
 					System.out.println("Loading level: " + levelName);
-				} else if (line.trim().startsWith("<TILES "))
+				} 
+				else if(line.trim().startsWith("<DOOR"))
+				{
+					String param = line.substring(line.indexOf("x=\"") + 3);
+					String x = param.substring(0, param.indexOf("\""));
+					String param1 = param.substring(param.indexOf("y=\"") + 3);
+					String y = param1.substring(0, param1.indexOf("\""));
+					
+					Tile t = new Tile(new Vector3f(Integer.parseInt(x), Integer.parseInt(y),0), new Vector2f(width, height), Textures.door);
+					t.setDoor(true);
+					tiles.add(t);
+				}else if (line.trim().startsWith("<TILES "))
 				{
 					String param = line.substring(line.indexOf("sizex=\"") + 7);
 					String x = param.substring(0, param.indexOf("\""));
@@ -91,6 +102,8 @@ public class World
 					String tex = param3.substring(0, param3.indexOf("\""));
 
 					Texture texture = null;
+					int texX = -1;
+					int texY = -1;
 
 					if (tex.equals("testTile"))
 					{
@@ -100,11 +113,101 @@ public class World
 					{
 						texture = Textures.grass;
 					}
-
+					else if(tex.equals("down"))
+					{
+						texture = Textures.tileOutline;
+						texX = 0;
+						texY = 0;
+					}
+					else if(tex.equals("right"))
+					{
+						texture = Textures.tileOutline;
+						texX = 1;
+						texY = 0;
+					}
+					else if(tex.equals("up"))
+					{
+						texture = Textures.tileOutline;
+						texX = 2;
+						texY = 0;
+					}
+					else if(tex.equals("left"))
+					{
+						texture = Textures.tileOutline;
+						texX = 3;
+						texY = 0;
+					}
+					else if(tex.equals("downright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 4;
+						texY = 0;
+					}
+					else if(tex.equals("upright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 5;
+						texY = 0;
+					}
+					else if(tex.equals("upleft"))
+					{
+						texture = Textures.tileOutline;
+						texX = 6;
+						texY = 0;
+					}
+					else if(tex.equals("downleft"))
+					{
+						texture = Textures.tileOutline;
+						texX = 7;
+						texY = 0;
+					}
+					else if(tex.equals("downleftright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 8;
+						texY = 0;
+					}
+					else if(tex.equals("updownright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 9;
+						texY = 0;
+					}
+					else if(tex.equals("leftupright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 10;
+						texY = 0;
+					}
+					else if(tex.equals("rightupdown"))
+					{
+						texture = Textures.tileOutline;
+						texX = 11;
+						texY = 0;
+					}
+					else if(tex.equals("leftright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 12;
+						texY = 0;
+					}
+					else if(tex.equals("topdown"))
+					{
+						texture = Textures.tileOutline;
+						texX = 13;
+						texY = 0;
+					}
+					else if(tex.equals("updownleftright"))
+					{
+						texture = Textures.tileOutline;
+						texX = 14;
+						texY = 0;
+					}
+					
 					int xPos = Integer.parseInt(x);
 					int yPos = Integer.parseInt(y);
 					int zPos = Integer.parseInt(z);
-					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture));
+					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture,texX,texY));
 					System.out.println("New Tile: (" + xPos + ", " + yPos + ", " + zPos + ") (" + width + ", " + height + ")");
 				} else if (line.trim().startsWith("<COLLIDER "))
 				{
