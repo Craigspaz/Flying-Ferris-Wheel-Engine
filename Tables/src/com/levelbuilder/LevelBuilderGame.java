@@ -329,6 +329,8 @@ public class LevelBuilderGame
 	 */
 	private ArrayList<RectangleBox> generateColliders()
 	{
+
+		System.out.println("Generating Colliders...");
 		ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
 		for (Tile t : tiles)
 		{
@@ -347,7 +349,12 @@ public class LevelBuilderGame
 			@Override
 			public int compare(RectangleBox o1, RectangleBox o2)
 			{
-				return (int) (o2.getPosition().x - o1.getPosition().x);
+				int val = (int) (o1.getPosition().y - o2.getPosition().y);
+				if (val == 0)
+				{
+					val = (int) (o1.getPosition().x - o2.getPosition().x);
+				}
+				return val;
 			}
 
 		}
@@ -365,21 +372,21 @@ public class LevelBuilderGame
 		colliders.sort(new ColliderComparatorY());
 		colliders.sort(new ColliderComparatorX());
 
-		for (int k = 0; k < 4; k++)
+		for (int i = 1; i < colliders.size(); i++)
 		{
-			for (int i = 1; i < colliders.size(); i++)
-			{
-				RectangleBox currentBox = colliders.get(i);
-				RectangleBox previousBox = colliders.get(i - 1);
+			RectangleBox currentBox = colliders.get(i);
+			RectangleBox previousBox = colliders.get(i - 1);
 
-				if (currentBox.getPosition().y == previousBox.getPosition().y)
+			if (currentBox.getPosition().y == previousBox.getPosition().y)
+			{
+				if (currentBox.getPosition().x == previousBox.getPosition().x + previousBox.getSize().x)
 				{
-					if (currentBox.getPosition().x - 8 > previousBox.getPosition().x && currentBox.getPosition().x - 8 < previousBox.getPosition().x + previousBox.getSize().x)
-					{
-						colliders.get(i - 1).setSize(new Vector2f(previousBox.getSize().x + currentBox.getSize().x, previousBox.getSize().y));
-						colliders.remove(i);
-						i--;
-					}
+					RectangleBox temp = colliders.get(i - 1);
+					temp.setSize(new Vector2f(previousBox.getSize().x + currentBox.getSize().x, previousBox.getSize().y));
+					colliders.set(i - 1, temp);
+					colliders.remove(i);
+					i--;
+					System.out.println("merged 2 colliders, now starts at " + colliders.get(i).getPosition().x + " and ends at " + (colliders.get(i).getPosition().x + colliders.get(i).getSize().x));
 				}
 			}
 		}
@@ -397,7 +404,6 @@ public class LevelBuilderGame
 	 */
 	private void saveLevel()
 	{
-		System.out.println("Generating Colliders...");
 		ArrayList<RectangleBox> colliders = generateColliders();
 
 		System.out.println("Saving...");
@@ -408,8 +414,8 @@ public class LevelBuilderGame
 			writer.println("<LEVEL name=\"" + output.getName() + "\">");
 			if (player != null)
 			{
-				writer.println(
-						"<PLAYER x=\"" + (int) player.getPosition().x + "\" y=\"" + (int) player.getPosition().y + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getScale().x + "\" height=\"" + (int) player.getScale().y + "\" tex=\"playerFront\" texOut=\"playerOutline\"/>");
+				writer.println("<PLAYER x=\"" + (int) player.getPosition().x * 4 + "\" y=\"" + (int) player.getPosition().y * 4 + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getScale().x + "\" height=\"" + (int) player.getScale().y
+						+ "\" tex=\"playerFront\" texOut=\"playerOutline\"/>");
 			}
 			writer.println("\t<TILES sizex=\"64\" sizey=\"64\">");
 			for (int i = 0; i < tiles.size(); i++)
