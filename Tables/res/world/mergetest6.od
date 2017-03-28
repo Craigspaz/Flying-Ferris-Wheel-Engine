@@ -1,0 +1,29 @@
+<LEVEL name="gen_1490657913850_level.od">
+<PLAYER x="1280" y="192" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<TILE x="1216" y="256" z="0" texName="testTile"/>
+		<TILE x="1280" y="256" z="0" texName="testTile"/>
+		<TILE x="1344" y="256" z="0" texName="testTile"/>
+		<TILE x="1408" y="256" z="0" texName="testTile"/>
+		<TILE x="1472" y="256" z="0" texName="testTile"/>
+		<TILE x="1280" y="320" z="0" texName="testTile"/>
+		<TILE x="1344" y="320" z="0" texName="testTile"/>
+		<TILE x="1408" y="320" z="0" texName="testTile"/>
+		<TILE x="1216" y="384" z="0" texName="testTile"/>
+		<TILE x="1280" y="384" z="0" texName="testTile"/>
+		<TILE x="1344" y="384" z="0" texName="testTile"/>
+		<TILE x="1536" y="384" z="0" texName="testTile"/>
+		<TILE x="1408" y="384" z="0" texName="testTile"/>
+		<TILE x="1472" y="384" z="0" texName="testTile"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="1216" y="384" z="0" width="192" height="64"/>
+	<COLLIDER x="1536" y="384" z="0" width="64" height="64"/>
+	<COLLIDER x="1408" y="384" z="0" width="128" height="64"/>
+	<COLLIDER x="1280" y="320" z="0" width="192" height="64"/>
+	<COLLIDER x="1216" y="256" z="0" width="320" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+		<ENEMY x="304" y="48" z="0" width="16" height="16" texName="crabMan" outlineName="crabMan"
+	</ENEMIES>
+</LEVEL>

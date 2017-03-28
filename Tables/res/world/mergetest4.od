@@ -1,0 +1,35 @@
+<LEVEL name="gen_1490657224465_level.od">
+<PLAYER x="1024" y="704" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<TILE x="896" y="768" z="0" texName="testTile"/>
+		<TILE x="960" y="768" z="0" texName="testTile"/>
+		<TILE x="1024" y="768" z="0" texName="testTile"/>
+		<TILE x="1088" y="768" z="0" texName="testTile"/>
+		<TILE x="1152" y="768" z="0" texName="testTile"/>
+		<TILE x="1024" y="832" z="0" texName="testTile"/>
+		<TILE x="960" y="832" z="0" texName="testTile"/>
+		<TILE x="1088" y="832" z="0" texName="testTile"/>
+		<TILE x="896" y="896" z="0" texName="testTile"/>
+		<TILE x="960" y="896" z="0" texName="testTile"/>
+		<TILE x="1024" y="896" z="0" texName="testTile"/>
+		<TILE x="1088" y="896" z="0" texName="testTile"/>
+		<TILE x="1152" y="896" z="0" texName="testTile"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="896" y="768" z="0" width="256" height="256"/>
+	<COLLIDER x="896" y="896" z="0" width="256" height="256"/>
+	<COLLIDER x="960" y="768" z="0" width="256" height="256"/>
+	<COLLIDER x="960" y="832" z="0" width="256" height="256"/>
+	<COLLIDER x="960" y="896" z="0" width="256" height="256"/>
+	<COLLIDER x="1024" y="768" z="0" width="256" height="256"/>
+	<COLLIDER x="1024" y="832" z="0" width="256" height="256"/>
+	<COLLIDER x="1024" y="896" z="0" width="256" height="256"/>
+	<COLLIDER x="1088" y="768" z="0" width="256" height="256"/>
+	<COLLIDER x="1088" y="832" z="0" width="256" height="256"/>
+	<COLLIDER x="1088" y="896" z="0" width="256" height="256"/>
+	<COLLIDER x="1152" y="768" z="0" width="256" height="256"/>
+	<COLLIDER x="1152" y="896" z="0" width="256" height="256"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+</LEVEL>
