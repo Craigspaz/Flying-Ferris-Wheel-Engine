@@ -98,16 +98,10 @@ public class Game
 
 		for (Tile t : tiles)
 		{
-			if (t.getPosition().z > 0)
+			if (t.getPosition().z >= 0)
 			{
 				t.render();
 			}
-		}
-
-		for (Tile t : tiles)
-		{
-			if (t.getCollider().getPosition().z <= 0)
-				GFX.drawEntireSprite(t.getCollider().getSize().x, t.getCollider().getSize().y, t.getPosition().x, t.getPosition().y, Textures.dirt2);
 		}
 
 		for (Entity e : entities)
@@ -142,7 +136,7 @@ public class Game
 		}
 		for (Tile t : tiles)
 		{
-			if (t.getPosition().z <= 0)
+			if (t.getPosition().z < 0)
 			{
 				t.render();
 			}
