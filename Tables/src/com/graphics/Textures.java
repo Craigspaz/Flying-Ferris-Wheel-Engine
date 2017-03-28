@@ -48,6 +48,10 @@ public class Textures
 	public static Texture	portraits;
 	public static Texture	textBoxes;
 
+	public static Texture	tileOutline;
+
+	public static Texture	door;
+
 	/**
 	 * Initializes all of the textures
 	 */
@@ -82,5 +86,8 @@ public class Textures
 		grassTop = Loader.loadTexture("grassTop");
 		portraits = Loader.loadTexture("portraits");
 		textBoxes = Loader.loadTexture("textboxes");
+
+		tileOutline = Loader.loadTexture("tile-outlines");
+		door = Loader.loadTexture("door");
 	}
 }

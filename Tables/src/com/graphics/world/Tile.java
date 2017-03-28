@@ -19,6 +19,10 @@ public class Tile
 	private Texture			texture;
 
 	private RectangleBox	collider;
+	private int				texCoordX	= -1;
+	private int				texCoordY	= -1;
+
+	private boolean			isDoor		= false;
 
 	/**
 	 * Creates a new tile at (0,0,0) with size (0,0) and no texture
@@ -28,6 +32,13 @@ public class Tile
 		position = new Vector3f(0, 0, 0);
 		size = new Vector2f(0, 0);
 		collider = new RectangleBox(position, size);
+	}
+
+	public Tile(Vector3f position, Texture texture, int texX, int texY)
+	{
+		this(position, texture);
+		texCoordX = texX;
+		texCoordY = texY;
 	}
 
 	/**
@@ -87,6 +98,12 @@ public class Tile
 		collider = new RectangleBox(position, size);
 	}
 
+	public Tile(Vector3f position, Vector2f size, Texture texture, int texCoordX, int texCoordY)
+	{
+		this(position, texture, texCoordX, texCoordY);
+		this.size = size;
+	}
+
 	/**
 	 * Updates the tile
 	 */
@@ -100,7 +117,16 @@ public class Tile
 	 */
 	public void render()
 	{
-		GFX.drawEntireSprite(size.x, size.y, position.x, position.y, texture);
+		if (texCoordX != -1 && texCoordY != -1) // For outline
+		{
+
+			Vector2f offset = new Vector2f(((float) (32.0f * texCoordX)) / 512.0f, (float) (32.0f * texCoordY) / 32.0f);
+			Vector2f sizey = new Vector2f((float) (32.0f / 512.0f), (float) (32.0f / 32.0f));
+			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, texture, offset, sizey);
+		} else
+		{
+			GFX.drawEntireSprite(size.x, size.y, position.x, position.y, texture);
+		}
 	}
 
 	/**
@@ -209,6 +235,16 @@ public class Tile
 	public void setCollider(RectangleBox collider)
 	{
 		this.collider = collider;
+	}
+
+	public boolean isDoor()
+	{
+		return isDoor;
+	}
+
+	public void setDoor(boolean isDoor)
+	{
+		this.isDoor = isDoor;
 	}
 
 }

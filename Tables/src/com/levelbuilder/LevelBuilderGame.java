@@ -53,6 +53,7 @@ public class LevelBuilderGame
 	private Texture				upleft			= Loader.loadTexture("borders/upleft");
 	private Texture				upright			= Loader.loadTexture("borders/upright");
 	private Texture				saveLevel		= Loader.loadTexture("saveLevel");
+	private Texture				door			= Loader.loadTexture("door");
 
 	/**
 	 * Creates a new level builder
@@ -146,6 +147,9 @@ public class LevelBuilderGame
 			} else if (handler.getMousePosition().x > Window.width - 64 && handler.getMousePosition().x <= Window.width - 32 && handler.getMousePosition().y >= 32 && handler.getMousePosition().y < 64)
 			{
 				tileToPlace = Textures.crabman;
+			} else if (handler.getMousePosition().x > Window.width - 64 && handler.getMousePosition().x <= Window.width - 32 && handler.getMousePosition().y >= 64 && handler.getMousePosition().y < 96)
+			{
+				tileToPlace = door;
 			} else if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 672 && handler.getMousePosition().y < 704)
 			{
 				saveLevel();
@@ -297,6 +301,8 @@ public class LevelBuilderGame
 
 		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 32, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
 
+		GFX.drawEntireSprite(32, 32, Window.width - 64, 64, door);
+
 		if (tileToPlace != null)
 		{
 			if (tileToPlace == Textures.playerFront)
@@ -324,9 +330,14 @@ public class LevelBuilderGame
 	private ArrayList<RectangleBox> generateColliders()
 	{
 		ArrayList<RectangleBox> colliders = new ArrayList<RectangleBox>();
-
 		for (Tile t : tiles)
 		{
+			Texture tex = t.getTexture();
+			if (tex == down || tex == downleft || tex == downleftright || tex == downright || tex == left || tex == leftright || tex == leftupright || tex == right || tex == rightupdown || tex == topdown || tex == up || tex == updownleftright || tex == updownright || tex == upleft || tex == upright
+					|| tex == door)
+			{
+				continue;
+			}
 			colliders.add(t.getCollider());
 		}
 
@@ -401,6 +412,15 @@ public class LevelBuilderGame
 						"<PLAYER x=\"" + (int) player.getPosition().x + "\" y=\"" + (int) player.getPosition().y + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getScale().x + "\" height=\"" + (int) player.getScale().y + "\" tex=\"playerFront\" texOut=\"playerOutline\"/>");
 			}
 			writer.println("\t<TILES sizex=\"64\" sizey=\"64\">");
+			for (int i = 0; i < tiles.size(); i++)
+			{
+				if (tiles.get(i).getTexture() == door)
+				{
+					writer.println("\t\t<DOOR x=\"" + (int)tiles.get(i).getPosition().x * 4 + "\" y=\"" + (int)tiles.get(i).getPosition().y * 4 + "\"/>");
+					tiles.remove(i);
+					i--;
+				}
+			}
 			for (Tile t : tiles)
 			{
 				String textureName = "";
