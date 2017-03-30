@@ -86,7 +86,7 @@ public class Game
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
-		loadNewLevel("./res/world/level1.od");
+		loadNewLevel("./res/world/level1.ffw");
 	}
 
 	/**

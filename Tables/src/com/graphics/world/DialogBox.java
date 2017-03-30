@@ -23,7 +23,7 @@ public class DialogBox
 	private int			textBoxNumber;
 	private int			pageNumber			= 0;
 
-	// private boolean canTurn = false;
+	private boolean		canPress			= true;
 	private boolean		isActive			= false;
 
 	private float		animateSpeed		= 2.0f;
@@ -127,8 +127,9 @@ public class DialogBox
 		{
 			animateTime += animateSpeed;
 		}
-		if (handler.nextPage())// waits for user input when at the end of a page, or at the end of all messages
+		if (handler.nextPage() && canPress)// waits for user input when at the end of a page, or at the end of all messages
 		{
+			canPress = false;
 			if (currentLine + (pageNumber * 5) == messages.length - 1 && currentLetter == messages[currentLine + (pageNumber * 5)].length())// if it's at the end of the last letter of the last line
 			{
 				isActive = false;
@@ -139,7 +140,14 @@ public class DialogBox
 				currentLine = 0;
 				currentString = "";// does this because otherwise it briefly displays the current string when going to a
 									// new page, before it's overwritten above
+			} else //if you press while it's typing a line, it automatically completes the line and starts on the next
+			{
+				currentLetter = messages[currentLine + (pageNumber * 5)].length();
 			}
+		}
+		if (!handler.nextPage())//you have to let go of the button before you can skip again
+		{
+			canPress = true;
 		}
 	}
 }
