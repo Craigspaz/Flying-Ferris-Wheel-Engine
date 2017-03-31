@@ -70,6 +70,45 @@ public class Particle
 	}
 
 	/**
+	 * Creates a new particle
+	 * 
+	 * @param position
+	 *            The position of the particle
+	 * @param size
+	 *            The size of the particle
+	 * @param spriteSheet
+	 *            The spritesheet
+	 * @param numFramesX
+	 *            The number of animation frames X
+	 * @param numFramesY
+	 *            The row in the spritesheet
+	 * @param flip
+	 *            Should the texture be flipped over y axis
+	 * @param sizeOfSpriteOnSpriteSheet
+	 *            The size of the sprite on the sprite sheet
+	 * @param sizeOfSpriteSheet
+	 *            The size of the sprite sheet
+	 * @param loop
+	 *            Should the animation loop
+	 */
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop, Vector2f velocity)
+	{
+		this.position = position;
+		this.size = size;
+		this.spriteSheet = spriteSheet;
+		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
+		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+		this.numFramesX = numFramesX;
+		this.numFramesY = numFramesY;
+		animateTimer = 0.0f;
+		this.velocity = velocity;
+		animFrameX = 0;
+		animFrameY = 0;
+		this.flip = flip;
+		this.loop = loop;
+	}
+
+	/**
 	 * Updates the particle
 	 */
 	public void update()
@@ -90,6 +129,7 @@ public class Particle
 		{
 			animateTimer += animateSpeed;
 		}
+		this.setPosition(new Vector2f(getPosition().x + getVelocity().x, getPosition().y + getVelocity().y));
 	}
 
 	/**

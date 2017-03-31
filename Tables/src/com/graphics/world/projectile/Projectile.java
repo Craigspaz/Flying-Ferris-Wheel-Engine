@@ -1,13 +1,16 @@
 package com.graphics.world.projectile;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
+import com.graphics.Textures;
 import com.graphics.world.Entity;
+import com.graphics.world.Particle;
 import com.graphics.world.RectangleBox;
 
 /**
@@ -19,11 +22,13 @@ import com.graphics.world.RectangleBox;
 public class Projectile extends Entity
 {
 
-	private float	angle;
-	private float	speed;
-	private float	offsetX	= 0;
+	private static final float	offsetAmount	= 5;		// offset will be a random amount with this as the diameter, centered on the origin of the particle
+	private static final float	scatterAmount	= 0.75f;	// this affects the particle's random movement
+	private float				angle;
+	private float				speed;
+	// private float offsetX = 0;
 
-	private int		damage	= 10;
+	private int					damage			= 10;
 
 	/**
 	 * Creates a new projectile
@@ -89,7 +94,7 @@ public class Projectile extends Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
-		if (animateTime >= 10)
+		if (animateTime >= 2)
 		{
 			animSpriteFrameX++;
 			if (animSpriteFrameX >= numberOfSpritesX)
@@ -121,25 +126,46 @@ public class Projectile extends Entity
 				super.setDead(true);
 			}
 		}
+
 		collider.setPosition(new Vector3f(velocity.x + position.x, velocity.y + position.y, position.z));
 		position.x = collider.getPosition().x;
 		position.y = collider.getPosition().y;
 
-		if (angle == 180)
-		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
-		} else
-		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) / super.getSizeOfSpriteOnSheet().x);
-		}
-		if (angle == 90)
-		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y)) / super.getSizeOfSpriteOnSheet().x);
-		} else if (angle == 270)
-		{
-			offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.y) / super.getSizeOfSpriteOnSheet().x);
-		}
+		// if (angle == 180)
+		// {
+		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
+		// } else
+		// {
+		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) / super.getSizeOfSpriteOnSheet().x);
+		// }
+		// if (angle == 90)
+		// {
+		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y)) / super.getSizeOfSpriteOnSheet().x);
+		// } else if (angle == 270)
+		// {
+		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.y) / super.getSizeOfSpriteOnSheet().x);
+		// }
 		move();
+
+		// offsetAmount is the particle's random offset generation from the center
+		float offset_x = (new Random().nextFloat() - 0.5f) * offsetAmount;
+		float offset_y = (new Random().nextFloat() - 0.5f) * offsetAmount;
+		// change scatterAmount to 5 for a cool "underwater bubble scatter" effect
+		float randvelocity_x = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		float randvelocity_y = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		particles.add(new Particle(new Vector2f(position.x + offset_x, position.y + offset_y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(randvelocity_x + velocity.x / 2, randvelocity_y + velocity.y / 2)));
+		randvelocity_x = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		randvelocity_y = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		particles.add(new Particle(new Vector2f(position.x + offset_x, position.y + offset_y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(randvelocity_x + velocity.x / 2, randvelocity_y + velocity.y / 2)));
+		randvelocity_x = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		randvelocity_y = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		particles.add(new Particle(new Vector2f(position.x + offset_x, position.y + offset_y), new Vector2f(16, 16), Textures.particles, 10, 5, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(randvelocity_x + velocity.x / 2, randvelocity_y + velocity.y / 2)));
+		randvelocity_x = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		randvelocity_y = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		particles.add(new Particle(new Vector2f(position.x + offset_x, position.y + offset_y), new Vector2f(16, 16), Textures.particles, 10, 6, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(randvelocity_x + velocity.x / 2, randvelocity_y + velocity.y / 2)));
+		randvelocity_x = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		randvelocity_y = (new Random().nextFloat() - 0.5f) * scatterAmount;
+		particles.add(new Particle(new Vector2f(position.x + offset_x, position.y + offset_y), new Vector2f(16, 16), Textures.particles, 10, 7, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(randvelocity_x + velocity.x / 2, randvelocity_y + velocity.y / 2)));
 	}
 
 	/**
@@ -252,7 +278,22 @@ public class Projectile extends Entity
 	 */
 	public void render()
 	{
-		GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
+		if (numberOfSpritesX == 1)
+		{
+			GFX.drawEntireSprite(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture());
+		} else
+		{
+			Vector2f offset = new Vector2f(((float) (super.getSizeOfSpriteOnSheet().x * animSpriteFrameX)) / super.getSizeOfSpriteSheet().x, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / super.getSizeOfSpriteSheet().y);
+			Vector2f sizey = new Vector2f((float) (super.getSizeOfSpriteOnSheet().x / super.getSizeOfSpriteSheet().x), (float) (super.getSizeOfSpriteOnSheet().y / super.getSizeOfSpriteSheet().y));
+			if (velocity.x < 0 || left)
+			{
+				GFX.drawSpriteFromSpriteSheetInverse(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture(), offset, sizey);
+			} else
+			{
+				GFX.drawSpriteFromSpriteSheet(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture(), offset, sizey);
+			}
+		}
+		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
 	}
 
 }
