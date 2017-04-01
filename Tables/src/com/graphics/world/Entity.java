@@ -22,13 +22,13 @@ public class Entity
 	protected ArrayList<Projectile>	projectiles			= new ArrayList<Projectile>();
 	protected ArrayList<Particle>	particles			= new ArrayList<Particle>();
 
-	protected static final float	GRAVITY				= 0.8f;
-	protected static final float	MAX_SPEED_Y			= 20.0f;
-	protected static final float	MAX_SPEED_X			= 4.0f;
-	protected static final float	HORIZONTAL_ACCEL	= 0.4f;
-	protected static final float	DECEL_VALUE			= 0.3f;
-	protected static final float	JUMP_VALUE			= -15;
-	protected static final int		MAX_JUMPS			= 2;
+	public static final float	GRAVITY				= 0.8f;
+	public static final float	MAX_SPEED_Y			= 20.0f;
+	public static final float	MAX_SPEED_X			= 4.0f;
+	public static final float	HORIZONTAL_ACCEL	= 0.4f;
+	public static final float	DECEL_VALUE			= 0.3f;
+	public static final float	JUMP_VALUE			= -15;
+	public static final int		MAX_JUMPS			= 2;
 	private float					animateFrameTime	= 5;
 	protected boolean				left				= false;
 	private int						healthPoints		= 100;
@@ -69,6 +69,8 @@ public class Entity
 	protected boolean				immune				= false;						// whether the current entity
 																						// can take damage
 
+	private RectangleBox			currentFloor;
+
 	/**
 	 * Creates a new entity
 	 * 
@@ -76,12 +78,12 @@ public class Entity
 	 *            The initial position of the entity
 	 * @param texture
 	 *            The texture of the entity
-	 * @param size
-	 *            The size of the sprite on the texture
+	 * @param sizeOfSpriteSheet
+	 *            The size of the sprite sheet
 	 * @param scale
 	 *            The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Vector2f sizeOfSpriteSheet, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
 		this.position = position;
 		this.texture = texture;
@@ -89,7 +91,7 @@ public class Entity
 		this.sizeOfSpriteOnSheet = sizeOfSpriteOnSheet;
 		numberOfSpritesX = 1;
 		numberOfSpritesY = 1;
-		sizeOfSpriteSheet = size;
+		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
 		isAnimated = false;
 		animSpriteFrameX = 0;
 		animSpriteFrameY = 0;
@@ -213,6 +215,7 @@ public class Entity
 					nBoxY.getPosition().y += yShift;
 					velocity.y = 0;
 				}
+				currentFloor = t;
 			}
 		}
 		if (jumping)
@@ -908,5 +911,15 @@ public class Entity
 	public void setHostileToPlayer(boolean isHostileToPlayer)
 	{
 		this.isHostileToPlayer = isHostileToPlayer;
+	}
+
+	public RectangleBox getCurrentFloor()
+	{
+		return currentFloor;
+	}
+
+	public void setCurrentFloor(RectangleBox currentFloor)
+	{
+		this.currentFloor = currentFloor;
 	}
 }

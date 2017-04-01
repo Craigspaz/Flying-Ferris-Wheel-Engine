@@ -1,5 +1,6 @@
 package com.graphics.world.enemys;
 
+import java.awt.List;
 import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
@@ -21,20 +22,23 @@ import com.graphics.world.projectile.Projectile;
  */
 public class Enemy extends Entity
 {
-	private boolean					moveLeft		= false;
-	private boolean					moveRight		= false;
-	private boolean					isJumping		= false;
-	private boolean					isUp			= false;
+	private boolean					moveLeft				= false;
+	private boolean					moveRight				= false;
+	private boolean					isJumping				= false;
+	private boolean					isUp					= false;
 
-	private ArrayList<Projectile>	projectiles		= new ArrayList<Projectile>();
-	private int						shootingDelay	= 5;
-	private int						shootingCounter	= 0;
-	private boolean					canShoot		= true;
-	private boolean					shoot			= false;
-	private float					shootAngle		= 0;
-	private float					bulletSpeed		= 16;
+	private ArrayList<Projectile>	projectiles				= new ArrayList<Projectile>();
+	private int						shootingDelay			= 5;
+	private int						shootingCounter			= 0;
+	private boolean					canShoot				= true;
+	private boolean					shoot					= false;
+	private float					shootAngle				= 0;
+	private float					bulletSpeed				= 16;
 	private int						id;
-	protected String				name			= "";
+	protected String				name					= "";
+
+	private int						maxJumpDistanceWalk		= 3 * 64;
+	private int						maxJumpDistanceSprint	= 5 * 64;
 
 	/**
 	 * Creates a new enemy based on an already created entity
@@ -295,12 +299,97 @@ public class Enemy extends Entity
 	 * @param colliders
 	 *            The colliders to check agains the enemy
 	 */
-	public void update(ArrayList<RectangleBox> colliders, Player p)
+	public void update(ArrayList<RectangleBox> colliders, Player player)
 	{
-		findPathToPlayer(colliders, p);
+		generatePath(colliders, player);
 		movement();
 		super.update(colliders);
 	}
+
+	private int getManhattanDistance(Vector3f start, Vector3f end)
+	{
+		return (int) (Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
+	}
+
+
+	private ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
+	{
+
+		RectangleBox endCollider = player.getCurrentFloor();
+		if(endCollider == null)
+		{
+			return null;
+		}
+		RectangleBox startCollider = this.getCurrentFloor();
+		if(startCollider == null)
+		{
+			return null;
+		}
+
+		int ticks = (int) Math.floor(-JUMP_VALUE / GRAVITY);
+		int maxHeight = (int)((0.5f)*GRAVITY*ticks*ticks);
+		int maxDistance = (int) (ticks * 2 * MAX_SPEED_X);
+		System.out.println("Ticks: " + ticks + " MaxHeight: " + maxHeight + " MaxDistance: " + maxDistance);
+		//Node result = new Node(startCollider,ticks,maxDistance,maxHeight).generatePath(colliders, endCollider);		
+		//System.out.println("Destination: " + result + " Start: " + result.getParent());
+		
+		
+		Node startNode = new Node(startCollider,ticks,maxDistance,maxHeight);
+		System.out.println("Start: " + startNode);
+		Node result = generatePath(colliders,endCollider,startNode);		
+		System.out.println("Destination: " + result);
+	
+		// System.out.println("Start Node: " + startNode);
+		
+		ArrayList<RectangleBox> resultNodes = new ArrayList<RectangleBox>();
+		while(result != null)
+		{
+			resultNodes.add(result.collider);
+			System.out.println(result);
+			result = result.getParent();
+		}
+		return resultNodes;
+	}
+	
+	
+	public Node generatePath(ArrayList<RectangleBox> colliders, RectangleBox destination,Node root)
+	{	
+		int ticks = (int) Math.floor(-JUMP_VALUE / GRAVITY);
+		int maxHeight = (int)((0.5f)*GRAVITY*ticks*ticks);
+		int maxDistance = (int) (ticks * 2 * MAX_SPEED_X);
+		Node result = null;
+		if(root != null)
+		{
+			if(root.collider == destination)
+			{
+				return root;
+			}
+			RectangleBox c = new RectangleBox(new Vector3f(root.collider.getPosition().x - maxDistance,root.collider.getPosition().y - maxHeight,0),new Vector2f(root.collider.getSize().x + (2 * maxDistance),maxHeight));
+			Node tmp = null;
+			int minDistance = Integer.MAX_VALUE;
+			for(RectangleBox bo: colliders)
+			{
+				if(bo.isCollidingWithBox(c) && c.getPosition().y < bo.getPosition().y)
+				{
+					int dist = getManhattanDistance(bo.getPosition(),destination.getPosition());
+					if(dist < minDistance)
+					{
+						minDistance = dist;
+						tmp = new Node(bo,ticks,maxDistance,maxHeight);
+						tmp.setParent(root);
+						//System.out.println("Found Node");
+					}
+				}
+			}
+			//System.out.println("Tmp: " + tmp);
+			if(tmp == null)
+			{
+				return root;
+			}
+			return generatePath(colliders, destination, tmp);
+		}
+		return result;		
+	}	
 
 	/**
 	 * Returns if the enemy is moving left
