@@ -1,5 +1,7 @@
 package com.graphics.world;
 
+import java.util.Random;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
@@ -70,6 +72,51 @@ public class Particle
 	}
 
 	/**
+	 * Creates a new particle
+	 * 
+	 * @param position
+	 *            The position of the particle
+	 * @param size
+	 *            The size of the particle
+	 * @param spriteSheet
+	 *            The spritesheet
+	 * @param numFramesX
+	 *            The number of animation frames X
+	 * @param numFramesY
+	 *            The row in the spritesheet
+	 * @param flip
+	 *            Should the texture be flipped over y axis
+	 * @param sizeOfSpriteOnSpriteSheet
+	 *            The size of the sprite on the sprite sheet
+	 * @param sizeOfSpriteSheet
+	 *            The size of the sprite sheet
+	 * @param loop
+	 *            Should the animation loop
+	 */
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityMod)
+	{
+		// offsetAmount is the particle's random offset generation from the center
+		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatterX;
+		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatterY;
+		// change scatterAmount to 5 for a cool "underwater bubble scatter" effect
+		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityMod;
+		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityMod;
+		this.position = new Vector2f(position.x + offset_x, position.y + offset_y);
+		this.size = size;
+		this.spriteSheet = spriteSheet;
+		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
+		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+		this.numFramesX = numFramesX;
+		this.numFramesY = numFramesY;
+		animateTimer = 0.0f;
+		this.velocity = new Vector2f(velocity.x + randvelocity_x, velocity.y + randvelocity_y);
+		animFrameX = 0;
+		animFrameY = 0;
+		this.flip = flip;
+		this.loop = loop;
+	}
+
+	/**
 	 * Updates the particle
 	 */
 	public void update()
@@ -90,6 +137,7 @@ public class Particle
 		{
 			animateTimer += animateSpeed;
 		}
+		this.setPosition(new Vector2f(getPosition().x + getVelocity().x, getPosition().y + getVelocity().y));
 	}
 
 	/**

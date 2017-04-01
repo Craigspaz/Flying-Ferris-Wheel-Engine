@@ -653,4 +653,14 @@ public class Enemy extends Entity
 		return name;
 	}
 
+	/**
+	 * will eventually create a list of platforms for the entity to jump on to reach the player
+	 * 
+	 * @param colliders
+	 * @param p
+	 */
+	public void findPathToPlayer(ArrayList<RectangleBox> colliders, Player p)
+	{
+		
+	}
 }

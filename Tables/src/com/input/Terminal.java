@@ -178,7 +178,7 @@ public class Terminal
 			{
 				if (commands.length >= 2)
 				{
-					if (game.loadNewLevel("./res/world/" + commands[1] + ".od"))
+					if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw"))
 					{
 						messages.add(0, "loaded " + commands[1]);
 					} else
