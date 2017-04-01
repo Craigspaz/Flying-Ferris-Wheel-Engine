@@ -34,7 +34,7 @@ public class Game
 
 	private Player					player;
 
-	private Entity					table;
+	private Enemy					table;
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
@@ -69,9 +69,10 @@ public class Game
 		handler = new InputHandler();
 		GFX.initString();
 
-		table = new Entity(new Vector3f(64, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
+		table = new Enemy(new Vector3f(512, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
 		table.setAffectedByGravity(true);
 		table.setAnimateFrameTime(10);
+		table.setHostileToPlayer(true);
 
 		entities.add(table);
 
@@ -86,7 +87,7 @@ public class Game
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
-		loadNewLevel("./res/world/level1.od");
+		loadNewLevel("./res/world/test18.od");
 	}
 
 	/**
@@ -178,9 +179,9 @@ public class Game
 			}
 			for (Enemy e : enemies)
 			{
-				e.update(worldColliders);
+				e.update(worldColliders,player);
 				e.checkForCollisionWithProjectiles(playerProjectiles);
-				if (new Random().nextBoolean())
+				/*if (new Random().nextBoolean())
 				{
 					if (new Random().nextBoolean())
 					{
@@ -191,7 +192,7 @@ public class Game
 						e.setMoveRight(false);
 						e.setMoveLeft(true);
 					}
-				}
+				}*/
 			}
 
 			if (!getPlayer().getProjectiles().isEmpty())
@@ -340,7 +341,7 @@ public class Game
 
 		tiles = World.sortTiles(tiles);
 
-		entities.addAll(currentLevel.getEntities());
+		//entities.addAll(currentLevel.getEntities());
 
 		for (Entity e : entities)
 		{

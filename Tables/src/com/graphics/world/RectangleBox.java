@@ -80,6 +80,11 @@ public class RectangleBox
 			return false;
 		}
 	}
+	
+	public RectangleBox clone()
+	{
+		return new RectangleBox(new Vector3f(position.x,position.y,position.z),new Vector2f(size.x,size.y));
+	}
 
 	/**
 	 * Returns the position of the top left corner of the box

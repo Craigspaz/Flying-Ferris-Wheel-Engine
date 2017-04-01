@@ -32,8 +32,8 @@ public class Projectile extends Entity
 	 *            The position of the projectile
 	 * @param texture
 	 *            The texture of the projectile
-	 * @param size
-	 *            The size of the sprite on the texture
+	 * @param sizeOfSpriteSheet
+	 *            The size of the spritesheet
 	 * @param scale
 	 *            The size at which to draw the sprite
 	 * @param sizeOfSpriteOnSheet
@@ -43,9 +43,9 @@ public class Projectile extends Entity
 	 * @param speed
 	 *            The speed of the projectile
 	 */
-	public Projectile(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed)
+	public Projectile(Vector3f position, Texture texture, Vector2f sizeOfSpriteSheet, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed)
 	{
-		super(position, texture, size, scale, sizeOfSpriteOnSheet);
+		super(position, texture, sizeOfSpriteSheet, scale, sizeOfSpriteOnSheet);
 		this.angle = angle;
 		this.speed = speed;
 	}
