@@ -60,6 +60,7 @@ public class Textures
 	{
 		playerFront = Loader.loadTexture("tableSpriteSheet");
 		playerOutline = Loader.loadTexture("tableSpriteSheet_outline");
+		
 		playerLaser = Loader.loadTexture("lasers-v4");
 		fireball = Loader.loadTexture("fireball");
 		testTile = Loader.loadTexture("Floating_Platform_2");
