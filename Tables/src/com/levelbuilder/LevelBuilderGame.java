@@ -409,7 +409,7 @@ public class LevelBuilderGame
 		System.out.println("Saving...");
 		try
 		{
-			File output = new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.od");
+			File output = new File("./res/generated/gen_" + System.currentTimeMillis() + "_level.ffw");
 			PrintWriter writer = new PrintWriter(output);
 			writer.println("<LEVEL name=\"" + output.getName() + "\">");
 			if (player != null)

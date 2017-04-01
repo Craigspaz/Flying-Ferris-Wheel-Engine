@@ -9,6 +9,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.Textures;
 import com.graphics.world.Entity;
+import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
 
@@ -294,8 +295,9 @@ public class Enemy extends Entity
 	 * @param colliders
 	 *            The colliders to check agains the enemy
 	 */
-	public void update(ArrayList<RectangleBox> colliders)
+	public void update(ArrayList<RectangleBox> colliders, Player p)
 	{
+		findPathToPlayer(colliders, p);
 		movement();
 		super.update(colliders);
 	}
@@ -562,4 +564,14 @@ public class Enemy extends Entity
 		return name;
 	}
 
+	/**
+	 * will eventually create a list of platforms for the entity to jump on to reach the player
+	 * 
+	 * @param colliders
+	 * @param p
+	 */
+	public void findPathToPlayer(ArrayList<RectangleBox> colliders, Player p)
+	{
+		
+	}
 }

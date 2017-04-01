@@ -86,7 +86,7 @@ public class Game
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
-		loadNewLevel("./res/world/level1.od");
+		loadNewLevel("./res/world/level1.ffw");
 	}
 
 	/**
@@ -112,6 +112,10 @@ public class Game
 		{
 			e.renderOutline();
 		}
+		for (Particle p : particles)
+		{
+			p.render();
+		}
 		getPlayer().renderOutline();
 		getPlayer().render();
 		for (Entity e : entities)
@@ -127,10 +131,6 @@ public class Game
 			p.render();
 		}
 		for (Projectile p : enemyProjectiles)
-		{
-			p.render();
-		}
-		for (Particle p : particles)
 		{
 			p.render();
 		}
@@ -178,7 +178,7 @@ public class Game
 			}
 			for (Enemy e : enemies)
 			{
-				e.update(worldColliders);
+				e.update(worldColliders, player);
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				if (new Random().nextBoolean())
 				{
@@ -208,6 +208,11 @@ public class Game
 
 			for (Projectile p : playerProjectiles)
 			{
+				if (!p.getParticles().isEmpty())
+				{
+					particles.addAll(p.getParticles());
+					p.getParticles().clear();
+				}
 				p.update(worldColliders);
 			}
 			for (Projectile p : enemyProjectiles)
@@ -313,7 +318,9 @@ public class Game
 
 	/**
 	 * Loads a new level
-	 * @param name The name of the level to load
+	 * 
+	 * @param name
+	 *            The name of the level to load
 	 * @return Returns true if the level loaded successfully else returns false
 	 */
 	public boolean loadNewLevel(String name)
@@ -359,7 +366,9 @@ public class Game
 
 	/**
 	 * Sets a player to the exit door location in the next level
-	 * @param destination The location to set the player
+	 * 
+	 * @param destination
+	 *            The location to set the player
 	 */
 	public void exitDoor(Vector3f destination)
 	{
@@ -368,6 +377,7 @@ public class Game
 
 	/**
 	 * Returns a pointer to the player
+	 * 
 	 * @return Returns a pointer to the player
 	 */
 	public Player getPlayer()
@@ -377,7 +387,9 @@ public class Game
 
 	/**
 	 * Sets the player
-	 * @param player The player to set
+	 * 
+	 * @param player
+	 *            The player to set
 	 */
 	public void setPlayer(Player player)
 	{
@@ -386,6 +398,7 @@ public class Game
 
 	/**
 	 * Returns a pointer to the input handler
+	 * 
 	 * @return Returns a pointer to the input handler
 	 */
 	public InputHandler getHandler()
