@@ -1,0 +1,454 @@
+<LEVEL name="gen_1490707725132_level.od">
+<PLAYER x="896" y="320" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<TILE x="256" y="576" z="0" texName="testTile"/>
+		<TILE x="320" y="576" z="0" texName="testTile"/>
+		<TILE x="64" y="768" z="0" texName="testTile"/>
+		<TILE x="128" y="768" z="0" texName="testTile"/>
+		<TILE x="192" y="768" z="0" texName="testTile"/>
+		<TILE x="256" y="768" z="0" texName="testTile"/>
+		<TILE x="64" y="1088" z="0" texName="testTile"/>
+		<TILE x="192" y="1088" z="0" texName="testTile"/>
+		<TILE x="128" y="1088" z="0" texName="testTile"/>
+		<TILE x="320" y="1088" z="0" texName="testTile"/>
+		<TILE x="256" y="1088" z="0" texName="testTile"/>
+		<TILE x="384" y="1088" z="0" texName="testTile"/>
+		<TILE x="640" y="1088" z="0" texName="testTile"/>
+		<TILE x="512" y="1088" z="0" texName="testTile"/>
+		<TILE x="576" y="960" z="0" texName="testTile"/>
+		<TILE x="768" y="1088" z="0" texName="testTile"/>
+		<TILE x="64" y="1536" z="0" texName="testTile"/>
+		<TILE x="128" y="1536" z="0" texName="testTile"/>
+		<TILE x="192" y="1536" z="0" texName="testTile"/>
+		<TILE x="256" y="1536" z="0" texName="testTile"/>
+		<TILE x="448" y="1536" z="0" texName="testTile"/>
+		<TILE x="320" y="1536" z="0" texName="testTile"/>
+		<TILE x="768" y="1536" z="0" texName="testTile"/>
+		<TILE x="960" y="1536" z="0" texName="testTile"/>
+		<TILE x="1216" y="1536" z="0" texName="testTile"/>
+		<TILE x="1344" y="1536" z="0" texName="testTile"/>
+		<TILE x="1408" y="1472" z="0" texName="testTile"/>
+		<TILE x="1280" y="1344" z="0" texName="testTile"/>
+		<TILE x="1216" y="1280" z="0" texName="testTile"/>
+		<TILE x="960" y="1216" z="0" texName="testTile"/>
+		<TILE x="896" y="1280" z="0" texName="testTile"/>
+		<TILE x="896" y="1408" z="0" texName="testTile"/>
+		<TILE x="960" y="1408" z="0" texName="testTile"/>
+		<TILE x="1152" y="1344" z="0" texName="testTile"/>
+		<TILE x="960" y="704" z="0" texName="testTile"/>
+		<TILE x="1024" y="768" z="0" texName="testTile"/>
+		<TILE x="1024" y="832" z="0" texName="testTile"/>
+		<TILE x="1152" y="896" z="0" texName="testTile"/>
+		<TILE x="1536" y="1024" z="0" texName="testTile"/>
+		<TILE x="1600" y="768" z="0" texName="testTile"/>
+		<TILE x="1408" y="640" z="0" texName="testTile"/>
+		<TILE x="1152" y="448" z="0" texName="testTile"/>
+		<TILE x="1088" y="448" z="0" texName="testTile"/>
+		<TILE x="1024" y="448" z="0" texName="testTile"/>
+		<TILE x="960" y="448" z="0" texName="testTile"/>
+		<TILE x="896" y="448" z="0" texName="testTile"/>
+		<TILE x="832" y="448" z="0" texName="testTile"/>
+		<TILE x="768" y="448" z="0" texName="testTile"/>
+		<TILE x="704" y="128" z="0" texName="testTile"/>
+		<TILE x="704" y="256" z="0" texName="testTile"/>
+		<TILE x="704" y="320" z="0" texName="testTile"/>
+		<TILE x="704" y="448" z="0" texName="testTile"/>
+		<TILE x="704" y="192" z="0" texName="testTile"/>
+		<TILE x="704" y="384" z="0" texName="testTile"/>
+		<TILE x="1152" y="128" z="0" texName="testTile"/>
+		<TILE x="1152" y="192" z="0" texName="testTile"/>
+		<TILE x="1152" y="256" z="0" texName="testTile"/>
+		<TILE x="1344" y="320" z="0" texName="testTile"/>
+		<TILE x="1472" y="384" z="0" texName="testTile"/>
+		<TILE x="1472" y="320" z="0" texName="testTile"/>
+		<TILE x="1408" y="320" z="0" texName="testTile"/>
+		<TILE x="1536" y="256" z="0" texName="testTile"/>
+		<TILE x="1600" y="128" z="0" texName="testTile"/>
+		<TILE x="1600" y="192" z="0" texName="testTile"/>
+		<TILE x="1664" y="128" z="0" texName="testTile"/>
+		<TILE x="1728" y="128" z="0" texName="testTile"/>
+		<TILE x="1792" y="128" z="0" texName="testTile"/>
+		<TILE x="1856" y="320" z="0" texName="testTile"/>
+		<TILE x="1920" y="384" z="0" texName="testTile"/>
+		<TILE x="1920" y="448" z="0" texName="testTile"/>
+		<TILE x="1856" y="512" z="0" texName="testTile"/>
+		<TILE x="1792" y="576" z="0" texName="testTile"/>
+		<TILE x="1728" y="640" z="0" texName="testTile"/>
+		<TILE x="1664" y="704" z="0" texName="testTile"/>
+		<TILE x="1984" y="192" z="0" texName="testTile"/>
+		<TILE x="1536" y="1600" z="0" texName="testTile"/>
+		<TILE x="1600" y="1536" z="0" texName="testTile"/>
+		<TILE x="1728" y="1408" z="0" texName="testTile"/>
+		<TILE x="1792" y="1344" z="0" texName="testTile"/>
+		<TILE x="1920" y="1280" z="0" texName="testTile"/>
+		<TILE x="1984" y="1152" z="0" texName="testTile"/>
+		<TILE x="2112" y="1024" z="0" texName="testTile"/>
+		<TILE x="2176" y="896" z="0" texName="testTile"/>
+		<TILE x="2240" y="768" z="0" texName="testTile"/>
+		<TILE x="2368" y="704" z="0" texName="testTile"/>
+		<TILE x="2432" y="512" z="0" texName="testTile"/>
+		<TILE x="2496" y="448" z="0" texName="testTile"/>
+		<TILE x="2560" y="320" z="0" texName="testTile"/>
+		<TILE x="2624" y="256" z="0" texName="testTile"/>
+		<TILE x="1984" y="1664" z="0" texName="testTile"/>
+		<TILE x="2048" y="1600" z="0" texName="testTile"/>
+		<TILE x="2240" y="1408" z="0" texName="testTile"/>
+		<TILE x="2368" y="1216" z="0" texName="testTile"/>
+		<TILE x="2432" y="1152" z="0" texName="testTile"/>
+		<TILE x="2560" y="960" z="0" texName="testTile"/>
+		<TILE x="2624" y="768" z="0" texName="testTile"/>
+		<TILE x="2688" y="704" z="0" texName="testTile"/>
+		<TILE x="2816" y="512" z="0" texName="testTile"/>
+		<TILE x="2944" y="384" z="0" texName="testTile"/>
+		<TILE x="3072" y="256" z="0" texName="testTile"/>
+		<TILE x="704" y="64" z="0" texName="down"/>
+		<TILE x="256" y="512" z="0" texName="down"/>
+		<TILE x="320" y="512" z="0" texName="down"/>
+		<TILE x="64" y="704" z="0" texName="down"/>
+		<TILE x="128" y="704" z="0" texName="down"/>
+		<TILE x="192" y="704" z="0" texName="down"/>
+		<TILE x="256" y="704" z="0" texName="down"/>
+		<TILE x="64" y="1024" z="0" texName="down"/>
+		<TILE x="128" y="1024" z="0" texName="down"/>
+		<TILE x="192" y="1024" z="0" texName="down"/>
+		<TILE x="256" y="1024" z="0" texName="down"/>
+		<TILE x="320" y="1024" z="0" texName="down"/>
+		<TILE x="384" y="1024" z="0" texName="down"/>
+		<TILE x="512" y="1024" z="0" texName="down"/>
+		<TILE x="576" y="896" z="0" texName="down"/>
+		<TILE x="640" y="1024" z="0" texName="down"/>
+		<TILE x="768" y="1024" z="0" texName="down"/>
+		<TILE x="64" y="1472" z="0" texName="down"/>
+		<TILE x="128" y="1472" z="0" texName="down"/>
+		<TILE x="192" y="1472" z="0" texName="down"/>
+		<TILE x="256" y="1472" z="0" texName="down"/>
+		<TILE x="320" y="1472" z="0" texName="down"/>
+		<TILE x="448" y="1472" z="0" texName="down"/>
+		<TILE x="768" y="1472" z="0" texName="down"/>
+		<TILE x="960" y="1152" z="0" texName="down"/>
+		<TILE x="1216" y="1216" z="0" texName="down"/>
+		<TILE x="1216" y="1472" z="0" texName="down"/>
+		<TILE x="1408" y="1408" z="0" texName="down"/>
+		<TILE x="1600" y="1472" z="0" texName="down"/>
+		<TILE x="1792" y="1280" z="0" texName="down"/>
+		<TILE x="2048" y="1536" z="0" texName="down"/>
+		<TILE x="2240" y="1344" z="0" texName="down"/>
+		<TILE x="1920" y="1216" z="0" texName="down"/>
+		<TILE x="1984" y="1088" z="0" texName="down"/>
+		<TILE x="2432" y="1088" z="0" texName="down"/>
+		<TILE x="2112" y="960" z="0" texName="down"/>
+		<TILE x="2176" y="832" z="0" texName="down"/>
+		<TILE x="2560" y="896" z="0" texName="down"/>
+		<TILE x="2688" y="640" z="0" texName="down"/>
+		<TILE x="2368" y="640" z="0" texName="down"/>
+		<TILE x="2240" y="704" z="0" texName="down"/>
+		<TILE x="2496" y="384" z="0" texName="down"/>
+		<TILE x="2624" y="192" z="0" texName="down"/>
+		<TILE x="3072" y="192" z="0" texName="down"/>
+		<TILE x="2944" y="320" z="0" texName="down"/>
+		<TILE x="2816" y="448" z="0" texName="down"/>
+		<TILE x="1984" y="128" z="0" texName="down"/>
+		<TILE x="1856" y="256" z="0" texName="down"/>
+		<TILE x="1408" y="576" z="0" texName="down"/>
+		<TILE x="1536" y="960" z="0" texName="down"/>
+		<TILE x="1152" y="832" z="0" texName="down"/>
+		<TILE x="960" y="640" z="0" texName="down"/>
+		<TILE x="832" y="384" z="0" texName="down"/>
+		<TILE x="896" y="384" z="0" texName="down"/>
+		<TILE x="960" y="384" z="0" texName="down"/>
+		<TILE x="1024" y="384" z="0" texName="down"/>
+		<TILE x="1152" y="384" z="0" texName="down"/>
+		<TILE x="1088" y="384" z="0" texName="down"/>
+		<TILE x="1344" y="256" z="0" texName="down"/>
+		<TILE x="1408" y="256" z="0" texName="down"/>
+		<TILE x="1600" y="64" z="0" texName="down"/>
+		<TILE x="1664" y="64" z="0" texName="down"/>
+		<TILE x="1728" y="64" z="0" texName="down"/>
+		<TILE x="1792" y="64" z="0" texName="down"/>
+		<TILE x="1152" y="64" z="0" texName="down"/>
+		<TILE x="768" y="384" z="0" texName="downleft"/>
+		<TILE x="1280" y="1280" z="0" texName="downleft"/>
+		<TILE x="1920" y="320" z="0" texName="downleft"/>
+		<TILE x="1024" y="704" z="0" texName="downleft"/>
+		<TILE x="1344" y="1472" z="0" texName="downright"/>
+		<TILE x="896" y="1216" z="0" texName="downright"/>
+		<TILE x="1536" y="1536" z="0" texName="downright"/>
+		<TILE x="1728" y="1344" z="0" texName="downright"/>
+		<TILE x="2368" y="1152" z="0" texName="downright"/>
+		<TILE x="2624" y="704" z="0" texName="downright"/>
+		<TILE x="2432" y="448" z="0" texName="downright"/>
+		<TILE x="1856" y="448" z="0" texName="downright"/>
+		<TILE x="1792" y="512" z="0" texName="downright"/>
+		<TILE x="1728" y="576" z="0" texName="downright"/>
+		<TILE x="1664" y="640" z="0" texName="downright"/>
+		<TILE x="1600" y="704" z="0" texName="downright"/>
+		<TILE x="1472" y="256" z="0" texName="downright"/>
+		<TILE x="1536" y="192" z="0" texName="downright"/>
+		<TILE x="2560" y="256" z="0" texName="downright"/>
+		<TILE x="960" y="1344" z="0" texName="down"/>
+		<TILE x="384" y="576" z="0" texName="left"/>
+		<TILE x="320" y="768" z="0" texName="left"/>
+		<TILE x="832" y="1088" z="0" texName="left"/>
+		<TILE x="640" y="960" z="0" texName="left"/>
+		<TILE x="512" y="1536" z="0" texName="left"/>
+		<TILE x="832" y="1536" z="0" texName="left"/>
+		<TILE x="1024" y="1536" z="0" texName="left"/>
+		<TILE x="1664" y="1536" z="0" texName="left"/>
+		<TILE x="1472" y="1472" z="0" texName="left"/>
+		<TILE x="2112" y="1600" z="0" texName="left"/>
+		<TILE x="2304" y="1408" z="0" texName="left"/>
+		<TILE x="2496" y="1152" z="0" texName="left"/>
+		<TILE x="2624" y="960" z="0" texName="left"/>
+		<TILE x="2752" y="704" z="0" texName="left"/>
+		<TILE x="2880" y="512" z="0" texName="left"/>
+		<TILE x="3008" y="384" z="0" texName="left"/>
+		<TILE x="3136" y="256" z="0" texName="left"/>
+		<TILE x="2688" y="256" z="0" texName="left"/>
+		<TILE x="2560" y="448" z="0" texName="left"/>
+		<TILE x="2432" y="704" z="0" texName="left"/>
+		<TILE x="2304" y="768" z="0" texName="left"/>
+		<TILE x="2240" y="896" z="0" texName="left"/>
+		<TILE x="2176" y="1024" z="0" texName="left"/>
+		<TILE x="2048" y="1152" z="0" texName="left"/>
+		<TILE x="1984" y="1280" z="0" texName="left"/>
+		<TILE x="1856" y="1344" z="0" texName="left"/>
+		<TILE x="1344" y="1344" z="0" texName="left"/>
+		<TILE x="1600" y="1024" z="0" texName="left"/>
+		<TILE x="1216" y="896" z="0" texName="left"/>
+		<TILE x="1088" y="832" z="0" texName="left"/>
+		<TILE x="1088" y="768" z="0" texName="left"/>
+		<TILE x="1472" y="640" z="0" texName="left"/>
+		<TILE x="1984" y="448" z="0" texName="left"/>
+		<TILE x="1984" y="384" z="0" texName="left"/>
+		<TILE x="2048" y="192" z="0" texName="left"/>
+		<TILE x="1856" y="128" z="0" texName="left"/>
+		<TILE x="1216" y="448" z="0" texName="left"/>
+		<TILE x="768" y="128" z="0" texName="left"/>
+		<TILE x="768" y="192" z="0" texName="left"/>
+		<TILE x="768" y="256" z="0" texName="left"/>
+		<TILE x="768" y="320" z="0" texName="left"/>
+		<TILE x="1216" y="256" z="0" texName="left"/>
+		<TILE x="1216" y="192" z="0" texName="left"/>
+		<TILE x="1216" y="128" z="0" texName="left"/>
+		<TILE x="1984" y="1600" z="0" texName="downright"/>
+		<TILE x="1280" y="1536" z="0" texName="leftright"/>
+		<TILE x="384" y="1536" z="0" texName="leftright"/>
+		<TILE x="448" y="1088" z="0" texName="leftright"/>
+		<TILE x="576" y="1088" z="0" texName="leftright"/>
+		<TILE x="704" y="1088" z="0" texName="leftright"/>
+		<TILE x="1216" y="1344" z="0" texName="leftupright"/>
+		<TILE x="192" y="576" z="0" texName="right"/>
+		<TILE x="640" y="128" z="0" texName="right"/>
+		<TILE x="640" y="192" z="0" texName="right"/>
+		<TILE x="640" y="256" z="0" texName="right"/>
+		<TILE x="640" y="320" z="0" texName="right"/>
+		<TILE x="640" y="384" z="0" texName="right"/>
+		<TILE x="640" y="448" z="0" texName="right"/>
+		<TILE x="1280" y="320" z="0" texName="right"/>
+		<TILE x="1088" y="256" z="0" texName="right"/>
+		<TILE x="1088" y="192" z="0" texName="right"/>
+		<TILE x="1088" y="128" z="0" texName="right"/>
+		<TILE x="1536" y="128" z="0" texName="right"/>
+		<TILE x="2496" y="320" z="0" texName="right"/>
+		<TILE x="1792" y="320" z="0" texName="right"/>
+		<TILE x="1920" y="192" z="0" texName="right"/>
+		<TILE x="2368" y="512" z="0" texName="right"/>
+		<TILE x="2304" y="704" z="0" texName="right"/>
+		<TILE x="2176" y="768" z="0" texName="right"/>
+		<TILE x="2112" y="896" z="0" texName="right"/>
+		<TILE x="2048" y="1024" z="0" texName="right"/>
+		<TILE x="1920" y="1152" z="0" texName="right"/>
+		<TILE x="1856" y="1280" z="0" texName="right"/>
+		<TILE x="1472" y="1600" z="0" texName="right"/>
+		<TILE x="1920" y="1664" z="0" texName="right"/>
+		<TILE x="2176" y="1408" z="0" texName="right"/>
+		<TILE x="2304" y="1216" z="0" texName="right"/>
+		<TILE x="2496" y="960" z="0" texName="right"/>
+		<TILE x="2560" y="768" z="0" texName="right"/>
+		<TILE x="2752" y="512" z="0" texName="right"/>
+		<TILE x="2880" y="384" z="0" texName="right"/>
+		<TILE x="3008" y="256" z="0" texName="right"/>
+		<TILE x="0" y="768" z="0" texName="right"/>
+		<TILE x="0" y="1088" z="0" texName="right"/>
+		<TILE x="0" y="1536" z="0" texName="right"/>
+		<TILE x="704" y="1536" z="0" texName="right"/>
+		<TILE x="896" y="1536" z="0" texName="right"/>
+		<TILE x="1152" y="1536" z="0" texName="right"/>
+		<TILE x="832" y="1408" z="0" texName="right"/>
+		<TILE x="832" y="1280" z="0" texName="right"/>
+		<TILE x="960" y="832" z="0" texName="right"/>
+		<TILE x="896" y="704" z="0" texName="right"/>
+		<TILE x="1344" y="640" z="0" texName="right"/>
+		<TILE x="1536" y="768" z="0" texName="right"/>
+		<TILE x="1472" y="1024" z="0" texName="right"/>
+		<TILE x="1664" y="1408" z="0" texName="right"/>
+		<TILE x="960" y="1472" z="0" texName="topdown"/>
+		<TILE x="896" y="1344" z="0" texName="topdown"/>
+		<TILE x="704" y="512" z="0" texName="up"/>
+		<TILE x="768" y="512" z="0" texName="up"/>
+		<TILE x="832" y="512" z="0" texName="up"/>
+		<TILE x="896" y="512" z="0" texName="up"/>
+		<TILE x="960" y="512" z="0" texName="up"/>
+		<TILE x="1024" y="512" z="0" texName="up"/>
+		<TILE x="1088" y="512" z="0" texName="up"/>
+		<TILE x="1152" y="512" z="0" texName="up"/>
+		<TILE x="1344" y="384" z="0" texName="up"/>
+		<TILE x="1728" y="192" z="0" texName="up"/>
+		<TILE x="1792" y="192" z="0" texName="up"/>
+		<TILE x="320" y="640" z="0" texName="up"/>
+		<TILE x="256" y="640" z="0" texName="up"/>
+		<TILE x="256" y="832" z="0" texName="up"/>
+		<TILE x="192" y="832" z="0" texName="up"/>
+		<TILE x="128" y="832" z="0" texName="up"/>
+		<TILE x="64" y="832" z="0" texName="up"/>
+		<TILE x="64" y="1152" z="0" texName="up"/>
+		<TILE x="128" y="1152" z="0" texName="up"/>
+		<TILE x="192" y="1152" z="0" texName="up"/>
+		<TILE x="256" y="1152" z="0" texName="up"/>
+		<TILE x="320" y="1152" z="0" texName="up"/>
+		<TILE x="384" y="1152" z="0" texName="up"/>
+		<TILE x="512" y="1152" z="0" texName="up"/>
+		<TILE x="640" y="1152" z="0" texName="up"/>
+		<TILE x="768" y="1152" z="0" texName="up"/>
+		<TILE x="64" y="1600" z="0" texName="up"/>
+		<TILE x="128" y="1600" z="0" texName="up"/>
+		<TILE x="192" y="1600" z="0" texName="up"/>
+		<TILE x="256" y="1600" z="0" texName="up"/>
+		<TILE x="320" y="1600" z="0" texName="up"/>
+		<TILE x="448" y="1600" z="0" texName="up"/>
+		<TILE x="768" y="1600" z="0" texName="up"/>
+		<TILE x="960" y="1600" z="0" texName="up"/>
+		<TILE x="896" y="1472" z="0" texName="up"/>
+		<TILE x="1216" y="1600" z="0" texName="up"/>
+		<TILE x="1344" y="1600" z="0" texName="up"/>
+		<TILE x="1536" y="1664" z="0" texName="up"/>
+		<TILE x="1984" y="1728" z="0" texName="up"/>
+		<TILE x="1728" y="1472" z="0" texName="up"/>
+		<TILE x="1920" y="1344" z="0" texName="up"/>
+		<TILE x="1984" y="1216" z="0" texName="up"/>
+		<TILE x="2240" y="1472" z="0" texName="up"/>
+		<TILE x="2368" y="1280" z="0" texName="up"/>
+		<TILE x="2112" y="1088" z="0" texName="up"/>
+		<TILE x="2176" y="960" z="0" texName="up"/>
+		<TILE x="1536" y="1088" z="0" texName="up"/>
+		<TILE x="1600" y="832" z="0" texName="up"/>
+		<TILE x="1984" y="256" z="0" texName="up"/>
+		<TILE x="2560" y="1024" z="0" texName="up"/>
+		<TILE x="2240" y="832" z="0" texName="up"/>
+		<TILE x="2368" y="768" z="0" texName="up"/>
+		<TILE x="2624" y="832" z="0" texName="up"/>
+		<TILE x="2432" y="576" z="0" texName="up"/>
+		<TILE x="2560" y="384" z="0" texName="up"/>
+		<TILE x="2816" y="576" z="0" texName="up"/>
+		<TILE x="2944" y="448" z="0" texName="up"/>
+		<TILE x="3072" y="320" z="0" texName="up"/>
+		<TILE x="512" y="960" z="0" texName="right"/>
+		<TILE x="1088" y="1344" z="0" texName="right"/>
+		<TILE x="1664" y="192" z="0" texName="upleft"/>
+		<TILE x="1536" y="320" z="0" texName="upleft"/>
+		<TILE x="1600" y="256" z="0" texName="upleft"/>
+		<TILE x="1920" y="512" z="0" texName="upleft"/>
+		<TILE x="1856" y="576" z="0" texName="upleft"/>
+		<TILE x="1792" y="640" z="0" texName="upleft"/>
+		<TILE x="1728" y="704" z="0" texName="upleft"/>
+		<TILE x="1664" y="768" z="0" texName="upleft"/>
+		<TILE x="1856" y="384" z="0" texName="upright"/>
+		<TILE x="2688" y="768" z="0" texName="upleft"/>
+		<TILE x="2432" y="1216" z="0" texName="upleft"/>
+		<TILE x="2048" y="1664" z="0" texName="upleft"/>
+		<TILE x="1792" y="1408" z="0" texName="upleft"/>
+		<TILE x="1408" y="1536" z="0" texName="upleft"/>
+		<TILE x="1600" y="1600" z="0" texName="upleft"/>
+		<TILE x="960" y="1280" z="0" texName="upleft"/>
+		<TILE x="1152" y="1280" z="0" texName="downright"/>
+		<TILE x="1408" y="384" z="0" texName="upright"/>
+		<TILE x="1472" y="448" z="0" texName="up"/>
+		<TILE x="1536" y="384" z="0" texName="left"/>
+		<TILE x="1024" y="1408" z="0" texName="left"/>
+		<TILE x="1024" y="1216" z="0" texName="left"/>
+		<TILE x="2624" y="320" z="0" texName="upleft"/>
+		<TILE x="1408" y="704" z="0" texName="up"/>
+		<TILE x="1152" y="960" z="0" texName="up"/>
+		<TILE x="1088" y="896" z="0" texName="right"/>
+		<TILE x="960" y="768" z="0" texName="upright"/>
+		<TILE x="1152" y="320" z="0" texName="up"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="704" y="128" z="0" width="64" height="64"/>
+	<COLLIDER x="1152" y="128" z="0" width="64" height="64"/>
+	<COLLIDER x="1600" y="128" z="0" width="256" height="64"/>
+	<COLLIDER x="704" y="192" z="0" width="64" height="64"/>
+	<COLLIDER x="1152" y="192" z="0" width="64" height="64"/>
+	<COLLIDER x="1600" y="192" z="0" width="64" height="64"/>
+	<COLLIDER x="1984" y="192" z="0" width="64" height="64"/>
+	<COLLIDER x="704" y="256" z="0" width="64" height="64"/>
+	<COLLIDER x="1152" y="256" z="0" width="64" height="64"/>
+	<COLLIDER x="1536" y="256" z="0" width="64" height="64"/>
+	<COLLIDER x="2624" y="256" z="0" width="64" height="64"/>
+	<COLLIDER x="3072" y="256" z="0" width="64" height="64"/>
+	<COLLIDER x="704" y="320" z="0" width="64" height="64"/>
+	<COLLIDER x="1344" y="320" z="0" width="192" height="64"/>
+	<COLLIDER x="1856" y="320" z="0" width="64" height="64"/>
+	<COLLIDER x="2560" y="320" z="0" width="64" height="64"/>
+	<COLLIDER x="704" y="384" z="0" width="64" height="64"/>
+	<COLLIDER x="1472" y="384" z="0" width="64" height="64"/>
+	<COLLIDER x="1920" y="384" z="0" width="64" height="64"/>
+	<COLLIDER x="2944" y="384" z="0" width="64" height="64"/>
+	<COLLIDER x="704" y="448" z="0" width="512" height="64"/>
+	<COLLIDER x="1920" y="448" z="0" width="64" height="64"/>
+	<COLLIDER x="2496" y="448" z="0" width="64" height="64"/>
+	<COLLIDER x="1856" y="512" z="0" width="64" height="64"/>
+	<COLLIDER x="2432" y="512" z="0" width="64" height="64"/>
+	<COLLIDER x="2816" y="512" z="0" width="64" height="64"/>
+	<COLLIDER x="256" y="576" z="0" width="128" height="64"/>
+	<COLLIDER x="1792" y="576" z="0" width="64" height="64"/>
+	<COLLIDER x="1408" y="640" z="0" width="64" height="64"/>
+	<COLLIDER x="1728" y="640" z="0" width="64" height="64"/>
+	<COLLIDER x="960" y="704" z="0" width="64" height="64"/>
+	<COLLIDER x="1664" y="704" z="0" width="64" height="64"/>
+	<COLLIDER x="2368" y="704" z="0" width="64" height="64"/>
+	<COLLIDER x="2688" y="704" z="0" width="64" height="64"/>
+	<COLLIDER x="64" y="768" z="0" width="256" height="64"/>
+	<COLLIDER x="1024" y="768" z="0" width="64" height="64"/>
+	<COLLIDER x="1600" y="768" z="0" width="64" height="64"/>
+	<COLLIDER x="2240" y="768" z="0" width="64" height="64"/>
+	<COLLIDER x="2624" y="768" z="0" width="64" height="64"/>
+	<COLLIDER x="1024" y="832" z="0" width="64" height="64"/>
+	<COLLIDER x="1152" y="896" z="0" width="64" height="64"/>
+	<COLLIDER x="2176" y="896" z="0" width="64" height="64"/>
+	<COLLIDER x="576" y="960" z="0" width="64" height="64"/>
+	<COLLIDER x="2560" y="960" z="0" width="64" height="64"/>
+	<COLLIDER x="1536" y="1024" z="0" width="64" height="64"/>
+	<COLLIDER x="2112" y="1024" z="0" width="64" height="64"/>
+	<COLLIDER x="64" y="1088" z="0" width="384" height="64"/>
+	<COLLIDER x="512" y="1088" z="0" width="64" height="64"/>
+	<COLLIDER x="640" y="1088" z="0" width="64" height="64"/>
+	<COLLIDER x="768" y="1088" z="0" width="64" height="64"/>
+	<COLLIDER x="1984" y="1152" z="0" width="64" height="64"/>
+	<COLLIDER x="2432" y="1152" z="0" width="64" height="64"/>
+	<COLLIDER x="960" y="1216" z="0" width="64" height="64"/>
+	<COLLIDER x="2368" y="1216" z="0" width="64" height="64"/>
+	<COLLIDER x="896" y="1280" z="0" width="64" height="64"/>
+	<COLLIDER x="1216" y="1280" z="0" width="64" height="64"/>
+	<COLLIDER x="1920" y="1280" z="0" width="64" height="64"/>
+	<COLLIDER x="1152" y="1344" z="0" width="64" height="64"/>
+	<COLLIDER x="1280" y="1344" z="0" width="64" height="64"/>
+	<COLLIDER x="1792" y="1344" z="0" width="64" height="64"/>
+	<COLLIDER x="896" y="1408" z="0" width="128" height="64"/>
+	<COLLIDER x="1728" y="1408" z="0" width="64" height="64"/>
+	<COLLIDER x="2240" y="1408" z="0" width="64" height="64"/>
+	<COLLIDER x="1408" y="1472" z="0" width="64" height="64"/>
+	<COLLIDER x="64" y="1536" z="0" width="320" height="64"/>
+	<COLLIDER x="448" y="1536" z="0" width="64" height="64"/>
+	<COLLIDER x="768" y="1536" z="0" width="64" height="64"/>
+	<COLLIDER x="960" y="1536" z="0" width="64" height="64"/>
+	<COLLIDER x="1216" y="1536" z="0" width="64" height="64"/>
+	<COLLIDER x="1344" y="1536" z="0" width="64" height="64"/>
+	<COLLIDER x="1600" y="1536" z="0" width="64" height="64"/>
+	<COLLIDER x="1536" y="1600" z="0" width="64" height="64"/>
+	<COLLIDER x="2048" y="1600" z="0" width="64" height="64"/>
+	<COLLIDER x="1984" y="1664" z="0" width="64" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+</LEVEL>
