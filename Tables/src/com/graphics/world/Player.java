@@ -102,17 +102,7 @@ public class Player extends Entity
 		}
 		if (handler.right() == false && handler.left() == false)
 		{
-			if (velocity.x > 0)
-			{
-				velocity.x -= DECEL_VALUE;
-			} else if (velocity.x < 0)
-			{
-				velocity.x += DECEL_VALUE;
-			}
-			if (Math.abs(velocity.x) < DECEL_VALUE)
-			{
-				velocity.x = 0;
-			}
+			stopMoving();
 			if (!left)
 			{
 				shootAngle = 0;

@@ -10,6 +10,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.Textures;
 import com.graphics.world.Entity;
+import com.graphics.world.Particle;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
@@ -22,23 +23,29 @@ import com.graphics.world.projectile.Projectile;
  */
 public class Enemy extends Entity
 {
-	private boolean					moveLeft				= false;
-	private boolean					moveRight				= false;
-	private boolean					isJumping				= false;
-	private boolean					isUp					= false;
+	private boolean						moveLeft				= false;
+	private boolean						moveRight				= false;
+	private boolean						isJumping				= false;
+	private boolean						isUp					= false;
 
-	private ArrayList<Projectile>	projectiles				= new ArrayList<Projectile>();
-	private int						shootingDelay			= 5;
-	private int						shootingCounter			= 0;
-	private boolean					canShoot				= true;
-	private boolean					shoot					= false;
-	private float					shootAngle				= 0;
-	private float					bulletSpeed				= 16;
-	private int						id;
-	protected String				name					= "";
+	private ArrayList<Projectile>		projectiles				= new ArrayList<Projectile>();
+	private int							shootingDelay			= 5;
+	private int							shootingCounter			= 0;
+	private boolean						canShoot				= true;
+	private boolean						shoot					= false;
+	private float						shootAngle				= 0;
+	private float						bulletSpeed				= 16;
+	private int							id;
+	protected String					name					= "";
 
-	private int						maxJumpDistanceWalk		= 3 * 64;
-	private int						maxJumpDistanceSprint	= 5 * 64;
+	private int							maxJumpDistanceWalk		= 3 * 64;
+	private int							maxJumpDistanceSprint	= 5 * 64;
+
+	protected ArrayList<RectangleBox>	path					= null;
+
+	private int							ticks					= (int) Math.floor(-JUMP_VALUE / GRAVITY);
+	private int							maxHeight				= (int) ((0.5f) * GRAVITY * ticks * ticks);
+	private int							maxDistance				= (int) (ticks * 2 * MAX_SPEED_X);
 
 	/**
 	 * Creates a new enemy based on an already created entity
@@ -102,172 +109,56 @@ public class Enemy extends Entity
 	/**
 	 * Handles movement
 	 */
-	private void movement()
+	private void move()
 	{
-		if (!moveLeft && !moveRight)
+		if (path != null)
 		{
-			if (velocity.x > 0)
+			for (RectangleBox b : path)
 			{
-				velocity.x -= DECEL_VALUE;
-			} else if (velocity.x < 0)
-			{
-				velocity.x += DECEL_VALUE;
-			}
-			if (Math.abs(velocity.x) < DECEL_VALUE)
-			{
-				velocity.x = 0;
-			}
-			if (!left)
-			{
-				shootAngle = 0;
-			} else
-			{
-				shootAngle = 180;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-			{
-				shootAngle = 90;
+				System.out.println(b);
 			}
 		}
-
-		if (moveRight)
+		RectangleBox targetPlatform = null;
+		if (path != null && path.size() > 0)
 		{
-			super.moveRight();
-			if (velocity.x > 0)
+			targetPlatform = path.get(path.size() - 1);
+			System.out.println("heading for: " + targetPlatform);
+
+			if (targetPlatform != getCurrentFloor())// if it has a destination and it's not the current tile
 			{
-				shootAngle = 0;
-				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				if (targetPlatform.getPosition().x + targetPlatform.getSize().x < position.x + 1)
+				{// if the destination platform is to the left of this one
+					super.moveLeft();
+
+				} else if (targetPlatform.getPosition().x > position.x)
 				{
-					shootAngle = 45;
-				}
-			}
-		}
-
-		if (moveLeft)
-		{
-			moveLeft();
-			if (velocity.x < 0)
-			{
-				shootAngle = 180;
-				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+					super.moveRight();
+				} else
 				{
-					shootAngle = 135;
+					super.stopMoving();
 				}
-			}
-		}
-
-		if (!isJumping)
-		{
-			canJump = true;
-			jumping = false;
-		}
-
-		if (isJumping)
-		{
-			if (canJump)
-			{
-				jump();
-				canJump = false;
-			}
-		}
-
-		if (isUp)
-		{
-			if (!left)
-				shootAngle = 45;
-			else
-				shootAngle = 135;
-		}
-
-		if (!shoot)
-		{
-			if (shootingCounter > shootingDelay)
-
-			{
-				shootingCounter = 0;
-				canShoot = true;
+				if (Math.abs(position.x - targetPlatform.getPosition().x + targetPlatform.getSize().x) < maxDistance && getCurrentFloor().getPosition().y - targetPlatform.getPosition().y < maxHeight)
+				{
+					if (!isInAir)
+					{
+						super.jump();
+						if (!isInAir)
+						{
+							particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+						}
+						// System.out.println("jump " + jumpCount);
+					}
+				}
 			} else
 			{
-				shootingCounter++;
+				super.stopMoving();// for now, it stops if it's on the right tile
+				// TODO goes up to the player and attacks
 			}
+		} else
+
+		{
+			super.stopMoving();
 		}
-
-		if (shoot)
-		{
-			if (canShoot)
-			{
-				projectiles.add(new Projectile(new Vector3f(super.position.x, super.position.y, 0), Textures.playerLaser, new Vector2f(32, 256), 0, 1, new Vector2f(32, 32), new Vector2f(32, 32), shootAngle, bulletSpeed, velocity.x, velocity.y));
-			}
-			canShoot = false;
-		}
-
-		if (velocity.x > 0)
-
-		{
-			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
-			{
-				super.numberOfSpritesX = 10;
-				super.numberOfSpritesY = 2;
-			} else
-			{
-				super.numberOfSpritesX = 10;
-				super.numberOfSpritesY = 1;
-			}
-			left = false;
-		}
-		if (velocity.x < 0)
-
-		{
-			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
-			{
-				super.numberOfSpritesX = 10;
-				super.numberOfSpritesY = 2;
-			} else
-			{
-				super.numberOfSpritesX = 10;
-				super.numberOfSpritesY = 1;
-			}
-			left = true;
-		}
-
-		if (velocity.x == 0 && velocity.y == 0)
-
-		{
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 0;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
-		}
-
-		if (Math.abs(velocity.y) < 10 && isInAir)
-
-		{
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 4;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
-			// System.out.println("Top of Jump");
-		} else if (velocity.y < 0 && isInAir)
-
-		{
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 3;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
-		} else if (velocity.y > 0 && isInAir)
-
-		{
-
-			super.numberOfSpritesX = 0;
-			super.numberOfSpritesY = 5;
-			super.animateTime = 0;
-			super.animSpriteFrameX = 0;
-			super.animSpriteFrameY = 0;
-		}
-
 	}
 
 	/**
@@ -301,8 +192,8 @@ public class Enemy extends Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders, Player player)
 	{
-		generatePath(colliders, player);
-		movement();
+		path = generatePath(colliders, player);
+		move();
 		super.update(colliders);
 	}
 
@@ -311,85 +202,80 @@ public class Enemy extends Entity
 		return (int) (Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
 	}
 
-
-	private ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
+	protected ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
 	{
 
 		RectangleBox endCollider = player.getCurrentFloor();
-		if(endCollider == null)
+		if (endCollider == null)
 		{
 			return null;
 		}
 		RectangleBox startCollider = this.getCurrentFloor();
-		if(startCollider == null)
+		if (startCollider == null)
 		{
 			return null;
 		}
 
 		int ticks = (int) Math.floor(-JUMP_VALUE / GRAVITY);
-		int maxHeight = (int)((0.5f)*GRAVITY*ticks*ticks);
+		int maxHeight = (int) ((0.5f) * GRAVITY * ticks * ticks);
 		int maxDistance = (int) (ticks * 2 * MAX_SPEED_X);
 		System.out.println("Ticks: " + ticks + " MaxHeight: " + maxHeight + " MaxDistance: " + maxDistance);
-		//Node result = new Node(startCollider,ticks,maxDistance,maxHeight).generatePath(colliders, endCollider);		
-		//System.out.println("Destination: " + result + " Start: " + result.getParent());
-		
-		
-		Node startNode = new Node(startCollider,ticks,maxDistance,maxHeight);
+		// Node result = new Node(startCollider,ticks,maxDistance,maxHeight).generatePath(colliders, endCollider);
+		// System.out.println("Destination: " + result + " Start: " + result.getParent());
+
+		Node startNode = new Node(startCollider, ticks, maxDistance, maxHeight);
 		System.out.println("Start: " + startNode);
-		Node result = generatePath(colliders,endCollider,startNode);		
+		Node result = generatePath(colliders, endCollider, startNode);
 		System.out.println("Destination: " + result);
-	
+
 		// System.out.println("Start Node: " + startNode);
-		
+
 		ArrayList<RectangleBox> resultNodes = new ArrayList<RectangleBox>();
-		while(result != null)
+		while (result != null)
 		{
-			resultNodes.add(result.collider);
-			System.out.println(result);
+			if (result.collider != startCollider)
+				resultNodes.add(result.collider);
+			// System.out.println(result);
 			result = result.getParent();
 		}
 		return resultNodes;
 	}
-	
-	
-	public Node generatePath(ArrayList<RectangleBox> colliders, RectangleBox destination,Node root)
-	{	
-		int ticks = (int) Math.floor(-JUMP_VALUE / GRAVITY);
-		int maxHeight = (int)((0.5f)*GRAVITY*ticks*ticks);
-		int maxDistance = (int) (ticks * 2 * MAX_SPEED_X);
+
+	public Node generatePath(ArrayList<RectangleBox> colliders, RectangleBox destination, Node root)
+	{
 		Node result = null;
-		if(root != null)
+		if (root != null)
 		{
-			if(root.collider == destination)
+			if (root.collider == destination)
 			{
 				return root;
 			}
-			RectangleBox c = new RectangleBox(new Vector3f(root.collider.getPosition().x - maxDistance,root.collider.getPosition().y - maxHeight,0),new Vector2f(root.collider.getSize().x + (2 * maxDistance),maxHeight));
+			RectangleBox c = new RectangleBox(new Vector3f(root.collider.getPosition().x - maxDistance, root.collider.getPosition().y - maxHeight, 0), new Vector2f(root.collider.getSize().x + (2 * maxDistance), maxHeight));
 			Node tmp = null;
 			int minDistance = Integer.MAX_VALUE;
-			for(RectangleBox bo: colliders)
+			for (RectangleBox bo : colliders)
 			{
-				if(bo.isCollidingWithBox(c) && c.getPosition().y < bo.getPosition().y)
+				if (bo.isCollidingWithBox(c) && c.getPosition().y < bo.getPosition().y)
 				{
-					int dist = getManhattanDistance(bo.getPosition(),destination.getPosition());
-					if(dist < minDistance)
+					int dist = getManhattanDistance(bo.getPosition(), destination.getPosition());
+					if (dist < minDistance)
 					{
 						minDistance = dist;
-						tmp = new Node(bo,ticks,maxDistance,maxHeight);
+						tmp = new Node(bo, ticks, maxDistance, maxHeight);
 						tmp.setParent(root);
-						//System.out.println("Found Node");
+						// System.out.println("Found Node");
 					}
 				}
 			}
-			//System.out.println("Tmp: " + tmp);
-			if(tmp == null)
+			// System.out.println("Tmp: " + tmp);
+			if (tmp == null)
 			{
 				return root;
 			}
 			return generatePath(colliders, destination, tmp);
 		}
-		return result;		
-	}	
+		return result;
+	}
 
 	/**
 	 * Returns if the enemy is moving left
@@ -651,16 +537,5 @@ public class Enemy extends Entity
 	public String toString()
 	{
 		return name;
-	}
-
-	/**
-	 * will eventually create a list of platforms for the entity to jump on to reach the player
-	 * 
-	 * @param colliders
-	 * @param p
-	 */
-	public void findPathToPlayer(ArrayList<RectangleBox> colliders, Player p)
-	{
-		
 	}
 }

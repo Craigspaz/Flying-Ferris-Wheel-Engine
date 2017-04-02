@@ -22,13 +22,13 @@ public class Entity
 	protected ArrayList<Projectile>	projectiles			= new ArrayList<Projectile>();
 	protected ArrayList<Particle>	particles			= new ArrayList<Particle>();
 
-	public static final float	GRAVITY				= 0.8f;
-	public static final float	MAX_SPEED_Y			= 20.0f;
-	public static final float	MAX_SPEED_X			= 4.0f;
-	public static final float	HORIZONTAL_ACCEL	= 0.4f;
-	public static final float	DECEL_VALUE			= 0.3f;
-	public static final float	JUMP_VALUE			= -15;
-	public static final int		MAX_JUMPS			= 2;
+	public static final float		GRAVITY				= 0.8f;
+	public static final float		MAX_SPEED_Y			= 20.0f;
+	public static final float		MAX_SPEED_X			= 4.0f;
+	public static final float		HORIZONTAL_ACCEL	= 0.4f;
+	public static final float		DECEL_VALUE			= 0.3f;
+	public static final float		JUMP_VALUE			= -15;
+	public static final int			MAX_JUMPS			= 2;
 	private float					animateFrameTime	= 5;
 	protected boolean				left				= false;
 	private int						healthPoints		= 100;
@@ -279,6 +279,24 @@ public class Entity
 			{
 				velocity.x = -(MAX_SPEED_X);
 			}
+		}
+	}
+
+	/**
+	 * stops the entity
+	 */
+	public void stopMoving()
+	{
+		if (velocity.x > 0)
+		{
+			velocity.x -= DECEL_VALUE;
+		} else if (velocity.x < 0)
+		{
+			velocity.x += DECEL_VALUE;
+		}
+		if (Math.abs(velocity.x) < DECEL_VALUE)
+		{
+			velocity.x = 0;
 		}
 	}
 
