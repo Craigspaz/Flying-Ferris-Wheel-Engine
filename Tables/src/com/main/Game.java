@@ -176,6 +176,11 @@ public class Game
 			{
 				e.update(worldColliders);
 				e.checkForCollisionWithProjectiles(playerProjectiles);
+				if (e.isHostileToPlayer())
+				{
+					enemies.add(new Enemy(e));
+					e.setDead(true);
+				}
 			}
 			for (Enemy e : enemies)
 			{

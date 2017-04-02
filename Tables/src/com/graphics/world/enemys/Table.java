@@ -1,9 +1,13 @@
 package com.graphics.world.enemys;
 
+import java.util.ArrayList;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.graphics.Textures;
+import com.graphics.world.Player;
+import com.graphics.world.RectangleBox;
 
 /**
  * The Table test object
@@ -28,5 +32,4 @@ public class Table extends Enemy
 		this.name = "Table";
 		this.setAffectedByGravity(true);
 	}
-
 }

@@ -166,6 +166,7 @@ public class Terminal
 						return;
 					} else
 					{
+						ee.setHostileToPlayer(true);
 						Game.entities.add(ee);
 					}
 					// TODO create enemy with ID, X, and Y coords
