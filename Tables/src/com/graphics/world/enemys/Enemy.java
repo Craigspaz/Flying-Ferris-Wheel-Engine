@@ -1,9 +1,7 @@
 package com.graphics.world.enemys;
 
-import java.awt.List;
 import java.util.ArrayList;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
@@ -197,11 +195,23 @@ public class Enemy extends Entity
 		super.update(colliders);
 	}
 
+	/**
+	 * Returns the manhattan distance between two vector3f's
+	 * @param start The first position
+	 * @param end The second position
+	 * @return Returns the manhattan distance between the two points
+	 */
 	private int getManhattanDistance(Vector3f start, Vector3f end)
 	{
 		return (int) (Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
 	}
 
+	/**
+	 * Returns a list of rectangleboxs that are a path between the enemy and the player
+	 * @param colliders The list of world colliders
+	 * @param player A pointer to the player
+	 * @return Returns a list of rectangleboxs that are a path between teh enemy and the player
+	 */
 	protected ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
 	{
 
@@ -219,14 +229,14 @@ public class Enemy extends Entity
 		int ticks = (int) Math.floor(-JUMP_VALUE / GRAVITY);
 		int maxHeight = (int) ((0.5f) * GRAVITY * ticks * ticks);
 		int maxDistance = (int) (ticks * 2 * MAX_SPEED_X);
-		System.out.println("Ticks: " + ticks + " MaxHeight: " + maxHeight + " MaxDistance: " + maxDistance);
+		//System.out.println("Ticks: " + ticks + " MaxHeight: " + maxHeight + " MaxDistance: " + maxDistance);
 		// Node result = new Node(startCollider,ticks,maxDistance,maxHeight).generatePath(colliders, endCollider);
 		// System.out.println("Destination: " + result + " Start: " + result.getParent());
 
-		Node startNode = new Node(startCollider, ticks, maxDistance, maxHeight);
-		System.out.println("Start: " + startNode);
+		Node startNode = new Node(startCollider);
+		//System.out.println("Start: " + startNode);
 		Node result = generatePath(colliders, endCollider, startNode);
-		System.out.println("Destination: " + result);
+		//System.out.println("Destination: " + result);
 
 		// System.out.println("Start Node: " + startNode);
 
@@ -241,6 +251,13 @@ public class Enemy extends Entity
 		return resultNodes;
 	}
 
+	/**
+	 * Returns a node in the path between root and destination
+	 * @param colliders A pointer to the list of world colliders
+	 * @param destination The destination collider
+	 * @param root The current node to check
+	 * @return Returns a node in the path between root and destination
+	 */
 	public Node generatePath(ArrayList<RectangleBox> colliders, RectangleBox destination, Node root)
 	{
 		Node result = null;
@@ -261,7 +278,7 @@ public class Enemy extends Entity
 					if (dist < minDistance)
 					{
 						minDistance = dist;
-						tmp = new Node(bo, ticks, maxDistance, maxHeight);
+						tmp = new Node(bo);
 						tmp.setParent(root);
 						// System.out.println("Found Node");
 					}

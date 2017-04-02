@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.Textures;
+import com.graphics.world.enemys.Enemy;
 
 /**
  * Loads a world from a file
@@ -22,7 +23,7 @@ public class World
 {
 	private static ArrayList<Tile>			tiles;
 	private static ArrayList<RectangleBox>	colliders;
-	private static ArrayList<Entity>		entities	= new ArrayList<Entity>();
+	private static ArrayList<Enemy>			enemies		= new ArrayList<Enemy>();
 	private static ArrayList<DialogBox>		dialogue	= new ArrayList<DialogBox>();
 
 	/**
@@ -46,7 +47,7 @@ public class World
 	{
 		tiles = new ArrayList<Tile>();
 		colliders = new ArrayList<RectangleBox>();
-		entities = new ArrayList<Entity>();
+		enemies = new ArrayList<Enemy>();
 		dialogue = new ArrayList<DialogBox>();
 		Level newLevel = null;
 		int width = 0;
@@ -68,18 +69,17 @@ public class World
 					levelName = nameParam.substring(0, nameParam.indexOf("\""));
 					newLevel = new Level(levelName);
 					System.out.println("Loading level: " + levelName);
-				} 
-				else if(line.trim().startsWith("<DOOR"))
+				} else if (line.trim().startsWith("<DOOR"))
 				{
 					String param = line.substring(line.indexOf("x=\"") + 3);
 					String x = param.substring(0, param.indexOf("\""));
 					String param1 = param.substring(param.indexOf("y=\"") + 3);
 					String y = param1.substring(0, param1.indexOf("\""));
-					
-					Tile t = new Tile(new Vector3f(Integer.parseInt(x), Integer.parseInt(y),0), new Vector2f(width, height), Textures.door);
+
+					Tile t = new Tile(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), 0), new Vector2f(width, height), Textures.door);
 					t.setDoor(true);
 					tiles.add(t);
-				}else if (line.trim().startsWith("<TILES "))
+				} else if (line.trim().startsWith("<TILES "))
 				{
 					String param = line.substring(line.indexOf("sizex=\"") + 7);
 					String x = param.substring(0, param.indexOf("\""));
@@ -108,106 +108,90 @@ public class World
 					if (tex.equals("testTile"))
 					{
 						texture = Textures.testTile;
-					}
-					else if(tex.equals("grass"))
+					} else if (tex.equals("grass"))
 					{
 						texture = Textures.grass;
-					}
-					else if(tex.equals("down"))
+					} else if (tex.equals("down"))
 					{
 						texture = Textures.tileOutline;
 						texX = 0;
 						texY = 0;
-					}
-					else if(tex.equals("right"))
+					} else if (tex.equals("right"))
 					{
 						texture = Textures.tileOutline;
 						texX = 1;
 						texY = 0;
-					}
-					else if(tex.equals("up"))
+					} else if (tex.equals("up"))
 					{
 						texture = Textures.tileOutline;
 						texX = 2;
 						texY = 0;
-					}
-					else if(tex.equals("left"))
+					} else if (tex.equals("left"))
 					{
 						texture = Textures.tileOutline;
 						texX = 3;
 						texY = 0;
-					}
-					else if(tex.equals("downright"))
+					} else if (tex.equals("downright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 4;
 						texY = 0;
-					}
-					else if(tex.equals("upright"))
+					} else if (tex.equals("upright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 5;
 						texY = 0;
-					}
-					else if(tex.equals("upleft"))
+					} else if (tex.equals("upleft"))
 					{
 						texture = Textures.tileOutline;
 						texX = 6;
 						texY = 0;
-					}
-					else if(tex.equals("downleft"))
+					} else if (tex.equals("downleft"))
 					{
 						texture = Textures.tileOutline;
 						texX = 7;
 						texY = 0;
-					}
-					else if(tex.equals("downleftright"))
+					} else if (tex.equals("downleftright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 8;
 						texY = 0;
-					}
-					else if(tex.equals("updownright"))
+					} else if (tex.equals("updownright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 9;
 						texY = 0;
-					}
-					else if(tex.equals("leftupright"))
+					} else if (tex.equals("leftupright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 10;
 						texY = 0;
-					}
-					else if(tex.equals("rightupdown"))
+					} else if (tex.equals("rightupdown"))
 					{
 						texture = Textures.tileOutline;
 						texX = 11;
 						texY = 0;
-					}
-					else if(tex.equals("leftright"))
+					} else if (tex.equals("leftright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 12;
 						texY = 0;
-					}
-					else if(tex.equals("topdown"))
+					} else if (tex.equals("topdown"))
 					{
 						texture = Textures.tileOutline;
 						texX = 13;
 						texY = 0;
-					}
-					else if(tex.equals("updownleftright"))
+					} else if (tex.equals("updownleftright"))
 					{
 						texture = Textures.tileOutline;
 						texX = 14;
 						texY = 0;
 					}
-					
+
 					int xPos = Integer.parseInt(x);
 					int yPos = Integer.parseInt(y);
 					int zPos = Integer.parseInt(z);
-					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture,texX,texY));
+					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture, texX, texY));
 					System.out.println("New Tile: (" + xPos + ", " + yPos + ", " + zPos + ") (" + width + ", " + height + ")");
 				} else if (line.trim().startsWith("<COLLIDER "))
 				{
@@ -281,10 +265,10 @@ public class World
 						nx = 10;
 					}
 
-					Entity entity = new Entity(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), t1, t2, new Vector2f(t1.getTextureWidth(), t1.getTextureHeight()), nx, ny, new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)), size);
+					Enemy entity = new Enemy(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), t1, t2, new Vector2f(t1.getTextureWidth(), t1.getTextureHeight()), nx, ny, new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)), size);
 					entity.setAffectedByGravity(true);
 					entity.setHostileToPlayer(isEnemy);
-					entities.add(entity);
+					enemies.add(entity);
 					System.out.println("New Enemy: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
 				} else if (line.trim().startsWith("<TEXT "))// reads speech for dialogue boxes from the level. accepts a
 															// name, portrait index, and box background.
@@ -329,7 +313,7 @@ public class World
 					text.toArray(text2);// sends an array instead of an arraylist, to avoid having lists of lists
 					dialogue.add(new DialogBox(text2, speakerName, portraitnum, boxnum));
 					System.out.println("New Dialogue: (" + speakerName + ", saying " + text2.length + " lines), using portrait \"" + tex1 + "\" and text box \"" + tex2 + "\"");
-				} else if(line.trim().startsWith("<PLAYER"))
+				} else if (line.trim().startsWith("<PLAYER"))
 				{
 					String param = line.substring(line.indexOf("x=\"") + 3);
 					String x = param.substring(0, param.indexOf("\""));
@@ -351,7 +335,7 @@ public class World
 
 					String param6 = param5.substring(param5.indexOf("texOut=\"") + 8);
 					String tex2 = param6.substring(0, param6.indexOf("\""));
-					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x),Float.parseFloat(y),Float.parseFloat(z)));
+					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x), Float.parseFloat(y), Float.parseFloat(z)));
 				}
 			}
 
@@ -367,7 +351,7 @@ public class World
 		}
 		newLevel.setColliders(colliders);
 		newLevel.setTiles(sortTiles(tiles));
-		newLevel.setEntities(entities);
+		newLevel.setEnemies(enemies);
 		newLevel.setDialogue(dialogue);
 		return newLevel;
 	}

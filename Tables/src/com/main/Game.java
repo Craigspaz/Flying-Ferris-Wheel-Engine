@@ -1,7 +1,6 @@
 package com.main;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -43,7 +42,7 @@ public class Game
 	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
 	private ArrayList<DialogBox>	dialogue;
 
-	public static ArrayList<Entity>	entities			= new ArrayList<Entity>();
+	public ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
 	private Camera					camera;
 
@@ -95,7 +94,8 @@ public class Game
 	 */
 	public void render()
 	{
-		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
+		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the correct
+																					// location
 
 		for (Tile t : tiles)
 		{
@@ -142,6 +142,7 @@ public class Game
 				t.render();
 			}
 		}
+		// Renders the dialog box
 		if (currentDialogue != null && currentDialogue.active())
 		{
 			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not world
@@ -160,18 +161,22 @@ public class Game
 		terminal.update();
 		if (!terminal.active())// pauses game while terminal is active
 		{
+			// Updates the dialogue box
 			if (currentDialogue != null)
 			{
 				if (currentDialogue.active())
 					currentDialogue.update(handler);
 			}
+			// Updates the player
 			getPlayer().update(worldColliders);
 			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
+			// Updates tiles
 			for (Tile t : tiles)
 			{
 				t.update();
 			}
 
+			// Updates entities
 			for (Entity e : entities)
 			{
 				e.update(worldColliders);
@@ -182,36 +187,33 @@ public class Game
 					e.setDead(true);
 				}
 			}
+
+			// Updates the enemy
 			for (Enemy e : enemies)
 			{
 				e.update(worldColliders, player);
 				e.checkForCollisionWithProjectiles(playerProjectiles);
-				/*if (new Random().nextBoolean())
-				{
-					if (new Random().nextBoolean())
-					{
-						e.setMoveLeft(false);
-						e.setMoveRight(true);
-					} else
-					{
-						e.setMoveRight(false);
-						e.setMoveLeft(true);
-					}
-				}*/
+				/*
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 */
 			}
 
+			// Adds all projectiles the player fired to playerProjectiles
 			if (!getPlayer().getProjectiles().isEmpty())
 			{
 				playerProjectiles.addAll(getPlayer().getProjectiles());
 				getPlayer().getProjectiles().clear();
 			}
 
+			// Adds all particles the player made
 			if (!getPlayer().getParticles().isEmpty())
 			{
 				particles.addAll(getPlayer().getParticles());
 				getPlayer().getParticles().clear();
 			}
 
+			// Updates the projectiles the player fired
 			for (Projectile p : playerProjectiles)
 			{
 				if (!p.getParticles().isEmpty())
@@ -221,15 +223,19 @@ public class Game
 				}
 				p.update(worldColliders);
 			}
+			// Updates the projectiles the enemies fired
 			for (Projectile p : enemyProjectiles)
 			{
 				p.update(worldColliders);
 			}
 
+			// Updates the particles in the world
 			for (Particle p : particles)
 			{
 				p.update();
 			}
+
+			// Cleans up the playerProjectiles by removing projectiles that are dead
 			int i = 0;
 			while (i < playerProjectiles.size())
 			{
@@ -243,6 +249,7 @@ public class Game
 					i++;
 				}
 			}
+			// Cleans up the enemy projectiles by removing projectiles that are dead
 			i = 0;
 			while (i < enemyProjectiles.size())
 			{
@@ -256,6 +263,7 @@ public class Game
 					i++;
 				}
 			}
+			// Cleans up entities by removing dead entities
 			i = 0;
 			while (i < entities.size())
 			{
@@ -269,7 +277,7 @@ public class Game
 					i++;
 				}
 			}
-
+			// Cleans up particles that are done running
 			i = 0;
 			while (i < particles.size())
 			{
@@ -283,6 +291,7 @@ public class Game
 					i++;
 				}
 			}
+			// Cleans up enemies that are dead
 			i = 0;
 			while (i < enemies.size())
 			{
@@ -297,7 +306,9 @@ public class Game
 				}
 			}
 			// testProjectile.update(colliders);
-			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
+			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the player
+																					// centered
+			// Handles parallax calculations
 			for (Tile t : tiles)
 			{
 				if (t.getPosition().z > 1)
@@ -346,23 +357,28 @@ public class Game
 			currentDialogue = dialogue.get(0);// this will be changed when an object is interacted with
 			currentDialogue.activate();
 		}
+
+		// Adds parallax tiles
 		tiles.add(sky);
 		tiles.add(testTile2);
 		tiles.add(testTile1);
 		tiles.add(testTile0);
 
-		tiles = World.sortTiles(tiles);
+		tiles = World.sortTiles(tiles); // adds world tiles
 
-		//entities.addAll(currentLevel.getEntities());
+		enemies.addAll(currentLevel.getEnemies());
 
-		for (Entity e : entities)
+		// Adds all entities that are of type enemy to the enemy list
+		/*for (Entity e : entities)
 		{
 			if (e.isHostileToPlayer())
 			{
 				enemies.add(new Enemy(e));
 				e.setDead(true);
 			}
-		}
+		}*/
+
+		// Sets the players spawn location to the location specified in the level
 		if (getPlayer() != null && currentLevel.getPlayerSpawnLocation() != null)
 		{
 			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
@@ -410,5 +426,27 @@ public class Game
 	public InputHandler getHandler()
 	{
 		return handler;
+	}
+
+	/**
+	 * Adds an enemy to the world
+	 * 
+	 * @param ee
+	 *            The enemy to add to the world
+	 */
+	public void addEnemy(Enemy ee)
+	{
+		enemies.add(ee);
+	}
+
+	/**
+	 * Adds an enemy to the world
+	 * 
+	 * @param e
+	 *            The entity to add to the world
+	 */
+	public void addEntity(Entity e)
+	{
+		entities.add(e);
 	}
 }

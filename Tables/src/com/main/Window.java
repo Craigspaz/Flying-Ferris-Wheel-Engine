@@ -98,7 +98,7 @@ public class Window
 			render();
 			Display.update();// This needs to be the last line of code in the
 								// while loop
-			// Display.sync(60);
+			//Display.sync(60);
 		}
 		game.cleanUPGame();
 		Display.destroy();
