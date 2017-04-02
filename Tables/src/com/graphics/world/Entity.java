@@ -209,13 +209,13 @@ public class Entity
 					nBoxY.getPosition().y += -yShift;
 					isOnGround = true;
 					velocity.y = 0;
+					currentFloor = t;
 				} else if (velocity.y < 0)
 				{
 					float yShift = Math.abs(topOfPlayer - bottomOfGround);
 					nBoxY.getPosition().y += yShift;
 					velocity.y = 0;
 				}
-				currentFloor = t;
 			}
 		}
 		if (jumping)
