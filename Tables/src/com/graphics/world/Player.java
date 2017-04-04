@@ -26,8 +26,8 @@ public class Player extends Entity
 	private float			bulletSpawnDistance			= 16;
 	private boolean			canGenerateSprintParticle	= true;
 	private boolean			canGenerateSkidParticle		= false;
-	private int				jumpCount					= 0;	// starts at 0
-	private boolean			flipping;							// for double jump animation
+
+	private boolean			canJump						= true;	// determines the player's ability to jump via keypresses and releases
 
 	private InputHandler	handler;
 
@@ -164,33 +164,13 @@ public class Player extends Entity
 		// released and the jump count is still below max
 		if (!handler.jump())
 		{
-			if (!isInAir)
-			{
-				jumpCount = 0;
-			}
-			if (isInAir && jumpCount == 0)
-			{
-				jumpCount = 1;
-			}
-			if (jumpCount < MAX_JUMPS)
-			{
-				canJump = true;
-			} else
-			{
-				canJump = false;
-			}
-
+			canJump = true;
 		}
 		// If the jump input key is pressed and canJump make the player jump
 		if (handler.jump())
 		{
 			if (canJump)
 			{
-				jumpCount++;
-				if (jumpCount > 1)
-				{
-					flipping = true;
-				}
 				super.jump();
 				canJump = false;
 				if (!isInAir)
@@ -307,7 +287,7 @@ public class Player extends Entity
 			super.animSpriteFrameY = 0;
 		}
 
-		if (jumpCount > 1 && getAnimSpriteFrameX() < 9 && flipping)
+		if (getAnimSpriteFrameX() < 9 && flipping)
 		{
 			super.numberOfSpritesX = 10;
 			super.numberOfSpritesY = 6;
@@ -351,12 +331,12 @@ public class Player extends Entity
 	{
 		input(colliders);
 		super.update(colliders);
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 8f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 8f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.50f));
-		particles.add(new Particle(new Vector2f(position.x + 10, position.y + 8f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.50f));
-		particles.add(new Particle(new Vector2f(position.x + 10, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 14f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 14f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.50f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 14f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.50f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f));
 	}
 
 	/**
