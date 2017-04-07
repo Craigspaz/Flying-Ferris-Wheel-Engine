@@ -92,6 +92,14 @@ public class Particle
 	 *            The size of the sprite sheet
 	 * @param loop
 	 *            Should the animation loop
+	 * @param velocity
+	 *            the initial velocity of the particle
+	 * @param positionScatterX
+	 *            the x radius to disperse the particle spawns
+	 * @param positionScatterY
+	 *            the y radius to disperse the particle spawns
+	 * @param velocityMod
+	 *            the randomness of the velocity
 	 */
 	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityMod)
 	{

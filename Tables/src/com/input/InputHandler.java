@@ -22,6 +22,8 @@ public class InputHandler
 
 	StringBuilder	cmd;
 	String			previous	= "";
+	int				deleteTimer	= 0;
+	boolean			startDelay	= true;
 
 	public InputHandler()
 	{
@@ -199,8 +201,15 @@ public class InputHandler
 	}
 
 	/**
-	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality
-	 * (keycode 14) and up arrow recognition to re-buffer the previous command
+	 * reads backspace key
+	 */
+	public boolean backspace()
+	{
+		return Keyboard.isKeyDown(14);
+	}
+
+	/**
+	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality (keycode 14) and up arrow recognition to re-buffer the previous command
 	 * 
 	 * @return the currently typed string in the buffer
 	 */
@@ -225,11 +234,25 @@ public class InputHandler
 					cmd.replace(0, cmd.length(), previous);// if up is pressed, the entire command becomes the previous
 															// command
 				}
-				if (Keyboard.getEventKey() == 14 && cmd.length() > 0)
-				{
-					cmd.deleteCharAt(cmd.length() - 1);// backspace functionality
-				}
 			}
+		}
+		if (backspace() && deleteTimer == 0)
+		{
+			if (startDelay)
+				deleteTimer = 15;
+			else
+				deleteTimer = 2;
+			startDelay = false;
+			if (cmd.length() > 0)
+				cmd.deleteCharAt(cmd.length() - 1);// backspace functionality
+		} else
+		{
+			deleteTimer--;
+		}
+		if (!backspace())
+		{
+			startDelay = true;
+			deleteTimer = 0;
 		}
 		return cmd.toString();
 	}
