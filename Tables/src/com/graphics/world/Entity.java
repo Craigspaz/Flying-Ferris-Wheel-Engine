@@ -29,6 +29,7 @@ public class Entity
 	public static final float		DECEL_VALUE			= 0.3f;
 	public static final float		JUMP_VALUE			= -15;
 	public static final int			MAX_JUMPS			= 2;
+
 	private float					animateFrameTime	= 5;
 	protected boolean				left				= false;
 	private int						healthPoints		= 100;
@@ -58,8 +59,9 @@ public class Entity
 	protected boolean				affectedByGravity	= false;
 	protected boolean				jumping				= false;
 	protected int					jumpTimer			= 0;
-	protected boolean				canJump				= true;
 	protected boolean				isInAir				= false;
+	protected int					jumpCount			= 1;							// starts at the 1, and counts down to 0
+	protected boolean				flipping			= false;						// for double jump animation
 
 	protected boolean				canDoubleJump		= false;
 	protected RectangleBox			collider;
@@ -209,19 +211,17 @@ public class Entity
 					nBoxY.getPosition().y += -yShift;
 					isOnGround = true;
 					velocity.y = 0;
+					currentFloor = t;
+					jumpCount = MAX_JUMPS;
+					flipping = false;
+					// System.out.println("landed on "+ currentFloor);
 				} else if (velocity.y < 0)
 				{
 					float yShift = Math.abs(topOfPlayer - bottomOfGround);
 					nBoxY.getPosition().y += yShift;
 					velocity.y = 0;
 				}
-				currentFloor = t;
 			}
-		}
-		if (jumping)
-		{
-			velocity.y = JUMP_VALUE;
-			jumping = false;
 		}
 
 		isInAir = !isOnGround;
@@ -254,9 +254,12 @@ public class Entity
 	 */
 	protected void jump()
 	{
-		if (!jumping)
+		if (jumpCount > 0)
 		{
-			jumping = true;
+			if (jumpCount < MAX_JUMPS)
+				flipping = true;
+			velocity.y = JUMP_VALUE;
+			jumpCount--;
 		}
 	}
 

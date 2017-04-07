@@ -45,7 +45,7 @@ public class Enemy extends Entity
 
 	private int							ticks					= (int) Math.floor(-JUMP_VALUE / GRAVITY);
 	private int							maxHeight				= (int) ((0.5f) * GRAVITY * ticks * ticks);
-	private int							maxDistance				= (int) (ticks * 2 * MAX_SPEED_X);
+	private int							maxDistance				= (int) (ticks * MAX_SPEED_X);
 
 	/**
 	 * Creates a new enemy based on an already created entity
@@ -126,29 +126,41 @@ public class Enemy extends Entity
 
 			if (targetPlatform != getCurrentFloor())// if it has a destination and it's not the current tile
 			{
-				if (targetPlatform.getPosition().x + targetPlatform.getSize().x < position.x + 1)
+				if (targetPlatform.getPosition().x + targetPlatform.getSize().x < position.x)
 				{// if the destination platform is to the left of this one
 					super.moveLeft();
-
-				} else if (targetPlatform.getPosition().x > position.x)
+					if (targetPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && position.x - (targetPlatform.getPosition().x + targetPlatform.getSize().x) < maxDistance)
+					{
+						if (!isInAir)
+						{
+							super.jump();
+							if (!isInAir)
+							{
+								particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+							}
+							// System.out.println("jump " + jumpCount);
+						}
+					}
+				} else if (targetPlatform.getPosition().x > position.x + getScale().x)
 				{
 					super.moveRight();
+					if (targetPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && targetPlatform.getPosition().x - (position.x + getScale().x) < maxDistance)
+					{
+						if (!isInAir)
+						{
+							super.jump();
+							if (!isInAir)
+							{
+								particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+							}
+							// System.out.println("jump " + jumpCount);
+						}
+					}
 				} else
 				{
 					super.stopMoving();
 				}
-				if (Math.abs(position.x - targetPlatform.getPosition().x + targetPlatform.getSize().x) < maxDistance && getCurrentFloor().getPosition().y - targetPlatform.getPosition().y < maxHeight)
-				{
-					if (!isInAir)
-					{
-						super.jump();
-						if (!isInAir)
-						{
-							particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
-						}
-						// System.out.println("jump " + jumpCount);
-					}
-				}
+
 			} else
 			{
 				super.stopMoving();// for now, it stops if it's on the right tile
@@ -215,10 +227,6 @@ public class Enemy extends Entity
 		{
 			return null;
 		}
-
-		int ticks = (int) Math.floor(-JUMP_VALUE / GRAVITY);
-		int maxHeight = (int) ((0.5f) * GRAVITY * ticks * ticks);
-		int maxDistance = (int) (ticks * 2 * MAX_SPEED_X);
 		System.out.println("Ticks: " + ticks + " MaxHeight: " + maxHeight + " MaxDistance: " + maxDistance);
 		// Node result = new Node(startCollider,ticks,maxDistance,maxHeight).generatePath(colliders, endCollider);
 		// System.out.println("Destination: " + result + " Start: " + result.getParent());
@@ -255,7 +263,7 @@ public class Enemy extends Entity
 			int minDistance = Integer.MAX_VALUE;
 			for (RectangleBox bo : colliders)
 			{
-				if (bo.isCollidingWithBox(c) && c.getPosition().y < bo.getPosition().y)
+				if (bo.isCollidingWithBox(c) && bo.getPosition().y >= c.getPosition().y)
 				{
 					int dist = getManhattanDistance(bo.getPosition(), destination.getPosition());
 					if (dist < minDistance)
