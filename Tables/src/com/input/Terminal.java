@@ -19,15 +19,18 @@ public class Terminal
 {
 	private boolean				active;
 	private InputHandler		handler;
-	private boolean				canToggle	= true;
-	private boolean				canEnter	= true;
-	private String				command		= "";
+	private boolean				canToggle		= true;
+	private boolean				canEnter		= true;
+	private String				command			= "";
 	private ArrayList<String>	messages;
 	int							lineheight;
 
 	private Player				player;
 	private Camera				camera;
 	private Game				game;
+
+	private static int			centerScreenX	= 666;
+	private static int			centerScreenY	= 366;
 
 	/**
 	 * Creates a new terminal
@@ -151,8 +154,20 @@ public class Terminal
 					int x, y;
 					try
 					{
-						x = Integer.parseInt(commands[2]);
-						y = Integer.parseInt(commands[3]);
+						if (commands[2].equals("."))
+						{
+							x = centerScreenX;
+						} else
+						{
+							x = Integer.parseInt(commands[2]);
+						}
+						if (commands[3].equals("."))
+						{
+							y = centerScreenY;
+						} else
+						{
+							y = Integer.parseInt(commands[3]);
+						}
 					} catch (NumberFormatException | NullPointerException e)
 					{
 						messages.add(0, "failed to read integers");
