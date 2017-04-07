@@ -1,10 +1,14 @@
 package com.graphics;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 /**
  * Load files and textures
@@ -34,6 +38,19 @@ public class Loader
 			System.exit(-1);
 		}
 		return texture;
+	}
+	
+	public static Audio loadAutio(String fileName)
+	{
+		Audio audio = null;
+		try
+		{
+			audio = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/audio/" + fileName + ".wav"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return audio;
 	}
 
 }

@@ -934,13 +934,13 @@ public class Entity
 		this.isHostileToPlayer = isHostileToPlayer;
 	}
 
+	/**
+	 * Returns the collider the entity is on
+	 * 
+	 * @return Returns the collider the entity is on
+	 */
 	public RectangleBox getCurrentFloor()
 	{
 		return currentFloor;
-	}
-
-	public void setCurrentFloor(RectangleBox currentFloor)
-	{
-		this.currentFloor = currentFloor;
 	}
 }

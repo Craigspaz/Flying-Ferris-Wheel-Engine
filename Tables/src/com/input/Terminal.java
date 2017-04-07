@@ -182,7 +182,7 @@ public class Terminal
 					} else
 					{
 						ee.setHostileToPlayer(true);
-						Game.entities.add(ee);
+						game.addEnemy(ee);
 					}
 					// TODO create enemy with ID, X, and Y coords
 					messages.add(0, "spawned " + commands[1].toLowerCase() + " at " + x + ", " + y);

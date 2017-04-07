@@ -34,6 +34,18 @@ public class Tile
 		collider = new RectangleBox(position, size);
 	}
 
+	/**
+	 * Creates a new tile
+	 * 
+	 * @param position
+	 *            The position of the tile
+	 * @param texture
+	 *            The texture of the tile
+	 * @param texX
+	 *            The number of textures in the animation (X direction)
+	 * @param texY
+	 *            The row in the spritesheet
+	 */
 	public Tile(Vector3f position, Texture texture, int texX, int texY)
 	{
 		this(position, texture);
@@ -98,6 +110,20 @@ public class Tile
 		collider = new RectangleBox(position, size);
 	}
 
+	/**
+	 * Creates a new tile
+	 * 
+	 * @param position
+	 *            The position of the tile
+	 * @param size
+	 *            The size of the tile
+	 * @param texture
+	 *            The texture of the tile
+	 * @param texCoordX
+	 *            The number of animation frames in the animation in the x direction
+	 * @param texCoordY
+	 *            The row number of the animation frames
+	 */
 	public Tile(Vector3f position, Vector2f size, Texture texture, int texCoordX, int texCoordY)
 	{
 		this(position, texture, texCoordX, texCoordY);
@@ -237,11 +263,22 @@ public class Tile
 		this.collider = collider;
 	}
 
+	/**
+	 * Returns if this object is a door
+	 * 
+	 * @return Returns true if this object is a door
+	 */
 	public boolean isDoor()
 	{
 		return isDoor;
 	}
 
+	/**
+	 * Sets this object to a door or not
+	 * 
+	 * @param isDoor
+	 *            The value to set
+	 */
 	public void setDoor(boolean isDoor)
 	{
 		this.isDoor = isDoor;

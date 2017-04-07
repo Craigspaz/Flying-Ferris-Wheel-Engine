@@ -80,10 +80,15 @@ public class RectangleBox
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Returns a clone of the current rectanglebox
+	 * 
+	 * @return Returns a clone of the current rectanglebox
+	 */
 	public RectangleBox clone()
 	{
-		return new RectangleBox(new Vector3f(position.x,position.y,position.z),new Vector2f(size.x,size.y));
+		return new RectangleBox(new Vector3f(position.x, position.y, position.z), new Vector2f(size.x, size.y));
 	}
 
 	/**

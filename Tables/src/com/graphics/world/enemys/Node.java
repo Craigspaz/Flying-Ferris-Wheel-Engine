@@ -1,62 +1,49 @@
 package com.graphics.world.enemys;
 
-import java.util.ArrayList;
-
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import com.graphics.world.RectangleBox;
 
+/**
+ * Stores information for pathfinding
+ * @author Craig Ferris
+ *
+ */
 public class Node
 {
-	
-	private int ticks;
-	private int maxHeight;
-	private int maxDistance;
-	
-	public RectangleBox collider;
-	
-	private Node parent = null;
-	
+	public RectangleBox	collider;
+
+	private Node		parent	= null;
+
+	/**
+	 * Creates a new node
+	 * @param collider The collider for the node to correspond to
+	 */
 	public Node(RectangleBox collider)
 	{
 		this.collider = collider;
 	}
-	
-	public Node(RectangleBox collider,int ticks, int maxDistance, int maxHeight)
-	{
-		this(collider);
-		this.ticks = ticks;
-		this.maxDistance = maxDistance;
-		this.maxHeight = maxHeight;
-	}
 
-	public void setTicks(int ticks)
-	{
-		this.ticks = ticks;
-	}
-	
-	public void setMaxHeight(int maxHeight)
-	{
-		this.maxHeight = maxHeight;
-	}
-	
-	public void setMaxDistance(int maxDistance)
-	{
-		this.maxDistance = maxDistance;
-	}
-
-
+	/**
+	 * Returns the parent node
+	 * @return Returns the parent node
+	 */
 	public Node getParent()
 	{
 		return parent;
 	}
 
+	/**
+	 * Sets the parent node
+	 * @param parent The parent node
+	 */
 	public void setParent(Node parent)
 	{
 		this.parent = parent;
 	}
-	
+
+	/**
+	 * Returns a string representation of this object
+	 * @return Returns a string representation of this object
+	 */
 	public String toString()
 	{
 		return collider + "";
