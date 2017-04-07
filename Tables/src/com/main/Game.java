@@ -2,10 +2,13 @@ package com.main;
 
 import java.util.ArrayList;
 
+import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.openal.SoundStore;
 
+import com.audio.SoundEffects;
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
@@ -57,6 +60,7 @@ public class Game
 	private Tile					sky;
 
 	private DialogBox				currentDialogue;
+	
 	// private Projectile testProjectile;
 
 	/**
@@ -64,7 +68,8 @@ public class Game
 	 */
 	public Game()
 	{
-		new Textures();
+		new Textures(); // Loads textures
+		new SoundEffects(); // Loads Sound effects
 		handler = new InputHandler();
 		GFX.initString();
 
@@ -86,7 +91,10 @@ public class Game
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
-		loadNewLevel("./res/world/level1.ffw");
+		if(!loadNewLevel("./res/world/level1.ffw"))
+		{
+			throw new NullPointerException("World Could not be loaded");
+		}
 	}
 
 	/**
@@ -158,6 +166,12 @@ public class Game
 	 */
 	public void update()
 	{
+		//test
+		if(handler.up())
+		{
+			SoundEffects.testEffect.playAsSoundEffect(1.0f, 1.0f, false);
+		}
+		//endtest
 		terminal.update();
 		if (!terminal.active())// pauses game while terminal is active
 		{
@@ -322,7 +336,7 @@ public class Game
 			}
 			camera.update();
 		}
-
+		SoundStore.get().poll(0);
 	}
 
 	/**
@@ -330,7 +344,7 @@ public class Game
 	 */
 	public void cleanUPGame()
 	{
-
+		AL.destroy();
 	}
 
 	/**
@@ -342,6 +356,10 @@ public class Game
 	 */
 	public boolean loadNewLevel(String name)
 	{
+		if(name == null)
+		{
+			return false;
+		}
 		currentLevel = World.loadWorld(name);
 		if (currentLevel == null)
 		{

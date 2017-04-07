@@ -12,6 +12,7 @@ import com.graphics.world.Particle;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
+import com.threads.PathFindingThread;
 
 /**
  * Handles enemy
@@ -190,7 +191,12 @@ public class Enemy extends Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders, Player player)
 	{
-		path = generatePath(colliders, player);
+		//if(path == null)path = generatePath(colliders, player);
+		if(path == null)
+		{
+			PathFindingThread pathThread = new PathFindingThread();
+			pathThread.start(this, colliders, player);
+		}
 		move();
 		super.update(colliders);
 	}
@@ -212,7 +218,7 @@ public class Enemy extends Entity
 	 * @param player A pointer to the player
 	 * @return Returns a list of rectangleboxs that are a path between teh enemy and the player
 	 */
-	protected ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
+	public ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
 	{
 
 		RectangleBox endCollider = player.getCurrentFloor();
@@ -554,5 +560,25 @@ public class Enemy extends Entity
 	public String toString()
 	{
 		return name;
+	}
+
+	public ArrayList<RectangleBox> getPath()
+	{
+		return path;
+	}
+
+	public void setPath(ArrayList<RectangleBox> path)
+	{
+		this.path = path;
+	}
+
+	public int getMaxDistance()
+	{
+		return maxDistance;
+	}
+
+	public void setMaxDistance(int maxDistance)
+	{
+		this.maxDistance = maxDistance;
 	}
 }

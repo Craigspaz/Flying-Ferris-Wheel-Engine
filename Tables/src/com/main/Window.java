@@ -27,6 +27,10 @@ public class Window
 	{
 		try
 		{
+			if(width < 0 || height < 0)
+			{
+				throw new IllegalArgumentException();
+			}
 			setDisplayMode(width, height, false);
 			Display.setTitle("Flying Ferris Wheel Engine");
 			Display.setResizable(false);
@@ -179,18 +183,5 @@ public class Window
 		{
 			System.out.println("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullscreen + e);
 		}
-	}
-
-	/**
-	 * Main method
-	 * 
-	 * @param args
-	 *            The commandline arguments
-	 */
-	public static void main(String[] args)
-	{
-		Window window = new Window();
-		window.initOpenGL();
-		window.run();
 	}
 }
