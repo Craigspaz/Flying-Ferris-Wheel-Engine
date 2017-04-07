@@ -38,9 +38,6 @@ public class Enemy extends Entity
 	private int							id;
 	protected String					name					= "";
 
-	private int							maxJumpDistanceWalk		= 3 * 64;
-	private int							maxJumpDistanceSprint	= 5 * 64;
-
 	protected ArrayList<RectangleBox>	path					= null;
 
 	private int							ticks					= (int) Math.floor(-JUMP_VALUE / GRAVITY);
