@@ -264,8 +264,11 @@ public class Entity
 	{
 		if (jumpCount > 0)
 		{
+			animSpriteFrameX = 0;
 			if (jumpCount < MAX_JUMPS)
+			{
 				flipping = true;
+			}
 			velocity.y = JUMP_VALUE;
 			jumpCount--;
 		}

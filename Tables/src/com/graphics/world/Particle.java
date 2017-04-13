@@ -101,14 +101,15 @@ public class Particle
 	 * @param velocityMod
 	 *            the randomness of the velocity
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityMod)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityModX,
+			float velocityModY)
 	{
 		// offsetAmount is the particle's random offset generation from the center
 		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatterX;
 		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatterY;
 		// change scatterAmount to 5 for a cool "underwater bubble scatter" effect
-		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityMod;
-		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityMod;
+		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityModX;
+		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityModY;
 		this.position = new Vector2f(position.x + offset_x, position.y + offset_y);
 		this.size = size;
 		this.spriteSheet = spriteSheet;
