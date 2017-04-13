@@ -1,7 +1,6 @@
 package com.graphics.world.projectile;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -133,11 +132,13 @@ public class Projectile extends Entity
 		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
 		// } else
 		// {
-		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) / super.getSizeOfSpriteOnSheet().x);
+		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) /
+		// super.getSizeOfSpriteOnSheet().x);
 		// }
 		// if (angle == 90)
 		// {
-		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y)) / super.getSizeOfSpriteOnSheet().x);
+		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y)) /
+		// super.getSizeOfSpriteOnSheet().x);
 		// } else if (angle == 270)
 		// {
 		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.y) / super.getSizeOfSpriteOnSheet().x);
@@ -277,7 +278,9 @@ public class Projectile extends Entity
 				GFX.drawSpriteFromSpriteSheet(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture(), offset, sizey);
 			}
 		}
-		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x, super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
+		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x,
+		// super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y *
+		// numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
 	}
 
 }

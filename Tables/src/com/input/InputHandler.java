@@ -155,7 +155,8 @@ public class InputHandler
 	}
 
 	/**
-	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to account for different keyboards
+	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to
+	 * account for different keyboards
 	 * 
 	 * @return true if the tilde key is pressed
 	 */

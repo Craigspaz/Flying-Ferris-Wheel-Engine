@@ -176,6 +176,8 @@ public class Entity
 		// Makes two predictive collision boxes
 		RectangleBox nBoxX = new RectangleBox(new Vector3f(collider.getPosition().x + velocity.x, position.y, position.z), collider.getSize());
 		RectangleBox nBoxY = new RectangleBox(new Vector3f(position.x, collider.getPosition().y + velocity.y, position.z), collider.getSize());
+		boolean isCollidingX = false;
+		boolean isCollidingY = false;
 		for (RectangleBox t : colliders)
 		{
 			if (t.isCollidingWithBox(nBoxX))
@@ -196,6 +198,7 @@ public class Entity
 					nBoxX.getPosition().x += xShift;
 					velocity.x = 0;
 				}
+				isCollidingX = true;
 			}
 			if (t.isCollidingWithBox(nBoxY))
 			{
@@ -221,7 +224,12 @@ public class Entity
 					nBoxY.getPosition().y += yShift;
 					velocity.y = 0;
 				}
+				isCollidingY = true;
 			}
+		}
+		if(isCollidingX && isCollidingY)
+		{
+			(nBoxY.getPosition().y)--;
 		}
 
 		isInAir = !isOnGround;
@@ -937,13 +945,13 @@ public class Entity
 		this.isHostileToPlayer = isHostileToPlayer;
 	}
 
+	/**
+	 * Returns the collider the entity is on
+	 * 
+	 * @return Returns the collider the entity is on
+	 */
 	public RectangleBox getCurrentFloor()
 	{
 		return currentFloor;
-	}
-
-	public void setCurrentFloor(RectangleBox currentFloor)
-	{
-		this.currentFloor = currentFloor;
 	}
 }

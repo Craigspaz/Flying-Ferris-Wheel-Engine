@@ -422,7 +422,7 @@ public class LevelBuilderGame
 			{
 				if (tiles.get(i).getTexture() == door)
 				{
-					writer.println("\t\t<DOOR x=\"" + (int)tiles.get(i).getPosition().x * 4 + "\" y=\"" + (int)tiles.get(i).getPosition().y * 4 + "\"/>");
+					writer.println("\t\t<DOOR x=\"" + (int) tiles.get(i).getPosition().x * 4 + "\" y=\"" + (int) tiles.get(i).getPosition().y * 4 + "\"/>");
 					tiles.remove(i);
 					i--;
 				}

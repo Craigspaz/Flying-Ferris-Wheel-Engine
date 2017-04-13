@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import com.graphics.world.enemys.Enemy;
+
 /**
  * Stores the information about a level
  * 
@@ -15,7 +17,7 @@ public class Level
 	private String					name;
 	private ArrayList<Tile>			tiles;
 	private ArrayList<RectangleBox>	colliders;
-	private ArrayList<Entity>		entities;
+	private ArrayList<Enemy>		enemies;
 	private ArrayList<DialogBox>	dialogue;
 	private Vector3f				playerSpawnLocation;
 
@@ -98,9 +100,9 @@ public class Level
 	 * 
 	 * @return Returns the enemies in the level
 	 */
-	public ArrayList<Entity> getEntities()
+	public ArrayList<Enemy> getEnemies()
 	{
-		return entities;
+		return enemies;
 	}
 
 	/**
@@ -109,9 +111,9 @@ public class Level
 	 * @param enemies
 	 *            The enemies in the level
 	 */
-	public void setEntities(ArrayList<Entity> entities)
+	public void setEnemies(ArrayList<Enemy> entities)
 	{
-		this.entities = entities;
+		this.enemies = entities;
 	}
 
 	/**
