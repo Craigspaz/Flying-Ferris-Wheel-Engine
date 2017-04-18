@@ -441,13 +441,6 @@ public class LevelBuilderGame
 				boolean swestNeighbor = false;
 				boolean westNeighbor = false;
 
-				String textureName = "";
-				Texture tex = t.getTexture();
-				if (tex == Textures.testTile)// temporary, using for road texture
-				{
-					textureName = "tilesheet";
-					y_offset = 0;
-				}
 				for (Tile q : tiles)// reads all tiles for possible neighbors
 				{
 					if (q.getPosition().x + q.getSize().x == t.getPosition().x)// is west
@@ -460,7 +453,7 @@ public class LevelBuilderGame
 						{
 							nwestNeighbor = true;
 							neighbors[0] = true;
-						} else// must be southwest
+						} else if (q.getPosition().y == t.getPosition().y + t.getSize().y)// must be southwest
 						{
 							swestNeighbor = true;
 							neighbors[6] = true;
@@ -475,12 +468,12 @@ public class LevelBuilderGame
 						{
 							neastNeighbor = true;
 							neighbors[2] = true;
-						} else// must be southeast
+						} else if (q.getPosition().y == t.getPosition().y + t.getSize().y)// must be southeast
 						{
 							seastNeighbor = true;
 							neighbors[4] = true;
 						}
-					} else// must be above or below this one
+					} else if (q.getPosition().x == t.getPosition().x)// must be above or below this one
 					{
 						if (q.getPosition().y + q.getSize().y == t.getPosition().y)// is directly north
 						{
@@ -522,7 +515,7 @@ public class LevelBuilderGame
 						count--;
 				}
 
-				x_offset = count;
+				x_offset = count; // this is which tile to display (0-8)
 				switch (count)
 				{
 					case 0:
@@ -591,22 +584,23 @@ public class LevelBuilderGame
 							y_offset = 8;
 						break;
 					case 5:
-						if (!neighbors[0] && !neighbors[1] && !neighbors[2])
+						if (neighbors[3] && neighbors[4] && neighbors[5] && neighbors[6] && neighbors[7])
 							y_offset = 0;
-						else if (!neighbors[2] && !neighbors[3] && !neighbors[4])
+						else if (neighbors[0] && neighbors[1] && neighbors[5] && neighbors[6] && neighbors[7])
 							y_offset = 1;
-						else if (!neighbors[4] && !neighbors[5] && !neighbors[6])
+						else if (neighbors[7] && neighbors[0] && neighbors[1] && neighbors[2] && neighbors[3])
 							y_offset = 2;
-						else if (!neighbors[6] && !neighbors[7] && !neighbors[0])
+						else if (neighbors[1] && neighbors[2] && neighbors[3] && neighbors[4] && neighbors[5])
 							y_offset = 3;
-						else if (!neighbors[0] && !neighbors[4] && !neighbors[6])
+						else if (neighbors[1] && neighbors[2] && neighbors[3] && neighbors[5] && neighbors[7])
 							y_offset = 4;
-						else if (!neighbors[0] && !neighbors[2] && !neighbors[6])
+						else if (neighbors[1] && neighbors[3] && neighbors[4] && neighbors[5] && neighbors[7])
 							y_offset = 5;
-						else if (!neighbors[0] && !neighbors[2] && !neighbors[4])
+						else if (neighbors[7] && neighbors[1] && neighbors[3] && neighbors[5] && neighbors[6])
 							y_offset = 6;
-						else if (!neighbors[2] && !neighbors[4] && !neighbors[6])
+						else if (neighbors[0] && neighbors[1] && neighbors[3] && neighbors[5] && neighbors[7])
 							y_offset = 7;
+						break;
 					case 6:
 						if (!neighbors[0] && !neighbors[2])
 							y_offset = 0;
@@ -636,7 +630,19 @@ public class LevelBuilderGame
 						break;
 				}
 
-				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\" texCoordX=\"" + x_offset + "\" texCoordY=\"" + y_offset + "\"/>");
+				String textureName = "";
+				Texture tex = t.getTexture();
+				if (tex == Textures.testTile)// max height is 9 tiles, so for additional tilesheets you'll need to add 9 to get to the start of the next
+				{
+					textureName = "tilesheet";
+					y_offset += 0;
+				}
+				// TODO add more of these as more tiles are made
+
+				float vectorX = (float) (64 * x_offset) / 1024f;// these are the size of each sprite and size of the sheet itself
+				float vectorY = (float) (64 * y_offset) / 1024f;
+
+				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\" texCoordX=\"" + vectorX + "\" texCoordY=\"" + vectorY + "\"/>");
 			}
 			writer.println("\t</TILES>");
 			writer.println("\t<COLLIDERS>");

@@ -1,0 +1,19 @@
+<LEVEL name="gen_1492543665941_level.ffw">
+<PLAYER x="1984" y="1152" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<TILE x="1984" y="1216" z="0" texName="tilesheet" texCoordX="0.25" texCoordY="0.0625"/>
+		<TILE x="1920" y="1216" z="0" texName="tilesheet" texCoordX="0.1875" texCoordY="0.0"/>
+		<TILE x="1920" y="1280" z="0" texName="tilesheet" texCoordX="0.3125" texCoordY="0.1875"/>
+		<TILE x="1920" y="1344" z="0" texName="tilesheet" texCoordX="0.1875" texCoordY="0.1875"/>
+		<TILE x="1984" y="1344" z="0" texName="tilesheet" texCoordX="0.1875" texCoordY="0.125"/>
+		<TILE x="2048" y="1216" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="1984" y="1280" z="0" texName="tilesheet" texCoordX="0.3125" texCoordY="0.125"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="1920" y="1216" z="0" width="192" height="64"/>
+	<COLLIDER x="1920" y="1280" z="0" width="128" height="64"/>
+	<COLLIDER x="1920" y="1344" z="0" width="128" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+</LEVEL>

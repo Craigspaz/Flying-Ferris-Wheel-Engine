@@ -101,11 +101,20 @@ public class World
 					String param3 = param2.substring(param2.indexOf("texName=\"") + 9);
 					String tex = param3.substring(0, param3.indexOf("\""));
 
+					String param4 = param3.substring(param3.indexOf("texCoordX=\"") + 11);
+					String tCoordX = param4.substring(0, param4.indexOf("\""));
+
+					String param5 = param4.substring(param4.indexOf("texCoordY=\"") + 11);
+					String tCoordY = param5.substring(0, param5.indexOf("\""));
+
 					Texture texture = null;
 					int texX = -1;
 					int texY = -1;
 
-					if (tex.equals("testTile"))
+					if (tex.equals("tilesheet"))
+					{
+						texture = Textures.tilesheet;
+					} else if (tex.equals("testTile"))
 					{
 						texture = Textures.testTile;
 					} else if (tex.equals("grass"))
@@ -191,7 +200,9 @@ public class World
 					int xPos = Integer.parseInt(x);
 					int yPos = Integer.parseInt(y);
 					int zPos = Integer.parseInt(z);
-					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture, texX, texY));
+					float texCoordX = Float.parseFloat(tCoordX);
+					float texCoordY = Float.parseFloat(tCoordY);
+					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture, texCoordX, texCoordY));
 					System.out.println("New Tile: (" + xPos + ", " + yPos + ", " + zPos + ") (" + width + ", " + height + ")");
 				} else if (line.trim().startsWith("<COLLIDER "))
 				{
