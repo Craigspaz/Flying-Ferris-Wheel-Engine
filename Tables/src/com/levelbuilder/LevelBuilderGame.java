@@ -36,6 +36,9 @@ public class LevelBuilderGame
 	private InputHandler		handler;
 	private Texture				tileToPlace;
 	private boolean				isMouseReady	= true;
+	private boolean				isDeleting		= false;
+
+	boolean						clickedATile	= false;										// as soon as a tile is clicked, the mouse should enter "delete mode" until the mouse is released
 
 	private Texture				down			= Loader.loadTexture("borders/down");
 	private Texture				downleft		= Loader.loadTexture("borders/downleft");
@@ -75,9 +78,8 @@ public class LevelBuilderGame
 		{
 			isMouseReady = true;
 		}
-		if (handler.isMouseLeftClicking() && isMouseReady)
+		if (handler.isMouseLeftClicking())
 		{
-			isMouseReady = false;
 			if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 0 && handler.getMousePosition().y < 32)
 			{
 				tileToPlace = Textures.testTile;
@@ -224,14 +226,29 @@ public class LevelBuilderGame
 					{
 						Vector2f pos = new Vector2f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16);
 						boolean createTile = true;
+						clickedATile = false;
 						for (Tile t : tiles)
 						{
 							if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
 							{
-								tiles.remove(t);
+								if (isMouseReady)
+								{
+									System.out.println("clicked a tile");
+									clickedATile = true;
+									isDeleting = true;
+									isMouseReady = false;
+								}
+								if (isDeleting)
+									tiles.remove(t);
 								createTile = false;
 								break;
 							}
+						}
+						if (!clickedATile && isMouseReady)
+						{
+							isMouseReady = false;
+							isDeleting = false;
+							System.out.println("clicked an empty space");
 						}
 
 						if (player != null && handler.getMousePosition().x - handler.getMousePosition().x % 16 == player.getPosition().x && handler.getMousePosition().y - handler.getMousePosition().y % 16 == player.getPosition().y)
@@ -248,7 +265,7 @@ public class LevelBuilderGame
 								break;
 							}
 						}
-						if (createTile)
+						if (createTile && !isDeleting)
 						{
 							tiles.add(new Tile(new Vector3f(pos.x, pos.y, 0), new Vector2f(16, 16), tileToPlace));
 						}
@@ -612,7 +629,7 @@ public class LevelBuilderGame
 							y_offset = 3;
 						else if (!neighbors[0] && !neighbors[4])
 							y_offset = 4;
-						else if (!neighbors[2] && !neighbors[7])
+						else if (!neighbors[2] && !neighbors[6])
 							y_offset = 5;
 						break;
 					case 7:
