@@ -15,8 +15,11 @@ import org.lwjgl.opengl.GL11;
 public class Window
 {
 
-	public static int	width	= 1366;
-	public static int	height	= 768;
+	public static int	width				= 1366;
+	public static int	height				= 768;
+
+	// framerate
+	final int			TICKS_PER_SECOND	= 60;
 
 	private Game		game;
 
@@ -81,7 +84,6 @@ public class Window
 	 */
 	public void run()
 	{
-		final int TICKS_PER_SECOND = 60;
 		final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 		final int MAX_FRAMESKIP = 5;
 
