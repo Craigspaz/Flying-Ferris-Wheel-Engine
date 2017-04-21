@@ -10,6 +10,6 @@ public class SoundEffects
 	
 	public SoundEffects()
 	{
-		testEffect = Loader.loadAutio("Adventure_Meme");
+		testEffect = Loader.loadAudio("Adventure_Meme");
 	}
 }

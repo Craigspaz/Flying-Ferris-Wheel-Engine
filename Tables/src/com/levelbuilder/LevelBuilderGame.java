@@ -36,6 +36,9 @@ public class LevelBuilderGame
 	private InputHandler		handler;
 	private Texture				tileToPlace;
 	private boolean				isMouseReady	= true;
+	private boolean				isDeleting		= false;
+
+	boolean						clickedATile	= false;										// as soon as a tile is clicked, the mouse should enter "delete mode" until the mouse is released
 
 	private Texture				down			= Loader.loadTexture("borders/down");
 	private Texture				downleft		= Loader.loadTexture("borders/downleft");
@@ -55,6 +58,8 @@ public class LevelBuilderGame
 	private Texture				saveLevel		= Loader.loadTexture("saveLevel");
 	private Texture				door			= Loader.loadTexture("door");
 
+	private int					y_offset, x_offset;
+
 	/**
 	 * Creates a new level builder
 	 */
@@ -73,9 +78,8 @@ public class LevelBuilderGame
 		{
 			isMouseReady = true;
 		}
-		if (handler.isMouseLeftClicking() && isMouseReady)
+		if (handler.isMouseLeftClicking())
 		{
-			isMouseReady = false;
 			if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 0 && handler.getMousePosition().y < 32)
 			{
 				tileToPlace = Textures.testTile;
@@ -222,14 +226,29 @@ public class LevelBuilderGame
 					{
 						Vector2f pos = new Vector2f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16);
 						boolean createTile = true;
+						clickedATile = false;
 						for (Tile t : tiles)
 						{
 							if (t.getPosition().x == handler.getMousePosition().x - handler.getMousePosition().x % 16 && t.getPosition().y == handler.getMousePosition().y - handler.getMousePosition().y % 16)
 							{
-								tiles.remove(t);
+								if (isMouseReady)
+								{
+									System.out.println("clicked a tile");
+									clickedATile = true;
+									isDeleting = true;
+									isMouseReady = false;
+								}
+								if (isDeleting)
+									tiles.remove(t);
 								createTile = false;
 								break;
 							}
+						}
+						if (!clickedATile && isMouseReady)
+						{
+							isMouseReady = false;
+							isDeleting = false;
+							System.out.println("clicked an empty space");
 						}
 
 						if (player != null && handler.getMousePosition().x - handler.getMousePosition().x % 16 == player.getPosition().x && handler.getMousePosition().y - handler.getMousePosition().y % 16 == player.getPosition().y)
@@ -246,7 +265,7 @@ public class LevelBuilderGame
 								break;
 							}
 						}
-						if (createTile)
+						if (createTile && !isDeleting)
 						{
 							tiles.add(new Tile(new Vector3f(pos.x, pos.y, 0), new Vector2f(16, 16), tileToPlace));
 						}
@@ -429,73 +448,218 @@ public class LevelBuilderGame
 			}
 			for (Tile t : tiles)
 			{
+				boolean[] neighbors = new boolean[8];// starts from north
+				boolean nwestNeighbor = false;
+				boolean northNeighbor = false;
+				boolean neastNeighbor = false;
+				boolean eastNeighbor = false;
+				boolean seastNeighbor = false;
+				boolean southNeighbor = false;
+				boolean swestNeighbor = false;
+				boolean westNeighbor = false;
+
+				for (Tile q : tiles)// reads all tiles for possible neighbors
+				{
+					if (q.getPosition().x + q.getSize().x == t.getPosition().x)// is west
+					{
+						if (q.getPosition().y == t.getPosition().y)// is directly west
+						{
+							westNeighbor = true;
+							neighbors[7] = true;
+						} else if (q.getPosition().y + q.getSize().y == t.getPosition().y)// is northwest
+						{
+							nwestNeighbor = true;
+							neighbors[0] = true;
+						} else if (q.getPosition().y == t.getPosition().y + t.getSize().y)// must be southwest
+						{
+							swestNeighbor = true;
+							neighbors[6] = true;
+						}
+					} else if (q.getPosition().x == t.getPosition().x + t.getSize().x)// is east
+					{
+						if (q.getPosition().y == t.getPosition().y)// is directly east
+						{
+							eastNeighbor = true;
+							neighbors[3] = true;
+						} else if (q.getPosition().y + q.getSize().y == t.getPosition().y)// is northeast
+						{
+							neastNeighbor = true;
+							neighbors[2] = true;
+						} else if (q.getPosition().y == t.getPosition().y + t.getSize().y)// must be southeast
+						{
+							seastNeighbor = true;
+							neighbors[4] = true;
+						}
+					} else if (q.getPosition().x == t.getPosition().x)// must be above or below this one
+					{
+						if (q.getPosition().y + q.getSize().y == t.getPosition().y)// is directly north
+						{
+							northNeighbor = true;
+							neighbors[1] = true;
+						} else if (q.getPosition().y == t.getPosition().y + t.getSize().y)// is directly south
+						{
+							southNeighbor = true;
+							neighbors[5] = true;
+						}
+					}
+				}
+				int count = 0;// the number of effective neighbors
+				for (int i = 0; i < neighbors.length; i++)
+				{
+					if (neighbors[i])
+						count++;
+				}
+
+				// re-evaluates "pointless" diagonal neighbors (they are only relevant if they are surrounded)
+				if (neighbors[0])// upper left diagonal
+				{
+					if (!neighbors[7] || !neighbors[1])
+						count--;
+				}
+				if (neighbors[2])// upper right diagonal
+				{
+					if (!neighbors[1] || !neighbors[3])
+						count--;
+				}
+				if (neighbors[4])// lower right diagonal
+				{
+					if (!neighbors[3] || !neighbors[5])
+						count--;
+				}
+				if (neighbors[6])// lower left diagonal
+				{
+					if (!neighbors[5] || !neighbors[7])
+						count--;
+				}
+
+				x_offset = count; // this is which tile to display (0-8)
+				switch (count)
+				{
+					case 0:
+						y_offset = 0;
+						break;
+					case 1:
+						if (neighbors[1])
+							y_offset = 3;
+						else if (neighbors[3])
+							y_offset = 0;
+						else if (neighbors[5])
+							y_offset = 1;
+						else if (neighbors[7])
+							y_offset = 2;
+						break;
+					case 2:
+						if (neighbors[1] && neighbors[3])
+							y_offset = 3;
+						else if (neighbors[3] && neighbors[5])
+							y_offset = 0;
+						else if (neighbors[5] && neighbors[7])
+							y_offset = 1;
+						else if (neighbors[7] && neighbors[1])
+							y_offset = 2;
+						else if (neighbors[1] && neighbors[5])
+							y_offset = 4;
+						else if (neighbors[3] && neighbors[7])
+							y_offset = 5;
+						break;
+					case 3:
+						if (neighbors[0] && neighbors[7] && neighbors[1])
+							y_offset = 2;
+						else if (neighbors[2] && neighbors[1] && neighbors[3])
+							y_offset = 3;
+						else if (neighbors[4] && neighbors[3] && neighbors[5])
+							y_offset = 0;
+						else if (neighbors[6] && neighbors[5] && neighbors[7])
+							y_offset = 1;
+						else if (neighbors[7] && neighbors[3] && neighbors[5])
+							y_offset = 4;
+						else if (neighbors[1] && neighbors[7] && neighbors[5])
+							y_offset = 5;
+						else if (neighbors[1] && neighbors[3] && neighbors[5])
+							y_offset = 6;
+						else if (neighbors[7] && neighbors[1] && neighbors[3])
+							y_offset = 7;
+						break;
+					case 4:
+						if (neighbors[7] && neighbors[3] && neighbors[4] && neighbors[5])
+							y_offset = 0;
+						else if (neighbors[3] && neighbors[5] && neighbors[6] && neighbors[7])
+							y_offset = 1;
+						else if (neighbors[1] && neighbors[6] && neighbors[7] && neighbors[5])
+							y_offset = 2;
+						else if (neighbors[5] && neighbors[7] && neighbors[0] && neighbors[1])
+							y_offset = 3;
+						else if (neighbors[3] && neighbors[7] && neighbors[0] && neighbors[1])
+							y_offset = 4;
+						else if (neighbors[7] && neighbors[1] && neighbors[2] && neighbors[3])
+							y_offset = 5;
+						else if (neighbors[1] && neighbors[2] && neighbors[3] && neighbors[5])
+							y_offset = 6;
+						else if (neighbors[1] && neighbors[3] && neighbors[4] && neighbors[5])
+							y_offset = 7;
+						else if (neighbors[1] && neighbors[3] && neighbors[5] && neighbors[7])
+							y_offset = 8;
+						break;
+					case 5:
+						if (neighbors[3] && neighbors[4] && neighbors[5] && neighbors[6] && neighbors[7])
+							y_offset = 0;
+						else if (neighbors[0] && neighbors[1] && neighbors[5] && neighbors[6] && neighbors[7])
+							y_offset = 1;
+						else if (neighbors[7] && neighbors[0] && neighbors[1] && neighbors[2] && neighbors[3])
+							y_offset = 2;
+						else if (neighbors[1] && neighbors[2] && neighbors[3] && neighbors[4] && neighbors[5])
+							y_offset = 3;
+						else if (neighbors[1] && neighbors[2] && neighbors[3] && neighbors[5] && neighbors[7])
+							y_offset = 4;
+						else if (neighbors[1] && neighbors[3] && neighbors[4] && neighbors[5] && neighbors[7])
+							y_offset = 5;
+						else if (neighbors[7] && neighbors[1] && neighbors[3] && neighbors[5] && neighbors[6])
+							y_offset = 6;
+						else if (neighbors[0] && neighbors[1] && neighbors[3] && neighbors[5] && neighbors[7])
+							y_offset = 7;
+						break;
+					case 6:
+						if (!neighbors[0] && !neighbors[2])
+							y_offset = 0;
+						else if (!neighbors[2] && !neighbors[4])
+							y_offset = 1;
+						else if (!neighbors[4] && !neighbors[6])
+							y_offset = 2;
+						else if (!neighbors[6] && !neighbors[0])
+							y_offset = 3;
+						else if (!neighbors[0] && !neighbors[4])
+							y_offset = 4;
+						else if (!neighbors[2] && !neighbors[6])
+							y_offset = 5;
+						break;
+					case 7:
+						if (!neighbors[0])
+							y_offset = 3;
+						if (!neighbors[2])
+							y_offset = 0;
+						if (!neighbors[4])
+							y_offset = 1;
+						if (!neighbors[6])
+							y_offset = 2;
+						break;
+					case 8:
+						y_offset = 0;
+						break;
+				}
+
 				String textureName = "";
 				Texture tex = t.getTexture();
-				if (tex == Textures.testTile)
+				if (tex == Textures.testTile)// max height is 9 tiles, so for additional tilesheets you'll need to add 9 to get to the start of the next
 				{
-					textureName = "testTile";
-				} else if (tex == Textures.grass)
-				{
-					textureName = "grass";
-				} else if (tex == Textures.grassTop)
-				{
-					textureName = "grassTop";
-				} else if (tex == Textures.dirt2)
-				{
-					textureName = "dirt2";
-				} else if (tex == Textures.dirt)
-				{
-					textureName = "dirt";
-				} else if (tex == Textures.air)
-				{
-					textureName = "air";
-				} else if (tex == down)
-				{
-					textureName = "down";
-				} else if (tex == downleft)
-				{
-					textureName = "downleft";
-				} else if (tex == downleftright)
-				{
-					textureName = "downleftright";
-				} else if (tex == downright)
-				{
-					textureName = "downright";
-				} else if (tex == left)
-				{
-					textureName = "left";
-				} else if (tex == leftright)
-				{
-					textureName = "leftright";
-				} else if (tex == leftupright)
-				{
-					textureName = "leftupright";
-				} else if (tex == right)
-				{
-					textureName = "right";
-				} else if (tex == rightupdown)
-				{
-					textureName = "rightupdown";
-				} else if (tex == topdown)
-				{
-					textureName = "topdown";
-				} else if (tex == up)
-				{
-					textureName = "up";
-				} else if (tex == updownleftright)
-				{
-					textureName = "updownleftright";
-				} else if (tex == updownright)
-				{
-					textureName = "updownright";
-				} else if (tex == upleft)
-				{
-					textureName = "upleft";
-				} else if (tex == upright)
-				{
-					textureName = "upright";
+					textureName = "tilesheet";
+					y_offset += 0;
 				}
-				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\"/>");
+				// TODO add more of these as more tiles are made
+
+				float vectorX = (float) (64 * x_offset) / 1024f;// these are the size of each sprite and size of the sheet itself
+				float vectorY = (float) (64 * y_offset) / 1024f;
+
+				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\" texCoordX=\"" + vectorX + "\" texCoordY=\"" + vectorY + "\"/>");
 			}
 			writer.println("\t</TILES>");
 			writer.println("\t<COLLIDERS>");

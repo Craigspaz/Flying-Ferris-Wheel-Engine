@@ -40,7 +40,7 @@ public class Loader
 		return texture;
 	}
 	
-	public static Audio loadAutio(String fileName)
+	public static Audio loadAudio(String fileName)
 	{
 		Audio audio = null;
 		try

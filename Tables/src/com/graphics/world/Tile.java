@@ -19,8 +19,9 @@ public class Tile
 	private Texture			texture;
 
 	private RectangleBox	collider;
-	private int				texCoordX	= -1;
-	private int				texCoordY	= -1;
+	private float			texCoordX	= -1;
+	private float			texCoordY	= -1;
+	private Vector2f		coordinate;
 
 	private boolean			isDoor		= false;
 
@@ -46,11 +47,12 @@ public class Tile
 	 * @param texY
 	 *            The row in the spritesheet
 	 */
-	public Tile(Vector3f position, Texture texture, int texX, int texY)
+	public Tile(Vector3f position, Texture texture, float texCoordX, float texCoordY)
 	{
 		this(position, texture);
-		texCoordX = texX;
-		texCoordY = texY;
+		this.texCoordX = texCoordX;
+		this.texCoordY = texCoordY;
+		coordinate = new Vector2f(texCoordX, texCoordY);
 	}
 
 	/**
@@ -124,7 +126,7 @@ public class Tile
 	 * @param texCoordY
 	 *            The row number of the animation frames
 	 */
-	public Tile(Vector3f position, Vector2f size, Texture texture, int texCoordX, int texCoordY)
+	public Tile(Vector3f position, Vector2f size, Texture texture, float texCoordX, float texCoordY)
 	{
 		this(position, texture, texCoordX, texCoordY);
 		this.size = size;
@@ -145,10 +147,9 @@ public class Tile
 	{
 		if (texCoordX != -1 && texCoordY != -1) // For outline
 		{
-
-			Vector2f offset = new Vector2f(((float) (32.0f * texCoordX)) / 512.0f, (float) (32.0f * texCoordY) / 32.0f);
-			Vector2f sizey = new Vector2f((float) (32.0f / 512.0f), (float) (32.0f / 32.0f));
-			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, texture, offset, sizey);
+			// Vector2f offset = new Vector2f(((float) (32.0f * texCoordX)) / 512.0f, (float) (32.0f * texCoordY) / 32.0f);
+			Vector2f sizey = new Vector2f((float) (64.0f / 1024.0f), (float) (64.0f / 1024.0f));
+			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, texture, coordinate, sizey);
 		} else
 		{
 			GFX.drawEntireSprite(size.x, size.y, position.x, position.y, texture);

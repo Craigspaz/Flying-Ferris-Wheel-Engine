@@ -53,6 +53,8 @@ public class Textures
 
 	public static Texture	door;
 
+	public static Texture	tilesheet;
+
 	/**
 	 * Initializes all of the textures
 	 */
@@ -60,7 +62,7 @@ public class Textures
 	{
 		playerFront = Loader.loadTexture("tableSpriteSheet");
 		playerOutline = Loader.loadTexture("tableSpriteSheet_outline");
-		
+
 		playerLaser = Loader.loadTexture("lasers-v4");
 		fireball = Loader.loadTexture("fireball");
 		testTile = Loader.loadTexture("Floating_Platform_2");
@@ -92,5 +94,6 @@ public class Textures
 
 		tileOutline = Loader.loadTexture("tile-outlines");
 		door = Loader.loadTexture("door");
+		tilesheet = Loader.loadTexture("tilesheet");
 	}
 }
