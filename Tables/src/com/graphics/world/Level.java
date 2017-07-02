@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 
 import com.graphics.world.enemys.Enemy;
+import com.graphics.world.util.Vertex;
 
 /**
  * Stores the information about a level
@@ -20,6 +21,7 @@ public class Level
 	private ArrayList<Enemy>		enemies;
 	private ArrayList<DialogBox>	dialogue;
 	private Vector3f				playerSpawnLocation;
+	private ArrayList<Vertex>		vertices;
 
 	/**
 	 * Creates a new level
@@ -156,5 +158,23 @@ public class Level
 	public void setPlayerSpawnLocation(Vector3f playerSpawnLocation)
 	{
 		this.playerSpawnLocation = playerSpawnLocation;
+	}
+
+	/**
+	 * Returns the vertices of a graph generated of the level
+	 * @return Returns the vertices of a graph generated of the level
+	 */
+	public ArrayList<Vertex> getVertices()
+	{
+		return vertices;
+	}
+
+	/**
+	 * Sets the vertices of the graph generated of the level
+	 * @param vertices The vertices to set
+	 */
+	public void setVertices(ArrayList<Vertex> vertices)
+	{
+		this.vertices = vertices;
 	}
 }

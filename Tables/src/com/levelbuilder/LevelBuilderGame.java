@@ -13,12 +13,17 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.GFX;
 import com.graphics.Loader;
 import com.graphics.Textures;
+import com.graphics.world.Entity;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
+import com.graphics.world.World;
 import com.graphics.world.enemys.Enemy;
+import com.graphics.world.util.Edge;
+import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
 import com.main.Window;
+import com.util.Utils;
 
 /**
  * Lets the user build a level
@@ -59,6 +64,7 @@ public class LevelBuilderGame
 	private Texture				door			= Loader.loadTexture("door");
 
 	private int					y_offset, x_offset;
+	private boolean readyAfterClickingSave = true;
 
 	/**
 	 * Creates a new level builder
@@ -154,9 +160,10 @@ public class LevelBuilderGame
 			} else if (handler.getMousePosition().x > Window.width - 64 && handler.getMousePosition().x <= Window.width - 32 && handler.getMousePosition().y >= 64 && handler.getMousePosition().y < 96)
 			{
 				tileToPlace = door;
-			} else if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 672 && handler.getMousePosition().y < 704)
+			} else if (handler.getMousePosition().x > Window.width - 32 && handler.getMousePosition().x <= Window.width && handler.getMousePosition().y >= 672 && handler.getMousePosition().y < 704 && readyAfterClickingSave)
 			{
 				saveLevel();
+				readyAfterClickingSave = false;
 			} else
 			{
 				if (tileToPlace != null)
@@ -424,6 +431,7 @@ public class LevelBuilderGame
 	private void saveLevel()
 	{
 		ArrayList<RectangleBox> colliders = generateColliders();
+		int blockSize = 64;
 
 		System.out.println("Saving...");
 		try
@@ -436,7 +444,7 @@ public class LevelBuilderGame
 				writer.println("<PLAYER x=\"" + (int) player.getPosition().x * 4 + "\" y=\"" + (int) player.getPosition().y * 4 + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getScale().x + "\" height=\"" + (int) player.getScale().y
 						+ "\" tex=\"playerFront\" texOut=\"playerOutline\"/>");
 			}
-			writer.println("\t<TILES sizex=\"64\" sizey=\"64\">");
+			writer.println("\t<TILES sizex=\"" + blockSize + "\" sizey=\"" + blockSize + "\">");
 			for (int i = 0; i < tiles.size(); i++)
 			{
 				if (tiles.get(i).getTexture() == door)
@@ -684,11 +692,203 @@ public class LevelBuilderGame
 			}
 
 			writer.println("\t</ENEMIES>");
+			
+			for(Tile t : tiles)
+			{
+				t.setPosition(new Vector3f(t.getPosition().x * 4,t.getPosition().y * 4,t.getPosition().z));
+				t.setSize(new Vector2f(t.getSize().x * 4,t.getSize().y * 4));
+			}
+			ArrayList<Tile> sortedTiles = World.sortTiles(tiles);
+			//Generate path graph
+			ArrayList<Tile> ti = new ArrayList<Tile>();
+			
+			//Gathers list of tiles that have nothing above them
+			for(Tile t : sortedTiles)
+			{
+				boolean isAbleToBeWalkedOn = true;
+				for(Tile t1: sortedTiles)
+				{
+					if(t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + 64)
+					{
+						isAbleToBeWalkedOn = false;
+						break;
+					}
+				}
+				if(isAbleToBeWalkedOn)
+				{
+					ti.add(t);
+				}
+			}
+			
+			//Only uses the list of tiles that have nothing immidiately above them to check for nodes
+			ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+			int counter = 0;
+			for(Tile t : ti)
+			{
+				System.out.println("Processing Tile: " + t + " number: " + (counter++) + "/" + ti.size());
+				Vertex v = new Vertex(t);
+				for(Tile tt : ti)
+				{
+					boolean blockTop = false;
+					for(Tile ttt : ti)
+					{
+						if(ttt.getPosition().x == t.getPosition().x && ttt.getPosition().y + ttt.getSize().y == t.getPosition().y) // Means there is a block ontop of t
+						{
+							blockTop = true;
+							break;
+						}
+					}
+					if(blockTop)
+					{
+						continue;
+					}
+					//System.out.println("\tChecking tile: " + tt);
+					if((t.getPosition().x + t.getSize().x == tt.getPosition().x && tt.getPosition().y == tt.getPosition().y) || (tt.getPosition().x + tt.getSize().x == t.getPosition().x && tt.getPosition().y == tt.getPosition().y)) // This means tt is to the right of t || tt is to the left of t
+					{
+						boolean blockOnTop = false;
+						for(Tile ttt : ti)
+						{
+							if(ttt.getPosition().x == tt.getPosition().x && ttt.getPosition().y + ttt.getSize().y == tt.getPosition().y) // Means there is a block ontop of tt
+							{
+								blockOnTop = true;
+								break;
+							}
+						}
+						if(!blockOnTop)
+						{
+							Vertex vT = Utils.fileTileVertexInVertices(t, vertices);
+							Vertex vTT = Utils.fileTileVertexInVertices(tt, vertices);
+							if(vT == null)
+							{
+								vT = new Vertex(t);
+								vertices.add(vT);
+							}
+							if(vTT == null)
+							{
+								vTT = new Vertex(tt);
+								vertices.add(vTT);
+							}
+							Edge edge = new Edge(vT,vTT,10);
+							v.addEdge(edge);
+							continue;
+						}
+					}
+					// For each vertex check if a parabolic curve can make it 
+					
+					//Constant Acceleration
+					float gravity = Entity.GRAVITY;
+					float horizontalVelocity = Entity.MAX_SPEED_X;
+					float time = 0;
+					float initialY = t.getPosition().y - t.getSize().y;
+					float initialX = t.getPosition().x;
+					
+					float yPos = initialY + ((0.5f) * gravity * time);
+					float xPos = initialX + (horizontalVelocity * time);
+					int direction = 1;
+					if(tt.getPosition().x < t.getPosition().x)
+					{
+						direction = -1;
+					}
+					RectangleBox box = new RectangleBox(new Vector3f(xPos,yPos,0),new Vector2f(t.getSize().x,t.getSize().y));
+					while(time < 100000)
+					{
+						yPos = initialY + ((0.5f) * gravity * time);
+						xPos = initialX + ((horizontalVelocity * time) * direction);
+						box.getPosition().x = xPos;
+						box.getPosition().y = yPos;
+						boolean foundSolution = false;
+						for(Tile ttt : ti)
+						{
+							
+							//System.out.println("For that tile checking tile: " + ttt + " Time: " + time);
+							if(box.isCollidingWithBox(ttt.getCollider()))
+							{
+								if(ttt == tt) // Found destination tile
+								{
+									//create edge
+									int deltaX = Math.abs(((int)(ttt.getPosition().x - tt.getPosition().x))/(int)t.getSize().x);
+									int deltaY = Math.abs(((int)(ttt.getPosition().y - tt.getPosition().y))/(int)t.getSize().y);
+									
+									int weight = 0;
+									while(deltaX > 0 && deltaY > 0) // Account for diagonal cost
+									{
+										weight += 14;
+										deltaX--;
+										deltaY--;
+									}
+									while(deltaX > 0) // Account for horizontal cost
+									{
+										weight += 10;
+										deltaX--;
+									}
+									while(deltaY > 0) // Account for vertical cost
+									{
+										weight += 10;
+										deltaY--;
+									}
+									if(weight == 0)
+									{
+										break;
+									}
+									Vertex vTT = Utils.fileTileVertexInVertices(t, vertices);
+									Vertex vTTT = Utils.fileTileVertexInVertices(tt, vertices);
+									if(vTT == null)
+									{
+										vTT = new Vertex(tt);
+										vertices.add(vTT);
+									}
+									if(vTTT == null)
+									{
+										vTTT = new Vertex(ttt);
+										vertices.add(vTTT);
+									}									
+									Edge edge = new Edge(vTT,vTTT,weight);
+									v.addEdge(edge);
+									foundSolution = true;
+									break;
+								}
+								else if(ttt == t) // Found source tile
+								{
+									continue;
+								}
+								else // No direct path exists
+								{
+									foundSolution = true;
+									break;
+								}
+							}
+							
+						}
+						if(foundSolution)
+						{
+							break;
+						}
+						time++;
+					}
+					
+				}
+				vertices.add(v);
+			}
+			
+			for(Vertex v : vertices)
+			{
+				System.out.println(v);
+				writer.println("\t<VERTEX x=\"" + (int)v.getTile().getPosition().x +"\" y=\"" + (int)v.getTile().getPosition().y + "\">");
+				
+				for(Edge e: v.getEdges())
+				{
+					writer.println("\t\t<EDGE D x=\"" + (int)e.getDestination().getTile().getPosition().x + "\" y=\"" + (int)e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int)e.getWeight() + "\"/>");
+				}
+				
+				writer.println("\t</VERTEX>");
+			}
+			
 			writer.println("</LEVEL>");
 			writer.close();
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
+		readyAfterClickingSave = true;
 	}
 }

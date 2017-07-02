@@ -8,6 +8,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.Textures;
 import com.graphics.world.projectile.Projectile;
+import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
 
 /**
@@ -27,7 +28,8 @@ public class Player extends Entity
 	private boolean			canGenerateSprintParticle	= true;
 	private boolean			canGenerateSkidParticle		= false;
 
-	private boolean			canJump						= true;	// determines the player's ability to jump via keypresses and releases
+	private boolean			canJump						= true;	// determines the player's ability to jump via
+																// keypresses and releases
 
 	private InputHandler	handler;
 
@@ -241,7 +243,9 @@ public class Player extends Entity
 				}
 				projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex, super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.fireball, new Vector2f(128, 16), 8, 0, new Vector2f(16, 16), new Vector2f(16, 16), shootAngle, bulletSpeed,
 						velocity.x, velocity.y));
-				// projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex, super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.playerLaser, new Vector2f(64, 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32), shootAngle,
+				// projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex,
+				// super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.playerLaser, new Vector2f(64,
+				// 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32), shootAngle,
 				// bulletSpeed,
 				// velocity.x, velocity.y));
 				// System.out.println(shootAngle / 180 + "n");
@@ -324,10 +328,10 @@ public class Player extends Entity
 	/**
 	 * Updates the player
 	 */
-	public void update(ArrayList<RectangleBox> colliders)
+	public void update(ArrayList<RectangleBox> colliders,ArrayList<Vertex> vertices)
 	{
 		input(colliders);
-		super.update(colliders);
+		super.update(colliders,vertices);
 		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
 		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
 		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));

@@ -8,6 +8,9 @@ public class SoundEffects
 {
 	public static Audio testEffect;
 	
+	/**
+	 * Initializes sound effects
+	 */
 	public SoundEffects()
 	{
 		testEffect = Loader.loadAudio("Adventure_Meme");

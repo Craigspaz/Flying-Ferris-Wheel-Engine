@@ -12,6 +12,9 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.Textures;
 import com.graphics.world.enemys.Enemy;
+import com.graphics.world.util.Edge;
+import com.graphics.world.util.Vertex;
+import com.util.Utils;
 
 /**
  * Loads a world from a file
@@ -52,6 +55,9 @@ public class World
 		Level newLevel = null;
 		int width = 0;
 		int height = 0;
+		boolean inVertex = false;
+		Vertex currentVertex = null;
+		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 
 		try
 		{
@@ -348,6 +354,73 @@ public class World
 					String tex2 = param6.substring(0, param6.indexOf("\""));
 					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x), Float.parseFloat(y), Float.parseFloat(z)));
 				}
+				else if(line.trim().startsWith("<VERTEX"))
+				{
+					inVertex = true;
+					String param = line.substring(line.indexOf("x=\"") + 3);
+					String x = param.substring(0, param.indexOf("\""));
+
+					String param1 = param.substring(param.indexOf("y=\"") + 3);
+					String y = param1.substring(0, param1.indexOf("\""));
+					
+					int iX = Integer.parseInt(x);
+					int iY = Integer.parseInt(y);
+					for(Tile t : tiles)
+					{
+						if(t.getPosition().x == iX && t.getPosition().y == iY)
+						{
+							Vertex vT = Utils.fileTileVertexInVertices(t, vertices);
+							if(vT == null)
+							{
+								currentVertex = new Vertex(t);
+							}
+							else
+							{
+								currentVertex = vT;
+							}
+							break;
+						}
+					}
+				}
+				else if(line.trim().startsWith("</VERTEX>"))
+				{
+					vertices.add(currentVertex);
+				}
+				else if(line.trim().startsWith("<EDGE"))
+				{
+					if(currentVertex == null)
+					{
+						System.out.println("FATAL Error reading in world");
+						return null;
+					}
+					String param = line.substring(line.indexOf("x=\"") + 3);
+					String x = param.substring(0, param.indexOf("\""));
+
+					String param1 = param.substring(param.indexOf("y=\"") + 3);
+					String y = param1.substring(0, param1.indexOf("\""));
+					
+					String param2 = param1.substring(param1.indexOf("weight=\"") + 8);
+					String weight = param2.substring(0,param2.indexOf("\""));
+
+					int iX = Integer.parseInt(x);
+					int iY = Integer.parseInt(y);
+					int iWeight = Integer.parseInt(weight);
+					for(Tile t : tiles)
+					{
+						if(t.getPosition().x == iX && t.getPosition().y == iY)
+						{
+							Vertex vT = Utils.fileTileVertexInVertices(t, vertices);
+							if(vT == null)
+							{
+								vT = new Vertex(t);
+								vertices.add(vT);
+							}
+							Edge edge = new Edge(currentVertex,vT,iWeight);
+							currentVertex.addEdge(edge);
+							break;
+						}
+					}
+				}
 			}
 
 			scanner.close();
@@ -364,6 +437,8 @@ public class World
 		newLevel.setTiles(sortTiles(tiles));
 		newLevel.setEnemies(enemies);
 		newLevel.setDialogue(dialogue);
+		newLevel.setVertices(vertices);
+		
 		return newLevel;
 	}
 
