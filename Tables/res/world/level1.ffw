@@ -18,8 +18,5 @@
 	<COLLIDER x="0" y="192" z="0" width="512" height="64"/>
 	</COLLIDERS>
 	<ENEMIES>
-		<ENEMY x="64" y="32" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"
-		<ENEMY x="80" y="32" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"
-		<ENEMY x="96" y="32" z="0" width="64" height="64" texName="crabMan" outlineName="crabMan"
 	</ENEMIES>
 </LEVEL>

@@ -8,7 +8,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.openal.SoundStore;
 
-import com.audio.SoundEffects;
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
@@ -36,7 +35,6 @@ public class Game
 
 	private Player					player;
 
-	private Enemy					table;
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
 	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
@@ -72,13 +70,6 @@ public class Game
 		// new SoundEffects(); // Loads Sound effects
 		handler = new InputHandler();
 		GFX.initString();
-
-		table = new Enemy(new Vector3f(512, 256, 0), Textures.sean, Textures.sean, new Vector2f(128, 128), 1, 1, new Vector2f(32, 32), new Vector2f(32, 32));
-		table.setAffectedByGravity(true);
-		table.setAnimateFrameTime(10);
-		table.setHostileToPlayer(true);
-
-		entities.add(table);
 
 		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
 		getPlayer().setAnimateFrameTime(3.0f);
@@ -182,7 +173,7 @@ public class Game
 					currentDialogue.update(handler);
 			}
 			// Updates the player
-			getPlayer().update(worldColliders);
+			getPlayer().update(worldColliders,currentLevel.getVertices());
 			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
 			// Updates tiles
 			for (Tile t : tiles)
@@ -193,7 +184,7 @@ public class Game
 			// Updates entities
 			for (Entity e : entities)
 			{
-				e.update(worldColliders);
+				e.update(worldColliders,currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				if (e.isHostileToPlayer())
 				{
@@ -205,7 +196,7 @@ public class Game
 			// Updates the enemy
 			for (Enemy e : enemies)
 			{
-				e.update(worldColliders, player);
+				e.update(worldColliders, player,currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
 				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }

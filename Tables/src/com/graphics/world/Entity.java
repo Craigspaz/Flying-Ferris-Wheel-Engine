@@ -8,6 +8,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
 import com.graphics.world.projectile.Projectile;
+import com.graphics.world.util.Vertex;
 
 /**
  * Defines the basic behavior of enemies and players
@@ -60,7 +61,8 @@ public class Entity
 	protected boolean				jumping				= false;
 	protected int					jumpTimer			= 0;
 	protected boolean				isInAir				= false;
-	protected int					jumpCount			= 1;							// starts at the 1, and counts down to 0
+	protected int					jumpCount			= 1;							// starts at the 1, and counts
+																						// down to 0
 	protected boolean				flipping			= false;						// for double jump animation
 
 	protected boolean				canDoubleJump		= false;
@@ -72,6 +74,8 @@ public class Entity
 																						// can take damage
 
 	private RectangleBox			currentFloor;
+
+	private Vertex					currentVertex;
 
 	/**
 	 * Creates a new entity
@@ -143,7 +147,7 @@ public class Entity
 	 * @param colliders
 	 *            The colliders in the world to check for collisions with
 	 */
-	public void update(ArrayList<RectangleBox> colliders)
+	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
 		if (animateTime >= animateFrameTime)
 		{
@@ -217,6 +221,17 @@ public class Entity
 					currentFloor = t;
 					jumpCount = MAX_JUMPS;
 					flipping = false;
+					for(Vertex v : vertices)
+					{
+						if((int)v.getTile().getPosition().y == (int)t.getPosition().y)
+						{
+							if((int)v.getTile().getPosition().x >= (int)nBoxY.getPosition().x - nBoxY.getSize().x || (int)v.getTile().getPosition().x <= (int)nBoxY.getPosition().x + nBoxY.getSize().x)
+							{
+								currentVertex = v;
+								break;
+							}
+						}
+					}
 					// System.out.println("landed on "+ currentFloor);
 				} else if (velocity.y < 0)
 				{
@@ -227,7 +242,7 @@ public class Entity
 				isCollidingY = true;
 			}
 		}
-		if(isCollidingX && isCollidingY)
+		if (isCollidingX && isCollidingY)
 		{
 			(nBoxY.getPosition().y)--;
 		}
@@ -953,5 +968,23 @@ public class Entity
 	public RectangleBox getCurrentFloor()
 	{
 		return currentFloor;
+	}
+
+	/**
+	 * Returns the vertex the entity is currently on
+	 * @return Returns the vertex the entity is currently on
+	 */
+	public Vertex getCurrentVertex()
+	{
+		return currentVertex;
+	}
+
+	/**
+	 * Sets the vertex the entity is currently on
+	 * @param currentVertex The vertex to set the entity on
+	 */
+	public void setCurrentVertex(Vertex currentVertex)
+	{
+		this.currentVertex = currentVertex;
 	}
 }

@@ -12,7 +12,9 @@ import com.graphics.world.Particle;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
+import com.graphics.world.util.Vertex;
 import com.threads.PathFindingThread;
+import com.util.Utils;
 
 /**
  * Handles enemy
@@ -22,26 +24,26 @@ import com.threads.PathFindingThread;
  */
 public class Enemy extends Entity
 {
-	private boolean						moveLeft				= false;
-	private boolean						moveRight				= false;
-	private boolean						isJumping				= false;
-	private boolean						isUp					= false;
+	private boolean						moveLeft		= false;
+	private boolean						moveRight		= false;
+	private boolean						isJumping		= false;
+	private boolean						isUp			= false;
 
-	private ArrayList<Projectile>		projectiles				= new ArrayList<Projectile>();
-	private int							shootingDelay			= 5;
-	private int							shootingCounter			= 0;
-	private boolean						canShoot				= true;
-	private boolean						shoot					= false;
-	private float						shootAngle				= 0;
-	private float						bulletSpeed				= 16;
+	private ArrayList<Projectile>		projectiles		= new ArrayList<Projectile>();
+	private int							shootingDelay	= 5;
+	private int							shootingCounter	= 0;
+	private boolean						canShoot		= true;
+	private boolean						shoot			= false;
+	private float						shootAngle		= 0;
+	private float						bulletSpeed		= 16;
 	private int							id;
-	protected String					name					= "";
+	protected String					name			= "";
 
-	protected ArrayList<RectangleBox>	path					= null;
+	protected ArrayList<RectangleBox>	path			= null;
 
-	private int							ticks					= (int) Math.floor(-JUMP_VALUE / GRAVITY);
-	private int							maxHeight				= (int) ((0.5f) * GRAVITY * ticks * ticks);
-	private int							maxDistance				= (int) (ticks * MAX_SPEED_X);
+	private int							ticks			= (int) Math.floor(-JUMP_VALUE / GRAVITY);
+	private int							maxHeight		= (int) ((0.5f) * GRAVITY * ticks * ticks);
+	private int							maxDistance		= (int) (ticks * MAX_SPEED_X);
 
 	/**
 	 * Creates a new enemy based on an already created entity
@@ -105,7 +107,7 @@ public class Enemy extends Entity
 	/**
 	 * Handles movement
 	 */
-	private void move()
+	private void move(Player player)
 	{
 		if (path != null)
 		{
@@ -120,7 +122,7 @@ public class Enemy extends Entity
 			targetPlatform = path.get(path.size() - 1);
 			System.out.println("heading for: " + targetPlatform);
 
-			if (targetPlatform != getCurrentFloor())// if it has a destination and it's not the current tile
+			if ((int)targetPlatform.getPosition().getX() != (int)getCurrentFloor().getPosition().getX() && (int)targetPlatform.getPosition().getY() != (int)getCurrentFloor().getPosition().getY())// if it has a destination and it's not the current tile
 			{
 				if (targetPlatform.getPosition().x + targetPlatform.getSize().x < position.x)
 				{// if the destination platform is to the left of this one
@@ -159,7 +161,19 @@ public class Enemy extends Entity
 
 			} else
 			{
-				super.stopMoving();// for now, it stops if it's on the right tile
+				if((int)super.getPosition().getX() < (int)player.getPosition().getX())
+				{
+					super.moveRight();
+				}
+				else if((int)super.getPosition().getX() > (int)player.getPosition().getX())
+				{
+					super.moveLeft();
+				}
+				else
+				{
+					super.stopMoving();
+				}
+				//super.stopMoving();// for now, it stops if it's on the right tile
 				// TODO goes up to the player and attacks
 			}
 		} else
@@ -187,6 +201,7 @@ public class Enemy extends Entity
 		{
 			case "table":
 				e = new Table(x, y);
+				e.setAffectedByGravity(true);
 				break;
 		}
 		return e;
@@ -198,33 +213,64 @@ public class Enemy extends Entity
 	 * @param colliders
 	 *            The colliders to check agains the enemy
 	 */
-	public void update(ArrayList<RectangleBox> colliders, Player player)
+	public void update(ArrayList<RectangleBox> colliders, Player player, ArrayList<Vertex> vertices)
 	{
-		//if(path == null)path = generatePath(colliders, player);
-		if(path == null)
+		// if(path == null)path = generatePath(colliders, player);
+		/*if (path == null)
 		{
 			PathFindingThread pathThread = new PathFindingThread();
-			pathThread.start(this, colliders, player);
+			pathThread.start(this, colliders, player, vertices);
+			System.out.println("Ran Thread");
+			path = new ArrayList<RectangleBox>();//tmp
+		}*/
+		path = Utils.calculateShortestPathToPlayer(this, player, vertices);
+		if(path == null)
+		{
+			if(player.getCurrentVertex() != null && this.getCurrentVertex() != null)
+			{
+				System.out.println("Returned null " + player.getCurrentVertex().getTile() + " " + this.getCurrentVertex().getTile()) ;
+			}
+//			if(position.x > player.getPosition().x)
+//			{
+//				moveRight = true;
+//				moveLeft = false;
+//			}
+//			else if(position.x < player.getPosition().x)
+//			{
+//				moveLeft = true;
+//				moveRight = false;
+//			}
+//			else
+//			{
+//				moveLeft = false;
+//				moveRight = false;
+//			}
 		}
-		move();
-		super.update(colliders);
+		move(player);
+		super.update(colliders,vertices);
 	}
 
 	/**
 	 * Returns the manhattan distance between two vector3f's
-	 * @param start The first position
-	 * @param end The second position
+	 * 
+	 * @param start
+	 *            The first position
+	 * @param end
+	 *            The second position
 	 * @return Returns the manhattan distance between the two points
 	 */
-	private int getManhattanDistance(Vector3f start, Vector3f end)
+	public static int getManhattanDistance(Vector3f start, Vector3f end)
 	{
 		return (int) (Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
 	}
 
 	/**
 	 * Returns a list of rectangleboxs that are a path between the enemy and the player
-	 * @param colliders The list of world colliders
-	 * @param player A pointer to the player
+	 * 
+	 * @param colliders
+	 *            The list of world colliders
+	 * @param player
+	 *            A pointer to the player
 	 * @return Returns a list of rectangleboxs that are a path between teh enemy and the player
 	 */
 	public ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
@@ -245,9 +291,9 @@ public class Enemy extends Entity
 		// System.out.println("Destination: " + result + " Start: " + result.getParent());
 
 		Node startNode = new Node(startCollider);
-		//System.out.println("Start: " + startNode);
+		// System.out.println("Start: " + startNode);
 		Node result = generatePath(colliders, endCollider, startNode);
-		//System.out.println("Destination: " + result);
+		// System.out.println("Destination: " + result);
 
 		// System.out.println("Start Node: " + startNode);
 
@@ -264,9 +310,13 @@ public class Enemy extends Entity
 
 	/**
 	 * Returns a node in the path between root and destination
-	 * @param colliders A pointer to the list of world colliders
-	 * @param destination The destination collider
-	 * @param root The current node to check
+	 * 
+	 * @param colliders
+	 *            A pointer to the list of world colliders
+	 * @param destination
+	 *            The destination collider
+	 * @param root
+	 *            The current node to check
 	 * @return Returns a node in the path between root and destination
 	 */
 	public Node generatePath(ArrayList<RectangleBox> colliders, RectangleBox destination, Node root)
@@ -567,21 +617,37 @@ public class Enemy extends Entity
 		return name;
 	}
 
+	/**
+	 * Returns the path the enemy will take
+	 * @return Returns the path the enemy will take
+	 */
 	public ArrayList<RectangleBox> getPath()
 	{
 		return path;
 	}
 
+	/**
+	 * Sets the path the enemy will take
+	 * @param path The path the enemey will take
+	 */
 	public void setPath(ArrayList<RectangleBox> path)
 	{
 		this.path = path;
 	}
 
+	/**
+	 * Returns the max distance the enemy can travel
+	 * @return Returns the max distance the enemy can travel
+	 */
 	public int getMaxDistance()
 	{
 		return maxDistance;
 	}
 
+	/**
+	 * Sets the max distance the enemy can travel
+	 * @param maxDistance The max distance the enemy can travel
+	 */
 	public void setMaxDistance(int maxDistance)
 	{
 		this.maxDistance = maxDistance;

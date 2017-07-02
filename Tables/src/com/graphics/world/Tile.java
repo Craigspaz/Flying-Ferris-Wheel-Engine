@@ -284,5 +284,11 @@ public class Tile
 	{
 		this.isDoor = isDoor;
 	}
+	
+	
+	public String toString()
+	{
+		return "Pos: " + position + " Size: " + size;
+	}
 
 }

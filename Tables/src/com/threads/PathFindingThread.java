@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.enemys.Enemy;
+import com.graphics.world.util.Vertex;
+import com.util.Utils;
 
 public class PathFindingThread implements Runnable
 {
@@ -12,12 +14,14 @@ public class PathFindingThread implements Runnable
 	private Player player;
 	private Enemy enemy;
 	private Thread thread;
+	private ArrayList<Vertex> vertices;
 	
-	public void start(Enemy enemy, ArrayList<RectangleBox> colliders, Player player)
+	public void start(Enemy enemy, ArrayList<RectangleBox> colliders, Player player, ArrayList<Vertex> vertices)
 	{
 		this.enemy = enemy;
 		this.colliders = colliders;
 		this.player = player;
+		this.vertices = vertices;
 		if(enemy == null)
 		{
 			System.out.println("Failed to Start PathFinding Thread");
@@ -32,7 +36,8 @@ public class PathFindingThread implements Runnable
 	@Override
 	public void run()
 	{
-		enemy.setPath(enemy.generatePath(colliders,player));
+		//enemy.setPath(enemy.generatePath(colliders,player));
+		enemy.setPath(Utils.calculateShortestPathToPlayer(enemy, player, vertices));
 	}
 	
 }

@@ -1,0 +1,74 @@
+<LEVEL name="gen_1495995211887_level.ffw">
+	<TILES sizex="64" sizey="64">
+		<TILE x="1088" y="1024" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1152" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1216" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1280" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1344" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1408" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1472" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1536" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1600" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1664" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1728" y="1024" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="1792" y="960" z="0" texName="tilesheet" texCoordX="0.0" texCoordY="0.0"/>
+		<TILE x="1024" y="960" z="0" texName="tilesheet" texCoordX="0.0" texCoordY="0.0"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="1024" y="960" z="0" width="64" height="64"/>
+	<COLLIDER x="1792" y="960" z="0" width="64" height="64"/>
+	<COLLIDER x="1088" y="1024" z="0" width="704" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+	<VERTEX x="1088" y="1024">
+		<EDGE D x="1152" y="1024" weight="10"/>
+		<EDGE D x="1024" y="960" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1152" y="1024">
+		<EDGE D x="1088" y="1024" weight="10"/>
+		<EDGE D x="1216" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1216" y="1024">
+		<EDGE D x="1152" y="1024" weight="10"/>
+		<EDGE D x="1280" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1280" y="1024">
+		<EDGE D x="1216" y="1024" weight="10"/>
+		<EDGE D x="1344" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1344" y="1024">
+		<EDGE D x="1280" y="1024" weight="10"/>
+		<EDGE D x="1408" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1408" y="1024">
+		<EDGE D x="1344" y="1024" weight="10"/>
+		<EDGE D x="1472" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1472" y="1024">
+		<EDGE D x="1408" y="1024" weight="10"/>
+		<EDGE D x="1536" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1536" y="1024">
+		<EDGE D x="1472" y="1024" weight="10"/>
+		<EDGE D x="1600" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1600" y="1024">
+		<EDGE D x="1536" y="1024" weight="10"/>
+		<EDGE D x="1664" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1664" y="1024">
+		<EDGE D x="1600" y="1024" weight="10"/>
+		<EDGE D x="1728" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1728" y="1024">
+		<EDGE D x="1664" y="1024" weight="10"/>
+		<EDGE D x="1792" y="960" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1792" y="960">
+		<EDGE D x="1728" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1024" y="960">
+		<EDGE D x="1088" y="1024" weight="10"/>
+	</VERTEX>
+</LEVEL>

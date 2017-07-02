@@ -40,6 +40,11 @@ public class Loader
 		return texture;
 	}
 	
+	/**
+	 * Loads an audio file into memory
+	 * @param fileName The name of the file to be loaded from the "./res/" folder
+	 * @return Returns an Audio object of the file loaded in
+	 */
 	public static Audio loadAudio(String fileName)
 	{
 		Audio audio = null;
