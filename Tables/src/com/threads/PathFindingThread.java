@@ -37,7 +37,7 @@ public class PathFindingThread implements Runnable
 	public void run()
 	{
 		//enemy.setPath(enemy.generatePath(colliders,player));
-		enemy.setPath(Utils.calculateShortestPathToPlayer(enemy, player, vertices));
+		enemy.setPath(Utils.calculateShortestPathToPlayer(enemy, player, vertices,colliders));
 	}
 	
 }

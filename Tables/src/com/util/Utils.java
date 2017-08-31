@@ -29,7 +29,7 @@ public class Utils
 		return Math.abs((int)source.getPosition().x - (int)dest.getPosition().x) + Math.abs((int)source.getPosition().y - (int)dest.getPosition().y);
 	}
 	
-	public static ArrayList<RectangleBox> calculateShortestPathToPlayer(Enemy e, Player p, ArrayList<Vertex> vertices)
+	public static ArrayList<RectangleBox> calculateShortestPathToPlayer(Enemy e, Player p, ArrayList<Vertex> vertices,ArrayList<RectangleBox> colliders)
 	{
 		Vertex sourceVertex = e.getCurrentVertex();
 		Vertex destinationVertex = p.getCurrentVertex();
@@ -142,7 +142,15 @@ public class Utils
 		Vertex current = destinationVertex;
 		while(current != null)
 		{
-			tmp[index++] = current.getTile().getCollider();
+			RectangleBox c = current.getTile().getCollider();
+			for(RectangleBox r : colliders)
+			{
+				if((int)r.getPosition().x == (int)c.getPosition().x && (int)r.getPosition().y == (int)c.getPosition().y)
+				{
+					tmp[index++] = r;
+					break;
+				}
+			} 
 			current = current.getParent();
 		}
 		
