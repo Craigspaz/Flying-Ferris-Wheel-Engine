@@ -350,11 +350,13 @@ public class Game
 		{
 			return false;
 		}
-		currentLevel = World.loadWorld(name);
-		if (currentLevel == null)
+		Level tmp = World.loadWorld(name);
+		if (tmp == null)
 		{
 			return false;
 		}
+		
+		currentLevel = tmp;
 
 		worldColliders = currentLevel.getColliders();
 

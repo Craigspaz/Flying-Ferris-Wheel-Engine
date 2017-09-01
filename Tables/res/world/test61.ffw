@@ -1,0 +1,425 @@
+<LEVEL name="gen_1504217547238_level.ffw">
+<PLAYER x="2112" y="960" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<DOOR x="1920" y="1088"/>
+		<TILE x="1600" y="1024" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1664" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1728" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1792" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1856" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1920" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1984" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2048" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2112" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2176" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2240" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2304" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2368" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2432" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2496" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2560" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2624" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2688" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2752" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2816" y="1024" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0625"/>
+		<TILE x="2816" y="1088" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.1875"/>
+		<TILE x="2880" y="1088" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0625"/>
+		<TILE x="2880" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.1875"/>
+		<TILE x="2944" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3008" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3072" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3136" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3200" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3264" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3328" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3392" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3456" y="1152" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="1408" y="1152" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1472" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1536" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1600" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1664" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1728" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1792" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1856" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1920" y="1152" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="3648" y="1152" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="3712" y="1152" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3776" y="1152" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="3392" y="1280" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="3456" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3520" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3584" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3648" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3712" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3776" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3840" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3904" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="3968" y="1280" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="4032" y="1280" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="1600" y="1024" z="0" width="1280" height="64"/>
+	<COLLIDER x="2816" y="1088" z="0" width="128" height="64"/>
+	<COLLIDER x="1408" y="1152" z="0" width="576" height="64"/>
+	<COLLIDER x="2880" y="1152" z="0" width="640" height="64"/>
+	<COLLIDER x="3648" y="1152" z="0" width="192" height="64"/>
+	<COLLIDER x="3392" y="1280" z="0" width="704" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+	<VERTEX x="1600" y="1024">
+	</VERTEX>
+	<VERTEX x="1664" y="1024">
+	</VERTEX>
+	<VERTEX x="1536" y="1152">
+	</VERTEX>
+	<VERTEX x="1664" y="1152">
+	</VERTEX>
+	<VERTEX x="1600" y="1024">
+		<EDGE D x="1664" y="1024" weight="10"/>
+		<EDGE D x="1536" y="1152" weight="10"/>
+		<EDGE D x="1664" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1728" y="1024">
+	</VERTEX>
+	<VERTEX x="1600" y="1152">
+	</VERTEX>
+	<VERTEX x="1728" y="1152">
+	</VERTEX>
+	<VERTEX x="1664" y="1024">
+		<EDGE D x="1600" y="1024" weight="10"/>
+		<EDGE D x="1728" y="1024" weight="10"/>
+		<EDGE D x="1600" y="1152" weight="10"/>
+		<EDGE D x="1728" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1792" y="1024">
+	</VERTEX>
+	<VERTEX x="1792" y="1152">
+	</VERTEX>
+	<VERTEX x="1728" y="1024">
+		<EDGE D x="1664" y="1024" weight="10"/>
+		<EDGE D x="1792" y="1024" weight="10"/>
+		<EDGE D x="1664" y="1152" weight="10"/>
+		<EDGE D x="1792" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1856" y="1024">
+	</VERTEX>
+	<VERTEX x="1856" y="1152">
+	</VERTEX>
+	<VERTEX x="1792" y="1024">
+		<EDGE D x="1728" y="1024" weight="10"/>
+		<EDGE D x="1856" y="1024" weight="10"/>
+		<EDGE D x="1728" y="1152" weight="10"/>
+		<EDGE D x="1856" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1920" y="1024">
+	</VERTEX>
+	<VERTEX x="1920" y="1152">
+	</VERTEX>
+	<VERTEX x="1856" y="1024">
+		<EDGE D x="1792" y="1024" weight="10"/>
+		<EDGE D x="1920" y="1024" weight="10"/>
+		<EDGE D x="1792" y="1152" weight="10"/>
+		<EDGE D x="1920" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1984" y="1024">
+	</VERTEX>
+	<VERTEX x="1920" y="1024">
+		<EDGE D x="1856" y="1024" weight="10"/>
+		<EDGE D x="1984" y="1024" weight="10"/>
+		<EDGE D x="1856" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2048" y="1024">
+	</VERTEX>
+	<VERTEX x="1984" y="1024">
+		<EDGE D x="1920" y="1024" weight="10"/>
+		<EDGE D x="2048" y="1024" weight="10"/>
+		<EDGE D x="1920" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2112" y="1024">
+	</VERTEX>
+	<VERTEX x="2048" y="1024">
+		<EDGE D x="1984" y="1024" weight="10"/>
+		<EDGE D x="2112" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2176" y="1024">
+	</VERTEX>
+	<VERTEX x="2112" y="1024">
+		<EDGE D x="2048" y="1024" weight="10"/>
+		<EDGE D x="2176" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2240" y="1024">
+	</VERTEX>
+	<VERTEX x="2176" y="1024">
+		<EDGE D x="2112" y="1024" weight="10"/>
+		<EDGE D x="2240" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2304" y="1024">
+	</VERTEX>
+	<VERTEX x="2240" y="1024">
+		<EDGE D x="2176" y="1024" weight="10"/>
+		<EDGE D x="2304" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2368" y="1024">
+	</VERTEX>
+	<VERTEX x="2304" y="1024">
+		<EDGE D x="2240" y="1024" weight="10"/>
+		<EDGE D x="2368" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2432" y="1024">
+	</VERTEX>
+	<VERTEX x="2368" y="1024">
+		<EDGE D x="2304" y="1024" weight="10"/>
+		<EDGE D x="2432" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2496" y="1024">
+	</VERTEX>
+	<VERTEX x="2432" y="1024">
+		<EDGE D x="2368" y="1024" weight="10"/>
+		<EDGE D x="2496" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2560" y="1024">
+	</VERTEX>
+	<VERTEX x="2496" y="1024">
+		<EDGE D x="2432" y="1024" weight="10"/>
+		<EDGE D x="2560" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2624" y="1024">
+	</VERTEX>
+	<VERTEX x="2560" y="1024">
+		<EDGE D x="2496" y="1024" weight="10"/>
+		<EDGE D x="2624" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2688" y="1024">
+	</VERTEX>
+	<VERTEX x="2624" y="1024">
+		<EDGE D x="2560" y="1024" weight="10"/>
+		<EDGE D x="2688" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2752" y="1024">
+	</VERTEX>
+	<VERTEX x="2688" y="1024">
+		<EDGE D x="2624" y="1024" weight="10"/>
+		<EDGE D x="2752" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2816" y="1024">
+	</VERTEX>
+	<VERTEX x="2752" y="1024">
+		<EDGE D x="2688" y="1024" weight="10"/>
+		<EDGE D x="2816" y="1024" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2880" y="1088">
+	</VERTEX>
+	<VERTEX x="2816" y="1024">
+		<EDGE D x="2752" y="1024" weight="10"/>
+		<EDGE D x="2880" y="1088" weight="10"/>
+	</VERTEX>
+	<VERTEX x="2944" y="1152">
+	</VERTEX>
+	<VERTEX x="2880" y="1088">
+		<EDGE D x="2816" y="1024" weight="10"/>
+		<EDGE D x="2944" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3008" y="1152">
+	</VERTEX>
+	<VERTEX x="2944" y="1152">
+		<EDGE D x="2880" y="1088" weight="10"/>
+		<EDGE D x="3008" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3072" y="1152">
+	</VERTEX>
+	<VERTEX x="3008" y="1152">
+		<EDGE D x="2944" y="1152" weight="10"/>
+		<EDGE D x="3072" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3136" y="1152">
+	</VERTEX>
+	<VERTEX x="3072" y="1152">
+		<EDGE D x="3008" y="1152" weight="10"/>
+		<EDGE D x="3136" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3200" y="1152">
+	</VERTEX>
+	<VERTEX x="3136" y="1152">
+		<EDGE D x="3072" y="1152" weight="10"/>
+		<EDGE D x="3200" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3264" y="1152">
+	</VERTEX>
+	<VERTEX x="3200" y="1152">
+		<EDGE D x="3136" y="1152" weight="10"/>
+		<EDGE D x="3264" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3328" y="1152">
+	</VERTEX>
+	<VERTEX x="3264" y="1152">
+		<EDGE D x="3200" y="1152" weight="10"/>
+		<EDGE D x="3328" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3392" y="1152">
+	</VERTEX>
+	<VERTEX x="3392" y="1280">
+	</VERTEX>
+	<VERTEX x="3328" y="1152">
+		<EDGE D x="3264" y="1152" weight="10"/>
+		<EDGE D x="3392" y="1152" weight="10"/>
+		<EDGE D x="3392" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3456" y="1152">
+	</VERTEX>
+	<VERTEX x="3456" y="1280">
+	</VERTEX>
+	<VERTEX x="3392" y="1152">
+		<EDGE D x="3328" y="1152" weight="10"/>
+		<EDGE D x="3456" y="1152" weight="10"/>
+		<EDGE D x="3456" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3520" y="1280">
+	</VERTEX>
+	<VERTEX x="3456" y="1152">
+		<EDGE D x="3392" y="1152" weight="10"/>
+		<EDGE D x="3392" y="1280" weight="10"/>
+		<EDGE D x="3520" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1408" y="1152">
+	</VERTEX>
+	<VERTEX x="1472" y="1152">
+	</VERTEX>
+	<VERTEX x="1408" y="1152">
+		<EDGE D x="1472" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1472" y="1152">
+		<EDGE D x="1408" y="1152" weight="10"/>
+		<EDGE D x="1536" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1536" y="1152">
+		<EDGE D x="1600" y="1024" weight="10"/>
+		<EDGE D x="1472" y="1152" weight="10"/>
+		<EDGE D x="1600" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1600" y="1152">
+		<EDGE D x="1664" y="1024" weight="10"/>
+		<EDGE D x="1536" y="1152" weight="10"/>
+		<EDGE D x="1664" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1664" y="1152">
+		<EDGE D x="1600" y="1024" weight="10"/>
+		<EDGE D x="1728" y="1024" weight="10"/>
+		<EDGE D x="1600" y="1152" weight="10"/>
+		<EDGE D x="1728" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1728" y="1152">
+		<EDGE D x="1664" y="1024" weight="10"/>
+		<EDGE D x="1792" y="1024" weight="10"/>
+		<EDGE D x="1664" y="1152" weight="10"/>
+		<EDGE D x="1792" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1792" y="1152">
+		<EDGE D x="1728" y="1024" weight="10"/>
+		<EDGE D x="1856" y="1024" weight="10"/>
+		<EDGE D x="1728" y="1152" weight="10"/>
+		<EDGE D x="1856" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1856" y="1152">
+		<EDGE D x="1792" y="1024" weight="10"/>
+		<EDGE D x="1920" y="1024" weight="10"/>
+		<EDGE D x="1792" y="1152" weight="10"/>
+		<EDGE D x="1920" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="1920" y="1152">
+		<EDGE D x="1856" y="1024" weight="10"/>
+		<EDGE D x="1984" y="1024" weight="10"/>
+		<EDGE D x="1856" y="1152" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3648" y="1152">
+	</VERTEX>
+	<VERTEX x="3712" y="1152">
+	</VERTEX>
+	<VERTEX x="3584" y="1280">
+	</VERTEX>
+	<VERTEX x="3712" y="1280">
+	</VERTEX>
+	<VERTEX x="3648" y="1152">
+		<EDGE D x="3712" y="1152" weight="10"/>
+		<EDGE D x="3584" y="1280" weight="10"/>
+		<EDGE D x="3712" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3776" y="1152">
+	</VERTEX>
+	<VERTEX x="3648" y="1280">
+	</VERTEX>
+	<VERTEX x="3776" y="1280">
+	</VERTEX>
+	<VERTEX x="3712" y="1152">
+		<EDGE D x="3648" y="1152" weight="10"/>
+		<EDGE D x="3776" y="1152" weight="10"/>
+		<EDGE D x="3648" y="1280" weight="10"/>
+		<EDGE D x="3776" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3840" y="1280">
+	</VERTEX>
+	<VERTEX x="3776" y="1152">
+		<EDGE D x="3712" y="1152" weight="10"/>
+		<EDGE D x="3712" y="1280" weight="10"/>
+		<EDGE D x="3840" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3392" y="1280">
+		<EDGE D x="3328" y="1152" weight="10"/>
+		<EDGE D x="3456" y="1152" weight="10"/>
+		<EDGE D x="3456" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3456" y="1280">
+		<EDGE D x="3392" y="1152" weight="10"/>
+		<EDGE D x="3392" y="1280" weight="10"/>
+		<EDGE D x="3520" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3520" y="1280">
+		<EDGE D x="3456" y="1152" weight="10"/>
+		<EDGE D x="3456" y="1280" weight="10"/>
+		<EDGE D x="3584" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3584" y="1280">
+		<EDGE D x="3648" y="1152" weight="10"/>
+		<EDGE D x="3520" y="1280" weight="10"/>
+		<EDGE D x="3648" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3648" y="1280">
+		<EDGE D x="3712" y="1152" weight="10"/>
+		<EDGE D x="3584" y="1280" weight="10"/>
+		<EDGE D x="3712" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3712" y="1280">
+		<EDGE D x="3648" y="1152" weight="10"/>
+		<EDGE D x="3776" y="1152" weight="10"/>
+		<EDGE D x="3648" y="1280" weight="10"/>
+		<EDGE D x="3776" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3776" y="1280">
+		<EDGE D x="3712" y="1152" weight="10"/>
+		<EDGE D x="3712" y="1280" weight="10"/>
+		<EDGE D x="3840" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3904" y="1280">
+	</VERTEX>
+	<VERTEX x="3840" y="1280">
+		<EDGE D x="3776" y="1152" weight="10"/>
+		<EDGE D x="3776" y="1280" weight="10"/>
+		<EDGE D x="3904" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="3968" y="1280">
+	</VERTEX>
+	<VERTEX x="3904" y="1280">
+		<EDGE D x="3840" y="1280" weight="10"/>
+		<EDGE D x="3968" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="4032" y="1280">
+	</VERTEX>
+	<VERTEX x="3968" y="1280">
+		<EDGE D x="3904" y="1280" weight="10"/>
+		<EDGE D x="4032" y="1280" weight="10"/>
+	</VERTEX>
+	<VERTEX x="4032" y="1280">
+		<EDGE D x="3968" y="1280" weight="10"/>
+	</VERTEX>
+</LEVEL>

@@ -29,6 +29,18 @@ public class Utils
 		return Math.abs((int)source.getPosition().x - (int)dest.getPosition().x) + Math.abs((int)source.getPosition().y - (int)dest.getPosition().y);
 	}
 	
+	private static boolean isVertexInList(ArrayList<Vertex> list, Edge element)
+	{
+		for(Vertex v : list)
+		{
+			if(v.getTile() == element.getDestination().getTile())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static ArrayList<RectangleBox> calculateShortestPathToPlayer(Enemy e, Player p, ArrayList<Vertex> vertices,ArrayList<RectangleBox> colliders)
 	{
 		Vertex sourceVertex = e.getCurrentVertex();
@@ -88,25 +100,9 @@ public class Utils
 				{
 					int gscore = currentVertex.getgCost() + edge.getWeight();
 					//Check if destination vertex is already in the openlist
-					boolean alreadyInOpenlist = false;
-					for(Vertex v : openlist)
-					{
-						if(v.getTile() == edge.getDestination().getTile())
-						{
-							alreadyInOpenlist = true;
-							break;
-						}
-					}
+					boolean alreadyInOpenlist = isVertexInList(openlist,edge);
 					//Check if the destination vertex is already in the closedlist
-					boolean alreadyInClosedList = false;
-					for(Vertex v : closedlist)
-					{
-						if(v.getTile() == edge.getDestination().getTile())
-						{
-							alreadyInClosedList = true;
-							break;
-						}
-					}
+					boolean alreadyInClosedList = isVertexInList(closedlist, edge);
 					if(!alreadyInOpenlist && !alreadyInClosedList)
 					{
 						for(Vertex v : vertices)
