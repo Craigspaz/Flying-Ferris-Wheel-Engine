@@ -111,10 +111,12 @@ public class Enemy extends Entity
 	{
 		if (path != null)
 		{
+			System.out.println("PATH: ");
 			for (RectangleBox b : path)
 			{
-				System.out.println(b);
+				System.out.print(b + "->");
 			}
+			System.out.println();			
 		}
 		RectangleBox targetPlatform = null;
 		if (path != null && path.size() > 0)
@@ -124,10 +126,25 @@ public class Enemy extends Entity
 
 			if ((int)targetPlatform.getPosition().getX() != (int)getCurrentFloor().getPosition().getX() && (int)targetPlatform.getPosition().getY() != (int)getCurrentFloor().getPosition().getY())// if it has a destination and it's not the current tile
 			{
-				if (targetPlatform.getPosition().x + targetPlatform.getSize().x < position.x)
+				//TODO move enemy to next tile in path
+				RectangleBox nextPlatform = null;
+				boolean useNext = false;
+				for(RectangleBox p : path)
+				{
+					if(useNext)
+					{
+						nextPlatform = p;
+						break;
+					}
+					if((int)p.getPosition().x == (int)getCurrentFloor().getPosition().x && (int)p.getPosition().y == (int)getCurrentFloor().getPosition().y)
+					{
+						useNext = true;								
+					}
+				}
+				if (nextPlatform.getPosition().x + targetPlatform.getSize().x < position.x)
 				{// if the destination platform is to the left of this one
 					super.moveLeft();
-					if (targetPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && position.x - (targetPlatform.getPosition().x + targetPlatform.getSize().x) < maxDistance)
+					if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && position.x - (nextPlatform.getPosition().x + nextPlatform.getSize().x) < maxDistance)
 					{
 						if (!isInAir)
 						{
@@ -139,10 +156,10 @@ public class Enemy extends Entity
 							// System.out.println("jump " + jumpCount);
 						}
 					}
-				} else if (targetPlatform.getPosition().x > position.x + getScale().x)
+				} else if (nextPlatform.getPosition().x > position.x + getScale().x)
 				{
 					super.moveRight();
-					if (targetPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && targetPlatform.getPosition().x - (position.x + getScale().x) < maxDistance)
+					if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && nextPlatform.getPosition().x - (position.x + getScale().x) < maxDistance)
 					{
 						if (!isInAir)
 						{
@@ -223,7 +240,7 @@ public class Enemy extends Entity
 			System.out.println("Ran Thread");
 			path = new ArrayList<RectangleBox>();//tmp
 		}*/
-		path = Utils.calculateShortestPathToPlayer(this, player, vertices);
+		path = Utils.calculateShortestPathToPlayer(this, player, vertices,colliders);
 		if(path == null)
 		{
 			if(player.getCurrentVertex() != null && this.getCurrentVertex() != null)
