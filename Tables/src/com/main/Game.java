@@ -247,6 +247,8 @@ public class Game
 				{
 					if (playerProjectiles.get(i).isDead())
 					{
+						particles.addAll(playerProjectiles.get(i).getParticles());
+						playerProjectiles.get(i).getParticles().clear();
 						playerProjectiles.remove(i);
 						break;
 					}

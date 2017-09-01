@@ -22,12 +22,11 @@ public class Player extends Entity
 	private int				shootingDelay				= 5;
 	private int				shootingCounter				= 0;
 	private boolean			canShoot					= true;
-	private float			shootAngle					= 0;
-	private float			bulletSpeed					= 10;
-	private float			bulletSpawnDistance			= 16;
+	private float			bulletSpeed					= 13;
+	private float			projectileVelocityX			= 0;
+	private float			projectileVelocityY			= 0;
 	private boolean			canGenerateSprintParticle	= true;
 	private boolean			canGenerateSkidParticle		= false;
-
 	private boolean			canJump						= true;	// determines the player's ability to jump via
 																// keypresses and releases
 
@@ -105,28 +104,12 @@ public class Player extends Entity
 		if (handler.right() == false && handler.left() == false)
 		{
 			stopMoving();
-			if (!left)
-			{
-				shootAngle = 0;
-			} else
-			{
-				shootAngle = 180;
-			}
-			if (handler.up())
-			{
-				shootAngle = 90;
-			}
 		}
 		if (handler.right())
 		{
 			super.moveRight();
 			if (velocity.x > 0)
 			{
-				shootAngle = 0;
-				if (handler.up())
-				{
-					shootAngle = 45;
-				}
 				if (Math.abs(velocity.x) > MAX_SPEED_X)
 				{
 					canGenerateSkidParticle = true;
@@ -142,11 +125,6 @@ public class Player extends Entity
 			super.moveLeft();
 			if (velocity.x < 0)
 			{
-				shootAngle = 180;
-				if (handler.up())
-				{
-					shootAngle = 135;
-				}
 				if (Math.abs(velocity.x) > MAX_SPEED_X)
 				{
 					canGenerateSkidParticle = true;
@@ -156,11 +134,6 @@ public class Player extends Entity
 				particles.add(new Particle(new Vector2f(position.x + getScale().x / 2 + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
 				canGenerateSkidParticle = false;
 			}
-		}
-		if (handler.down())
-		{
-			if (isInAir)
-				shootAngle = 270;
 		}
 		// player can't jump again until they release the key, and canJump is only made true if it's
 		// released and the jump count is still below max
@@ -183,20 +156,6 @@ public class Player extends Entity
 			}
 
 		}
-		if (handler.up())
-		{
-			if (!left)
-				shootAngle = 45;
-			else
-				shootAngle = 135;
-		}
-		if (handler.aimDown())
-		{
-			if (!left)
-				shootAngle = 315;
-			else
-				shootAngle = 225;
-		}
 		if (handler.shoot() == false)
 		{
 			if (shootingCounter > shootingDelay)
@@ -213,36 +172,29 @@ public class Player extends Entity
 		{
 			if (canShoot)
 			{
+				// if (handler.up())
+				// {
+				projectileVelocityY = (float) (-bulletSpeed / Math.sqrt(2));
+				if (!left)
+					projectileVelocityX = (float) (bulletSpeed / Math.sqrt(2));
+				else
+					projectileVelocityX = (float) (-bulletSpeed / Math.sqrt(2));
+				// } else
+				// {
+				// projectileVelocityY = 0;
+				// if (!left)
+				// {
+				// projectileVelocityX = bulletSpeed;
+				// } else
+				// {
+				// projectileVelocityX = -bulletSpeed;
+				// }
+				// }
+				Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f), super.position.y + (super.getScale().y / 2f), 0), Textures.fireball, new Vector2f(128, 16), 8, 0, new Vector2f(16, 16), new Vector2f(16, 16),
+						new Vector3f(projectileVelocityX, projectileVelocityY, 0), velocity.x, velocity.y);
+				fireball.setAffectedByGravity(true);
+				projectiles.add(fireball);
 
-				float displacex = (float) Math.acos(shootAngle % 90 * (Math.PI / 180)) * bulletSpawnDistance;
-				float displacey = -(float) Math.asin(shootAngle % 90 * (Math.PI / 180)) * bulletSpawnDistance;
-				if (shootAngle > 180)
-				{
-					displacey = -displacey;
-				}
-				if (shootAngle > 90 && shootAngle < 270)
-				{
-					displacex = -displacex;
-				}
-				if (shootAngle == 90)
-				{
-					displacey = -bulletSpawnDistance;
-					displacex = 0;
-				} else if (shootAngle == 270)
-				{
-					displacex = 0;
-					displacey = bulletSpawnDistance;
-				} else if (shootAngle == 0)
-				{
-					displacex = bulletSpawnDistance;
-					displacey = 0;
-				} else if (shootAngle == 180)
-				{
-					displacex = -bulletSpawnDistance;
-					displacey = 0;
-				}
-				projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex, super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.fireball, new Vector2f(128, 16), 8, 0, new Vector2f(16, 16), new Vector2f(16, 16), shootAngle, bulletSpeed,
-						velocity.x, velocity.y));
 				// projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex,
 				// super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.playerLaser, new Vector2f(64,
 				// 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32), shootAngle,
@@ -328,10 +280,10 @@ public class Player extends Entity
 	/**
 	 * Updates the player
 	 */
-	public void update(ArrayList<RectangleBox> colliders,ArrayList<Vertex> vertices)
+	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
 		input(colliders);
-		super.update(colliders,vertices);
+		super.update(colliders, vertices);
 		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
 		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
 		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
