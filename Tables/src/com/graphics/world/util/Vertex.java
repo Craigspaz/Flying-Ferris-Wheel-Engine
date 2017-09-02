@@ -91,21 +91,37 @@ public class Vertex
 		this.fCost = fCost;
 	}
 
+	/**
+	 * Returns the G cost
+	 * @return Returns the G cost
+	 */
 	public int getgCost()
 	{
 		return gCost;
 	}
 
+	/**
+	 * Sets the G cost
+	 * @param gCost The new G cost
+	 */
 	public void setgCost(int gCost)
 	{
 		this.gCost = gCost;
 	}
 
+	/**
+	 * Returns the parent vertex
+	 * @return Returns the parent vertex
+	 */
 	public Vertex getParent()
 	{
 		return parent;
 	}
 
+	/**
+	 * Sets the parent vertex
+	 * @param parent The new parent vertex
+	 */
 	public void setParent(Vertex parent)
 	{
 		this.parent = parent;

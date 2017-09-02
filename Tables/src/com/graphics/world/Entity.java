@@ -84,12 +84,10 @@ public class Entity
 	 *            The initial position of the entity
 	 * @param texture
 	 *            The texture of the entity
-	 * @param sizeOfSpriteSheet
-	 *            The size of the sprite sheet
 	 * @param scale
 	 *            The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Vector2f sizeOfSpriteSheet, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
 		this.position = position;
 		this.texture = texture;
@@ -97,7 +95,7 @@ public class Entity
 		this.sizeOfSpriteOnSheet = sizeOfSpriteOnSheet;
 		numberOfSpritesX = 1;
 		numberOfSpritesY = 1;
-		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+		this.sizeOfSpriteSheet = new Vector2f(texture.getImageWidth(),texture.getImageHeight());
 		isAnimated = false;
 		animSpriteFrameX = 0;
 		animSpriteFrameY = 0;
@@ -114,16 +112,14 @@ public class Entity
 	 *            The texture of the entity
 	 * @param outlineTexture
 	 *            The texture with the outlines
-	 * @param sizeOfTexture
-	 *            The size of the texture
 	 * @param numberOfSprites
 	 *            The size of each individual sprite on the texture
 	 * @param scale
 	 *            The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Texture outlineTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		this(position, texture, sizeOfTexture, scale, sizeOfSpriteOnSheet);
+		this(position, texture, scale, sizeOfSpriteOnSheet);
 		this.numberOfSpritesX = numberOfSpritesX;
 		this.numberOfSpritesY = numberOfSpritesY;
 		this.outlineTexture = outlineTexture;

@@ -24,7 +24,7 @@ public class Table extends Enemy
 	 */
 	public Table(float x, float y)
 	{
-		super(new Vector3f(x, y, 0), Textures.table, Textures.tableOutline, new Vector2f(256, 32), 6, 0, new Vector2f(32, 32), new Vector2f(32, 32));
+		super(new Vector3f(x, y, 0), Textures.table, Textures.tableOutline, 6, 0, new Vector2f(32, 32), new Vector2f(32, 32));
 		this.name = "Table";
 		this.setAffectedByGravity(true);
 	}

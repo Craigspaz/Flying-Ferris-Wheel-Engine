@@ -282,7 +282,7 @@ public class World
 						nx = 10;
 					}
 
-					Enemy entity = new Enemy(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), t1, t2, new Vector2f(t1.getTextureWidth(), t1.getTextureHeight()), nx, ny, new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)), size);
+					Enemy entity = new Enemy(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), t1, t2, nx, ny, new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)), size);
 					entity.setAffectedByGravity(true);
 					entity.setHostileToPlayer(isEnemy);
 					enemies.add(entity);
@@ -369,7 +369,7 @@ public class World
 					{
 						if(t.getPosition().x == iX && t.getPosition().y == iY)
 						{
-							Vertex vT = Utils.fileTileVertexInVertices(t, vertices);
+							Vertex vT = Utils.findTileVertexInVertices(t, vertices);
 							if(vT == null)
 							{
 								currentVertex = new Vertex(t);
@@ -409,7 +409,7 @@ public class World
 					{
 						if(t.getPosition().x == iX && t.getPosition().y == iY)
 						{
-							Vertex vT = Utils.fileTileVertexInVertices(t, vertices);
+							Vertex vT = Utils.findTileVertexInVertices(t, vertices);
 							if(vT == null)
 							{
 								vT = new Vertex(t);

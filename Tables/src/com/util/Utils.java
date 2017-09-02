@@ -12,7 +12,13 @@ import com.graphics.world.util.Vertex;
 public class Utils
 {	
 	
-	public static Vertex fileTileVertexInVertices(Tile t, ArrayList<Vertex> vertices)
+	/**
+	 * Returns the vertex associated with a tile in the list of vertices
+	 * @param t The tile you are looking for
+	 * @param vertices The list of vertices
+	 * @return Returns the vertex associated with a tile in the list of vertices
+	 */
+	public static Vertex findTileVertexInVertices(Tile t, ArrayList<Vertex> vertices)
 	{
 		for(Vertex v: vertices)
 		{
@@ -24,11 +30,43 @@ public class Utils
 		return null;
 	}
 	
+	/**
+	 * Returns the Manhattan distance between a source tile and the destination tile
+	 * @param source The source tile
+	 * @param dest The destination tile
+	 * @return Returns the Manhattan distance between a source tile and the destination tile
+	 */
 	public static int manhattanDistance(Tile source, Tile dest)
 	{
 		return Math.abs((int)source.getPosition().x - (int)dest.getPosition().x) + Math.abs((int)source.getPosition().y - (int)dest.getPosition().y);
 	}
 	
+	/**
+	 * Returns true if an edge is in the list of vertices
+	 * @param list The list of vertices
+	 * @param element The edge to look for
+	 * @return Returns true if an edge is in the list of vertices
+	 */
+	private static boolean isVertexInList(ArrayList<Vertex> list, Edge element)
+	{
+		for(Vertex v : list)
+		{
+			if(v.getTile() == element.getDestination().getTile())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Calculates the path for enemies to take to get from their current location to the player. This uses the A* pathfinding algorithm
+	 * @param e A pointer to the enemy involved in the path
+	 * @param p A pointer to the player which is the destination
+	 * @param vertices The list of the world vertices
+	 * @param colliders The list of colliders in the world
+	 * @return Returns the path from the enemy to the player
+	 */
 	public static ArrayList<RectangleBox> calculateShortestPathToPlayer(Enemy e, Player p, ArrayList<Vertex> vertices,ArrayList<RectangleBox> colliders)
 	{
 		Vertex sourceVertex = e.getCurrentVertex();
@@ -88,25 +126,9 @@ public class Utils
 				{
 					int gscore = currentVertex.getgCost() + edge.getWeight();
 					//Check if destination vertex is already in the openlist
-					boolean alreadyInOpenlist = false;
-					for(Vertex v : openlist)
-					{
-						if(v.getTile() == edge.getDestination().getTile())
-						{
-							alreadyInOpenlist = true;
-							break;
-						}
-					}
+					boolean alreadyInOpenlist = isVertexInList(openlist,edge);
 					//Check if the destination vertex is already in the closedlist
-					boolean alreadyInClosedList = false;
-					for(Vertex v : closedlist)
-					{
-						if(v.getTile() == edge.getDestination().getTile())
-						{
-							alreadyInClosedList = true;
-							break;
-						}
-					}
+					boolean alreadyInClosedList = isVertexInList(closedlist, edge);
 					if(!alreadyInOpenlist && !alreadyInClosedList)
 					{
 						for(Vertex v : vertices)

@@ -53,7 +53,7 @@ public class Enemy extends Entity
 	 */
 	public Enemy(Entity e)
 	{
-		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getSizeOfSpriteSheet(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
+		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
 		super.affectedByGravity = true;
 		this.id = -1;
 	}
@@ -65,16 +65,14 @@ public class Enemy extends Entity
 	 *            The position of the enemy
 	 * @param texture
 	 *            The texture of the enemy
-	 * @param size
-	 *            The size of the spritesheet
 	 * @param scale
 	 *            The size to render the sprite
 	 * @param sizeOfSpriteOnSheet
 	 *            The size of the sprite on the sprite sheet
 	 */
-	public Enemy(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Enemy(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture, size, scale, sizeOfSpriteOnSheet);
+		super(position, texture, scale, sizeOfSpriteOnSheet);
 		this.id = -1;
 	}
 
@@ -86,9 +84,7 @@ public class Enemy extends Entity
 	 * @param texture
 	 *            The main texture of the enemy
 	 * @param outlineTexture
-	 *            The outline texture of the eney
-	 * @param sizeOfTexture
-	 *            The size of the spritesheet
+	 *            The outline texture of the enemy
 	 * @param numberOfSpritesX
 	 *            The number of sprites in the animation in the x direction
 	 * @param numberOfSpritesY
@@ -98,9 +94,9 @@ public class Enemy extends Entity
 	 * @param sizeOfSpriteOnSheet
 	 *            The size of the sprite on the spritesheet
 	 */
-	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture, outlineTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.id = -1;
 	}
 
@@ -116,83 +112,143 @@ public class Enemy extends Entity
 			{
 				System.out.print(b + "->");
 			}
-			System.out.println();			
+			System.out.println();
 		}
 		RectangleBox targetPlatform = null;
 		if (path != null && path.size() > 0)
 		{
 			targetPlatform = path.get(path.size() - 1);
 			System.out.println("heading for: " + targetPlatform);
-
-			if ((int)targetPlatform.getPosition().getX() != (int)getCurrentFloor().getPosition().getX() && (int)targetPlatform.getPosition().getY() != (int)getCurrentFloor().getPosition().getY())// if it has a destination and it's not the current tile
+			if (this.getPosition().getY() > targetPlatform.getPosition().getY()) // Is the enemy below the target
+																					// platform
 			{
-				//TODO move enemy to next tile in path
-				RectangleBox nextPlatform = null;
-				boolean useNext = false;
-				for(RectangleBox p : path)
+				boolean rightSide = false;
+				boolean leftSide = false;
+				// check if platform below extends over both side of the current platform and chose a path down
+				if (this.getCurrentFloor().getPosition().getX() > targetPlatform.getPosition().getX()) // does the
+																										// bottom
+																										// platform
+																										// extend out
+																										// the right
+																										// side of the
+																										// top platform
 				{
-					if(useNext)
-					{
-						nextPlatform = p;
-						break;
-					}
-					if((int)p.getPosition().x == (int)getCurrentFloor().getPosition().x && (int)p.getPosition().y == (int)getCurrentFloor().getPosition().y)
-					{
-						useNext = true;								
-					}
+					rightSide = true;
 				}
-				if (nextPlatform.getPosition().x + targetPlatform.getSize().x < position.x)
-				{// if the destination platform is to the left of this one
-					super.moveLeft();
-					if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && position.x - (nextPlatform.getPosition().x + nextPlatform.getSize().x) < maxDistance)
-					{
-						if (!isInAir)
-						{
-							super.jump();
-							if (!isInAir)
-							{
-								particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
-							}
-							// System.out.println("jump " + jumpCount);
-						}
-					}
-				} else if (nextPlatform.getPosition().x > position.x + getScale().x)
+				if (this.getCurrentFloor().getPosition().getX() + this.getCurrentFloor().getSize().getX() < targetPlatform.getPosition().getX() + targetPlatform.getSize().getX()) // does
+																																													// the
+																																													// bottom
+																																													// platform
+																																													// extend
+																																													// out
+																																													// of
+																																													// the
+																																													// left
+																																													// side
+																																													// of
+																																													// the
+																																													// top
+																																													// platform
 				{
-					super.moveRight();
-					if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && nextPlatform.getPosition().x - (position.x + getScale().x) < maxDistance)
-					{
-						if (!isInAir)
-						{
-							super.jump();
-							if (!isInAir)
-							{
-								particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
-							}
-							// System.out.println("jump " + jumpCount);
-						}
-					}
-				} else
-				{
-					super.stopMoving();
+					leftSide = true;
 				}
 
-			} else
+				if (leftSide && rightSide)
+				{
+					if (leftSide && rightSide)
+					{
+						if (this.getPosition().getX() < player.getPosition().getX())
+						{
+							this.moveRight();
+						} else
+						{
+							this.moveLeft();
+						}
+					} else if (leftSide)
+					{
+						this.moveLeft();
+					} else if (rightSide)
+					{
+						this.moveRight();
+					}
+				}
+			} else if (this.getPosition().getY() < targetPlatform.getPosition().getY()) // Is the enemy above the target
+																						// platform
 			{
-				if((int)super.getPosition().getX() < (int)player.getPosition().getX())
+				boolean rightSide = false;
+				boolean leftSide = false;
+				// check if platform below extends over both side of the current platform and chose a path down
+				if (this.getCurrentFloor().getPosition().getX() > targetPlatform.getPosition().getX()) // does the
+																										// bottom
+																										// platform
+																										// extend out
+																										// the left side
+																										// of the top
+																										// platform
 				{
-					super.moveRight();
+					leftSide = true;
 				}
-				else if((int)super.getPosition().getX() > (int)player.getPosition().getX())
+				if (this.getCurrentFloor().getPosition().getX() + this.getCurrentFloor().getSize().getX() < targetPlatform.getPosition().getX() + targetPlatform.getSize().getX()) // does
+																																													// the
+																																													// bottom
+																																													// platform
+																																													// extend
+																																													// out
+																																													// of
+																																													// the
+																																													// right
+																																													// side
+																																													// of
+																																													// the
+																																													// top
+																																													// platform
 				{
-					super.moveLeft();
+					rightSide = true;
 				}
-				else
+
+				if (leftSide && rightSide)
 				{
-					super.stopMoving();
+					if (this.getPosition().getX() < player.getPosition().getX())
+					{
+						this.moveRight();
+					} else
+					{
+						this.moveLeft();
+					}
+				} else if (leftSide)
+				{
+					this.moveLeft();
+				} else if (rightSide)
+				{
+					this.moveRight();
 				}
-				//super.stopMoving();// for now, it stops if it's on the right tile
-				// TODO goes up to the player and attacks
 			}
+			/*
+			 * if ((int)targetPlatform.getPosition().getX() != (int)getCurrentFloor().getPosition().getX() &&
+			 * (int)targetPlatform.getPosition().getY() != (int)getCurrentFloor().getPosition().getY())// if it has a
+			 * destination and it's not the current tile { //TODO move enemy to next tile in path RectangleBox
+			 * nextPlatform = null; boolean useNext = false; for(RectangleBox p : path) { if(useNext) { nextPlatform =
+			 * p; break; } if((int)p.getPosition().x == (int)getCurrentFloor().getPosition().x && (int)p.getPosition().y
+			 * == (int)getCurrentFloor().getPosition().y) { useNext = true; } } if (nextPlatform.getPosition().x +
+			 * targetPlatform.getSize().x < position.x) {// if the destination platform is to the left of this one
+			 * super.moveLeft(); if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight &&
+			 * position.x - (nextPlatform.getPosition().x + nextPlatform.getSize().x) < maxDistance) { if (!isInAir) {
+			 * super.jump(); if (!isInAir) { particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) -
+			 * 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new
+			 * Vector2f(16, 16), new Vector2f(256, 128), false)); } // System.out.println("jump " + jumpCount); } } }
+			 * else if (nextPlatform.getPosition().x > position.x + getScale().x) { super.moveRight(); if
+			 * (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight &&
+			 * nextPlatform.getPosition().x - (position.x + getScale().x) < maxDistance) { if (!isInAir) { super.jump();
+			 * if (!isInAir) { particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y +
+			 * getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new
+			 * Vector2f(256, 128), false)); } // System.out.println("jump " + jumpCount); } } } else {
+			 * super.stopMoving(); }
+			 * 
+			 * } else { if((int)super.getPosition().getX() < (int)player.getPosition().getX()) { super.moveRight(); }
+			 * else if((int)super.getPosition().getX() > (int)player.getPosition().getX()) { super.moveLeft(); } else {
+			 * super.stopMoving(); } //super.stopMoving();// for now, it stops if it's on the right tile // TODO goes up
+			 * to the player and attacks }
+			 */
 		} else
 
 		{
@@ -233,38 +289,35 @@ public class Enemy extends Entity
 	public void update(ArrayList<RectangleBox> colliders, Player player, ArrayList<Vertex> vertices)
 	{
 		// if(path == null)path = generatePath(colliders, player);
-		/*if (path == null)
+		/*
+		 * if (path == null) { PathFindingThread pathThread = new PathFindingThread(); pathThread.start(this, colliders,
+		 * player, vertices); System.out.println("Ran Thread"); path = new ArrayList<RectangleBox>();//tmp }
+		 */
+		path = Utils.calculateShortestPathToPlayer(this, player, vertices, colliders);
+		if (path == null)
 		{
-			PathFindingThread pathThread = new PathFindingThread();
-			pathThread.start(this, colliders, player, vertices);
-			System.out.println("Ran Thread");
-			path = new ArrayList<RectangleBox>();//tmp
-		}*/
-		path = Utils.calculateShortestPathToPlayer(this, player, vertices,colliders);
-		if(path == null)
-		{
-			if(player.getCurrentVertex() != null && this.getCurrentVertex() != null)
+			if (player.getCurrentVertex() != null && this.getCurrentVertex() != null)
 			{
-				System.out.println("Returned null " + player.getCurrentVertex().getTile() + " " + this.getCurrentVertex().getTile()) ;
+				System.out.println("Returned null " + player.getCurrentVertex().getTile() + " " + this.getCurrentVertex().getTile());
 			}
-//			if(position.x > player.getPosition().x)
-//			{
-//				moveRight = true;
-//				moveLeft = false;
-//			}
-//			else if(position.x < player.getPosition().x)
-//			{
-//				moveLeft = true;
-//				moveRight = false;
-//			}
-//			else
-//			{
-//				moveLeft = false;
-//				moveRight = false;
-//			}
+			// if(position.x > player.getPosition().x)
+			// {
+			// moveRight = true;
+			// moveLeft = false;
+			// }
+			// else if(position.x < player.getPosition().x)
+			// {
+			// moveLeft = true;
+			// moveRight = false;
+			// }
+			// else
+			// {
+			// moveLeft = false;
+			// moveRight = false;
+			// }
 		}
 		move(player);
-		super.update(colliders,vertices);
+		super.update(colliders, vertices);
 	}
 
 	/**
@@ -288,7 +341,7 @@ public class Enemy extends Entity
 	 *            The list of world colliders
 	 * @param player
 	 *            A pointer to the player
-	 * @return Returns a list of rectangleboxs that are a path between teh enemy and the player
+	 * @return Returns a list of rectangleboxs that are a path between the enemy and the player
 	 */
 	public ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
 	{
@@ -636,6 +689,7 @@ public class Enemy extends Entity
 
 	/**
 	 * Returns the path the enemy will take
+	 * 
 	 * @return Returns the path the enemy will take
 	 */
 	public ArrayList<RectangleBox> getPath()
@@ -645,7 +699,9 @@ public class Enemy extends Entity
 
 	/**
 	 * Sets the path the enemy will take
-	 * @param path The path the enemey will take
+	 * 
+	 * @param path
+	 *            The path the enemey will take
 	 */
 	public void setPath(ArrayList<RectangleBox> path)
 	{
@@ -654,6 +710,7 @@ public class Enemy extends Entity
 
 	/**
 	 * Returns the max distance the enemy can travel
+	 * 
 	 * @return Returns the max distance the enemy can travel
 	 */
 	public int getMaxDistance()
@@ -663,7 +720,9 @@ public class Enemy extends Entity
 
 	/**
 	 * Sets the max distance the enemy can travel
-	 * @param maxDistance The max distance the enemy can travel
+	 * 
+	 * @param maxDistance
+	 *            The max distance the enemy can travel
 	 */
 	public void setMaxDistance(int maxDistance)
 	{
