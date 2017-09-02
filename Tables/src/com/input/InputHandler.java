@@ -16,15 +16,15 @@ import com.main.Window;
  */
 public class InputHandler
 {
-	/**
-	 * Creates a new Input Handler
-	 */
 
 	StringBuilder	cmd;
 	String			previous	= "";
 	int				deleteTimer	= 0;
 	boolean			startDelay	= true;
 
+	/**
+	 * Creates a new Input Handler
+	 */
 	public InputHandler()
 	{
 

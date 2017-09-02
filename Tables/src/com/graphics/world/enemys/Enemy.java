@@ -53,7 +53,7 @@ public class Enemy extends Entity
 	 */
 	public Enemy(Entity e)
 	{
-		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getSizeOfSpriteSheet(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
+		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
 		super.affectedByGravity = true;
 		this.id = -1;
 	}
@@ -65,16 +65,14 @@ public class Enemy extends Entity
 	 *            The position of the enemy
 	 * @param texture
 	 *            The texture of the enemy
-	 * @param size
-	 *            The size of the spritesheet
 	 * @param scale
 	 *            The size to render the sprite
 	 * @param sizeOfSpriteOnSheet
 	 *            The size of the sprite on the sprite sheet
 	 */
-	public Enemy(Vector3f position, Texture texture, Vector2f size, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Enemy(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture, size, scale, sizeOfSpriteOnSheet);
+		super(position, texture, scale, sizeOfSpriteOnSheet);
 		this.id = -1;
 	}
 
@@ -86,9 +84,7 @@ public class Enemy extends Entity
 	 * @param texture
 	 *            The main texture of the enemy
 	 * @param outlineTexture
-	 *            The outline texture of the eney
-	 * @param sizeOfTexture
-	 *            The size of the spritesheet
+	 *            The outline texture of the enemy
 	 * @param numberOfSpritesX
 	 *            The number of sprites in the animation in the x direction
 	 * @param numberOfSpritesY
@@ -98,9 +94,9 @@ public class Enemy extends Entity
 	 * @param sizeOfSpriteOnSheet
 	 *            The size of the sprite on the spritesheet
 	 */
-	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, Vector2f sizeOfTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture, outlineTexture, sizeOfTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture, outlineTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
 		this.id = -1;
 	}
 
@@ -345,7 +341,7 @@ public class Enemy extends Entity
 	 *            The list of world colliders
 	 * @param player
 	 *            A pointer to the player
-	 * @return Returns a list of rectangleboxs that are a path between teh enemy and the player
+	 * @return Returns a list of rectangleboxs that are a path between the enemy and the player
 	 */
 	public ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
 	{

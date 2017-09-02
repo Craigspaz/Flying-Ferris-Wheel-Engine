@@ -71,7 +71,7 @@ public class Game
 		handler = new InputHandler();
 		GFX.initString();
 
-		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
 		getPlayer().setAnimateFrameTime(3.0f);
 
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
@@ -386,7 +386,7 @@ public class Game
 		// Sets the players spawn location to the location specified in the level
 		if (getPlayer() != null && currentLevel.getPlayerSpawnLocation() != null)
 		{
-			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, new Vector2f(512, 256), 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
 		}
 		return true;
 	}
