@@ -51,15 +51,15 @@ public class Projectile extends Entity
 	 * Creates a new projectile
 	 * 
 	 * @param position
-	 *            The position of the projectle
+	 *            The position of the projectile
 	 * @param texture
 	 *            The texture of the projectle
 	 * @param outlineTexture
 	 *            The texture that contains the outlines
 	 * @param numberOfSpritesX
-	 *            The number of sprite animation frames in the x direction to animate
+	 *            The number of sprite animation frames
 	 * @param numberOfSpritesY
-	 *            The number of sprite animation frames in the y direction to animate
+	 *            The specific row of frames to animate
 	 * @param scale
 	 *            The size at which to render the sprite
 	 * @param sizeOfSpriteOnSheet
