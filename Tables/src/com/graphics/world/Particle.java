@@ -48,18 +48,16 @@ public class Particle
 	 *            Should the texture be flipped over y axis
 	 * @param sizeOfSpriteOnSpriteSheet
 	 *            The size of the sprite on the sprite sheet
-	 * @param sizeOfSpriteSheet
-	 *            The size of the sprite sheet
 	 * @param loop
 	 *            Should the animation loop
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, boolean loop)
 	{
 		this.position = position;
 		this.size = size;
 		this.spriteSheet = spriteSheet;
 		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
-		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
 		this.numFramesX = numFramesX;
 		this.numFramesY = numFramesY;
 		velocity = new Vector2f(0, 0);
@@ -86,8 +84,6 @@ public class Particle
 	 *            Should the texture be flipped over y axis
 	 * @param sizeOfSpriteOnSpriteSheet
 	 *            The size of the sprite on the sprite sheet
-	 * @param sizeOfSpriteSheet
-	 *            The size of the sprite sheet
 	 * @param loop
 	 *            Should the animation loop
 	 * @param velocity
@@ -99,7 +95,7 @@ public class Particle
 	 * @param velocityMod
 	 *            the randomness of the velocity
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, Vector2f sizeOfSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityModX,
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityModX,
 			float velocityModY)
 	{
 		// offsetAmount is the particle's random offset generation from the center
@@ -112,7 +108,7 @@ public class Particle
 		this.size = size;
 		this.spriteSheet = spriteSheet;
 		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
-		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
 		this.numFramesX = numFramesX;
 		this.numFramesY = numFramesY;
 		this.velocity = new Vector2f(velocity.x + randvelocity_x, velocity.y + randvelocity_y);
