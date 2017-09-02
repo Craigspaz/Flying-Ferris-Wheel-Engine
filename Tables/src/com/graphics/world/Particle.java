@@ -19,12 +19,11 @@ public class Particle
 	private Vector2f	size;
 	private Vector2f	velocity;
 	private Texture		spriteSheet;
-	private float		animateTimer;
-	private float		animateTime		= 2;
-	private float		animateSpeed	= 2.0f;
+	private int			ticksPerFrame	= 0;
+	private int			tickCounter		= 0;
 	private int			numFramesX;
 	private int			numFramesY;
-	private int			animFrameX;
+	private int			animFrameX		= -1;
 	private int			animFrameY;
 	private boolean		flip;
 	private Vector2f	sizeOfSpriteOnSpriteSheet;
@@ -61,9 +60,8 @@ public class Particle
 		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
 		this.numFramesX = numFramesX;
 		this.numFramesY = numFramesY;
-		animateTimer = 0.0f;
 		velocity = new Vector2f(0, 0);
-		animFrameX = 0;
+		animFrameX = -1;
 		animFrameY = 0;
 		this.flip = flip;
 		this.loop = loop;
@@ -113,9 +111,8 @@ public class Particle
 		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
 		this.numFramesX = numFramesX;
 		this.numFramesY = numFramesY;
-		animateTimer = 0.0f;
 		this.velocity = new Vector2f(velocity.x + randvelocity_x, velocity.y + randvelocity_y);
-		animFrameX = 0;
+		animFrameX = -1;
 		animFrameY = 0;
 		this.flip = flip;
 		this.loop = loop;
@@ -126,9 +123,8 @@ public class Particle
 	 */
 	public void update()
 	{
-		if (animateTimer >= animateTime)
+		if (tickCounter >= ticksPerFrame)
 		{
-			animFrameX++;
 			if (animFrameX >= numFramesX)
 			{
 				animFrameX = 0;
@@ -137,10 +133,11 @@ public class Particle
 					isDead = true;
 				}
 			}
-			animateTimer = 0.0f;
+			tickCounter = 0;
+			animFrameX++;
 		} else
 		{
-			animateTimer += animateSpeed;
+			tickCounter++;
 		}
 		this.setPosition(new Vector2f(getPosition().x + getVelocity().x, getPosition().y + getVelocity().y));
 	}
@@ -243,48 +240,6 @@ public class Particle
 	public void setSpriteSheet(Texture spriteSheet)
 	{
 		this.spriteSheet = spriteSheet;
-	}
-
-	/**
-	 * Returns the animate timer
-	 * 
-	 * @return Returns the animate timer
-	 */
-	public float getAnimateTimer()
-	{
-		return animateTimer;
-	}
-
-	/**
-	 * Sets the animate timer
-	 * 
-	 * @param animateTimer
-	 *            The value of the animate timer
-	 */
-	public void setAnimateTimer(float animateTimer)
-	{
-		this.animateTimer = animateTimer;
-	}
-
-	/**
-	 * Returns the animate time
-	 * 
-	 * @return Returns the animate time
-	 */
-	public float getAnimateTime()
-	{
-		return animateTime;
-	}
-
-	/**
-	 * Sets the animate time
-	 * 
-	 * @param animateTime
-	 *            The animate time
-	 */
-	public void setAnimateTime(float animateTime)
-	{
-		this.animateTime = animateTime;
 	}
 
 	/**
