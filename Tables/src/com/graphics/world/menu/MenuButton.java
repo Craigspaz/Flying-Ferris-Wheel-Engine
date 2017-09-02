@@ -37,18 +37,16 @@ public class MenuButton
 	 *            The texture of the spritesheet
 	 * @param startPos
 	 *            The coordinate of the UP state of the button texture on the spritesheet
-	 * @param sizeOfSpriteSheet
-	 *            The size of the spritesheet
 	 * @param sizeOfSpriteOnSpriteSheet
 	 *            The size of the sprite on the spritesheet
 	 */
-	public MenuButton(Vector2f position, Vector2f sizeToRender, Texture spriteSheet, Vector2f startPos, Vector2f sizeOfSpriteSheet, Vector2f sizeOfSpriteOnSpriteSheet)
+	public MenuButton(Vector2f position, Vector2f sizeToRender, Texture spriteSheet, Vector2f startPos, Vector2f sizeOfSpriteOnSpriteSheet)
 	{
 		this.position = position;
 		this.sizeToRender = sizeToRender;
 		this.spriteSheet = spriteSheet;
 		this.startPos = startPos;
-		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
 		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
 		currentState = ButtonState.UP;
 		collider = new RectangleBox(new Vector3f(position.getX(), position.getY(), 0), new Vector2f(sizeToRender.getX(), sizeToRender.getY()));

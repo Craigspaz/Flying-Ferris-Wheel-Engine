@@ -172,7 +172,7 @@ public class LevelBuilderGame
 					{
 						if (player == null)
 						{
-							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, new Vector2f(512, 256), 0, 0, new Vector2f(16, 16), new Vector2f(32, 32),
+							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16, 16), new Vector2f(32, 32),
 									handler);
 						} else
 						{
@@ -225,7 +225,7 @@ public class LevelBuilderGame
 						}
 						if (!removedItem)
 						{
-							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, new Vector2f(512, 128), 0, 0, new Vector2f(16, 16),
+							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, 0, 0, new Vector2f(16, 16),
 									new Vector2f(64, 64)));
 						}
 
@@ -756,8 +756,8 @@ public class LevelBuilderGame
 						}
 						if(!blockOnTop)
 						{
-							Vertex vT = Utils.fileTileVertexInVertices(t, vertices);
-							Vertex vTT = Utils.fileTileVertexInVertices(tt, vertices);
+							Vertex vT = Utils.findTileVertexInVertices(t, vertices);
+							Vertex vTT = Utils.findTileVertexInVertices(tt, vertices);
 							if(vT == null)
 							{
 								vT = new Vertex(t);
@@ -830,8 +830,8 @@ public class LevelBuilderGame
 									{
 										break;
 									}
-									Vertex vTT = Utils.fileTileVertexInVertices(t, vertices);
-									Vertex vTTT = Utils.fileTileVertexInVertices(tt, vertices);
+									Vertex vTT = Utils.findTileVertexInVertices(t, vertices);
+									Vertex vTTT = Utils.findTileVertexInVertices(tt, vertices);
 									if(vTT == null)
 									{
 										vTT = new Vertex(tt);
@@ -872,6 +872,10 @@ public class LevelBuilderGame
 			
 			for(Vertex v : vertices)
 			{
+				if(v.getEdges().size() == 0)
+				{
+					continue;
+				}
 				System.out.println(v);
 				writer.println("\t<VERTEX x=\"" + (int)v.getTile().getPosition().x +"\" y=\"" + (int)v.getTile().getPosition().y + "\">");
 				
