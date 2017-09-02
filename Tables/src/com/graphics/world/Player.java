@@ -89,10 +89,10 @@ public class Player extends Entity
 			{
 				if (left)
 				{
-					particles.add(new Particle(new Vector2f(position.x + getScale().x - 16, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+					particles.add(new Particle(new Vector2f(position.x + getScale().x - 16, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false));
 				} else
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+					particles.add(new Particle(new Vector2f(position.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false));
 				}
 				canGenerateSprintParticle = false;
 			}
@@ -116,7 +116,7 @@ public class Player extends Entity
 				}
 			} else if (!isInAir && Math.abs(velocity.x) < 0.8 && canGenerateSkidParticle == true)
 			{
-				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false));
 				canGenerateSkidParticle = false;
 			}
 		}
@@ -131,7 +131,7 @@ public class Player extends Entity
 				}
 			} else if (!isInAir && Math.abs(velocity.x) < 0.8 && canGenerateSkidParticle == true)
 			{
-				particles.add(new Particle(new Vector2f(position.x + getScale().x / 2 + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+				particles.add(new Particle(new Vector2f(position.x + getScale().x / 2 + velocity.x, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false));
 				canGenerateSkidParticle = false;
 			}
 		}
@@ -150,7 +150,7 @@ public class Player extends Entity
 				canJump = false;
 				if (!isInAir)
 				{
-					particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(256, 128), false));
+					particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false));
 				}
 				// System.out.println("jump " + jumpCount);
 			}
@@ -284,12 +284,12 @@ public class Player extends Entity
 	{
 		input(colliders);
 		super.update(colliders, vertices);
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(Textures.particles.getImageWidth(), Textures.particles.getImageHeight()), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
 	}
 
 	/**
