@@ -186,10 +186,19 @@ public class Player extends Entity
 				// projectileVelocityX = -bulletSpeed;
 				// }
 				// }
-				Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f), super.position.y + (super.getScale().y / 2f), 0), Textures.fireball, new Vector2f(128, 16), 8, 0, new Vector2f(16, 16), new Vector2f(16, 16),
+				
+				
+				
+				//TODO: Kyle will fix
+				/*Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f), super.position.y + (super.getScale().y / 2f), 0), Textures.fireball, new Vector2f(128, 16), 8, 0, new Vector2f(16, 16), new Vector2f(16, 16),
 						new Vector3f(projectileVelocityX, projectileVelocityY, 0), velocity.x, velocity.y);
 				fireball.setAffectedByGravity(true);
 				projectiles.add(fireball);
+				*/
+				
+				
+				
+				
 				// projectiles.add(new Projectile(new Vector3f(super.position.x + (super.getScale().x / 2f) + displacex,
 				// super.position.y + (super.getScale().y / 2f) + displacey, 0), Textures.playerLaser, new Vector2f(64,
 				// 256), 0, 0, new Vector2f(64, 32), new Vector2f(64, 32), shootAngle,
@@ -279,12 +288,12 @@ public class Player extends Entity
 	{
 		input(colliders);
 		super.update(colliders, vertices);
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 10f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .5f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, .75f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + 8, position.y + 6f), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, -2.5f), 16f, 4f, 1.0f, .5f));
 	}
 
 	/**
