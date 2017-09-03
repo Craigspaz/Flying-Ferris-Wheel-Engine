@@ -9,6 +9,7 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.GFX;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Vertex;
+import com.main.Game;
 
 /**
  * Defines the basic behavior of enemies and players
@@ -23,15 +24,15 @@ public class Entity
 	protected ArrayList<Projectile>	projectiles			= new ArrayList<Projectile>();
 	protected ArrayList<Particle>	particles			= new ArrayList<Particle>();
 
-	public static final float		GRAVITY				= 0.8f;
-	public static final float		MAX_SPEED_Y			= 20.0f;
-	public static final float		MAX_SPEED_X			= 4.0f;
-	public static final float		HORIZONTAL_ACCEL	= 0.4f;
-	public static final float		DECEL_VALUE			= 0.3f;
-	public static final float		JUMP_VALUE			= -15;
+	public static final float		GRAVITY				= 0.8f * Game.SCALE;
+	public static final float		MAX_SPEED_Y			= 20.0f * Game.SCALE;
+	public static final float		MAX_SPEED_X			= 4.0f * Game.SCALE;
+	public static final float		HORIZONTAL_ACCEL	= 0.4f * Game.SCALE;
+	public static final float		DECEL_VALUE			= 0.3f * Game.SCALE;
+	public static final float		JUMP_VALUE			= -15 * Game.SCALE;
 	public static final int			MAX_JUMPS			= 2;
 
-	private float					animateFrameTime	= 5;
+	private float					animateFrameTime	= 4;
 	protected boolean				left				= false;
 	private int						healthPoints		= 100;
 	private boolean					isDead				= false;
@@ -39,16 +40,14 @@ public class Entity
 	protected Vector3f				velocity;
 	private Texture					texture;
 	private Texture					outlineTexture;
-	protected int					numberOfSpritesX;
-	protected int					numberOfSpritesY;
-	private Vector2f				sizeOfSpriteOnSheet;
+	protected int					numberOfFrames;										// the number of frames in the animation
+	protected int					row;												// the row of frames to animate from the sheet
+	private Vector2f				spriteSize;
 	private Vector2f				sizeOfSpriteSheet;
 
 	private boolean					isAnimated;
 	protected int					animSpriteFrameX;
 	protected int					animSpriteFrameY;
-
-	private Vector2f				scale;
 
 	protected float					animateSpeed		= 2.0f;
 	protected float					animateTime			= 0.0f;
@@ -84,22 +83,21 @@ public class Entity
 	 *            The initial position of the entity
 	 * @param texture
 	 *            The texture of the entity
-	 * @param scale
+	 * @param spriteSize
 	 *            The size at which to draw the object
 	 */
-	public Entity(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Vector2f spriteSize)
 	{
 		this.position = position;
 		this.texture = texture;
-		this.scale = scale;
-		this.sizeOfSpriteOnSheet = sizeOfSpriteOnSheet;
-		numberOfSpritesX = 1;
-		numberOfSpritesY = 1;
-		this.sizeOfSpriteSheet = new Vector2f(texture.getImageWidth(),texture.getImageHeight());
+		this.spriteSize = spriteSize;
+		numberOfFrames = 1;
+		row = 1;
+		this.sizeOfSpriteSheet = new Vector2f(texture.getImageWidth(), texture.getImageHeight());
 		isAnimated = false;
 		animSpriteFrameX = 0;
 		animSpriteFrameY = 0;
-		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z), scale);
+		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z), new Vector2f(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE));
 		velocity = new Vector3f(0, 0, 0);
 	}
 
@@ -111,17 +109,20 @@ public class Entity
 	 * @param texture
 	 *            The texture of the entity
 	 * @param outlineTexture
-	 *            The texture with the outlines
-	 * @param numberOfSprites
-	 *            The size of each individual sprite on the texture
-	 * @param scale
-	 *            The size at which to draw the object
+	 *            The texture of the outlines
+	 * @param numberOfFrames
+	 *            The number of frames to animate through
+	 * @param row
+	 *            the row of frames on the spritesheet
+	 * @param spriteSize
+	 *            the dimensions of each sprite
+	 * 
 	 */
-	public Entity(Vector3f position, Texture texture, Texture outlineTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Entity(Vector3f position, Texture texture, Texture outlineTexture, int numberOfFrames, int row, Vector2f spriteSize)
 	{
-		this(position, texture, scale, sizeOfSpriteOnSheet);
-		this.numberOfSpritesX = numberOfSpritesX;
-		this.numberOfSpritesY = numberOfSpritesY;
+		this(position, texture, spriteSize);
+		this.numberOfFrames = numberOfFrames;
+		this.row = row;
 		this.outlineTexture = outlineTexture;
 	}
 
@@ -148,7 +149,7 @@ public class Entity
 		if (animateTime >= animateFrameTime)
 		{
 			animSpriteFrameX++;
-			if (animSpriteFrameX >= numberOfSpritesX)
+			if (animSpriteFrameX >= numberOfFrames)
 			{
 				animSpriteFrameX = 0;
 			}
@@ -217,11 +218,11 @@ public class Entity
 					currentFloor = t;
 					jumpCount = MAX_JUMPS;
 					flipping = false;
-					for(Vertex v : vertices)
+					for (Vertex v : vertices)
 					{
-						if((int)v.getTile().getPosition().y == (int)t.getPosition().y)
+						if ((int) v.getTile().getPosition().y == (int) t.getPosition().y)
 						{
-							if((int)v.getTile().getPosition().x >= (int)nBoxY.getPosition().x - nBoxY.getSize().x || (int)v.getTile().getPosition().x <= (int)nBoxY.getPosition().x + nBoxY.getSize().x)
+							if ((int) v.getTile().getPosition().x >= (int) nBoxY.getPosition().x - nBoxY.getSize().x || (int) v.getTile().getPosition().x <= (int) nBoxY.getPosition().x + nBoxY.getSize().x)
 							{
 								currentVertex = v;
 								break;
@@ -396,19 +397,19 @@ public class Entity
 	 */
 	public void render()
 	{
-		if (numberOfSpritesX == 1)
+		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(scale.x, scale.y, position.x, position.y, texture);
+			GFX.drawEntireSprite(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture);
 		} else
 		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (sizeOfSpriteOnSheet.y * numberOfSpritesY) / sizeOfSpriteSheet.y);
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float) (sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
+			Vector2f offset = new Vector2f(((float) (spriteSize.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture, offset, sizey);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, texture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture, offset, sizey);
 			}
 		}
 	}
@@ -418,19 +419,19 @@ public class Entity
 	 */
 	public void renderOutline()
 	{
-		if (numberOfSpritesX == 1)
+		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(scale.x, scale.y, position.x, position.y, texture);
+			GFX.drawEntireSprite(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture);
 		} else
 		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSheet.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (sizeOfSpriteOnSheet.y * numberOfSpritesY) / sizeOfSpriteSheet.y);
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSheet.x / sizeOfSpriteSheet.x), (float) (sizeOfSpriteOnSheet.y / sizeOfSpriteSheet.y));
+			Vector2f offset = new Vector2f(((float) (spriteSize.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
+			Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, outlineTexture, offset, sizey);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(scale.x, scale.y, position.x, position.y, outlineTexture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, outlineTexture, offset, sizey);
 			}
 		}
 	}
@@ -451,27 +452,6 @@ public class Entity
 		{
 			isDead = true;
 		}
-	}
-
-	/**
-	 * Returns the size at which the entity is rendered on the screen
-	 * 
-	 * @return Returns the size at which the entity is rendered on the screen
-	 */
-	public Vector2f getScale()
-	{
-		return scale;
-	}
-
-	/**
-	 * Sets the size at which the entity is rendered on screen
-	 * 
-	 * @param scale
-	 *            The value to set the scale to
-	 */
-	public void setScale(Vector2f scale)
-	{
-		this.scale = scale;
 	}
 
 	/**
@@ -521,9 +501,9 @@ public class Entity
 	 * 
 	 * @return Returns the size of an individual sprite on the spritesheet
 	 */
-	public Vector2f getSizeOfSpriteOnSheet()
+	public Vector2f getSpriteSize()
 	{
-		return sizeOfSpriteOnSheet;
+		return spriteSize;
 	}
 
 	/**
@@ -534,7 +514,7 @@ public class Entity
 	 */
 	public void setSizeOfSpriteOnSheet(Vector2f sizeOfSpriteOnSheet)
 	{
-		this.sizeOfSpriteOnSheet = sizeOfSpriteOnSheet;
+		this.spriteSize = sizeOfSpriteOnSheet;
 	}
 
 	/**
@@ -774,7 +754,7 @@ public class Entity
 	 */
 	public int getNumberOfSpritesX()
 	{
-		return numberOfSpritesX;
+		return numberOfFrames;
 	}
 
 	/**
@@ -785,7 +765,7 @@ public class Entity
 	 */
 	public void setNumberOfSpritesX(int numberOfSpritesX)
 	{
-		this.numberOfSpritesX = numberOfSpritesX;
+		this.numberOfFrames = numberOfSpritesX;
 	}
 
 	/**
@@ -795,7 +775,7 @@ public class Entity
 	 */
 	public int getNumberOfSpritesY()
 	{
-		return numberOfSpritesY;
+		return row;
 	}
 
 	/**
@@ -806,7 +786,7 @@ public class Entity
 	 */
 	public void setNumberOfSpritesY(int numberOfSpritesY)
 	{
-		this.numberOfSpritesY = numberOfSpritesY;
+		this.row = numberOfSpritesY;
 	}
 
 	/**
@@ -968,6 +948,7 @@ public class Entity
 
 	/**
 	 * Returns the vertex the entity is currently on
+	 * 
 	 * @return Returns the vertex the entity is currently on
 	 */
 	public Vertex getCurrentVertex()
@@ -977,7 +958,9 @@ public class Entity
 
 	/**
 	 * Sets the vertex the entity is currently on
-	 * @param currentVertex The vertex to set the entity on
+	 * 
+	 * @param currentVertex
+	 *            The vertex to set the entity on
 	 */
 	public void setCurrentVertex(Vertex currentVertex)
 	{

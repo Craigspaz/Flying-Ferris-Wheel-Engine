@@ -53,7 +53,7 @@ public class Enemy extends Entity
 	 */
 	public Enemy(Entity e)
 	{
-		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getScale(), e.getSizeOfSpriteOnSheet());
+		super(e.getPosition(), e.getTexture(), e.getOutlineTexture(), e.getNumberOfSpritesX(), e.getNumberOfSpritesY(), e.getSpriteSize());
 		super.affectedByGravity = true;
 		this.id = -1;
 	}
@@ -65,14 +65,12 @@ public class Enemy extends Entity
 	 *            The position of the enemy
 	 * @param texture
 	 *            The texture of the enemy
-	 * @param scale
-	 *            The size to render the sprite
-	 * @param sizeOfSpriteOnSheet
+	 * @param spriteSize
 	 *            The size of the sprite on the sprite sheet
 	 */
-	public Enemy(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
+	public Enemy(Vector3f position, Texture texture, Vector2f spriteSize)
 	{
-		super(position, texture, scale, sizeOfSpriteOnSheet);
+		super(position, texture, spriteSize);
 		this.id = -1;
 	}
 
@@ -96,7 +94,7 @@ public class Enemy extends Entity
 	 */
 	public Enemy(Vector3f position, Texture texture, Texture outlineTexture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet)
 	{
-		super(position, texture, outlineTexture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(position, texture, outlineTexture, numberOfSpritesX, numberOfSpritesY, sizeOfSpriteOnSheet);
 		this.id = -1;
 	}
 
@@ -224,30 +222,16 @@ public class Enemy extends Entity
 				}
 			}
 			/*
-			 * if ((int)targetPlatform.getPosition().getX() != (int)getCurrentFloor().getPosition().getX() &&
-			 * (int)targetPlatform.getPosition().getY() != (int)getCurrentFloor().getPosition().getY())// if it has a
-			 * destination and it's not the current tile { //TODO move enemy to next tile in path RectangleBox
-			 * nextPlatform = null; boolean useNext = false; for(RectangleBox p : path) { if(useNext) { nextPlatform =
-			 * p; break; } if((int)p.getPosition().x == (int)getCurrentFloor().getPosition().x && (int)p.getPosition().y
-			 * == (int)getCurrentFloor().getPosition().y) { useNext = true; } } if (nextPlatform.getPosition().x +
-			 * targetPlatform.getSize().x < position.x) {// if the destination platform is to the left of this one
-			 * super.moveLeft(); if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight &&
-			 * position.x - (nextPlatform.getPosition().x + nextPlatform.getSize().x) < maxDistance) { if (!isInAir) {
-			 * super.jump(); if (!isInAir) { particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) -
-			 * 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new
-			 * Vector2f(16, 16), new Vector2f(256, 128), false)); } // System.out.println("jump " + jumpCount); } } }
-			 * else if (nextPlatform.getPosition().x > position.x + getScale().x) { super.moveRight(); if
-			 * (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight &&
-			 * nextPlatform.getPosition().x - (position.x + getScale().x) < maxDistance) { if (!isInAir) { super.jump();
-			 * if (!isInAir) { particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y +
-			 * getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new
-			 * Vector2f(256, 128), false)); } // System.out.println("jump " + jumpCount); } } } else {
-			 * super.stopMoving(); }
+			 * if ((int)targetPlatform.getPosition().getX() != (int)getCurrentFloor().getPosition().getX() && (int)targetPlatform.getPosition().getY() != (int)getCurrentFloor().getPosition().getY())// if it has a destination and it's not the current tile { //TODO move enemy to next tile in path
+			 * RectangleBox nextPlatform = null; boolean useNext = false; for(RectangleBox p : path) { if(useNext) { nextPlatform = p; break; } if((int)p.getPosition().x == (int)getCurrentFloor().getPosition().x && (int)p.getPosition().y == (int)getCurrentFloor().getPosition().y) { useNext = true; }
+			 * } if (nextPlatform.getPosition().x + targetPlatform.getSize().x < position.x) {// if the destination platform is to the left of this one super.moveLeft(); if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && position.x - (nextPlatform.getPosition().x +
+			 * nextPlatform.getSize().x) < maxDistance) { if (!isInAir) { super.jump(); if (!isInAir) { particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new
+			 * Vector2f(256, 128), false)); } // System.out.println("jump " + jumpCount); } } } else if (nextPlatform.getPosition().x > position.x + getScale().x) { super.moveRight(); if (nextPlatform.getPosition().y - getCurrentFloor().getPosition().y < maxHeight && nextPlatform.getPosition().x -
+			 * (position.x + getScale().x) < maxDistance) { if (!isInAir) { super.jump(); if (!isInAir) { particles.add(new Particle(new Vector2f(position.x + (getScale().x / 2) - 8, position.y + getScale().y - 16), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), new
+			 * Vector2f(256, 128), false)); } // System.out.println("jump " + jumpCount); } } } else { super.stopMoving(); }
 			 * 
-			 * } else { if((int)super.getPosition().getX() < (int)player.getPosition().getX()) { super.moveRight(); }
-			 * else if((int)super.getPosition().getX() > (int)player.getPosition().getX()) { super.moveLeft(); } else {
-			 * super.stopMoving(); } //super.stopMoving();// for now, it stops if it's on the right tile // TODO goes up
-			 * to the player and attacks }
+			 * } else { if((int)super.getPosition().getX() < (int)player.getPosition().getX()) { super.moveRight(); } else if((int)super.getPosition().getX() > (int)player.getPosition().getX()) { super.moveLeft(); } else { super.stopMoving(); } //super.stopMoving();// for now, it stops if it's on
+			 * the right tile // TODO goes up to the player and attacks }
 			 */
 		} else
 
@@ -290,8 +274,7 @@ public class Enemy extends Entity
 	{
 		// if(path == null)path = generatePath(colliders, player);
 		/*
-		 * if (path == null) { PathFindingThread pathThread = new PathFindingThread(); pathThread.start(this, colliders,
-		 * player, vertices); System.out.println("Ran Thread"); path = new ArrayList<RectangleBox>();//tmp }
+		 * if (path == null) { PathFindingThread pathThread = new PathFindingThread(); pathThread.start(this, colliders, player, vertices); System.out.println("Ran Thread"); path = new ArrayList<RectangleBox>();//tmp }
 		 */
 		path = Utils.calculateShortestPathToPlayer(this, player, vertices, colliders);
 		if (path == null)

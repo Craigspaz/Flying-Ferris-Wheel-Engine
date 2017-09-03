@@ -33,6 +33,8 @@ import com.input.Terminal;
 public class Game
 {
 
+	public static final float		SCALE				= 2f;
+
 	private Player					player;
 
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
@@ -71,16 +73,16 @@ public class Game
 		handler = new InputHandler();
 		GFX.initString();
 
-		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
 		getPlayer().setAnimateFrameTime(3.0f);
 
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
 		terminal = new Terminal(handler, getPlayer(), camera, this);
-		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
-		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
-		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
-		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
+		sky = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 100 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.sky);
+		testTile2 = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 10 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.desert2);
+		testTile1 = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 5 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.desert1);
+		testTile0 = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 2 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.desert0);
 
 		if (!loadNewLevel("./res/world/level1.ffw"))
 		{
@@ -173,7 +175,7 @@ public class Game
 					currentDialogue.update(handler);
 			}
 			// Updates the player
-			getPlayer().update(worldColliders,currentLevel.getVertices());
+			getPlayer().update(worldColliders, currentLevel.getVertices());
 			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
 			// Updates tiles
 			for (Tile t : tiles)
@@ -184,7 +186,7 @@ public class Game
 			// Updates entities
 			for (Entity e : entities)
 			{
-				e.update(worldColliders,currentLevel.getVertices());
+				e.update(worldColliders, currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				if (e.isHostileToPlayer())
 				{
@@ -196,7 +198,7 @@ public class Game
 			// Updates the enemy
 			for (Enemy e : enemies)
 			{
-				e.update(worldColliders, player,currentLevel.getVertices());
+				e.update(worldColliders, player, currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
 				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
@@ -357,7 +359,7 @@ public class Game
 		{
 			return false;
 		}
-		
+
 		currentLevel = tmp;
 
 		worldColliders = currentLevel.getColliders();
@@ -388,7 +390,7 @@ public class Game
 		// Sets the players spawn location to the location specified in the level
 		if (getPlayer() != null && currentLevel.getPlayerSpawnLocation() != null)
 		{
-			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
 		}
 		return true;
 	}

@@ -2,6 +2,8 @@ package com.graphics.world;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import com.main.Game;
+
 /**
  * Handles the camera movement
  * 
@@ -59,8 +61,8 @@ public class Camera
 		previousPosition.x = position.x;
 		previousPosition.y = position.y;
 
-		float halfMarkX = playerPositionX + (entity.getScale().x / 2);
-		float halfMarkY = playerPositionY + (entity.getScale().y / 2);
+		float halfMarkX = playerPositionX + (entity.getSpriteSize().x * Game.SCALE / 2);
+		float halfMarkY = playerPositionY + (entity.getSpriteSize().y * Game.SCALE / 2);
 
 		float newCameraPositionX = halfMarkX - (width / 2);
 		float newCameraPositionY = halfMarkY - (height / 2);

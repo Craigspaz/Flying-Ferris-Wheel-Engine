@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
+import com.main.Game;
 
 /**
  * Handles small particles
@@ -57,7 +58,7 @@ public class Particle
 		this.size = size;
 		this.spriteSheet = spriteSheet;
 		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
-		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
 		this.numFramesX = numFramesX;
 		this.numFramesY = numFramesY;
 		velocity = new Vector2f(0, 0);
@@ -95,8 +96,7 @@ public class Particle
 	 * @param velocityMod
 	 *            the randomness of the velocity
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityModX,
-			float velocityModY)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityModX, float velocityModY)
 	{
 		// offsetAmount is the particle's random offset generation from the center
 		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatterX;
@@ -104,14 +104,14 @@ public class Particle
 		// change scatterAmount to 5 for a cool "underwater bubble scatter" effect
 		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityModX;
 		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityModY;
-		this.position = new Vector2f(position.x + offset_x, position.y + offset_y);
+		this.position = new Vector2f(position.x + offset_x * Game.SCALE, position.y + offset_y * Game.SCALE);
 		this.size = size;
 		this.spriteSheet = spriteSheet;
 		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
-		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
 		this.numFramesX = numFramesX;
 		this.numFramesY = numFramesY;
-		this.velocity = new Vector2f(velocity.x + randvelocity_x, velocity.y + randvelocity_y);
+		this.velocity = new Vector2f((velocity.x + randvelocity_x) * Game.SCALE, (velocity.y + randvelocity_y) * Game.SCALE);
 		animFrameX = -1;
 		animFrameY = 0;
 		this.flip = flip;
@@ -151,10 +151,10 @@ public class Particle
 		Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSpriteSheet.x / sizeOfSpriteSheet.x), (float) (sizeOfSpriteOnSpriteSheet.y / sizeOfSpriteSheet.y));
 		if (flip)
 		{
-			GFX.drawSpriteFromSpriteSheetInverse(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey);
+			GFX.drawSpriteFromSpriteSheetInverse(size.x * Game.SCALE, size.y * Game.SCALE, position.x, position.y, spriteSheet, offset, sizey);
 		} else
 		{
-			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey);
+			GFX.drawSpriteFromSpriteSheet(size.x * Game.SCALE, size.y * Game.SCALE, position.x, position.y, spriteSheet, offset, sizey);
 		}
 	}
 

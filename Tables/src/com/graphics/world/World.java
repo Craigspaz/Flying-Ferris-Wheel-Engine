@@ -14,6 +14,7 @@ import com.graphics.Textures;
 import com.graphics.world.enemys.Enemy;
 import com.graphics.world.util.Edge;
 import com.graphics.world.util.Vertex;
+import com.main.Game;
 import com.util.Utils;
 
 /**
@@ -208,7 +209,7 @@ public class World
 					int zPos = Integer.parseInt(z);
 					float texCoordX = Float.parseFloat(tCoordX);
 					float texCoordY = Float.parseFloat(tCoordY);
-					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture, texCoordX, texCoordY));
+					tiles.add(new Tile(new Vector3f(xPos * Game.SCALE, yPos * Game.SCALE, zPos * Game.SCALE), new Vector2f(width * Game.SCALE, height * Game.SCALE), texture, texCoordX, texCoordY));
 					System.out.println("New Tile: (" + xPos + ", " + yPos + ", " + zPos + ") (" + width + ", " + height + ")");
 				} else if (line.trim().startsWith("<COLLIDER "))
 				{
@@ -227,7 +228,7 @@ public class World
 					String param4 = param3.substring(param3.indexOf("height=\"") + 8);
 					String height1 = param4.substring(0, param4.indexOf("\""));
 
-					RectangleBox box = new RectangleBox(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)));
+					RectangleBox box = new RectangleBox(new Vector3f(Integer.parseInt(x) * Game.SCALE, Integer.parseInt(y) * Game.SCALE, Integer.parseInt(z) * Game.SCALE), new Vector2f(Integer.parseInt(width1) * Game.SCALE, Integer.parseInt(height1) * Game.SCALE));
 					colliders.add(box);
 					System.out.println("New Collider: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
 				} else if (line.trim().startsWith("<ENEMY "))
@@ -352,9 +353,8 @@ public class World
 
 					String param6 = param5.substring(param5.indexOf("texOut=\"") + 8);
 					String tex2 = param6.substring(0, param6.indexOf("\""));
-					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x), Float.parseFloat(y), Float.parseFloat(z)));
-				}
-				else if(line.trim().startsWith("<VERTEX"))
+					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x) * Game.SCALE, Float.parseFloat(y) * Game.SCALE, Float.parseFloat(z) * Game.SCALE));
+				} else if (line.trim().startsWith("<VERTEX"))
 				{
 					inVertex = true;
 					String param = line.substring(line.indexOf("x=\"") + 3);
@@ -362,33 +362,30 @@ public class World
 
 					String param1 = param.substring(param.indexOf("y=\"") + 3);
 					String y = param1.substring(0, param1.indexOf("\""));
-					
+
 					int iX = Integer.parseInt(x);
 					int iY = Integer.parseInt(y);
-					for(Tile t : tiles)
+					for (Tile t : tiles)
 					{
-						if(t.getPosition().x == iX && t.getPosition().y == iY)
+						if (t.getPosition().x == iX && t.getPosition().y == iY)
 						{
 							Vertex vT = Utils.findTileVertexInVertices(t, vertices);
-							if(vT == null)
+							if (vT == null)
 							{
 								currentVertex = new Vertex(t);
-							}
-							else
+							} else
 							{
 								currentVertex = vT;
 							}
 							break;
 						}
 					}
-				}
-				else if(line.trim().startsWith("</VERTEX>"))
+				} else if (line.trim().startsWith("</VERTEX>"))
 				{
 					vertices.add(currentVertex);
-				}
-				else if(line.trim().startsWith("<EDGE"))
+				} else if (line.trim().startsWith("<EDGE"))
 				{
-					if(currentVertex == null)
+					if (currentVertex == null)
 					{
 						System.out.println("FATAL Error reading in world");
 						return null;
@@ -398,24 +395,24 @@ public class World
 
 					String param1 = param.substring(param.indexOf("y=\"") + 3);
 					String y = param1.substring(0, param1.indexOf("\""));
-					
+
 					String param2 = param1.substring(param1.indexOf("weight=\"") + 8);
-					String weight = param2.substring(0,param2.indexOf("\""));
+					String weight = param2.substring(0, param2.indexOf("\""));
 
 					int iX = Integer.parseInt(x);
 					int iY = Integer.parseInt(y);
 					int iWeight = Integer.parseInt(weight);
-					for(Tile t : tiles)
+					for (Tile t : tiles)
 					{
-						if(t.getPosition().x == iX && t.getPosition().y == iY)
+						if (t.getPosition().x == iX && t.getPosition().y == iY)
 						{
 							Vertex vT = Utils.findTileVertexInVertices(t, vertices);
-							if(vT == null)
+							if (vT == null)
 							{
 								vT = new Vertex(t);
 								vertices.add(vT);
 							}
-							Edge edge = new Edge(currentVertex,vT,iWeight);
+							Edge edge = new Edge(currentVertex, vT, iWeight);
 							currentVertex.addEdge(edge);
 							break;
 						}
@@ -438,7 +435,7 @@ public class World
 		newLevel.setEnemies(enemies);
 		newLevel.setDialogue(dialogue);
 		newLevel.setVertices(vertices);
-		
+
 		return newLevel;
 	}
 
