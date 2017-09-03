@@ -22,12 +22,12 @@ public class Particle
 	private Texture		spriteSheet;
 	private int			ticksPerFrame	= 0;
 	private int			tickCounter		= 0;
-	private int			numFramesX;
-	private int			numFramesY;
+	private int			numberOfFrames;
+	private int			row;
 	private int			animFrameX		= -1;
 	private int			animFrameY;
 	private boolean		flip;
-	private Vector2f	sizeOfSpriteOnSpriteSheet;
+	private Vector2f	spriteSize;
 	private Vector2f	sizeOfSpriteSheet;
 	private boolean		isDead			= false;
 	private boolean		loop;
@@ -41,26 +41,26 @@ public class Particle
 	 *            The size of the particle
 	 * @param spriteSheet
 	 *            The spritesheet
-	 * @param numFramesX
+	 * @param numberOfFrames
 	 *            The number of animation frames X
-	 * @param numFramesY
+	 * @param row
 	 *            The row in the spritesheet
 	 * @param flip
 	 *            Should the texture be flipped over y axis
-	 * @param sizeOfSpriteOnSpriteSheet
+	 * @param spriteSize
 	 *            The size of the sprite on the sprite sheet
 	 * @param loop
 	 *            Should the animation loop
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, boolean loop)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, boolean loop)
 	{
 		this.position = position;
 		this.size = size;
 		this.spriteSheet = spriteSheet;
-		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
+		this.spriteSize = spriteSize;
 		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
-		this.numFramesX = numFramesX;
-		this.numFramesY = numFramesY;
+		this.numberOfFrames = numberOfFrames;
+		this.row = row;
 		velocity = new Vector2f(0, 0);
 		animFrameX = -1;
 		animFrameY = 0;
@@ -77,42 +77,42 @@ public class Particle
 	 *            The size of the particle
 	 * @param spriteSheet
 	 *            The spritesheet
-	 * @param numFramesX
-	 *            The number of animation frames X
-	 * @param numFramesY
+	 * @param numberOfFrames
+	 *            The number of animation frames
+	 * @param row
 	 *            The row in the spritesheet
 	 * @param flip
 	 *            Should the texture be flipped over y axis
-	 * @param sizeOfSpriteOnSpriteSheet
+	 * @param spriteSize
 	 *            The size of the sprite on the sprite sheet
 	 * @param loop
 	 *            Should the animation loop
 	 * @param velocity
 	 *            the initial velocity of the particle
-	 * @param positionScatterX
-	 *            the x radius to disperse the particle spawns
-	 * @param positionScatterY
-	 *            the y radius to disperse the particle spawns
+	 * @param positionScatter
+	 *            the x and y distances away from position that the particle can spawn at random
 	 * @param velocityMod
-	 *            the randomness of the velocity
+	 *            the amount of starting velocity randomness given to the particles in the x and y directions
+	 * @param startingFrameRandomOffset
+	 *            if the animation can randomly be offset by a few frames, specify how much here
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numFramesX, int numFramesY, boolean flip, Vector2f sizeOfSpriteOnSpriteSheet, boolean loop, Vector2f velocity, float positionScatterX, float positionScatterY, float velocityModX, float velocityModY)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, boolean loop, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset)
 	{
-		// offsetAmount is the particle's random offset generation from the center
-		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatterX;
-		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatterY;
-		// change scatterAmount to 5 for a cool "underwater bubble scatter" effect
-		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityModX;
-		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityModY;
+		// these offsets are randomly picked from the total x and y direction that the particle can spawn
+		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatter.x;
+		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatter.y;
+
+		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityMod.x;
+		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityMod.y;
 		this.position = new Vector2f(position.x + offset_x * Game.SCALE, position.y + offset_y * Game.SCALE);
 		this.size = size;
 		this.spriteSheet = spriteSheet;
-		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
+		this.spriteSize = spriteSize;
 		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
-		this.numFramesX = numFramesX;
-		this.numFramesY = numFramesY;
+		this.numberOfFrames = numberOfFrames;
+		this.row = row;
 		this.velocity = new Vector2f((velocity.x + randvelocity_x) * Game.SCALE, (velocity.y + randvelocity_y) * Game.SCALE);
-		animFrameX = -1;
+		animFrameX = -1 + new Random().nextInt(startingFrameRandomOffset);
 		animFrameY = 0;
 		this.flip = flip;
 		this.loop = loop;
@@ -125,16 +125,18 @@ public class Particle
 	{
 		if (tickCounter >= ticksPerFrame)
 		{
-			if (animFrameX >= numFramesX)
+			animFrameX++;
+			if (animFrameX >= numberOfFrames)
 			{
-				animFrameX = 0;
 				if (!loop)
 				{
 					isDead = true;
+				} else
+				{
+					animFrameX = -1;
 				}
 			}
 			tickCounter = 0;
-			animFrameX++;
 		} else
 		{
 			tickCounter++;
@@ -147,8 +149,10 @@ public class Particle
 	 */
 	public void render()
 	{
-		Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSpriteSheet.x * animFrameX)) / sizeOfSpriteSheet.x, (float) (sizeOfSpriteOnSpriteSheet.y * numFramesY) / sizeOfSpriteSheet.y);
-		Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSpriteSheet.x / sizeOfSpriteSheet.x), (float) (sizeOfSpriteOnSpriteSheet.y / sizeOfSpriteSheet.y));
+		if (isDead)
+			return;
+		Vector2f offset = new Vector2f(((float) (spriteSize.x * animFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
+		Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 		if (flip)
 		{
 			GFX.drawSpriteFromSpriteSheetInverse(size.x * Game.SCALE, size.y * Game.SCALE, position.x, position.y, spriteSheet, offset, sizey);
@@ -249,18 +253,18 @@ public class Particle
 	 */
 	public int getNumFramesX()
 	{
-		return numFramesX;
+		return numberOfFrames;
 	}
 
 	/**
 	 * Sets the number of animation frames X
 	 * 
-	 * @param numFramesX
+	 * @param numberOfFrames
 	 *            The number of animation frames X
 	 */
-	public void setNumFramesX(int numFramesX)
+	public void setNumFramesX(int numberOfFrames)
 	{
-		this.numFramesX = numFramesX;
+		this.numberOfFrames = numberOfFrames;
 	}
 
 	/**
@@ -270,18 +274,18 @@ public class Particle
 	 */
 	public int getNumFramesY()
 	{
-		return numFramesY;
+		return row;
 	}
 
 	/**
 	 * Sets the row in the sprite sheet
 	 * 
-	 * @param numFramesY
+	 * @param row
 	 *            The row in the spritesheet
 	 */
-	public void setNumFramesY(int numFramesY)
+	public void setNumFramesY(int row)
 	{
-		this.numFramesY = numFramesY;
+		this.row = row;
 	}
 
 	/**
@@ -354,18 +358,18 @@ public class Particle
 	 */
 	public Vector2f getSizeOfSpriteOnSpriteSheet()
 	{
-		return sizeOfSpriteOnSpriteSheet;
+		return spriteSize;
 	}
 
 	/**
 	 * Sets the size of the sprite on the spritesheet
 	 * 
-	 * @param sizeOfSpriteOnSpriteSheet
+	 * @param spriteSize
 	 *            The size of the sprite on the sprite sheet
 	 */
-	public void setSizeOfSpriteOnSpriteSheet(Vector2f sizeOfSpriteOnSpriteSheet)
+	public void setSizeOfSpriteOnSpriteSheet(Vector2f spriteSize)
 	{
-		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
+		this.spriteSize = spriteSize;
 	}
 
 	/**

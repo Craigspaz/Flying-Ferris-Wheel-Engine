@@ -36,14 +36,14 @@ public class Projectile extends Entity
 	 *            The texture of the projectile
 	 * @param scale
 	 *            The size at which to draw the sprite
-	 * @param sizeOfSpriteOnSheet
-	 *            The size of the spritesheet
+	 * @param spriteSize
+	 *            The size of the sprite
 	 * @param velocity
 	 *            The direction and speed of the projectile
 	 */
-	public Projectile(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed)
+	public Projectile(Vector3f position, Texture texture, Vector2f scale, Vector2f spriteSize, float angle, float speed)
 	{
-		super(position, texture, sizeOfSpriteOnSheet);
+		super(new Vector3f(position.x - (spriteSize.x * Game.SCALE / 2), position.y - (spriteSize.y * Game.SCALE / 2), position.z), texture, spriteSize);
 		lifespan = 30;
 		lifetime = 0;
 	}
@@ -66,7 +66,7 @@ public class Projectile extends Entity
 	 */
 	public Projectile(Vector3f position, Texture texture, int numberOfFrames, int row, Vector2f spriteSize, Vector2f velocity)
 	{
-		super(new Vector3f(position.x - (spriteSize.x / 2), position.y - (spriteSize.y / 2), position.z), texture, texture, numberOfFrames, row, spriteSize);
+		super(new Vector3f(position.x - (spriteSize.x * Game.SCALE / 2), position.y - (spriteSize.y * Game.SCALE / 2), position.z), texture, texture, numberOfFrames, row, spriteSize);
 		lifespan = 30;
 		lifetime = 0;
 		this.velocity = new Vector3f(velocity.x, velocity.y, 0);
@@ -110,15 +110,15 @@ public class Projectile extends Entity
 			{
 				for (int i = 0; i < 18; i++)// small fire
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 5f, 5f, 10f, 10f));// small fire
+					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
 				}
 				for (int i = 0; i < 10; i++)// big fire
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 10f, 10f, 3f, 3f));// big fire
+					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
 				}
 				for (int i = 0; i < 10; i++)// sparks
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 16f, 16f, 3f, 3f));// big fire
+					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
 				}
 				super.setDead(true);
 			}
@@ -128,15 +128,15 @@ public class Projectile extends Entity
 		{
 			for (int i = 0; i < 18; i++)// small fire
 			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 5f, 5f, 10f, 10f));// small fire
+				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
 			}
 			for (int i = 0; i < 10; i++)// big fire
 			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 10f, 10f, 3f, 3f));// big fire
+				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
 			}
 			for (int i = 0; i < 10; i++)// sparks
 			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 16f, 16f, 3f, 3f));// big fire
+				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
 			}
 			super.setDead(true);
 		}
@@ -165,12 +165,12 @@ public class Projectile extends Entity
 
 		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));//smoke
 		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));//smoke
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));// big fire
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));// big fire
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, 1f, 1f));// small fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, false, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 2));// small fire
 		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 6, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, velocity.y / 4), 5f, 5f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, 1.5f, 1.5f));// sparks
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, 1f, 1f));// sparks
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1.5f, 1.5f), 2));// sparks
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 2));// sparks
 	}
 
 	/**

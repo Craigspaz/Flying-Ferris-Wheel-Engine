@@ -235,12 +235,6 @@ public class Game
 				p.update(worldColliders);
 			}
 
-			// Updates the particles in the world
-			for (Particle p : particles)
-			{
-				p.update();
-			}
-
 			// Cleans up the playerProjectiles by removing projectiles that are dead
 			int i = 0;
 			while (i < playerProjectiles.size())
@@ -284,6 +278,12 @@ public class Game
 					}
 					i++;
 				}
+			}
+
+			// Updates the particles in the world
+			for (Particle p : particles)
+			{
+				p.update();
 			}
 			// Cleans up particles that are done running
 			i = 0;

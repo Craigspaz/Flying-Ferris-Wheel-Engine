@@ -19,7 +19,7 @@ public class Window
 	public static int	height				= 768;
 
 	// framerate
-	final int			TICKS_PER_SECOND	= 60;
+	final int			TICKS_PER_SECOND	= 1;
 
 	private Game		game;
 
