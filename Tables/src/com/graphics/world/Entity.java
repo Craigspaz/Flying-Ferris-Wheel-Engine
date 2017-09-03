@@ -97,7 +97,7 @@ public class Entity
 		isAnimated = false;
 		animSpriteFrameX = 0;
 		animSpriteFrameY = 0;
-		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z), new Vector2f(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE));
+		collider = new RectangleBox(new Vector3f(position.x, position.y, position.z), new Vector2f(spriteSize.x, spriteSize.y));
 		velocity = new Vector3f(0, 0, 0);
 	}
 
@@ -161,22 +161,22 @@ public class Entity
 
 		if (affectedByGravity)
 		{
-			velocity.y += GRAVITY * Game.SCALE;
+			velocity.y += GRAVITY;
 		}
 
-		if (velocity.y > MAX_SPEED_Y * Game.SCALE)
+		if (velocity.y > MAX_SPEED_Y)
 		{
-			velocity.y = MAX_SPEED_Y * Game.SCALE;
-		} else if (velocity.y < -MAX_SPEED_Y * Game.SCALE)
+			velocity.y = MAX_SPEED_Y;
+		} else if (velocity.y < -MAX_SPEED_Y)
 		{
-			velocity.y = -MAX_SPEED_Y * Game.SCALE;
+			velocity.y = -MAX_SPEED_Y;
 		}
 
 		boolean isOnGround = false;
 
 		// Makes two predictive collision boxes
-		RectangleBox nBoxX = new RectangleBox(new Vector3f(collider.getPosition().x + velocity.x, position.y, position.z), collider.getSize());
-		RectangleBox nBoxY = new RectangleBox(new Vector3f(position.x, collider.getPosition().y + velocity.y, position.z), collider.getSize());
+		RectangleBox nBoxX = new RectangleBox(new Vector3f(collider.getPosition().x + velocity.x, position.y, position.z), new Vector2f(collider.getSize().x, collider.getSize().y));
+		RectangleBox nBoxY = new RectangleBox(new Vector3f(position.x, collider.getPosition().y + velocity.y, position.z), new Vector2f(collider.getSize().x, collider.getSize().y));
 		boolean isCollidingX = false;
 		boolean isCollidingY = false;
 		for (RectangleBox t : colliders)
@@ -281,7 +281,7 @@ public class Entity
 			{
 				flipping = true;
 			}
-			velocity.y = JUMP_VALUE * Game.SCALE;
+			velocity.y = JUMP_VALUE;
 			jumpCount--;
 		}
 	}
@@ -293,17 +293,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.x -= 2 * HORIZONTAL_ACCEL * Game.SCALE;
-			if (velocity.x < 2 * -MAX_SPEED_X * Game.SCALE)
+			velocity.x -= 2 * HORIZONTAL_ACCEL;
+			if (velocity.x < 2 * -MAX_SPEED_X)
 			{
-				velocity.x = 2 * -MAX_SPEED_X * Game.SCALE;
+				velocity.x = 2 * -MAX_SPEED_X;
 			}
 		} else
 		{
-			velocity.x -= HORIZONTAL_ACCEL * Game.SCALE;
-			if (velocity.x < -(MAX_SPEED_X * Game.SCALE))
+			velocity.x -= HORIZONTAL_ACCEL;
+			if (velocity.x < -(MAX_SPEED_X))
 			{
-				velocity.x = -(MAX_SPEED_X * Game.SCALE);
+				velocity.x = -(MAX_SPEED_X);
 			}
 		}
 	}
@@ -315,12 +315,12 @@ public class Entity
 	{
 		if (velocity.x > 0)
 		{
-			velocity.x -= DECEL_VALUE * Game.SCALE;
+			velocity.x -= DECEL_VALUE;
 		} else if (velocity.x < 0)
 		{
-			velocity.x += DECEL_VALUE * Game.SCALE;
+			velocity.x += DECEL_VALUE;
 		}
-		if (Math.abs(velocity.x) < DECEL_VALUE * Game.SCALE)
+		if (Math.abs(velocity.x) < DECEL_VALUE)
 		{
 			velocity.x = 0;
 		}
@@ -333,17 +333,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.x += 2 * HORIZONTAL_ACCEL * Game.SCALE;
-			if (velocity.x > 2 * MAX_SPEED_X * Game.SCALE)
+			velocity.x += 2 * HORIZONTAL_ACCEL;
+			if (velocity.x > 2 * MAX_SPEED_X)
 			{
-				velocity.x = 2 * MAX_SPEED_X * Game.SCALE;
+				velocity.x = 2 * MAX_SPEED_X;
 			}
 		} else
 		{
-			velocity.x += HORIZONTAL_ACCEL * Game.SCALE;
-			if (velocity.x > (MAX_SPEED_X * Game.SCALE))
+			velocity.x += HORIZONTAL_ACCEL;
+			if (velocity.x > (MAX_SPEED_X))
 			{
-				velocity.x = (MAX_SPEED_X * Game.SCALE);
+				velocity.x = (MAX_SPEED_X);
 			}
 		}
 	}
@@ -355,17 +355,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.y -= 2 * GRAVITY * Game.SCALE;
-			if (velocity.y < -2 * GRAVITY * Game.SCALE)
+			velocity.y -= 2 * GRAVITY;
+			if (velocity.y < -2 * GRAVITY)
 			{
-				velocity.y = -2 * GRAVITY * Game.SCALE;
+				velocity.y = -2 * GRAVITY;
 			}
 		} else
 		{
-			velocity.y -= GRAVITY * Game.SCALE;
-			if (velocity.y < -(GRAVITY * Game.SCALE))
+			velocity.y -= GRAVITY;
+			if (velocity.y < -(GRAVITY))
 			{
-				velocity.y = -(GRAVITY * Game.SCALE);
+				velocity.y = -(GRAVITY);
 			}
 		}
 	}
@@ -377,17 +377,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.y += 2 * GRAVITY * Game.SCALE;
-			if (velocity.y > 2 * GRAVITY * Game.SCALE)
+			velocity.y += 2 * GRAVITY;
+			if (velocity.y > 2 * GRAVITY)
 			{
-				velocity.y = 2 * GRAVITY * Game.SCALE;
+				velocity.y = 2 * GRAVITY;
 			}
 		} else
 		{
-			velocity.y += GRAVITY * Game.SCALE;
-			if (velocity.y > (GRAVITY * Game.SCALE))
+			velocity.y += GRAVITY;
+			if (velocity.y > (GRAVITY))
 			{
-				velocity.y = (GRAVITY * Game.SCALE);
+				velocity.y = (GRAVITY);
 			}
 		}
 	}
@@ -399,17 +399,17 @@ public class Entity
 	{
 		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture);
+			GFX.drawEntireSprite(spriteSize.x, spriteSize.y, position.x, position.y, texture);
 		} else
 		{
 			Vector2f offset = new Vector2f(((float) (spriteSize.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
 			Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey);
 			}
 		}
 	}
@@ -421,17 +421,17 @@ public class Entity
 	{
 		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, texture);
+			GFX.drawEntireSprite(spriteSize.x, spriteSize.y, position.x, position.y, texture);
 		} else
 		{
 			Vector2f offset = new Vector2f(((float) (spriteSize.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
 			Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, outlineTexture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, outlineTexture, offset, sizey);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(spriteSize.x * Game.SCALE, spriteSize.y * Game.SCALE, position.x, position.y, outlineTexture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, outlineTexture, offset, sizey);
 			}
 		}
 	}

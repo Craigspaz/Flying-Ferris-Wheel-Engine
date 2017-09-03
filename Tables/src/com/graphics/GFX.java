@@ -10,6 +10,8 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 
+import com.main.Game;
+
 /**
  * A helper class full of static methods to render rectangles
  * 
@@ -96,6 +98,10 @@ public class GFX
 	 */
 	public static void drawEntireSprite(float x, float y, float xx, float yy, Texture texture)
 	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -137,6 +143,10 @@ public class GFX
 	 */
 	public static void drawEntireSpriteAtAngle(float x, float y, float xx, float yy, Texture texture, float angle)
 	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -187,6 +197,10 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheet(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size)
 	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -231,6 +245,10 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle)
 	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 
 		GL11.glPushMatrix();
@@ -279,6 +297,10 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheetInverse(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size)
 	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -323,6 +345,10 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle)
 	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());

@@ -33,7 +33,7 @@ import com.input.Terminal;
 public class Game
 {
 
-	public static float				SCALE				= 2f;
+	public static float				SCALE				= 1f;
 
 	private Player					player;
 
@@ -79,10 +79,10 @@ public class Game
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
 		terminal = new Terminal(handler, getPlayer(), camera, this);
-		sky = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 100 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.sky);
-		testTile2 = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 10 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.desert2);
-		testTile1 = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 5 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.desert1);
-		testTile0 = new Tile(new Vector3f(-256 * Game.SCALE, -112 * Game.SCALE, 2 * Game.SCALE), new Vector2f(1024 * Game.SCALE, 1024 * Game.SCALE), Textures.desert0);
+		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
+		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
+		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
+		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
 
 		if (!loadNewLevel("./res/world/level1.ffw"))
 		{

@@ -104,14 +104,14 @@ public class Particle
 
 		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityMod.x;
 		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityMod.y;
-		this.position = new Vector2f(position.x + offset_x * Game.SCALE, position.y + offset_y * Game.SCALE);
+		this.position = new Vector2f(position.x + offset_x, position.y + offset_y);
 		this.size = size;
 		this.spriteSheet = spriteSheet;
 		this.spriteSize = spriteSize;
 		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
 		this.numberOfFrames = numberOfFrames;
 		this.row = row;
-		this.velocity = new Vector2f((velocity.x + randvelocity_x) * Game.SCALE, (velocity.y + randvelocity_y) * Game.SCALE);
+		this.velocity = new Vector2f((velocity.x + randvelocity_x), (velocity.y + randvelocity_y));
 		animFrameX = -1 + new Random().nextInt(startingFrameRandomOffset);
 		animFrameY = 0;
 		this.flip = flip;
@@ -155,10 +155,10 @@ public class Particle
 		Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 		if (flip)
 		{
-			GFX.drawSpriteFromSpriteSheetInverse(size.x * Game.SCALE, size.y * Game.SCALE, position.x, position.y, spriteSheet, offset, sizey);
+			GFX.drawSpriteFromSpriteSheetInverse(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey);
 		} else
 		{
-			GFX.drawSpriteFromSpriteSheet(size.x * Game.SCALE, size.y * Game.SCALE, position.x, position.y, spriteSheet, offset, sizey);
+			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey);
 		}
 	}
 

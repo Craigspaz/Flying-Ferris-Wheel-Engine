@@ -43,7 +43,7 @@ public class Projectile extends Entity
 	 */
 	public Projectile(Vector3f position, Texture texture, Vector2f scale, Vector2f spriteSize, float angle, float speed)
 	{
-		super(new Vector3f(position.x - (spriteSize.x * Game.SCALE / 2), position.y - (spriteSize.y * Game.SCALE / 2), position.z), texture, spriteSize);
+		super(new Vector3f(position.x - (spriteSize.x / 2), position.y - (spriteSize.y / 2), position.z), texture, spriteSize);
 		lifespan = 30;
 		lifetime = 0;
 	}
@@ -66,7 +66,7 @@ public class Projectile extends Entity
 	 */
 	public Projectile(Vector3f position, Texture texture, int numberOfFrames, int row, Vector2f spriteSize, Vector2f velocity)
 	{
-		super(new Vector3f(position.x - (spriteSize.x * Game.SCALE / 2), position.y - (spriteSize.y * Game.SCALE / 2), position.z), texture, texture, numberOfFrames, row, spriteSize);
+		super(new Vector3f(position.x - (spriteSize.x / 2), position.y - (spriteSize.y / 2), position.z), texture, texture, numberOfFrames, row, spriteSize);
 		lifespan = 30;
 		lifetime = 0;
 		this.velocity = new Vector3f(velocity.x, velocity.y, 0);
@@ -95,14 +95,14 @@ public class Projectile extends Entity
 
 		if (affectedByGravity)
 		{
-			velocity.y += GRAVITY * Game.SCALE;
+			velocity.y += GRAVITY;
 		}
-		if (velocity.y > MAX_SPEED_Y * Game.SCALE)
+		if (velocity.y > MAX_SPEED_Y)
 		{
-			velocity.y = MAX_SPEED_Y * Game.SCALE;
-		} else if (velocity.y < -MAX_SPEED_Y * Game.SCALE)
+			velocity.y = MAX_SPEED_Y;
+		} else if (velocity.y < -MAX_SPEED_Y)
 		{
-			velocity.y = -MAX_SPEED_Y * Game.SCALE;
+			velocity.y = -MAX_SPEED_Y;
 		}
 		for (RectangleBox t : colliders)
 		{
@@ -201,17 +201,17 @@ public class Projectile extends Entity
 	{
 		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(super.getSpriteSize().x * Game.SCALE, super.getSpriteSize().y * Game.SCALE, position.x, position.y, super.getTexture());
+			GFX.drawEntireSprite(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture());
 		} else
 		{
 			Vector2f offset = new Vector2f(((float) (super.getSpriteSize().x * animSpriteFrameX)) / super.getSizeOfSpriteSheet().x, (float) (super.getSpriteSize().y * row) / super.getSizeOfSpriteSheet().y);
 			Vector2f sizey = new Vector2f((float) (super.getSpriteSize().x / super.getSizeOfSpriteSheet().x), (float) (super.getSpriteSize().y / super.getSizeOfSpriteSheet().y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(super.getSpriteSize().x * Game.SCALE, super.getSpriteSize().y * Game.SCALE, position.x, position.y, super.getTexture(), offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(super.getSpriteSize().x * Game.SCALE, super.getSpriteSize().y * Game.SCALE, position.x, position.y, super.getTexture(), offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey);
 			}
 		}
 		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getSpriteSize().x, super.getSpriteSize().y, super.position.x,

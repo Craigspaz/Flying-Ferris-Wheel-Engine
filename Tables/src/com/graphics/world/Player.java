@@ -91,10 +91,10 @@ public class Player extends Entity
 			{
 				if (left)
 				{
-					particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x * Game.SCALE) / 2, position.y + (getSpriteSize().y * Game.SCALE) / 2), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), false));
+					particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x) / 2, position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), false));
 				} else
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y + (getSpriteSize().y * Game.SCALE) / 2), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), false));
+					particles.add(new Particle(new Vector2f(position.x, position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 0, left, new Vector2f(16, 16), false));
 				}
 				canGenerateSprintParticle = false;
 			}
@@ -116,9 +116,9 @@ public class Player extends Entity
 				{
 					canGenerateSkidParticle = true;
 				}
-			} else if (!isInAir && Math.abs(velocity.x) < (0.8 * Game.SCALE) && canGenerateSkidParticle == true)
+			} else if (!isInAir && Math.abs(velocity.x) < (0.8) && canGenerateSkidParticle == true)
 			{
-				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + (getSpriteSize().y * Game.SCALE) / 2), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), false));
+				particles.add(new Particle(new Vector2f(position.x + velocity.x, position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), false));
 				canGenerateSkidParticle = false;
 			}
 		}
@@ -131,9 +131,9 @@ public class Player extends Entity
 				{
 					canGenerateSkidParticle = true;
 				}
-			} else if (!isInAir && Math.abs(velocity.x) < (0.8 * Game.SCALE) && canGenerateSkidParticle == true)
+			} else if (!isInAir && Math.abs(velocity.x) < (0.8) && canGenerateSkidParticle == true)
 			{
-				particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x * Game.SCALE) / 2 + velocity.x, position.y + (getSpriteSize().y * Game.SCALE) / 2), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), false));
+				particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x) / 2 + velocity.x, position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 2, left, new Vector2f(16, 16), false));
 				canGenerateSkidParticle = false;
 			}
 		}
@@ -152,7 +152,7 @@ public class Player extends Entity
 				canJump = false;
 				if (!isInAir)
 				{
-					particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x * Game.SCALE / 2) - (8 * Game.SCALE), position.y + (getSpriteSize().y * Game.SCALE) / 2), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), false));
+					particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x / 2) - (8), position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), false));
 				}
 				// System.out.println("jump " + jumpCount);
 			}
@@ -176,11 +176,11 @@ public class Player extends Entity
 			{
 				// if (handler.up())
 				// {
-				projectileVelocityY = (float) (-bulletSpeed * Game.SCALE / Math.sqrt(2));
+				projectileVelocityY = (float) (-bulletSpeed / Math.sqrt(2));
 				if (!left)
-					projectileVelocityX = (float) (bulletSpeed * Game.SCALE / Math.sqrt(2));
+					projectileVelocityX = (float) (bulletSpeed / Math.sqrt(2));
 				else
-					projectileVelocityX = (float) (-bulletSpeed * Game.SCALE / Math.sqrt(2));
+					projectileVelocityX = (float) (-bulletSpeed / Math.sqrt(2));
 				// } else
 				// {
 				// projectileVelocityY = 0;
@@ -193,8 +193,8 @@ public class Player extends Entity
 				// }
 				// }
 
-				Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getSpriteSize().x * Game.SCALE / 2f) + (super.velocity.x * Game.SCALE), super.position.y + (super.getSpriteSize().y * Game.SCALE / 2f) + (super.velocity.y * Game.SCALE), 0), Textures.fireball, 6, 0,
-						new Vector2f(16, 16), new Vector2f(projectileVelocityX, projectileVelocityY));
+				Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getSpriteSize().x / 2f) + (super.velocity.x), super.position.y + (super.getSpriteSize().y / 2f) + (super.velocity.y), 0), Textures.fireball, 6, 0, new Vector2f(16, 16),
+						new Vector2f(projectileVelocityX, projectileVelocityY));
 				fireball.setAffectedByGravity(true);
 				projectiles.add(fireball);
 
@@ -211,7 +211,7 @@ public class Player extends Entity
 		if (velocity.x > 0)
 
 		{
-			if (Math.abs(super.velocity.x) > MAX_SPEED_X * Game.SCALE)
+			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
 			{
 				super.numberOfFrames = 10;
 				super.row = 2;
@@ -225,7 +225,7 @@ public class Player extends Entity
 		if (velocity.x < 0)
 
 		{
-			if (Math.abs(super.velocity.x) > MAX_SPEED_X * Game.SCALE)
+			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
 			{
 				super.numberOfFrames = 10;
 				super.row = 2;
@@ -285,9 +285,9 @@ public class Player extends Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
-		int offsetx = (int) (8 * Game.SCALE);
-		// int offsety = (int) (10 * Game.SCALE);
-		int offsety2 = (int) (6 * Game.SCALE);
+		int offsetx = (int) (8);
+		// int offsety = (int) (10);
+		int offsety2 = (int) (6);
 		input(colliders);
 		super.update(colliders, vertices);
 		// particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), 16f, 4f, .5f, .5f));

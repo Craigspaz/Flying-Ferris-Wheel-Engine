@@ -209,7 +209,7 @@ public class World
 					int zPos = Integer.parseInt(z);
 					float texCoordX = Float.parseFloat(tCoordX);
 					float texCoordY = Float.parseFloat(tCoordY);
-					tiles.add(new Tile(new Vector3f(xPos * Game.SCALE, yPos * Game.SCALE, zPos * Game.SCALE), new Vector2f(width * Game.SCALE, height * Game.SCALE), texture, texCoordX, texCoordY));
+					tiles.add(new Tile(new Vector3f(xPos, yPos, zPos), new Vector2f(width, height), texture, texCoordX, texCoordY));
 					System.out.println("New Tile: (" + xPos + ", " + yPos + ", " + zPos + ") (" + width + ", " + height + ")");
 				} else if (line.trim().startsWith("<COLLIDER "))
 				{
@@ -228,7 +228,7 @@ public class World
 					String param4 = param3.substring(param3.indexOf("height=\"") + 8);
 					String height1 = param4.substring(0, param4.indexOf("\""));
 
-					RectangleBox box = new RectangleBox(new Vector3f(Integer.parseInt(x) * Game.SCALE, Integer.parseInt(y) * Game.SCALE, Integer.parseInt(z) * Game.SCALE), new Vector2f(Integer.parseInt(width1) * Game.SCALE, Integer.parseInt(height1) * Game.SCALE));
+					RectangleBox box = new RectangleBox(new Vector3f(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)), new Vector2f(Integer.parseInt(width1), Integer.parseInt(height1)));
 					colliders.add(box);
 					System.out.println("New Collider: (" + x + ", " + y + ", " + z + ") (" + width1 + ", " + height1 + ")");
 				} else if (line.trim().startsWith("<ENEMY "))
@@ -353,7 +353,7 @@ public class World
 
 					String param6 = param5.substring(param5.indexOf("texOut=\"") + 8);
 					String tex2 = param6.substring(0, param6.indexOf("\""));
-					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x) * Game.SCALE, Float.parseFloat(y) * Game.SCALE, Float.parseFloat(z) * Game.SCALE));
+					newLevel.setPlayerSpawnLocation(new Vector3f(Float.parseFloat(x), Float.parseFloat(y), Float.parseFloat(z)));
 				} else if (line.trim().startsWith("<VERTEX"))
 				{
 					inVertex = true;
