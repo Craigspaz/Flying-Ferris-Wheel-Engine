@@ -23,13 +23,13 @@ public class Player extends Entity
 	private int				shootingDelay				= 5;
 	private int				shootingCounter				= 0;
 	private boolean			canShoot					= true;
-	private float			bulletSpeed					= 13 * Game.SCALE;
+	private float			bulletSpeed					= 13f;
 	private float			projectileVelocityX			= 0;
 	private float			projectileVelocityY			= 0;
 	private boolean			canGenerateSprintParticle	= true;
 	private boolean			canGenerateSkidParticle		= false;
-	private boolean			canJump						= true;				// determines the player's ability to jump via
-																			// keypresses and releases
+	private boolean			canJump						= true;	// determines the player's ability to jump via
+																// keypresses and releases
 
 	private InputHandler	handler;
 
@@ -176,11 +176,11 @@ public class Player extends Entity
 			{
 				// if (handler.up())
 				// {
-				projectileVelocityY = (float) (-bulletSpeed / Math.sqrt(2));
+				projectileVelocityY = (float) (-bulletSpeed * Game.SCALE / Math.sqrt(2));
 				if (!left)
-					projectileVelocityX = (float) (bulletSpeed / Math.sqrt(2));
+					projectileVelocityX = (float) (bulletSpeed * Game.SCALE / Math.sqrt(2));
 				else
-					projectileVelocityX = (float) (-bulletSpeed / Math.sqrt(2));
+					projectileVelocityX = (float) (-bulletSpeed * Game.SCALE / Math.sqrt(2));
 				// } else
 				// {
 				// projectileVelocityY = 0;
@@ -211,7 +211,7 @@ public class Player extends Entity
 		if (velocity.x > 0)
 
 		{
-			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
+			if (Math.abs(super.velocity.x) > MAX_SPEED_X * Game.SCALE)
 			{
 				super.numberOfFrames = 10;
 				super.row = 2;
@@ -225,7 +225,7 @@ public class Player extends Entity
 		if (velocity.x < 0)
 
 		{
-			if (Math.abs(super.velocity.x) > MAX_SPEED_X)
+			if (Math.abs(super.velocity.x) > MAX_SPEED_X * Game.SCALE)
 			{
 				super.numberOfFrames = 10;
 				super.row = 2;
@@ -286,7 +286,7 @@ public class Player extends Entity
 	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
 		int offsetx = (int) (8 * Game.SCALE);
-		int offsety = (int) (10 * Game.SCALE);
+		// int offsety = (int) (10 * Game.SCALE);
 		int offsety2 = (int) (6 * Game.SCALE);
 		input(colliders);
 		super.update(colliders, vertices);

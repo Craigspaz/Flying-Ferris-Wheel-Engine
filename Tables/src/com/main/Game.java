@@ -33,7 +33,7 @@ import com.input.Terminal;
 public class Game
 {
 
-	public static final float		SCALE				= 2f;
+	public static float				SCALE				= 2f;
 
 	private Player					player;
 
@@ -457,5 +457,16 @@ public class Game
 	public void addEntity(Entity e)
 	{
 		entities.add(e);
+	}
+
+	/**
+	 * allows for changing scale of the game
+	 * 
+	 * @param scale
+	 *            the multiplier that everything is scaled by
+	 */
+	public static void setScale(float scale)
+	{
+		Game.SCALE = scale;
 	}
 }

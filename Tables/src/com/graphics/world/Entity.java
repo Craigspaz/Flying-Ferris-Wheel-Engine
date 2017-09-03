@@ -24,12 +24,12 @@ public class Entity
 	protected ArrayList<Projectile>	projectiles			= new ArrayList<Projectile>();
 	protected ArrayList<Particle>	particles			= new ArrayList<Particle>();
 
-	public static final float		GRAVITY				= 0.8f * Game.SCALE;
-	public static final float		MAX_SPEED_Y			= 20.0f * Game.SCALE;
-	public static final float		MAX_SPEED_X			= 4.0f * Game.SCALE;
-	public static final float		HORIZONTAL_ACCEL	= 0.4f * Game.SCALE;
-	public static final float		DECEL_VALUE			= 0.3f * Game.SCALE;
-	public static final float		JUMP_VALUE			= -15 * Game.SCALE;
+	public static final float		GRAVITY				= 0.8f;
+	public static final float		MAX_SPEED_Y			= 20.0f;
+	public static final float		MAX_SPEED_X			= 4.0f;
+	public static final float		HORIZONTAL_ACCEL	= 0.4f;
+	public static final float		DECEL_VALUE			= 0.3f;
+	public static final float		JUMP_VALUE			= -15;
 	public static final int			MAX_JUMPS			= 2;
 
 	private float					animateFrameTime	= 4;
@@ -161,15 +161,15 @@ public class Entity
 
 		if (affectedByGravity)
 		{
-			velocity.y += GRAVITY;
+			velocity.y += GRAVITY * Game.SCALE;
 		}
 
-		if (velocity.y > MAX_SPEED_Y)
+		if (velocity.y > MAX_SPEED_Y * Game.SCALE)
 		{
-			velocity.y = MAX_SPEED_Y;
-		} else if (velocity.y < -MAX_SPEED_Y)
+			velocity.y = MAX_SPEED_Y * Game.SCALE;
+		} else if (velocity.y < -MAX_SPEED_Y * Game.SCALE)
 		{
-			velocity.y = -MAX_SPEED_Y;
+			velocity.y = -MAX_SPEED_Y * Game.SCALE;
 		}
 
 		boolean isOnGround = false;
@@ -281,7 +281,7 @@ public class Entity
 			{
 				flipping = true;
 			}
-			velocity.y = JUMP_VALUE;
+			velocity.y = JUMP_VALUE * Game.SCALE;
 			jumpCount--;
 		}
 	}
@@ -293,17 +293,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.x -= 2 * HORIZONTAL_ACCEL;
-			if (velocity.x < 2 * -MAX_SPEED_X)
+			velocity.x -= 2 * HORIZONTAL_ACCEL * Game.SCALE;
+			if (velocity.x < 2 * -MAX_SPEED_X * Game.SCALE)
 			{
-				velocity.x = 2 * -MAX_SPEED_X;
+				velocity.x = 2 * -MAX_SPEED_X * Game.SCALE;
 			}
 		} else
 		{
-			velocity.x -= HORIZONTAL_ACCEL;
-			if (velocity.x < -(MAX_SPEED_X))
+			velocity.x -= HORIZONTAL_ACCEL * Game.SCALE;
+			if (velocity.x < -(MAX_SPEED_X * Game.SCALE))
 			{
-				velocity.x = -(MAX_SPEED_X);
+				velocity.x = -(MAX_SPEED_X * Game.SCALE);
 			}
 		}
 	}
@@ -315,12 +315,12 @@ public class Entity
 	{
 		if (velocity.x > 0)
 		{
-			velocity.x -= DECEL_VALUE;
+			velocity.x -= DECEL_VALUE * Game.SCALE;
 		} else if (velocity.x < 0)
 		{
-			velocity.x += DECEL_VALUE;
+			velocity.x += DECEL_VALUE * Game.SCALE;
 		}
-		if (Math.abs(velocity.x) < DECEL_VALUE)
+		if (Math.abs(velocity.x) < DECEL_VALUE * Game.SCALE)
 		{
 			velocity.x = 0;
 		}
@@ -333,17 +333,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.x += 2 * HORIZONTAL_ACCEL;
-			if (velocity.x > 2 * MAX_SPEED_X)
+			velocity.x += 2 * HORIZONTAL_ACCEL * Game.SCALE;
+			if (velocity.x > 2 * MAX_SPEED_X * Game.SCALE)
 			{
-				velocity.x = 2 * MAX_SPEED_X;
+				velocity.x = 2 * MAX_SPEED_X * Game.SCALE;
 			}
 		} else
 		{
-			velocity.x += HORIZONTAL_ACCEL;
-			if (velocity.x > (MAX_SPEED_X))
+			velocity.x += HORIZONTAL_ACCEL * Game.SCALE;
+			if (velocity.x > (MAX_SPEED_X * Game.SCALE))
 			{
-				velocity.x = (MAX_SPEED_X);
+				velocity.x = (MAX_SPEED_X * Game.SCALE);
 			}
 		}
 	}
@@ -355,17 +355,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.y -= 2 * GRAVITY;
-			if (velocity.y < -2 * GRAVITY)
+			velocity.y -= 2 * GRAVITY * Game.SCALE;
+			if (velocity.y < -2 * GRAVITY * Game.SCALE)
 			{
-				velocity.y = -2 * GRAVITY;
+				velocity.y = -2 * GRAVITY * Game.SCALE;
 			}
 		} else
 		{
-			velocity.y -= GRAVITY;
-			if (velocity.y < -(GRAVITY))
+			velocity.y -= GRAVITY * Game.SCALE;
+			if (velocity.y < -(GRAVITY * Game.SCALE))
 			{
-				velocity.y = -(GRAVITY);
+				velocity.y = -(GRAVITY * Game.SCALE);
 			}
 		}
 	}
@@ -377,17 +377,17 @@ public class Entity
 	{
 		if (isSprinting)
 		{
-			velocity.y += 2 * GRAVITY;
-			if (velocity.y > 2 * GRAVITY)
+			velocity.y += 2 * GRAVITY * Game.SCALE;
+			if (velocity.y > 2 * GRAVITY * Game.SCALE)
 			{
-				velocity.y = 2 * GRAVITY;
+				velocity.y = 2 * GRAVITY * Game.SCALE;
 			}
 		} else
 		{
-			velocity.y += GRAVITY;
-			if (velocity.y > (GRAVITY))
+			velocity.y += GRAVITY * Game.SCALE;
+			if (velocity.y > (GRAVITY * Game.SCALE))
 			{
-				velocity.y = (GRAVITY);
+				velocity.y = (GRAVITY * Game.SCALE);
 			}
 		}
 	}

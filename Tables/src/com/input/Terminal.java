@@ -190,7 +190,7 @@ public class Terminal
 				{
 					messages.add(0, "invalid arguments");
 				}
-			} else if (commands[0].equals("load"))// gives information on other commands
+			} else if (commands[0].equals("load"))// loads a level TODO broken with scaling for some reason
 			{
 				if (commands.length >= 2)
 				{
@@ -206,6 +206,24 @@ public class Terminal
 				{
 					messages.add(0, "invalid arguments");
 				}
+			} else if (commands[0].equals("scale"))
+			{
+				if (commands.length >= 2)
+				{
+					try
+					{
+						if (commands[1].equals("reset"))
+						{
+							Game.setScale(1f);
+						} else
+						{
+							Game.setScale(Float.parseFloat(commands[1]));
+						}
+					} catch (NumberFormatException e)
+					{
+						messages.add(0, "usage: \"> scale [float]\" or \"> scale reset\"");
+					}
+				}
 			} else if (commands[0].equals("hello"))// a silly test command, we're keeping this in
 			{
 				messages.add(0, "hello :)");
@@ -213,6 +231,7 @@ public class Terminal
 			{
 				messages.add(0, "nodamage: toggles whether player can receive damage");
 				messages.add(0, "spawn [ID] [x] [y]: spawns entity at x, y from camera corner");
+				messages.add(0, "scale [SCALE]: changes the game's display scale to SCALE");
 			} else
 			{
 				// messages.add(0, "unknown command");

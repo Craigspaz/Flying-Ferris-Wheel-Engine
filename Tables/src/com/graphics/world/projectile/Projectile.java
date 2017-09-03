@@ -95,14 +95,14 @@ public class Projectile extends Entity
 
 		if (affectedByGravity)
 		{
-			velocity.y += GRAVITY;
+			velocity.y += GRAVITY * Game.SCALE;
 		}
-		if (velocity.y > MAX_SPEED_Y)
+		if (velocity.y > MAX_SPEED_Y * Game.SCALE)
 		{
-			velocity.y = MAX_SPEED_Y;
-		} else if (velocity.y < -MAX_SPEED_Y)
+			velocity.y = MAX_SPEED_Y * Game.SCALE;
+		} else if (velocity.y < -MAX_SPEED_Y * Game.SCALE)
 		{
-			velocity.y = -MAX_SPEED_Y;
+			velocity.y = -MAX_SPEED_Y * Game.SCALE;
 		}
 		for (RectangleBox t : colliders)
 		{
