@@ -8,6 +8,7 @@ import com.graphics.world.Camera;
 import com.graphics.world.Player;
 import com.graphics.world.enemys.Enemy;
 import com.main.Game;
+import com.main.Window;
 
 /**
  * Handles the dev console
@@ -118,12 +119,12 @@ public class Terminal
 		lineheight = GFX.font2.getLineHeight();
 		if (active)
 		{
-			GFX.drawEntireSprite(512, 128, x, y - 128, Textures.terminalWindow);
+			GFX.drawEntireSprite(512 / Game.SCALE, 128 / Game.SCALE, x / Game.SCALE, (y - 128) / Game.SCALE, Textures.terminalWindow);
 			for (int i = 0; i < messages.size(); i++)
 			{
-				GFX.drawString(x + 10, (y - 2 * lineheight) - (lineheight * i) - 11, messages.get(i));
+				GFX.drawString((x + 10), ((y - 2 * lineheight) - (lineheight * i) - 11), messages.get(i));
 			}
-			GFX.drawString(x + 10, y - lineheight - 10, "> " + command);
+			GFX.drawString((x + 10), (y - lineheight - 10), "> " + command);
 		}
 	}
 
@@ -174,7 +175,7 @@ public class Terminal
 						return;
 					}
 
-					Enemy ee = Enemy.generateBasicEnemyBasedOnID(commands[1].toLowerCase(), x + camera.getPosition().x, y + camera.getPosition().y);
+					Enemy ee = Enemy.generateBasicEnemyBasedOnID(commands[1].toLowerCase(), (x + (camera.getPosition().x)) / Game.SCALE, (y + (camera.getPosition().y)) / Game.SCALE);
 					if (ee == null)
 					{
 						messages.add(0, "requested entity does not exist");
@@ -190,7 +191,7 @@ public class Terminal
 				{
 					messages.add(0, "invalid arguments");
 				}
-			} else if (commands[0].equals("load"))// loads a level TODO broken with scaling for some reason
+			} else if (commands[0].equals("load"))
 			{
 				if (commands.length >= 2)
 				{
