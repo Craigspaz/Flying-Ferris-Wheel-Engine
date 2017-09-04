@@ -119,6 +119,59 @@ public class Particle
 	}
 
 	/**
+	 * Creates a new particle with a specific animation speed
+	 * 
+	 * @param position
+	 *            The position of the particle
+	 * @param size
+	 *            The size of the particle
+	 * @param spriteSheet
+	 *            The spritesheet
+	 * @param numberOfFrames
+	 *            The number of animation frames
+	 * @param row
+	 *            The row in the spritesheet
+	 * @param flip
+	 *            Should the texture be flipped over y axis
+	 * @param spriteSize
+	 *            The size of the sprite on the sprite sheet
+	 * @param loop
+	 *            Should the animation loop
+	 * @param velocity
+	 *            the initial velocity of the particle
+	 * @param positionScatter
+	 *            the x and y distances away from position that the particle can spawn at random
+	 * @param velocityMod
+	 *            the amount of starting velocity randomness given to the particles in the x and y directions
+	 * @param startingFrameRandomOffset
+	 *            if the animation can randomly be offset by a few frames, specify how much here
+	 * @param ticksPerFrame
+	 *            the number of additional ticks each animation frame is displayed
+	 */
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, boolean loop, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset, int ticksPerFrame)
+	{
+		// these offsets are randomly picked from the total x and y direction that the particle can spawn
+		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatter.x;
+		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatter.y;
+
+		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityMod.x;
+		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityMod.y;
+		this.position = new Vector2f(position.x + offset_x, position.y + offset_y);
+		this.size = size;
+		this.spriteSheet = spriteSheet;
+		this.spriteSize = spriteSize;
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
+		this.numberOfFrames = numberOfFrames;
+		this.row = row;
+		this.velocity = new Vector2f((velocity.x + randvelocity_x), (velocity.y + randvelocity_y));
+		animFrameX = -1 + new Random().nextInt(startingFrameRandomOffset);
+		animFrameY = 0;
+		this.flip = flip;
+		this.loop = loop;
+		this.ticksPerFrame = ticksPerFrame;
+	}
+
+	/**
 	 * Updates the particle
 	 */
 	public void update()

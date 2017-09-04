@@ -1,6 +1,7 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.GL11;
@@ -32,7 +33,7 @@ import com.input.Terminal;
  */
 public class Game
 {
-
+	public static double			counter				= 0;
 	public static float				SCALE				= 1f;
 
 	private Player					player;
@@ -328,6 +329,9 @@ public class Game
 					t.getPosition().x += camera.getOffset().x / t.getPosition().z;
 				}
 			}
+			//TODO this is the great zoom function
+			counter += 0.1;
+			Game.SCALE = (float) (Math.sin(counter) + 2);
 			camera.update();
 		}
 		SoundStore.get().poll(0);

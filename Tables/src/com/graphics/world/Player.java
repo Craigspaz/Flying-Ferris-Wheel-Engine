@@ -298,17 +298,14 @@ public class Player extends Entity
 	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
 		int offsetx = (int) (8);
-		// int offsety = (int) (10);
+		int offsety = (int) (velocity.y);
 		int offsety2 = (int) (6);
 		input(colliders);
 		super.update(colliders, vertices);
-		// particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), 16f, 4f, .5f, .5f));
-		// particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), 16f, 4f, .75f, .5f));
-		// particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), 16f, 4f, 1.0f, .5f));
-		// particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), 16f, 4f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), new Vector2f(16f, 4f), new Vector2f(.75f, .5f), 2));
-		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), new Vector2f(16f, 4f), new Vector2f(1.0f, .5f), 2));
-		// particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, -2.5f), 16f, 4f, 1.0f, .5f));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 21, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 2, 2));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 21, 3, false, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 2, 2));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 21, 3, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 2, 2));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 21, 3, false, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 2, 2));
 	}
 
 	/**
