@@ -108,36 +108,14 @@ public class Projectile extends Entity
 		{
 			if (t.isCollidingWithBox(collider))
 			{
-				for (int i = 0; i < 18; i++)// small fire
-				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
-				}
-				for (int i = 0; i < 10; i++)// big fire
-				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
-				}
-				for (int i = 0; i < 10; i++)// sparks
-				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
-				}
+				addExplosionParticles();
 				super.setDead(true);
 			}
 		}
 		lifetime++;
 		if (lifetime >= lifespan)
 		{
-			for (int i = 0; i < 18; i++)// small fire
-			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
-			}
-			for (int i = 0; i < 10; i++)// big fire
-			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
-			}
-			for (int i = 0; i < 10; i++)// sparks
-			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
-			}
+			addExplosionParticles();
 			super.setDead(true);
 		}
 		collider.setPosition(new Vector3f(velocity.x + position.x, velocity.y + position.y, position.z));
@@ -219,4 +197,22 @@ public class Projectile extends Entity
 		// numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
 	}
 
+	/**
+	 * Adds the particles for an exploding particle
+	 */
+	public void addExplosionParticles()
+	{
+		for (int i = 0; i < 18; i++)// small fire
+		{
+			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
+		}
+		for (int i = 0; i < 10; i++)// big fire
+		{
+			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
+		}
+		for (int i = 0; i < 10; i++)// sparks
+		{
+			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
+		}
+	}
 }
