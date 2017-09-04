@@ -33,6 +33,8 @@ import com.input.Terminal;
 public class Game
 {
 
+	public static float				SCALE				= 1f;
+
 	private Player					player;
 
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
@@ -71,7 +73,7 @@ public class Game
 		handler = new InputHandler();
 		GFX.initString();
 
-		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
 		getPlayer().setAnimateFrameTime(3.0f);
 
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
@@ -173,7 +175,7 @@ public class Game
 					currentDialogue.update(handler);
 			}
 			// Updates the player
-			getPlayer().update(worldColliders,currentLevel.getVertices());
+			getPlayer().update(worldColliders, currentLevel.getVertices());
 			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
 			// Updates tiles
 			for (Tile t : tiles)
@@ -184,7 +186,7 @@ public class Game
 			// Updates entities
 			for (Entity e : entities)
 			{
-				e.update(worldColliders,currentLevel.getVertices());
+				e.update(worldColliders, currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				if (e.isHostileToPlayer())
 				{
@@ -196,7 +198,7 @@ public class Game
 			// Updates the enemy
 			for (Enemy e : enemies)
 			{
-				e.update(worldColliders, player,currentLevel.getVertices());
+				e.update(worldColliders, player, currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
 				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
@@ -231,12 +233,6 @@ public class Game
 			for (Projectile p : enemyProjectiles)
 			{
 				p.update(worldColliders);
-			}
-
-			// Updates the particles in the world
-			for (Particle p : particles)
-			{
-				p.update();
 			}
 
 			// Cleans up the playerProjectiles by removing projectiles that are dead
@@ -282,6 +278,12 @@ public class Game
 					}
 					i++;
 				}
+			}
+
+			// Updates the particles in the world
+			for (Particle p : particles)
+			{
+				p.update();
 			}
 			// Cleans up particles that are done running
 			i = 0;
@@ -357,7 +359,7 @@ public class Game
 		{
 			return false;
 		}
-		
+
 		currentLevel = tmp;
 
 		worldColliders = currentLevel.getColliders();
@@ -388,7 +390,7 @@ public class Game
 		// Sets the players spawn location to the location specified in the level
 		if (getPlayer() != null && currentLevel.getPlayerSpawnLocation() != null)
 		{
-			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), new Vector2f(32, 32), handler));
+			setPlayer(new Player(currentLevel.getPlayerSpawnLocation(), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
 		}
 		return true;
 	}
@@ -455,5 +457,16 @@ public class Game
 	public void addEntity(Entity e)
 	{
 		entities.add(e);
+	}
+
+	/**
+	 * allows for changing scale of the game
+	 * 
+	 * @param scale
+	 *            the multiplier that everything is scaled by
+	 */
+	public static void setScale(float scale)
+	{
+		Game.SCALE = scale;
 	}
 }
