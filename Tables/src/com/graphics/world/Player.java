@@ -150,17 +150,22 @@ public class Player extends Entity
 		// If the jump input key is pressed and canJump, make the player jump based on jumpcounts
 		if (handler.jump())
 		{
-			if (canJump && airJumpCount < MAX_AIR_JUMPS)
+			if (canJump)
 			{
 				if (!isInAir)
 				{
+					super.jump();
+					canJump = false;
 					particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x / 2) - (8), position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), false));
 				} else
 				{
-					airJumpCount++;
+					if (airJumpCount < MAX_AIR_JUMPS)
+					{
+						airJumpCount++;
+						super.jump();
+						canJump = false;
+					}
 				}
-				super.jump();
-				canJump = false;
 				// System.out.println("jump " + jumpCount);
 			}
 
