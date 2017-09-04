@@ -11,6 +11,7 @@ import com.graphics.Textures;
 import com.graphics.world.Entity;
 import com.graphics.world.Particle;
 import com.graphics.world.RectangleBox;
+import com.main.Game;
 
 /**
  * Basic Projectile class
@@ -35,14 +36,14 @@ public class Projectile extends Entity
 	 *            The texture of the projectile
 	 * @param scale
 	 *            The size at which to draw the sprite
-	 * @param sizeOfSpriteOnSheet
-	 *            The size of the spritesheet
+	 * @param spriteSize
+	 *            The size of the sprite
 	 * @param velocity
 	 *            The direction and speed of the projectile
 	 */
-	public Projectile(Vector3f position, Texture texture, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed)
+	public Projectile(Vector3f position, Texture texture, Vector2f scale, Vector2f spriteSize, float angle, float speed)
 	{
-		super(position, texture, scale, sizeOfSpriteOnSheet);
+		super(new Vector3f(position.x - (spriteSize.x / 2), position.y - (spriteSize.y / 2), position.z), texture, spriteSize);
 		lifespan = 30;
 		lifetime = 0;
 	}
@@ -54,24 +55,21 @@ public class Projectile extends Entity
 	 *            The position of the projectile
 	 * @param texture
 	 *            The texture of the projectle
-	 * @param outlineTexture
-	 *            The texture that contains the outlines
-	 * @param numberOfSpritesX
+	 * @param numberOfFrames
 	 *            The number of sprite animation frames
-	 * @param numberOfSpritesY
-	 *            The specific row of frames to animate
-	 * @param scale
-	 *            The size at which to render the sprite
-	 * @param sizeOfSpriteOnSheet
-	 *            The size of the sprite on the sprite sheet
+	 * @param row
+	 *            The specific row of frames to animate, calculated as a multiple of the height of the sprite
+	 * @param spriteSize
+	 *            The size of the sprite
 	 * @param velocity
 	 *            the direction and speed of the projectile
 	 */
-	public Projectile(Vector3f position, Texture texture, int numberOfSpritesX, int numberOfSpritesY, Vector2f scale, Vector2f sizeOfSpriteOnSheet, float angle, float speed, float playerXSpeed, float playerYSpeed)
+	public Projectile(Vector3f position, Texture texture, int numberOfFrames, int row, Vector2f spriteSize, Vector2f velocity)
 	{
-		super(new Vector3f(position.x - (scale.x / 2f), position.y - (scale.y / 2f), position.z), texture, texture, numberOfSpritesX, numberOfSpritesY, scale, sizeOfSpriteOnSheet);
+		super(new Vector3f(position.x - (spriteSize.x / 2), position.y - (spriteSize.y / 2), position.z), texture, texture, numberOfFrames, row, spriteSize);
 		lifespan = 30;
 		lifetime = 0;
+		this.velocity = new Vector3f(velocity.x, velocity.y, 0);
 	}
 
 	/**
@@ -85,7 +83,7 @@ public class Projectile extends Entity
 		if (animateTime >= 2)
 		{
 			animSpriteFrameX++;
-			if (animSpriteFrameX >= numberOfSpritesX)
+			if (animSpriteFrameX >= numberOfFrames)
 			{
 				animSpriteFrameX = 0;
 			}
@@ -112,15 +110,15 @@ public class Projectile extends Entity
 			{
 				for (int i = 0; i < 18; i++)// small fire
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 5f, 5f, 10f, 10f));// small fire
+					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
 				}
 				for (int i = 0; i < 10; i++)// big fire
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 10f, 10f, 3f, 3f));// big fire
+					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
 				}
 				for (int i = 0; i < 10; i++)// sparks
 				{
-					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), 16f, 16f, 3f, 3f));// big fire
+					particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
 				}
 				super.setDead(true);
 			}
@@ -130,15 +128,15 @@ public class Projectile extends Entity
 		{
 			for (int i = 0; i < 18; i++)// small fire
 			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 2, velocity.y/2), 5f, 5f, 10f, 10f));// small fire
+				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire
 			}
 			for (int i = 0; i < 10; i++)// big fire
 			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 2, velocity.y/2), 10f, 10f, 3f, 3f));// big fire
+				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4));// big fire
 			}
 			for (int i = 0; i < 10; i++)// sparks
 			{
-				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 2, velocity.y/2), 16f, 16f, 3f, 3f));// big fire
+				particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(16f, 16f), new Vector2f(3f, 3f), 4));// big fire
 			}
 			super.setDead(true);
 		}
@@ -148,31 +146,31 @@ public class Projectile extends Entity
 
 		// if (angle == 180)
 		// {
-		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.x) / super.getSizeOfSpriteOnSheet().x);
+		// offsetX += (float) ((super.getSpriteSize().x - velocity.x) / super.getSpriteSize().x);
 		// } else
 		// {
-		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.x)) /
-		// super.getSizeOfSpriteOnSheet().x);
+		// offsetX += (float) ((super.getSpriteSize().x - Math.abs(velocity.x)) /
+		// super.getSpriteSize().x);
 		// }
 		// if (angle == 90)
 		// {
-		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - Math.abs(velocity.y)) /
-		// super.getSizeOfSpriteOnSheet().x);
+		// offsetX += (float) ((super.getSpriteSize().x - Math.abs(velocity.y)) /
+		// super.getSpriteSize().x);
 		// } else if (angle == 270)
 		// {
-		// offsetX += (float) ((super.getSizeOfSpriteOnSheet().x - velocity.y) / super.getSizeOfSpriteOnSheet().x);
+		// offsetX += (float) ((super.getSpriteSize().x - velocity.y) / super.getSpriteSize().x);
 		// }
 
 		// the smoke and fire effects generated by the fireball
 
 		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));//smoke
 		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 14, 3, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));//smoke
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, .5f, .5f));// big fire
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 4, velocity.y / 4), 5f, 5f, .5f, .5f));// big fire
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 8, velocity.y / 8), 5f, 5f, 1f, 1f));// small fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, false, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 2));// small fire
 		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 6, true, new Vector2f(16, 16), new Vector2f(256, 128), false, new Vector2f(velocity.x / 4, velocity.y / 4), 5f, 5f, .5f, .5f));
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, 1.5f, 1.5f));// sparks
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), 5f, 5f, 1f, 1f));// sparks
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1.5f, 1.5f), 2));// sparks
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 2));// sparks
 	}
 
 	/**
@@ -201,23 +199,23 @@ public class Projectile extends Entity
 	 */
 	public void render()
 	{
-		if (numberOfSpritesX == 1)
+		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture());
+			GFX.drawEntireSprite(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture());
 		} else
 		{
-			Vector2f offset = new Vector2f(((float) (super.getSizeOfSpriteOnSheet().x * animSpriteFrameX)) / super.getSizeOfSpriteSheet().x, (float) (super.getSizeOfSpriteOnSheet().y * numberOfSpritesY) / super.getSizeOfSpriteSheet().y);
-			Vector2f sizey = new Vector2f((float) (super.getSizeOfSpriteOnSheet().x / super.getSizeOfSpriteSheet().x), (float) (super.getSizeOfSpriteOnSheet().y / super.getSizeOfSpriteSheet().y));
+			Vector2f offset = new Vector2f(((float) (super.getSpriteSize().x * animSpriteFrameX)) / super.getSizeOfSpriteSheet().x, (float) (super.getSpriteSize().y * row) / super.getSizeOfSpriteSheet().y);
+			Vector2f sizey = new Vector2f((float) (super.getSpriteSize().x / super.getSizeOfSpriteSheet().x), (float) (super.getSpriteSize().y / super.getSizeOfSpriteSheet().y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture(), offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(super.getScale().x, super.getScale().y, position.x, position.y, super.getTexture(), offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey);
 			}
 		}
-		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getScale().x, super.getScale().y, super.position.x,
-		// super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSizeOfSpriteOnSheet().y *
+		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getSpriteSize().x, super.getSpriteSize().y, super.position.x,
+		// super.position.y, super.getTexture(), new Vector2f(-offsetX, (float) (super.getSpriteSize().y *
 		// numberOfSpritesY) / getSizeOfSpriteSheet().y), new Vector2f(1f, (float) 1 / 8), angle);
 	}
 

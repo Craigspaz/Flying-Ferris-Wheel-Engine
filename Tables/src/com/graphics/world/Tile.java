@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
+import com.main.Game;
 
 /**
  * A basic unit of the world
@@ -137,7 +138,7 @@ public class Tile
 	 */
 	public void update()
 	{
-
+		
 	}
 
 	/**
@@ -284,8 +285,7 @@ public class Tile
 	{
 		this.isDoor = isDoor;
 	}
-	
-	
+
 	public String toString()
 	{
 		return "Pos: " + position + " Size: " + size;
