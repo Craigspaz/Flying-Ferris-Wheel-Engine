@@ -28,8 +28,7 @@ public class Player extends Entity
 	private float			projectileVelocityY			= 0;
 	private boolean			canGenerateSprintParticle	= true;
 	private boolean			canGenerateSkidParticle		= false;
-	private boolean			canJump						= true;	// determines the player's ability to jump via
-																// keypresses and releases
+	private boolean			canJump						= true;	// prevents player from jumping by holding key down
 
 	private InputHandler	handler;
 
@@ -137,23 +136,31 @@ public class Player extends Entity
 				canGenerateSkidParticle = false;
 			}
 		}
-		// player can't jump again until they release the key, and canJump is only made true if it's
-		// released and the jump count is still below max
+
+		// player can't jump again until they release the key
 		if (!handler.jump())
 		{
 			canJump = true;
+			if (!isInAir)
+			{
+				airJumpCount = 0;// gives back all air jumps
+			}
 		}
-		// If the jump input key is pressed and canJump make the player jump
+
+		// If the jump input key is pressed and canJump, make the player jump based on jumpcounts
 		if (handler.jump())
 		{
-			if (canJump)
+			if (canJump && airJumpCount < MAX_AIR_JUMPS)
 			{
-				super.jump();
-				canJump = false;
 				if (!isInAir)
 				{
 					particles.add(new Particle(new Vector2f(position.x + (getSpriteSize().x / 2) - (8), position.y + (getSpriteSize().y) / 2), new Vector2f(16, 16), Textures.particles, 12, 1, left, new Vector2f(16, 16), false));
+				} else
+				{
+					airJumpCount++;
 				}
+				super.jump();
+				canJump = false;
 				// System.out.println("jump " + jumpCount);
 			}
 
@@ -193,7 +200,7 @@ public class Player extends Entity
 				// }
 				// }
 
-				Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getSpriteSize().x / 2f) + (super.velocity.x), super.position.y + (super.getSpriteSize().y / 2f) + (super.velocity.y), 0), Textures.fireball, 6, 0, new Vector2f(16, 16),
+				Projectile fireball = new Projectile(new Vector3f(super.position.x + (super.getSpriteSize().x / 2f) + (velocity.x), super.position.y + (super.getSpriteSize().y / 2f) + (velocity.y), 0), Textures.fireball, 6, 0, new Vector2f(16, 16),
 						new Vector2f(projectileVelocityX, projectileVelocityY));
 				fireball.setAffectedByGravity(true);
 				projectiles.add(fireball);

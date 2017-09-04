@@ -31,7 +31,7 @@ public class Entity
 	public static final float		HORIZONTAL_ACCEL	= 0.4f;
 	public static final float		DECEL_VALUE			= 0.3f;
 	public static final float		JUMP_VALUE			= -15;
-	public static final int			MAX_JUMPS			= 2;
+	public static final int			MAX_AIR_JUMPS		= 1;							// how many jumps the entity can make in the air
 
 	private float					animateFrameTime	= 4;
 	protected boolean				left				= false;
@@ -61,11 +61,9 @@ public class Entity
 	protected boolean				jumping				= false;
 	protected int					jumpTimer			= 0;
 	protected boolean				isInAir				= false;
-	protected int					jumpCount			= 1;							// starts at the 1, and counts
-																						// down to 0
+	protected int					airJumpCount		= 0;							// keeps track of how many air jumps have happened
 	protected boolean				flipping			= false;						// for double jump animation
 
-	protected boolean				canDoubleJump		= false;
 	protected RectangleBox			collider;
 	protected boolean				isHostileToPlayer	= false;
 
@@ -217,7 +215,6 @@ public class Entity
 					isOnGround = true;
 					velocity.y = 0;
 					currentFloor = t;
-					jumpCount = MAX_JUMPS;
 					flipping = false;
 					for (Vertex v : vertices)
 					{
@@ -276,16 +273,12 @@ public class Entity
 	 */
 	protected void jump()
 	{
-		if (jumpCount > 0)
+		animSpriteFrameX = 0;
+		if (airJumpCount > 0)
 		{
-			animSpriteFrameX = 0;
-			if (jumpCount < MAX_JUMPS)
-			{
-				flipping = true;
-			}
-			velocity.y = JUMP_VALUE;
-			jumpCount--;
+			flipping = true;
 		}
+		velocity.y = JUMP_VALUE;
 	}
 
 	/**
