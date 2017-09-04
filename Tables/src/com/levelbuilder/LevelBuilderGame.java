@@ -172,7 +172,7 @@ public class LevelBuilderGame
 					{
 						if (player == null)
 						{
-							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16, 16), new Vector2f(32, 32),
+							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16, 16),
 									handler);
 						} else
 						{
@@ -441,7 +441,7 @@ public class LevelBuilderGame
 			writer.println("<LEVEL name=\"" + output.getName() + "\">");
 			if (player != null)
 			{
-				writer.println("<PLAYER x=\"" + (int) player.getPosition().x * 4 + "\" y=\"" + (int) player.getPosition().y * 4 + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getScale().x + "\" height=\"" + (int) player.getScale().y
+				writer.println("<PLAYER x=\"" + (int) player.getPosition().x * 4 + "\" y=\"" + (int) player.getPosition().y * 4 + "\" z=\"" + (int) player.getPosition().z + "\" width=\"" + (int) player.getSpriteSize().x + "\" height=\"" + (int) player.getSpriteSize().y
 						+ "\" tex=\"playerFront\" texOut=\"playerOutline\"/>");
 			}
 			writer.println("\t<TILES sizex=\"" + blockSize + "\" sizey=\"" + blockSize + "\">");
@@ -688,7 +688,7 @@ public class LevelBuilderGame
 					outlineName = "crabMan";
 				}
 				writer.println(
-						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getScale().x + "\" height=\"" + (int) e.getScale().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
+						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getSpriteSize().x + "\" height=\"" + (int) e.getSpriteSize().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
 			}
 
 			writer.println("\t</ENEMIES>");
