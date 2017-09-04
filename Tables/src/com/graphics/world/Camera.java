@@ -61,8 +61,8 @@ public class Camera
 		previousPosition.x = position.x;
 		previousPosition.y = position.y;
 
-		float halfMarkX = playerPositionX + (entity.getSpriteSize().x * Game.SCALE / 2);
-		float halfMarkY = playerPositionY + (entity.getSpriteSize().y * Game.SCALE / 2);
+		float halfMarkX = (playerPositionX + (entity.getSpriteSize().x / 2)) * Game.SCALE;
+		float halfMarkY = (playerPositionY + (entity.getSpriteSize().y / 2)) * Game.SCALE;
 
 		float newCameraPositionX = halfMarkX - (width / 2);
 		float newCameraPositionY = halfMarkY - (height / 2);
