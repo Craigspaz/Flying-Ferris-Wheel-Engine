@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
+import com.graphics.Textures;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Vertex;
 import com.main.Game;
@@ -262,6 +263,7 @@ public class Entity
 		{
 			if (!p.isDead() && p.isCollidingWithEntity2D(this))
 			{
+				p.addExplosionParticles();
 				p.setDead(true);
 				this.takeDamage(p.getDamage());
 				break;
