@@ -22,6 +22,7 @@ public class Camera
 	private Vector2f	startPosition;
 
 	private float		movementSpeed;
+	float				counter	= 0f;
 
 	/**
 	 * Creates a new camera
@@ -55,6 +56,9 @@ public class Camera
 	 */
 	public void setPositionToPlayer(Entity entity, int width, int height)
 	{
+		// camera circle movement
+		// float noiseX = (float) Math.sin(counter) * 100;
+		// float noiseY = (float) Math.cos(counter) * 100;
 		float playerPositionX = entity.getPosition().x;
 		float playerPositionY = entity.getPosition().y;
 
@@ -71,6 +75,7 @@ public class Camera
 
 		offset.x = position.x - previousPosition.x;
 		offset.y = position.y - previousPosition.y;
+		// counter += 0.1;
 	}
 
 	/**

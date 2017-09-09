@@ -33,8 +33,8 @@ import com.input.Terminal;
  */
 public class Game
 {
-	public static double			counter				= 0;
-	public static float				SCALE				= 1f;
+	public static float				SCALE				= 2f;
+	public static float				counter				= 0f;
 
 	private Player					player;
 
@@ -314,9 +314,12 @@ public class Game
 					i++;
 				}
 			}
+			// crazy camera movement
+			// Game.SCALE = (float) (2 + Math.sin(counter));
+			// counter += 0.01;
 			// testProjectile.update(colliders);
-			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the player
-																					// centered
+			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the player centered
+
 			// Handles parallax calculations
 			for (Tile t : tiles)
 			{
@@ -329,9 +332,6 @@ public class Game
 					t.getPosition().x += camera.getOffset().x / t.getPosition().z;
 				}
 			}
-			//TODO this is the great zoom function
-			counter += 0.1;
-			Game.SCALE = (float) (Math.sin(counter) + 2);
 			camera.update();
 		}
 		SoundStore.get().poll(0);

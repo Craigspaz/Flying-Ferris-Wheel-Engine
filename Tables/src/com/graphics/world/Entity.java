@@ -33,7 +33,7 @@ public class Entity
 	public static final float		JUMP_VALUE			= -15;
 	public static final int			MAX_AIR_JUMPS		= 1;							// how many jumps the entity can make in the air
 
-	private float					animateFrameTime	= 4;
+	private float					animateFrameTime	= 3;
 	protected boolean				left				= false;
 	private int						healthPoints		= 100;
 	private boolean					isDead				= false;
@@ -166,10 +166,11 @@ public class Entity
 		if (velocity.y > MAX_SPEED_Y)
 		{
 			velocity.y = MAX_SPEED_Y;
-		} else if (velocity.y < -MAX_SPEED_Y)
-		{
-			velocity.y = -MAX_SPEED_Y;
 		}
+		// else if (velocity.y < -MAX_SPEED_Y)
+		// {
+		// velocity.y = -MAX_SPEED_Y;
+		// }
 
 		boolean isOnGround = false;
 
