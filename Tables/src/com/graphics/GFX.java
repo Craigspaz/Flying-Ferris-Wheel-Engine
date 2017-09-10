@@ -109,8 +109,8 @@ public class GFX
 	{
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+		xx = (float) (Math.floor(xx) * Game.SCALE);
+		yy = (float) (Math.floor(yy) * Game.SCALE);
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -154,8 +154,8 @@ public class GFX
 	{
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+		xx = (float) (Math.floor(xx) * Game.SCALE);
+		yy = (float) (Math.floor(yy) * Game.SCALE);
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -208,8 +208,10 @@ public class GFX
 	{
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+//		xx = xx * Game.SCALE;
+//		yy = yy * Game.SCALE;
+		xx = (float) (Math.round(xx) * Game.SCALE);
+		yy = (float) (Math.round(yy) * Game.SCALE);
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -256,8 +258,8 @@ public class GFX
 	{
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+		xx = (float) (Math.floor(xx) * Game.SCALE);
+		yy = (float) (Math.floor(yy) * Game.SCALE);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 
 		GL11.glPushMatrix();
@@ -308,8 +310,8 @@ public class GFX
 	{
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+		xx = (float) (Math.round(xx) * Game.SCALE);
+		yy = (float) (Math.round(yy) * Game.SCALE);
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -356,8 +358,10 @@ public class GFX
 	{
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+		// xx = xx * Game.SCALE;
+		// yy = yy * Game.SCALE;
+		xx = (float) (Math.floor(xx) * Game.SCALE);
+		yy = (float) (Math.floor(yy) * Game.SCALE);
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());

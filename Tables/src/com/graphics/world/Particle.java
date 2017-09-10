@@ -30,7 +30,8 @@ public class Particle
 	private Vector2f	spriteSize;
 	private Vector2f	sizeOfSpriteSheet;
 	private boolean		isDead			= false;
-	private boolean		loop;
+	private int			loopCount;
+	private int			currentLoop		= 0;
 
 	/**
 	 * Creates a new particle
@@ -49,10 +50,10 @@ public class Particle
 	 *            Should the texture be flipped over y axis
 	 * @param spriteSize
 	 *            The size of the sprite on the sprite sheet
-	 * @param loop
-	 *            Should the animation loop
+	 * @param loopCount
+	 *            number of times the animation should loop
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, boolean loop)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount)
 	{
 		this.position = position;
 		this.size = size;
@@ -65,7 +66,46 @@ public class Particle
 		animFrameX = -1;
 		animFrameY = 0;
 		this.flip = flip;
-		this.loop = loop;
+		this.loopCount = loopCount;
+	}
+
+	/**
+	 * Creates a new particle with animation frame time capability
+	 * 
+	 * @param position
+	 *            The position of the particle
+	 * @param size
+	 *            The size of the particle
+	 * @param spriteSheet
+	 *            The spritesheet
+	 * @param numberOfFrames
+	 *            The number of animation frames X
+	 * @param row
+	 *            The row in the spritesheet
+	 * @param flip
+	 *            Should the texture be flipped over y axis
+	 * @param spriteSize
+	 *            The size of the sprite on the sprite sheet
+	 * @param loop
+	 *            Should the animation loop
+	 * @param ticksPerFrame
+	 *            the amount of additional ticks each frame displays on screen
+	 */
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount, int ticksPerFrame)
+	{
+		this.position = position;
+		this.size = size;
+		this.spriteSheet = spriteSheet;
+		this.spriteSize = spriteSize;
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
+		this.numberOfFrames = numberOfFrames;
+		this.row = row;
+		velocity = new Vector2f(0, 0);
+		animFrameX = -1;
+		animFrameY = 0;
+		this.flip = flip;
+		this.loopCount = loopCount;
+		this.ticksPerFrame = ticksPerFrame;
 	}
 
 	/**
@@ -96,7 +136,7 @@ public class Particle
 	 * @param startingFrameRandomOffset
 	 *            if the animation can randomly be offset by a few frames, specify how much here
 	 */
-	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, boolean loop, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset)
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset)
 	{
 		// these offsets are randomly picked from the total x and y direction that the particle can spawn
 		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatter.x;
@@ -115,7 +155,60 @@ public class Particle
 		animFrameX = -1 + new Random().nextInt(startingFrameRandomOffset);
 		animFrameY = 0;
 		this.flip = flip;
-		this.loop = loop;
+		this.loopCount = loopCount;
+	}
+
+	/**
+	 * Creates a new particle with a specific animation speed
+	 * 
+	 * @param position
+	 *            The position of the particle
+	 * @param size
+	 *            The size of the particle
+	 * @param spriteSheet
+	 *            The spritesheet
+	 * @param numberOfFrames
+	 *            The number of animation frames
+	 * @param row
+	 *            The row in the spritesheet
+	 * @param flip
+	 *            Should the texture be flipped over y axis
+	 * @param spriteSize
+	 *            The size of the sprite on the sprite sheet
+	 * @param loops
+	 *            the number of times the animation loops, -1 for infinite
+	 * @param velocity
+	 *            the initial velocity of the particle
+	 * @param positionScatter
+	 *            the x and y distances away from position that the particle can spawn at random
+	 * @param velocityMod
+	 *            the amount of starting velocity randomness given to the particles in the x and y directions
+	 * @param startingFrameRandomOffset
+	 *            if the animation can randomly be offset by a few frames, specify how much here
+	 * @param ticksPerFrame
+	 *            the number of additional ticks each animation frame is displayed
+	 */
+	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset, int ticksPerFrame)
+	{
+		// these offsets are randomly picked from the total x and y direction that the particle can spawn
+		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatter.x;
+		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatter.y;
+
+		float randvelocity_x = (new Random().nextFloat() - 0.5f) * velocityMod.x;
+		float randvelocity_y = (new Random().nextFloat() - 0.5f) * velocityMod.y;
+		this.position = new Vector2f(position.x + offset_x, position.y + offset_y);
+		this.size = size;
+		this.spriteSheet = spriteSheet;
+		this.spriteSize = spriteSize;
+		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(), spriteSheet.getImageHeight());
+		this.numberOfFrames = numberOfFrames;
+		this.row = row;
+		this.velocity = new Vector2f((velocity.x + randvelocity_x), (velocity.y + randvelocity_y));
+		animFrameX = 0 + new Random().nextInt(startingFrameRandomOffset + 1);
+		animFrameY = 0;
+		this.flip = flip;
+		this.loopCount = loopCount;
+		this.ticksPerFrame = ticksPerFrame;
 	}
 
 	/**
@@ -128,12 +221,13 @@ public class Particle
 			animFrameX++;
 			if (animFrameX >= numberOfFrames)
 			{
-				if (!loop)
+				currentLoop++;
+				if (currentLoop > loopCount)
 				{
 					isDead = true;
 				} else
 				{
-					animFrameX = -1;
+					animFrameX = 0;
 				}
 			}
 			tickCounter = 0;
@@ -417,22 +511,22 @@ public class Particle
 	/**
 	 * Returns if the animation should continue after making it to the end of the animation
 	 * 
-	 * @return Returns if the animation should continue after making it to the end of the animation
+	 * @return Returns how many loops the animation will play
 	 */
-	public boolean isLoop()
+	public int getLoopCount()
 	{
-		return loop;
+		return loopCount;
 	}
 
 	/**
 	 * Sets if the animation should continue after making it to the end of the animation
 	 * 
-	 * @param loop
+	 * @param loopCount
 	 *            The value of loop
 	 */
-	public void setLoop(boolean loop)
+	public void setLoopCount(int loopCount)
 	{
-		this.loop = loop;
+		this.loopCount = loopCount;
 	}
 
 }
