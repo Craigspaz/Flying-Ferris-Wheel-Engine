@@ -18,8 +18,10 @@ import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
 import com.graphics.world.World;
+import com.graphics.world.enemys.Enemies;
 import com.graphics.world.enemys.Enemy;
 import com.graphics.world.util.Edge;
+import com.graphics.world.util.MovementMethod;
 import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
 import com.main.Window;
@@ -172,7 +174,7 @@ public class LevelBuilderGame
 					{
 						if (player == null)
 						{
-							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16, 16),
+							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16,16),
 									handler);
 						} else
 						{
@@ -708,7 +710,7 @@ public class LevelBuilderGame
 				boolean isAbleToBeWalkedOn = true;
 				for(Tile t1: sortedTiles)
 				{
-					if(t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + 64)
+					if(t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + t1.getSize().y)
 					{
 						isAbleToBeWalkedOn = false;
 						break;
@@ -719,164 +721,42 @@ public class LevelBuilderGame
 					ti.add(t);
 				}
 			}
-			
-			//Only uses the list of tiles that have nothing immidiately above them to check for nodes
+
 			ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-			int counter = 0;
-			for(Tile t : ti)
+			for(Tile t : sortedTiles)
 			{
-				System.out.println("Processing Tile: " + t + " number: " + (counter++) + "/" + ti.size());
-				Vertex v = new Vertex(t);
-				for(Tile tt : ti)
+				vertices.add(new Vertex(t));
+			}
+			
+			// Handle walking paths. All current enemies can walk between nodes on the same platform.
+			for(Vertex v : vertices)
+			{
+				for(Vertex vv : vertices)
 				{
-					boolean blockTop = false;
-					for(Tile ttt : ti)
+					if(v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) //VV is to the left of V
 					{
-						if(ttt.getPosition().x == t.getPosition().x && ttt.getPosition().y + ttt.getSize().y == t.getPosition().y) // Means there is a block ontop of t
+						Edge e = new Edge(v,vv,10);
+						for(int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
 						{
-							blockTop = true;
-							break;
+							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
+						v.addEdge(e);
 					}
-					if(blockTop)
+					else if(v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the right of V
 					{
-						continue;
-					}
-					//System.out.println("\tChecking tile: " + tt);
-					if((t.getPosition().x + t.getSize().x == tt.getPosition().x && tt.getPosition().y == tt.getPosition().y) || (tt.getPosition().x + tt.getSize().x == t.getPosition().x && tt.getPosition().y == tt.getPosition().y)) // This means tt is to the right of t || tt is to the left of t
-					{
-						boolean blockOnTop = false;
-						for(Tile ttt : ti)
+						Edge e = new Edge(v,vv,10);
+						for(int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
 						{
-							if(ttt.getPosition().x == tt.getPosition().x && ttt.getPosition().y + ttt.getSize().y == tt.getPosition().y) // Means there is a block ontop of tt
-							{
-								blockOnTop = true;
-								break;
-							}
+							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
-						if(!blockOnTop)
-						{
-							Vertex vT = Utils.findTileVertexInVertices(t, vertices);
-							Vertex vTT = Utils.findTileVertexInVertices(tt, vertices);
-							if(vT == null)
-							{
-								vT = new Vertex(t);
-								vertices.add(vT);
-							}
-							if(vTT == null)
-							{
-								vTT = new Vertex(tt);
-								vertices.add(vTT);
-							}
-							Edge edge = new Edge(vT,vTT,10);
-							v.addEdge(edge);
-							continue;
-						}
+						v.addEdge(e);
 					}
-					// For each vertex check if a parabolic curve can make it 
-					
-					//Constant Acceleration
-					float gravity = Entity.GRAVITY;
-					float horizontalVelocity = Entity.MAX_SPEED_X;
-					float time = 0;
-					float initialY = t.getPosition().y - t.getSize().y;
-					float initialX = t.getPosition().x;
-					
-					float yPos = initialY + ((0.5f) * gravity * time);
-					float xPos = initialX + (horizontalVelocity * time);
-					int direction = 1;
-					if(tt.getPosition().x < t.getPosition().x)
-					{
-						direction = -1;
-					}
-					RectangleBox box = new RectangleBox(new Vector3f(xPos,yPos,0),new Vector2f(t.getSize().x,t.getSize().y));
-					while(time < 100000)
-					{
-						yPos = initialY + ((0.5f) * gravity * time);
-						xPos = initialX + ((horizontalVelocity * time) * direction);
-						box.getPosition().x = xPos;
-						box.getPosition().y = yPos;
-						boolean foundSolution = false;
-						for(Tile ttt : ti)
-						{
-							
-							//System.out.println("For that tile checking tile: " + ttt + " Time: " + time);
-							if(box.isCollidingWithBox(ttt.getCollider()))
-							{
-								if(ttt == tt) // Found destination tile
-								{
-									//create edge
-									int deltaX = Math.abs(((int)(ttt.getPosition().x - tt.getPosition().x))/(int)t.getSize().x);
-									int deltaY = Math.abs(((int)(ttt.getPosition().y - tt.getPosition().y))/(int)t.getSize().y);
-									
-									int weight = 0;
-									while(deltaX > 0 && deltaY > 0) // Account for diagonal cost
-									{
-										weight += 14;
-										deltaX--;
-										deltaY--;
-									}
-									while(deltaX > 0) // Account for horizontal cost
-									{
-										weight += 10;
-										deltaX--;
-									}
-									while(deltaY > 0) // Account for vertical cost
-									{
-										weight += 10;
-										deltaY--;
-									}
-									if(weight == 0)
-									{
-										break;
-									}
-									Vertex vTT = Utils.findTileVertexInVertices(t, vertices);
-									Vertex vTTT = Utils.findTileVertexInVertices(tt, vertices);
-									if(vTT == null)
-									{
-										vTT = new Vertex(tt);
-										vertices.add(vTT);
-									}
-									if(vTTT == null)
-									{
-										vTTT = new Vertex(ttt);
-										vertices.add(vTTT);
-									}									
-									Edge edge = new Edge(vTT,vTTT,weight);
-									v.addEdge(edge);
-									foundSolution = true;
-									break;
-								}
-								else if(ttt == t) // Found source tile
-								{
-									continue;
-								}
-								else // No direct path exists
-								{
-									foundSolution = true;
-									break;
-								}
-							}
-							
-						}
-						if(foundSolution)
-						{
-							break;
-						}
-						time++;
-					}
-					
 				}
-				vertices.add(v);
 			}
 			
 			for(Vertex v : vertices)
 			{
-				if(v.getEdges().size() == 0)
-				{
-					continue;
-				}
-				System.out.println(v);
+				//System.out.println(v);
 				writer.println("\t<VERTEX x=\"" + (int)v.getTile().getPosition().x +"\" y=\"" + (int)v.getTile().getPosition().y + "\">");
 				
 				for(Edge e: v.getEdges())
@@ -893,6 +773,7 @@ public class LevelBuilderGame
 		{
 			e.printStackTrace();
 		}
+		System.out.println("Done...");
 		readyAfterClickingSave = true;
 	}
 }

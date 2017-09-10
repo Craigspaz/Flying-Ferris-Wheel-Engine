@@ -1,5 +1,7 @@
 package com.graphics.world.util;
 
+import java.util.ArrayList;
+
 /**
  * An edge of a graph. Note these edges are directed
  * @author Craig Ferris
@@ -9,6 +11,7 @@ public class Edge
 {
 	private Vertex source;
 	private Vertex destination;
+	private ArrayList<EnemyMovement> enemyMovement;
 	
 	private int weight;
 	
@@ -23,7 +26,7 @@ public class Edge
 		this.source = source;
 		this.destination = destination;
 		this.weight = weight;
-		
+		enemyMovement = new ArrayList<EnemyMovement>();		
 	}
 
 	/**
@@ -56,6 +59,15 @@ public class Edge
 	public String toString()
 	{
 		return "[Edge Source: " + source + " Destination: " + destination + " Weight: " + weight + "]";
+	}	
+	
+	public ArrayList<EnemyMovement> getEnemyMovement()
+	{
+		return enemyMovement;
 	}
 	
+	public void addEnemyMovementMethod(int enemyTypeID, MovementMethod method)
+	{
+		enemyMovement.add(new EnemyMovement(enemyTypeID,method));
+	}
 }

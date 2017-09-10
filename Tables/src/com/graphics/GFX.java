@@ -1,8 +1,17 @@
 package com.graphics;
 
 import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.Random;
 
+import javax.imageio.ImageIO;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector2f;
@@ -382,5 +391,81 @@ public class GFX
 		GL11.glPopMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
+	}
+	
+	public static void drawLine(float startX, float startY, float destX, float destY)
+	{
+		GL11.glPushMatrix();
+		GL11.glColor3f(0.0f, 1.0f, 0.0f);
+		GL11.glBegin(GL11.GL_LINE_STRIP);
+		GL11.glVertex2f(startX, startY);
+		GL11.glVertex2f(destX, destY);
+		GL11.glEnd();
+		GL11.glColor3f(1, 1, 1);
+		GL11.glPopMatrix();
+	}
+	
+	public static void drawEntireSpriteWithVaryingAlpha(float x, float y, float xx, float yy, Texture texture, float alpha)
+	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = xx * Game.SCALE;
+		yy = yy * Game.SCALE;
+		// First binds the texture
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+		GL11.glColor4f(1f,1f,1f,alpha);
+		GL11.glPushMatrix();
+
+		// Draws a rectangle
+		GL11.glBegin(GL11.GL_QUADS);
+
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(xx, yy);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(x + xx, yy);
+
+		GL11.glEnd();
+		GL11.glPopMatrix();
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		GL11.glColor4f(1f,1f,1f,1f);
+	}
+	
+	// Found http://www.java-gaming.org/topics/solved-opengl-context/27956/view.html
+	public static void screenshot()
+	{
+		GL11.glReadBuffer(GL11.GL_FRONT);
+		int bpp = 4; // Assuming a 32-bit display with a byte each for red, green, blue, and alpha.
+		ByteBuffer buffer = BufferUtils.createByteBuffer(Display.getWidth() * Display.getHeight() * bpp);
+		GL11.glReadPixels(0, 0, Display.getWidth(), Display.getHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+
+		File file = new File("Screenshot_" + System.currentTimeMillis() + ".PNG"); // The file to save to.
+		String format = "PNG"; // Example: "PNG" or "JPG"
+		BufferedImage image = new BufferedImage(Display.getWidth(), Display.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+		for (int x = 0; x < Display.getWidth(); x++)
+		{
+			for (int y = 0; y < Display.getHeight(); y++)
+			{
+				int i = (x + (Display.getWidth() * y)) * bpp;
+				int r = buffer.get(i) & 0xFF;
+				int g = buffer.get(i + 1) & 0xFF;
+				int b = buffer.get(i + 2) & 0xFF;
+				image.setRGB(x, Display.getHeight() - (y + 1), (0xFF << 24) | (r << 16) | (g << 8) | b);
+			}
+		}
+
+		try
+		{
+			ImageIO.write(image, format, file);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
