@@ -1,6 +1,7 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.GL11;
@@ -35,8 +36,8 @@ import com.input.Terminal;
  */
 public class Game
 {
-
-	public static float				SCALE				= 1f;
+	public static float				SCALE				= 2f;
+	public static float				counter				= 0f;
 	public static boolean			debugMode			= true;
 
 	private Player					player;
@@ -53,7 +54,7 @@ public class Game
 
 	public ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
-	private Camera					camera;
+	private static Camera					camera;
 
 	private Level					currentLevel;
 
@@ -347,9 +348,12 @@ public class Game
 					i++;
 				}
 			}
+			// crazy camera movement
+			// Game.SCALE = (float) (2 + Math.sin(counter));
+			// counter += 0.01;
 			// testProjectile.update(colliders);
-			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the player
-																					// centered
+			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the player centered
+
 			// Handles parallax calculations
 			for (Tile t : tiles)
 			{
@@ -509,5 +513,9 @@ public class Game
 	public static void setScale(float scale)
 	{
 		Game.SCALE = scale;
+	}
+	
+	public static Camera getCamera() {
+		return camera;
 	}
 }
