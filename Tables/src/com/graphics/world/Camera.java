@@ -1,5 +1,7 @@
 package com.graphics.world;
 
+import java.util.Random;
+
 import org.lwjgl.util.vector.Vector2f;
 
 import com.main.Game;
@@ -22,7 +24,10 @@ public class Camera
 	private Vector2f	startPosition;
 
 	private float		movementSpeed;
-	float				counter	= 0f;
+	float				counter			= 0f;
+
+	private int			ticksRemaining	= 0;	// the number of frames left to perform camera shake
+	private float		intensity		= 0;
 
 	/**
 	 * Creates a new camera
@@ -56,9 +61,21 @@ public class Camera
 	 */
 	public void setPositionToPlayer(Entity entity, int width, int height)
 	{
-		// camera circle movement
-		// float noiseX = (float) Math.sin(counter) * 100;
-		// float noiseY = (float) Math.cos(counter) * 100;
+		// camera shake
+		float noiseX = 0;
+		float noiseY = 0;
+		if (ticksRemaining > 0)
+		{
+			noiseX = (float) (Math.sin(counter) * (new Random().nextFloat() - 0.5f) * intensity);
+			noiseY = (float) (Math.sin(counter) * (new Random().nextFloat() - 0.5f) * intensity);
+			ticksRemaining--;
+			counter += .05;
+		} else
+		{
+			intensity = 0;
+			counter = 0;
+		}
+
 		float playerPositionX = entity.getPosition().x;
 		float playerPositionY = entity.getPosition().y;
 
@@ -70,12 +87,11 @@ public class Camera
 
 		float newCameraPositionX = halfMarkX - (width / 2);
 		float newCameraPositionY = halfMarkY - (height / 2);
-		position.x = newCameraPositionX;
-		position.y = newCameraPositionY;
+		position.x = newCameraPositionX + noiseX;
+		position.y = newCameraPositionY + noiseY;
 
 		offset.x = position.x - previousPosition.x;
 		offset.y = position.y - previousPosition.y;
-		// counter += 0.1;
 	}
 
 	/**
@@ -266,5 +282,20 @@ public class Camera
 	public void setMovementSpeed(float movementSpeed)
 	{
 		this.movementSpeed = movementSpeed;
+	}
+
+	/**
+	 * shakes for a certain number of ticks
+	 * 
+	 * @param intensity
+	 *            the horizontal/vertical shake amount
+	 * @param ticks
+	 *            the length of time to shake the camera
+	 */
+	public void shake(float intensity, int ticks)
+	{
+		this.ticksRemaining = ticks;
+		this.intensity = intensity;
+		this.counter = 0f;
 	}
 }

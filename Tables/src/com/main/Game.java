@@ -48,7 +48,7 @@ public class Game
 
 	public ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
-	private Camera					camera;
+	private static Camera					camera;
 
 	private Level					currentLevel;
 
@@ -472,5 +472,9 @@ public class Game
 	public static void setScale(float scale)
 	{
 		Game.SCALE = scale;
+	}
+	
+	public static Camera getCamera() {
+		return camera;
 	}
 }

@@ -112,6 +112,7 @@ public class Projectile extends Entity
 		{
 			if (t.isCollidingWithBox(collider))
 			{
+				Game.getCamera().shake(50, 12);
 				addExplosionParticles();
 				super.setDead(true);
 			}
