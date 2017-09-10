@@ -55,7 +55,7 @@ public class Textures
 
 	public static Texture	tilesheet;
 
-	public static Texture	shootTutorialKey;
+	public static Texture	tutorialButtons;
 
 	/**
 	 * Initializes all of the textures
@@ -98,6 +98,6 @@ public class Textures
 		door = Loader.loadTexture("door");
 		tilesheet = Loader.loadTexture("tilesheet");
 		
-		shootTutorialKey = Loader.loadTexture("shootKeyTutorial");
+		tutorialButtons = Loader.loadTexture("tutorial-buttons");
 	}
 }
