@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
+import com.audio.SoundEffects;
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Entity;
@@ -202,6 +203,8 @@ public class Projectile extends Entity
 	 */
 	public void addExplosionParticles()
 	{
+		float rawgain = Math.abs(this.getPosition().getX() - Game.playerPosition.getX() + this.getPosition().getY() - Game.playerPosition.getY());
+		SoundEffects.explosion.playAsSoundEffect(4.0f, Math.abs(20.0f/(rawgain)), false);
 		for (int i = 0; i < 18; i++)// small fire
 		{
 			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), false, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4));// small fire

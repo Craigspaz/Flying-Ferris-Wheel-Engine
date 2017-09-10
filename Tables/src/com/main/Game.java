@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.openal.SoundStore;
 
+import com.audio.SoundEffects;
 import com.graphics.GFX;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
@@ -21,6 +22,8 @@ import com.graphics.world.Tile;
 import com.graphics.world.World;
 import com.graphics.world.enemys.Enemy;
 import com.graphics.world.projectile.Projectile;
+import com.graphics.world.util.Edge;
+import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
 import com.input.Terminal;
 
@@ -34,8 +37,11 @@ public class Game
 {
 
 	public static float				SCALE				= 1f;
+	public static boolean			debugMode			= true;
 
 	private Player					player;
+
+	public static Vector2f			playerPosition;
 
 	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
 	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
@@ -61,6 +67,8 @@ public class Game
 
 	private DialogBox				currentDialogue;
 
+	private float					tmpCounter			= 1f;
+
 	// private Projectile testProjectile;
 
 	/**
@@ -69,12 +77,14 @@ public class Game
 	public Game()
 	{
 		new Textures(); // Loads textures
-		// new SoundEffects(); // Loads Sound effects
+		new SoundEffects(); // Loads Sound effects
 		handler = new InputHandler();
 		GFX.initString();
 
 		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
 		getPlayer().setAnimateFrameTime(3.0f);
+		
+		playerPosition = new Vector2f(getPlayer().getPosition().getX(),getPlayer().getPosition().getY());
 
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
@@ -88,6 +98,7 @@ public class Game
 		{
 			throw new NullPointerException("World Could not be loaded");
 		}
+		SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
 	}
 
 	/**
@@ -97,7 +108,15 @@ public class Game
 	{
 		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the correct
 																					// location
-
+		// Draw Movement map
+		for (Vertex v : currentLevel.getVertices())
+		{
+			GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
+			for (Edge e : v.getEdges())
+			{
+				GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
+			}
+		}
 		for (Tile t : tiles)
 		{
 			if (t.getPosition().z >= 0)
@@ -150,8 +169,17 @@ public class Game
 			float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
 			currentDialogue.render(textBoxX, textBoxY);
 		}
+
+		GFX.drawEntireSpriteWithVaryingAlpha(32, 32, player.getPosition().getX(), player.getPosition().getY() - 50, Textures.shootTutorialKey, tmpCounter);
+
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 
+		if (debugMode)
+		{
+			GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player position: X:" + player.getPosition().x);
+			GFX.drawString(camera.getPosition().x, camera.getPosition().y + 15, "Y: " + player.getPosition().y);
+			GFX.drawString(camera.getPosition().x, camera.getPosition().y + 30, "Z: " + player.getPosition().z);
+		}
 	}
 
 	/**
@@ -159,6 +187,11 @@ public class Game
 	 */
 	public void update()
 	{
+		tmpCounter -= 0.001f;
+		if (tmpCounter <= 0)
+		{
+			tmpCounter = 0;
+		}
 		// test
 		if (handler.up())
 		{
@@ -201,7 +234,8 @@ public class Game
 				e.update(worldColliders, player, currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
-				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
 				 */
 			}
 
@@ -328,9 +362,16 @@ public class Game
 					t.getPosition().x += camera.getOffset().x / t.getPosition().z;
 				}
 			}
+			playerPosition.x = player.getPosition().getX();
+			playerPosition.y = player.getPosition().getY();
 			camera.update();
+			SoundStore.get().poll(0);
 		}
-		SoundStore.get().poll(0);
+
+		//if (handler.isMouseLeftClicking())
+		//{
+		//	GFX.screenshot();
+		//}
 	}
 
 	/**
