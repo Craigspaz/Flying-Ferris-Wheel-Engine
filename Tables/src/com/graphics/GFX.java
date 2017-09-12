@@ -135,6 +135,46 @@ public class GFX
 	}
 
 	/**
+	 * Draws an entire sprite to the screen
+	 * 
+	 * @param x
+	 *            The width of the sprite on screen in pixels
+	 * @param y
+	 *            The height of the sprite on screen in pixels
+	 * @param xx
+	 *            The x position of the top left corner of the sprite
+	 * @param yy
+	 *            The y position of the top left corner of the sprite
+	 * @param texture
+	 *            The texture to be rendered at the specified location
+	 */
+	public static void drawEntireSpriteUnscaled(float x, float y, float xx, float yy, Texture texture)
+	{
+		// First binds the texture
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+		GL11.glPushMatrix();
+
+		// Draws a rectangle
+		GL11.glBegin(GL11.GL_QUADS);
+
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(xx, yy);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(x + xx, yy);
+
+		GL11.glEnd();
+		GL11.glPopMatrix();
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
+
+	
+	/**
 	 * Draws an entire sprite at an angle
 	 * 
 	 * @param x

@@ -76,8 +76,8 @@ public class Camera
 			counter = 0;
 		}
 
-		float playerPositionX = entity.getPosition().x;
-		float playerPositionY = entity.getPosition().y;
+		float playerPositionX = Math.round(entity.getPosition().x);
+		float playerPositionY = Math.round(entity.getPosition().y);
 
 		previousPosition.x = position.x;
 		previousPosition.y = position.y;
