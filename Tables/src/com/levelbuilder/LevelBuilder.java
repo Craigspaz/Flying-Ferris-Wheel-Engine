@@ -6,6 +6,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import com.main.Game;
+
 /**
  * Creates a new level
  * 
@@ -39,6 +41,8 @@ public class LevelBuilder
 		}
 
 		game = new LevelBuilderGame();
+		
+		Game.SCALE = 1;
 
 	}
 

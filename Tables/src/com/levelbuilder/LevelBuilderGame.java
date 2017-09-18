@@ -21,11 +21,11 @@ import com.graphics.world.World;
 import com.graphics.world.enemys.Enemies;
 import com.graphics.world.enemys.Enemy;
 import com.graphics.world.util.Edge;
+import com.graphics.world.util.EnemyMovement;
 import com.graphics.world.util.MovementMethod;
 import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
 import com.main.Window;
-import com.util.Utils;
 
 /**
  * Lets the user build a level
@@ -723,7 +723,7 @@ public class LevelBuilderGame
 			}
 
 			ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-			for(Tile t : sortedTiles)
+			for(Tile t : ti)
 			{
 				vertices.add(new Vertex(t));
 			}
@@ -754,6 +754,52 @@ public class LevelBuilderGame
 				}
 			}
 			
+			//TODO: Loop through each enemy type
+			float terminalVelocityY = Entity.MAX_SPEED_Y;
+			float terminalVelocityX = Entity.MAX_SPEED_X;
+			float distanceTillTerminalVelocityY = Math.abs((terminalVelocityY * terminalVelocityY)/(2 * Entity.GRAVITY));
+			float distanceEnemyTraveledY = 0.0f;
+			int tickCounter = 0;
+			
+			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX,terminalVelocityX);
+			Vector3f currentEnemyPosition = new Vector3f(0,0,0);
+			Vector2f enemySize = new Vector2f(64,64);
+			
+			int lowestYCoordinate = 0;
+			for(Tile t : sortedTiles)
+			{
+				if(t.getPosition().getY() > lowestYCoordinate)
+				{
+					lowestYCoordinate = (int)t.getPosition().getY();
+				}
+			}
+			
+			boolean isAtTerminalVelocity = false;
+			for(Vertex v : vertices)
+			{
+				Tile enemyStartTile = v.getTile();
+				currentEnemyPosition.x = v.getTile().getPosition().x + v.getTile().getSize().getX();
+				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
+				currentEnemyVelocity = new Vector2f(0,terminalVelocityX);
+				distanceEnemyTraveledY = 0;
+				//while(currentEnemyPosition.y <= lowestYCoordinate)
+				//{
+					//RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
+					for(Vertex vv : vertices)
+					{
+						v.addEdge(new Edge(v,vv,14));
+					}
+					//currentEnemyPosition.x += terminalVelocityY;
+					//currentEnemyPosition.y += currentEnemyVelocity.getY();
+					//currentEnemyVelocity.y += Entity.GRAVITY;
+					//if(currentEnemyVelocity.y > terminalVelocityY)
+					//{
+						currentEnemyVelocity.y = terminalVelocityY;
+					//}
+					// apply physics
+				//}
+			}
+			
 			for(Vertex v : vertices)
 			{
 				//System.out.println(v);
@@ -761,7 +807,10 @@ public class LevelBuilderGame
 				
 				for(Edge e: v.getEdges())
 				{
-					writer.println("\t\t<EDGE D x=\"" + (int)e.getDestination().getTile().getPosition().x + "\" y=\"" + (int)e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int)e.getWeight() + "\"/>");
+					for(EnemyMovement ee : e.getEnemyMovement())
+					{
+						writer.println("\t\t<EDGE D x=\"" + (int)e.getDestination().getTile().getPosition().x + "\" y=\"" + (int)e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int)e.getWeight() + "\" enemyType=\"" + ee.getEnemyTypeID() + "\" movementType=\"" + ee.getMovementMethod().toString() + "\"/>");
+					}
 				}
 				
 				writer.println("\t</VERTEX>");
@@ -775,5 +824,17 @@ public class LevelBuilderGame
 		}
 		System.out.println("Done...");
 		readyAfterClickingSave = true;
+	}
+	
+	public static boolean isBlockOnTop(Tile t, ArrayList<Tile> tiles)
+	{
+		for(Tile tile : tiles)
+		{
+			if((int)tile.getPosition().getX() == (int)t.getPosition().getX() && tile.getPosition().getY() == t.getPosition().getY() - tile.getSize().getY())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

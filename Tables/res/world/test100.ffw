@@ -1,0 +1,61 @@
+<LEVEL name="gen_1505064801086_level.ffw">
+<PLAYER x="1216" y="640" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<TILE x="1152" y="704" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1216" y="704" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1344" y="704" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="1280" y="704" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1024" y="832" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="960" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="832" y="832" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="896" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1408" y="640" z="0" texName="tilesheet" texCoordX="0.0" texCoordY="0.0"/>
+		<TILE x="1472" y="512" z="0" texName="tilesheet" texCoordX="0.0" texCoordY="0.0"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="1472" y="512" z="0" width="64" height="64"/>
+	<COLLIDER x="1408" y="640" z="0" width="64" height="64"/>
+	<COLLIDER x="1152" y="704" z="0" width="256" height="64"/>
+	<COLLIDER x="832" y="832" z="0" width="256" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+	<VERTEX x="1152" y="704">
+		<EDGE D x="1216" y="704" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1024" y="832" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="1216" y="704">
+		<EDGE D x="1152" y="704" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1280" y="704" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1344" y="704">
+		<EDGE D x="1280" y="704" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1408" y="640" weight="14" enemyType="0" movementType="JUMP"/>
+	</VERTEX>
+	<VERTEX x="1280" y="704">
+		<EDGE D x="1216" y="704" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1344" y="704" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1024" y="832">
+		<EDGE D x="960" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1152" y="704" weight="10" enemyType="0" movementType="JUMP"/>
+	</VERTEX>
+	<VERTEX x="960" y="832">
+		<EDGE D x="1024" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="896" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="832" y="832">
+		<EDGE D x="896" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="896" y="832">
+		<EDGE D x="960" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="832" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1408" y="640">
+		<EDGE D x="1344" y="704" weight="10" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="512" weight="14" enemyType="0" movementType="JUMP"/>
+	</VERTEX>
+	<VERTEX x="1472" y="512">
+		<EDGE D x="1408" y="640" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+</LEVEL>
