@@ -79,14 +79,14 @@ public class Utils
 				return null;
 			}
 			ArrayList<RectangleBox> ret = new ArrayList<RectangleBox>();
-			ret.add(destinationVertex.getTile().getCollider());
+			//ret.add(destinationVertex.getTile().getCollider());
 			return ret;
 		}
 		
 		if(sourceVertex == destinationVertex) // Checks if the source is the destination
 		{
 			ArrayList<RectangleBox> ret = new ArrayList<RectangleBox>();
-			ret.add(destinationVertex.getTile().getCollider());
+			//ret.add(destinationVertex.getTile().getCollider());
 			return ret;
 		}
 		
@@ -164,15 +164,15 @@ public class Utils
 		Vertex current = destinationVertex;
 		while(current != null)
 		{
-			RectangleBox c = current.getTile().getCollider();
-			for(RectangleBox r : colliders)
-			{
-				if((int)r.getPosition().x == (int)c.getPosition().x && (int)r.getPosition().y == (int)c.getPosition().y)
-				{
-					tmp[index++] = r;
-					break;
-				}
-			} 
+//			RectangleBox c = current.getTile().getCollider();
+//			for(RectangleBox r : colliders)
+//			{
+//				if((int)r.getPosition().x == (int)c.getPosition().x && (int)r.getPosition().y == (int)c.getPosition().y)
+//				{
+//					tmp[index++] = r;
+//					break;
+//				}
+//			} 
 			current = current.getParent();
 		}
 		
