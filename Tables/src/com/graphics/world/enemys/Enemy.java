@@ -115,7 +115,7 @@ public class Enemy extends Entity
 		RectangleBox targetPlatform = null;
 		if (path != null && path.size() > 0)
 		{
-			targetPlatform = path.get(path.size() - 1);
+			targetPlatform = path.get(0);
 			System.out.println("heading for: " + targetPlatform);
 			if (this.getPosition().getY() > targetPlatform.getPosition().getY()) // Is the enemy below the target
 																					// platform

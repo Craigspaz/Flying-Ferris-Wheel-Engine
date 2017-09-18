@@ -41,16 +41,34 @@ public class Loader
 	}
 	
 	/**
-	 * Loads an audio file into memory
+	 * Loads an WAV audio file into memory
 	 * @param fileName The name of the file to be loaded from the "./res/" folder
 	 * @return Returns an Audio object of the file loaded in
 	 */
-	public static Audio loadAudio(String fileName)
+	public static Audio loadAudioWAV(String fileName)
 	{
 		Audio audio = null;
 		try
 		{
 			audio = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/audio/" + fileName + ".wav"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return audio;
+	}
+	
+	/**
+	 * Loads an OGG audio file into memory
+	 * @param fileName The name of the file to be loaded from the "./res/" folder
+	 * @return Returns an Audio object of the file loaded in
+	 */
+	public static Audio loadAudioOGG(String fileName)
+	{
+		Audio audio = null;
+		try
+		{
+			audio = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("res/audio/" + fileName + ".OGG"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();
