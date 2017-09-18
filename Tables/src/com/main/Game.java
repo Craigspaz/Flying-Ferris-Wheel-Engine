@@ -54,7 +54,7 @@ public class Game
 
 	public ArrayList<Entity>		entities			= new ArrayList<Entity>();
 
-	private static Camera					camera;
+	private static Camera			camera;
 
 	private Level					currentLevel;
 
@@ -65,6 +65,8 @@ public class Game
 	private Tile					testTile1;
 	private Tile					testTile2;
 	private Tile					sky;
+
+	private ArrayList<Tile>			tutorialButtons		= new ArrayList<Tile>();
 
 	private DialogBox				currentDialogue;
 
@@ -84,8 +86,8 @@ public class Game
 
 		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
 		getPlayer().setAnimateFrameTime(3.0f);
-		
-		playerPosition = new Vector2f(getPlayer().getPosition().getX(),getPlayer().getPosition().getY());
+
+		playerPosition = new Vector2f(getPlayer().getPosition().getX(), getPlayer().getPosition().getY());
 
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
 		camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
@@ -94,6 +96,12 @@ public class Game
 		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
+
+		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 2, 0, 20, 1));
+		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 2, 0, 20));
+		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 1, 3));
+		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 1, 3));
+		//tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2, 20));
 
 		if (!loadNewLevel("./res/world/level1.ffw"))
 		{
@@ -171,7 +179,10 @@ public class Game
 			currentDialogue.render(textBoxX, textBoxY);
 		}
 
-		GFX.drawEntireSpriteWithVaryingAlpha(32, 32, player.getPosition().getX(), player.getPosition().getY() - 50, Textures.shootTutorialKey, tmpCounter);
+		for (Tile t : tutorialButtons)
+		{
+			t.render();
+		}
 
 		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 
@@ -235,8 +246,7 @@ public class Game
 				e.update(worldColliders, player, currentLevel.getVertices());
 				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
-				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
-				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
 				 */
 			}
 
@@ -368,14 +378,23 @@ public class Game
 			}
 			playerPosition.x = player.getPosition().getX();
 			playerPosition.y = player.getPosition().getY();
+			tutorialButtons.get(0).setPosition(new Vector3f(playerPosition.x - 6, playerPosition.y - 24, 0));
+			tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
+			tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
+			tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
+			//tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
+			for (Tile t : tutorialButtons)
+			{
+				t.update();
+			}
 			camera.update();
 			SoundStore.get().poll(0);
 		}
 
-		//if (handler.isMouseLeftClicking())
-		//{
-		//	GFX.screenshot();
-		//}
+		// if (handler.isMouseLeftClicking())
+		// {
+		// GFX.screenshot();
+		// }
 	}
 
 	/**
@@ -514,8 +533,9 @@ public class Game
 	{
 		Game.SCALE = scale;
 	}
-	
-	public static Camera getCamera() {
+
+	public static Camera getCamera()
+	{
 		return camera;
 	}
 }

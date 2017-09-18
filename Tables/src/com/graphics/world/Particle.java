@@ -25,7 +25,6 @@ public class Particle
 	private int			numberOfFrames;
 	private int			row;
 	private int			animFrameX		= -1;
-	private int			animFrameY;
 	private boolean		flip;
 	private Vector2f	spriteSize;
 	private Vector2f	sizeOfSpriteSheet;
@@ -64,7 +63,6 @@ public class Particle
 		this.row = row;
 		velocity = new Vector2f(0, 0);
 		animFrameX = -1;
-		animFrameY = 0;
 		this.flip = flip;
 		this.loopCount = loopCount;
 	}
@@ -102,7 +100,6 @@ public class Particle
 		this.row = row;
 		velocity = new Vector2f(0, 0);
 		animFrameX = -1;
-		animFrameY = 0;
 		this.flip = flip;
 		this.loopCount = loopCount;
 		this.ticksPerFrame = ticksPerFrame;
@@ -153,7 +150,6 @@ public class Particle
 		this.row = row;
 		this.velocity = new Vector2f((velocity.x + randvelocity_x), (velocity.y + randvelocity_y));
 		animFrameX = -1 + new Random().nextInt(startingFrameRandomOffset);
-		animFrameY = 0;
 		this.flip = flip;
 		this.loopCount = loopCount;
 	}
@@ -205,7 +201,6 @@ public class Particle
 		this.row = row;
 		this.velocity = new Vector2f((velocity.x + randvelocity_x), (velocity.y + randvelocity_y));
 		animFrameX = 0 + new Random().nextInt(startingFrameRandomOffset + 1);
-		animFrameY = 0;
 		this.flip = flip;
 		this.loopCount = loopCount;
 		this.ticksPerFrame = ticksPerFrame;
@@ -401,27 +396,6 @@ public class Particle
 	public void setAnimFrameX(int animFrameX)
 	{
 		this.animFrameX = animFrameX;
-	}
-
-	/**
-	 * Returns the animation frame Y
-	 * 
-	 * @return Returns the anmation frame Y
-	 */
-	public int getAnimFrameY()
-	{
-		return animFrameY;
-	}
-
-	/**
-	 * Sets the animation frame Y
-	 * 
-	 * @param animFrameY
-	 *            The animation frame Y
-	 */
-	public void setAnimFrameY(int animFrameY)
-	{
-		this.animFrameY = animFrameY;
 	}
 
 	/**

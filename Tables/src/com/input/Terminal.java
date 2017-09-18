@@ -119,7 +119,7 @@ public class Terminal
 		lineheight = GFX.font2.getLineHeight();
 		if (active)
 		{
-			GFX.drawEntireSprite(512 / Game.SCALE, 128 / Game.SCALE, x / Game.SCALE, (y - 128) / Game.SCALE, Textures.terminalWindow);
+			GFX.drawEntireSpriteUnscaled(512, 128, x, (y - 128), Textures.terminalWindow);
 			for (int i = 0; i < messages.size(); i++)
 			{
 				GFX.drawString((x + 10), ((y - 2 * lineheight) - (lineheight * i) - 11), messages.get(i));

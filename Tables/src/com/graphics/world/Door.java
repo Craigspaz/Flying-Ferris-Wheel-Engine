@@ -61,9 +61,9 @@ public class Door extends Tile
 	 */
 	public void update()
 	{
-		if (isCollidingWithBox(game.getPlayer().getCollider()) && handler.down())
-		{
-			openDoor();
-		}
+//		if (isCollidingWithBox(game.getPlayer().getCollider()) && handler.down())
+//		{
+//			openDoor();
+//		}
 	}
 }
