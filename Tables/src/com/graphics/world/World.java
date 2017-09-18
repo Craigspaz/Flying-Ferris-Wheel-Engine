@@ -13,6 +13,7 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.Textures;
 import com.graphics.world.enemys.Enemy;
 import com.graphics.world.util.Edge;
+import com.graphics.world.util.MovementMethod;
 import com.graphics.world.util.Vertex;
 import com.main.Game;
 import com.util.Utils;
@@ -398,6 +399,12 @@ public class World
 
 					String param2 = param1.substring(param1.indexOf("weight=\"") + 8);
 					String weight = param2.substring(0, param2.indexOf("\""));
+					
+					String param3 = param2.substring(param2.indexOf("enemyType=\"") + 11);
+					String enemyType = param3.substring(0,param3.indexOf("\""));
+					
+					String param4 = param3.substring(param3.indexOf("movementType=\"") + 14);
+					String movementType = param4.substring(0,param4.indexOf("\""));							
 
 					int iX = Integer.parseInt(x);
 					int iY = Integer.parseInt(y);
@@ -413,6 +420,20 @@ public class World
 								vertices.add(vT);
 							}
 							Edge edge = new Edge(currentVertex, vT, iWeight);
+							MovementMethod method = MovementMethod.WALK;
+							if(movementType.trim().equals("WALK"))
+							{
+								method = MovementMethod.WALK;
+							}
+							else if(movementType.trim().equals("FALL"))
+							{
+								method = MovementMethod.FALL;
+							}
+							else if(movementType.trim().equals("JUMP"))
+							{
+								method = MovementMethod.JUMP;
+							}
+							edge.addEnemyMovementMethod(Integer.parseInt(enemyType), method);
 							currentVertex.addEdge(edge);
 							break;
 						}

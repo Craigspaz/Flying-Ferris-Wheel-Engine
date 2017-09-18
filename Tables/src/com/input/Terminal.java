@@ -8,6 +8,7 @@ import com.graphics.world.Camera;
 import com.graphics.world.Player;
 import com.graphics.world.enemys.Enemy;
 import com.main.Game;
+import com.main.GameStates;
 import com.main.Window;
 
 /**
@@ -60,6 +61,16 @@ public class Terminal
 	public boolean active()
 	{
 		return this.active;
+	}
+	
+	
+	/**
+	 * Prints a message to the terminal
+	 * @param message The message to print
+	 */
+	public void printMessage(String message)
+	{
+		messages.add(0, message);
 	}
 
 	/**
@@ -139,14 +150,14 @@ public class Terminal
 		String[] commands = cmd.split(" ");
 		if (commands.length == 0)
 		{
-			messages.add(0, "please enter a command");
+			printMessage("please enter a command");
 		} else
 		{
-			messages.add(0, "> " + cmd);
+			printMessage("> " + cmd);
 			if (commands[0].equals("nodamage"))// toggles invulnerability, takes no arguments
 			{
 				player.setImmune(!player.isImmune());
-				messages.add(0, "nodamage is now " + player.isImmune());
+				printMessage("nodamage is now " + player.isImmune());
 			} else if (commands[0].equals("spawn"))// spawns the specified entity at the specified coordinates. Requires
 													// valid integers and a valid entity name.
 			{
@@ -171,14 +182,14 @@ public class Terminal
 						}
 					} catch (NumberFormatException | NullPointerException e)
 					{
-						messages.add(0, "failed to read integers");
+						printMessage("failed to read integers");
 						return;
 					}
 
 					Enemy ee = Enemy.generateBasicEnemyBasedOnID(commands[1].toLowerCase(), (x + (camera.getPosition().x)) / Game.SCALE, (y + (camera.getPosition().y)) / Game.SCALE);
 					if (ee == null)
 					{
-						messages.add(0, "requested entity does not exist");
+						printMessage("requested entity does not exist");
 						return;
 					} else
 					{
@@ -186,26 +197,27 @@ public class Terminal
 						game.addEnemy(ee);
 					}
 					// TODO create enemy with ID, X, and Y coords
-					messages.add(0, "spawned " + commands[1].toLowerCase() + " at " + x + ", " + y);
+					printMessage("spawned " + commands[1].toLowerCase() + " at " + x + ", " + y);
 				} else
 				{
-					messages.add(0, "invalid arguments");
+					printMessage("invalid arguments");
 				}
 			} else if (commands[0].equals("load"))
 			{
 				if (commands.length >= 2)
 				{
-					if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw"))
+					game.setNextLevelName(commands[1]);
+					game.setGameState(GameStates.LOADING);
+					/*if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw"))
 					{
 						messages.add(0, "loaded " + commands[1]);
 					} else
 					{
 						messages.add(0, "could not load level");
-					}
-
+					}*/
 				} else
 				{
-					messages.add(0, "invalid arguments");
+					printMessage("invalid arguments");
 				}
 			} else if (commands[0].equals("scale"))
 			{
@@ -227,12 +239,12 @@ public class Terminal
 				}
 			} else if (commands[0].equals("hello"))// a silly test command, we're keeping this in
 			{
-				messages.add(0, "hello :)");
+				printMessage("hello :)");
 			} else if (commands[0].equals("help"))// gives information on other commands
 			{
-				messages.add(0, "nodamage: toggles whether player can receive damage");
-				messages.add(0, "spawn [ID] [x] [y]: spawns entity at x, y from camera corner");
-				messages.add(0, "scale [SCALE]: changes the game's display scale to SCALE");
+				printMessage("nodamage: toggles whether player can receive damage");
+				printMessage("spawn [ID] [x] [y]: spawns entity at x, y from camera corner");
+				printMessage("scale [SCALE]: changes the game's display scale to SCALE");
 			} else
 			{
 				// messages.add(0, "unknown command");

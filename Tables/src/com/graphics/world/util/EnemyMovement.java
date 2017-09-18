@@ -31,5 +31,16 @@ public class EnemyMovement
 		this.movementMethod = movementMethod;
 	}
 	
-	
+	public String toString()
+	{
+		if(movementMethod == MovementMethod.FALL)
+		{
+			return "FALL";
+		}
+		else if(movementMethod == MovementMethod.JUMP)
+		{
+			return "JUMP";
+		}
+		return "WALK";
+	}
 }
