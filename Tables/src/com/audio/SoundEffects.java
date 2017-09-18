@@ -14,7 +14,7 @@ public class SoundEffects
 	 */
 	public SoundEffects()
 	{
-		testEffect = (AudioImpl) Loader.loadAudio("Adventure_Meme");
-		explosion = (AudioImpl) Loader.loadAudio("Explosion_1-freesound-tommccann");
+		testEffect = (AudioImpl) Loader.loadAudioWAV("Adventure_Meme");
+		explosion = (AudioImpl) Loader.loadAudioWAV("Explosion_1-freesound-tommccann");
 	}
 }

@@ -1,7 +1,6 @@
 package com.main;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.GL11;
@@ -36,23 +35,23 @@ import com.input.Terminal;
  */
 public class Game
 {
-	public static float				SCALE				= 2f;
-	public static float				counter				= 0f;
-	public static boolean			debugMode			= true;
+	public static float				SCALE					= 2f;
+	public static float				counter					= 0f;
+	public static boolean			debugMode				= true;
 
 	private Player					player;
 
 	public static Vector2f			playerPosition;
 
-	private ArrayList<RectangleBox>	worldColliders		= new ArrayList<RectangleBox>();
-	private ArrayList<Tile>			tiles				= new ArrayList<Tile>();
-	private ArrayList<Projectile>	playerProjectiles	= new ArrayList<Projectile>();
-	private ArrayList<Projectile>	enemyProjectiles	= new ArrayList<Projectile>();
-	private ArrayList<Particle>		particles			= new ArrayList<Particle>();
-	private ArrayList<Enemy>		enemies				= new ArrayList<Enemy>();
+	private ArrayList<RectangleBox>	worldColliders			= new ArrayList<RectangleBox>();
+	private ArrayList<Tile>			tiles					= new ArrayList<Tile>();
+	private ArrayList<Projectile>	playerProjectiles		= new ArrayList<Projectile>();
+	private ArrayList<Projectile>	enemyProjectiles		= new ArrayList<Projectile>();
+	private ArrayList<Particle>		particles				= new ArrayList<Particle>();
+	private ArrayList<Enemy>		enemies					= new ArrayList<Enemy>();
 	private ArrayList<DialogBox>	dialogue;
 
-	public ArrayList<Entity>		entities			= new ArrayList<Entity>();
+	public ArrayList<Entity>		entities				= new ArrayList<Entity>();
 
 	private static Camera			camera;
 
@@ -66,11 +65,18 @@ public class Game
 	private Tile					testTile2;
 	private Tile					sky;
 
-	private ArrayList<Tile>			tutorialButtons		= new ArrayList<Tile>();
+	private ArrayList<Tile>			tutorialButtons			= new ArrayList<Tile>();
 
 	private DialogBox				currentDialogue;
 
-	private float					tmpCounter			= 1f;
+	private float					tmpCounter				= 1f;
+
+	private GameStates				currentState			= GameStates.SPLASH;
+	private Thread					loadLevelThread			= null;
+
+	private int						splashScreenTickCounter	= 0;
+
+	private String					nextLevelName			= "level1";
 
 	// private Projectile testProjectile;
 
@@ -101,13 +107,15 @@ public class Game
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 2, 0, 20));
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 1, 3));
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 1, 3));
-		//tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2, 20));
+		// tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2,
+		// 20));
 
-		if (!loadNewLevel("./res/world/level1.ffw"))
-		{
-			throw new NullPointerException("World Could not be loaded");
-		}
 		SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
+		// if (!loadNewLevel("./res/world/level1.ffw"))
+		// {
+		// throw new NullPointerException("World Could not be loaded");
+		// }
+		// SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
 	}
 
 	/**
@@ -115,82 +123,103 @@ public class Game
 	 */
 	public void render()
 	{
-		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the correct
-																					// location
-		// Draw Movement map
-		for (Vertex v : currentLevel.getVertices())
+		if (currentState == GameStates.SPLASH)
 		{
-			GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
-			for (Edge e : v.getEdges())
+			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.sean, tmpCounter);
+		} else if (currentState == GameStates.MAIN_MENU)
+		{
+
+		} else if (currentState == GameStates.LOADING)
+		{
+			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.air, 1);
+			System.out.println("Loading Please Wait...");
+		} else if (currentState == GameStates.GAME)
+		{
+			GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the
+																						// correct
+			// location
+			// Draw Movement map
+			for (Vertex v : currentLevel.getVertices())
 			{
-				GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
+				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
+				for (Edge e : v.getEdges())
+				{
+					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
+				}
 			}
-		}
-		for (Tile t : tiles)
-		{
-			if (t.getPosition().z >= 0)
+			for (Tile t : tiles)
+			{
+				if (t.getPosition().z >= 0)
+				{
+					t.render();
+				}
+			}
+
+			for (Entity e : entities)
+			{
+				e.renderOutline();
+			}
+			for (Enemy e : enemies)
+			{
+				e.renderOutline();
+			}
+			for (Particle p : particles)
+			{
+				p.render();
+			}
+			getPlayer().renderOutline();
+			getPlayer().render();
+			for (Entity e : entities)
+			{
+				e.render();
+			}
+			for (Enemy e : enemies)
+			{
+				e.render();
+			}
+			for (Projectile p : playerProjectiles)
+			{
+				p.render();
+			}
+			for (Projectile p : enemyProjectiles)
+			{
+				p.render();
+			}
+			for (Tile t : tiles)
+			{
+				if (t.getPosition().z < 0)
+				{
+					t.render();
+				}
+			}
+			// Renders the dialog box
+			if (currentDialogue != null && currentDialogue.active())
+			{
+				float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not
+																							// world
+				float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
+				currentDialogue.render(textBoxX, textBoxY);
+			}
+
+			for (Tile t : tutorialButtons)
 			{
 				t.render();
 			}
-		}
 
-		for (Entity e : entities)
-		{
-			e.renderOutline();
-		}
-		for (Enemy e : enemies)
-		{
-			e.renderOutline();
-		}
-		for (Particle p : particles)
-		{
-			p.render();
-		}
-		getPlayer().renderOutline();
-		getPlayer().render();
-		for (Entity e : entities)
-		{
-			e.render();
-		}
-		for (Enemy e : enemies)
-		{
-			e.render();
-		}
-		for (Projectile p : playerProjectiles)
-		{
-			p.render();
-		}
-		for (Projectile p : enemyProjectiles)
-		{
-			p.render();
-		}
-		for (Tile t : tiles)
-		{
-			if (t.getPosition().z < 0)
+			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
+
+			if (debugMode)
 			{
-				t.render();
+				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player position: X:" + player.getPosition().x);
+				GFX.drawString(camera.getPosition().x, camera.getPosition().y + 15, "Y: " + player.getPosition().y);
+				GFX.drawString(camera.getPosition().x, camera.getPosition().y + 30, "Z: " + player.getPosition().z);
 			}
-		}
-		// Renders the dialog box
-		if (currentDialogue != null && currentDialogue.active())
+		} else if (currentState == GameStates.OPTIONS)
 		{
-			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not world
-			float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
-			currentDialogue.render(textBoxX, textBoxY);
-		}
 
-		for (Tile t : tutorialButtons)
+		} else if (currentState == GameStates.PAUSE)
 		{
-			t.render();
-		}
 
-		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
-
-		if (debugMode)
-		{
-			GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player position: X:" + player.getPosition().x);
-			GFX.drawString(camera.getPosition().x, camera.getPosition().y + 15, "Y: " + player.getPosition().y);
-			GFX.drawString(camera.getPosition().x, camera.getPosition().y + 30, "Z: " + player.getPosition().z);
 		}
 	}
 
@@ -199,182 +228,241 @@ public class Game
 	 */
 	public void update()
 	{
-		tmpCounter -= 0.001f;
-		if (tmpCounter <= 0)
+		if (currentState == GameStates.SPLASH)
 		{
-			tmpCounter = 0;
-		}
-		// test
-		if (handler.up())
-		{
-			// SoundEffects.testEffect.playAsSoundEffect(1.0f, 1.0f, false);
-		}
-		// endtest
-		terminal.update();
-		if (!terminal.active())// pauses game while terminal is active
-		{
-			// Updates the dialogue box
-			if (currentDialogue != null)
+			splashScreenTickCounter++;
+			if (splashScreenTickCounter > 60 * 2)
 			{
-				if (currentDialogue.active())
-					currentDialogue.update(handler);
+				currentState = GameStates.LOADING;
+				tmpCounter = 1;
 			}
-			// Updates the player
-			getPlayer().update(worldColliders, currentLevel.getVertices());
-			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
-			// Updates tiles
-			for (Tile t : tiles)
+			tmpCounter -= 0.001f;
+			if (tmpCounter <= 0)
 			{
-				t.update();
+				tmpCounter = 0;
 			}
+		} else if (currentState == GameStates.MAIN_MENU)
+		{
 
-			// Updates entities
-			for (Entity e : entities)
+		} else if (currentState == GameStates.LOADING)
+		{
+			if (loadLevelThread == null)
 			{
-				e.update(worldColliders, currentLevel.getVertices());
-				e.checkForCollisionWithProjectiles(playerProjectiles);
-				if (e.isHostileToPlayer())
+				loadLevelThread = new Thread(new Runnable()
 				{
-					enemies.add(new Enemy(e));
-					e.setDead(true);
-				}
-			}
 
-			// Updates the enemy
-			for (Enemy e : enemies)
+					@Override
+					public void run()
+					{
+						System.out.println("Loading: " + nextLevelName);
+						if (!loadNewLevel("./res/world/" + nextLevelName + ".ffw"))
+						{
+							terminal.printMessage(nextLevelName + " Could not be loaded");
+							// throw new NullPointerException("World Could not be loaded");
+						} else
+						{
+							terminal.printMessage(nextLevelName + " has been loaded");
+						}
+					}
+
+				});
+				loadLevelThread.start();
+			}
+			if (!loadLevelThread.isAlive()) // Note: This is a discouraged way of doing this
 			{
-				e.update(worldColliders, player, currentLevel.getVertices());
-				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
-				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
 				 */
+				loadLevelThread = null;
+				currentState = GameStates.GAME;
 			}
-
-			// Adds all projectiles the player fired to playerProjectiles
-			if (!getPlayer().getProjectiles().isEmpty())
+		} else if (currentState == GameStates.GAME)
+		{
+			tmpCounter -= 0.001f;
+			if (tmpCounter <= 0)
 			{
-				playerProjectiles.addAll(getPlayer().getProjectiles());
-				getPlayer().getProjectiles().clear();
+				tmpCounter = 0;
 			}
-
-			// Adds all particles the player made
-			if (!getPlayer().getParticles().isEmpty())
+			// test
+			if (handler.up())
 			{
-				particles.addAll(getPlayer().getParticles());
-				getPlayer().getParticles().clear();
+				// SoundEffects.testEffect.playAsSoundEffect(1.0f, 1.0f, false);
 			}
-
-			// Updates the projectiles the player fired
-			for (Projectile p : playerProjectiles)
+			// endtest
+			terminal.update();
+			if (!terminal.active())// pauses game while terminal is active
 			{
-				if (!p.getParticles().isEmpty())
+				// Updates the dialogue box
+				if (currentDialogue != null)
 				{
-					particles.addAll(p.getParticles());
-					p.getParticles().clear();
+					if (currentDialogue.active())
+						currentDialogue.update(handler);
 				}
-				p.update(worldColliders);
-			}
-			// Updates the projectiles the enemies fired
-			for (Projectile p : enemyProjectiles)
-			{
-				p.update(worldColliders);
-			}
+				// Updates the player
+				getPlayer().update(worldColliders, currentLevel.getVertices());
+				getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
+				// Updates tiles
+				for (Tile t : tiles)
+				{
+					t.update();
+				}
 
-			// Cleans up the playerProjectiles by removing projectiles that are dead
-			int i = 0;
-			while (i < playerProjectiles.size())
-			{
+				// Updates entities
+				for (Entity e : entities)
+				{
+					e.update(worldColliders, currentLevel.getVertices());
+					e.checkForCollisionWithProjectiles(playerProjectiles);
+					if (e.isHostileToPlayer())
+					{
+						enemies.add(new Enemy(e));
+						e.setDead(true);
+					}
+				}
+
+				// Updates the enemy
+				for (Enemy e : enemies)
+				{
+					e.update(worldColliders, player, currentLevel.getVertices());
+					e.checkForCollisionWithProjectiles(playerProjectiles);
+					/*
+					 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+					 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+					 */
+				}
+
+				// Adds all projectiles the player fired to playerProjectiles
+				if (!getPlayer().getProjectiles().isEmpty())
+				{
+					playerProjectiles.addAll(getPlayer().getProjectiles());
+					getPlayer().getProjectiles().clear();
+				}
+
+				// Adds all particles the player made
+				if (!getPlayer().getParticles().isEmpty())
+				{
+					particles.addAll(getPlayer().getParticles());
+					getPlayer().getParticles().clear();
+				}
+
+				// Updates the projectiles the player fired
+				for (Projectile p : playerProjectiles)
+				{
+					if (!p.getParticles().isEmpty())
+					{
+						particles.addAll(p.getParticles());
+						p.getParticles().clear();
+					}
+					p.update(worldColliders);
+				}
+				// Updates the projectiles the enemies fired
+				for (Projectile p : enemyProjectiles)
+				{
+					p.update(worldColliders);
+				}
+
+				// Cleans up the playerProjectiles by removing projectiles that are dead
+				int i = 0;
 				while (i < playerProjectiles.size())
 				{
-					if (playerProjectiles.get(i).isDead())
+					while (i < playerProjectiles.size())
 					{
-						particles.addAll(playerProjectiles.get(i).getParticles());
-						playerProjectiles.get(i).getParticles().clear();
-						playerProjectiles.remove(i);
-						break;
+						if (playerProjectiles.get(i).isDead())
+						{
+							particles.addAll(playerProjectiles.get(i).getParticles());
+							playerProjectiles.get(i).getParticles().clear();
+							playerProjectiles.remove(i);
+							break;
+						}
+						i++;
 					}
-					i++;
 				}
-			}
-			// Cleans up the enemy projectiles by removing projectiles that are dead
-			i = 0;
-			while (i < enemyProjectiles.size())
-			{
+				// Cleans up the enemy projectiles by removing projectiles that are dead
+				i = 0;
 				while (i < enemyProjectiles.size())
 				{
-					if (enemyProjectiles.get(i).isDead())
+					while (i < enemyProjectiles.size())
 					{
-						enemyProjectiles.remove(i);
-						break;
+						if (enemyProjectiles.get(i).isDead())
+						{
+							enemyProjectiles.remove(i);
+							break;
+						}
+						i++;
 					}
-					i++;
 				}
-			}
-			// Cleans up entities by removing dead entities
-			i = 0;
-			while (i < entities.size())
-			{
+				// Cleans up entities by removing dead entities
+				i = 0;
 				while (i < entities.size())
 				{
-					if (entities.get(i).isDead())
+					while (i < entities.size())
 					{
-						entities.remove(i);
-						break;
+						if (entities.get(i).isDead())
+						{
+							entities.remove(i);
+							break;
+						}
+						i++;
 					}
-					i++;
 				}
-			}
 
-			// Updates the particles in the world
-			for (Particle p : particles)
-			{
-				p.update();
-			}
-			// Cleans up particles that are done running
-			i = 0;
-			while (i < particles.size())
-			{
+				// Updates the particles in the world
+				for (Particle p : particles)
+				{
+					p.update();
+				}
+				// Cleans up particles that are done running
+				i = 0;
 				while (i < particles.size())
 				{
-					if (particles.get(i).isDead())
+					while (i < particles.size())
 					{
-						particles.remove(i);
-						break;
+						if (particles.get(i).isDead())
+						{
+							particles.remove(i);
+							break;
+						}
+						i++;
 					}
-					i++;
 				}
-			}
-			// Cleans up enemies that are dead
-			i = 0;
-			while (i < enemies.size())
-			{
+				// Cleans up enemies that are dead
+				i = 0;
 				while (i < enemies.size())
 				{
-					if (enemies.get(i).isDead())
+					while (i < enemies.size())
 					{
-						enemies.remove(i);
-						break;
+						if (enemies.get(i).isDead())
+						{
+							enemies.remove(i);
+							break;
+						}
+						i++;
 					}
-					i++;
 				}
-			}
-			// crazy camera movement
-			// Game.SCALE = (float) (2 + Math.sin(counter));
-			// counter += 0.01;
-			// testProjectile.update(colliders);
-			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the player centered
+				// crazy camera movement
+				// Game.SCALE = (float) (2 + Math.sin(counter));
+				// counter += 0.01;
+				// testProjectile.update(colliders);
+				camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the
+																						// player
+																						// centered
 
-			// Handles parallax calculations
-			for (Tile t : tiles)
-			{
-				if (t.getPosition().z > 1)
+				// Handles parallax calculations
+				for (Tile t : tiles)
 				{
-					t.getPosition().x -= camera.getOffset().x / t.getPosition().z;
-					// System.out.println(camera.getOffset().x);
-				} else if (t.getPosition().z < 0)
-				{
-					t.getPosition().x += camera.getOffset().x / t.getPosition().z;
+					if (t.getPosition().z > 1)
+					{
+						t.getPosition().x -= camera.getOffset().x / t.getPosition().z;
+						// System.out.println(camera.getOffset().x);
+					} else if (t.getPosition().z < 0)
+					{
+						t.getPosition().x += camera.getOffset().x / t.getPosition().z;
+					}
 				}
+				playerPosition.x = player.getPosition().getX();
+				playerPosition.y = player.getPosition().getY();
+				camera.update();
+				SoundStore.get().poll(0);
 			}
 			playerPosition.x = player.getPosition().getX();
 			playerPosition.y = player.getPosition().getY();
@@ -382,19 +470,20 @@ public class Game
 			tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
 			tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
 			tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
-			//tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
+			// tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
 			for (Tile t : tutorialButtons)
 			{
 				t.update();
 			}
 			camera.update();
 			SoundStore.get().poll(0);
-		}
+		} else if (currentState == GameStates.OPTIONS)
+		{
 
-		// if (handler.isMouseLeftClicking())
-		// {
-		// GFX.screenshot();
-		// }
+		} else if (currentState == GameStates.PAUSE)
+		{
+
+		}
 	}
 
 	/**
@@ -418,6 +507,7 @@ public class Game
 		{
 			return false;
 		}
+
 		Level tmp = World.loadWorld(name);
 		if (tmp == null)
 		{
@@ -537,5 +627,15 @@ public class Game
 	public static Camera getCamera()
 	{
 		return camera;
+	}
+
+	public void setNextLevelName(String string)
+	{
+		this.nextLevelName = string;
+	}
+
+	public void setGameState(GameStates newState)
+	{
+		this.currentState = newState;
 	}
 }
