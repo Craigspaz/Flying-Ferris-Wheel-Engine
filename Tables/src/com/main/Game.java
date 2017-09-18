@@ -65,7 +65,7 @@ public class Game
 	private Tile					testTile2;
 	private Tile					sky;
 
-	private ArrayList<Tile>			tutorialButtons		= new ArrayList<Tile>();
+	private ArrayList<Tile>			tutorialButtons			= new ArrayList<Tile>();
 
 	private DialogBox				currentDialogue;
 
@@ -76,7 +76,7 @@ public class Game
 
 	private int						splashScreenTickCounter	= 0;
 
-	private String			nextLevelName			= "level1";
+	private String					nextLevelName			= "level1";
 
 	// private Projectile testProjectile;
 
@@ -107,7 +107,8 @@ public class Game
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 2, 0, 20));
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 1, 3));
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 1, 3));
-		//tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2, 20));
+		// tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2,
+		// 20));
 
 		SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
 		// if (!loadNewLevel("./res/world/level1.ffw"))
@@ -200,11 +201,10 @@ public class Game
 				currentDialogue.render(textBoxX, textBoxY);
 			}
 
-		for (Tile t : tutorialButtons)
-		{
-			t.render();
-		}
-			GFX.drawEntireSpriteWithVaryingAlpha(32, 32, player.getPosition().getX(), player.getPosition().getY() - 50, Textures.shootTutorialKey, tmpCounter);
+			for (Tile t : tutorialButtons)
+			{
+				t.render();
+			}
 
 			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 
@@ -258,9 +258,8 @@ public class Game
 						if (!loadNewLevel("./res/world/" + nextLevelName + ".ffw"))
 						{
 							terminal.printMessage(nextLevelName + " Could not be loaded");
-							//throw new NullPointerException("World Could not be loaded");
-						}
-						else
+							// throw new NullPointerException("World Could not be loaded");
+						} else
 						{
 							terminal.printMessage(nextLevelName + " has been loaded");
 						}
@@ -271,10 +270,9 @@ public class Game
 			}
 			if (!loadLevelThread.isAlive()) // Note: This is a discouraged way of doing this
 			{
-				e.update(worldColliders, player, currentLevel.getVertices());
-				e.checkForCollisionWithProjectiles(playerProjectiles);
 				/*
-				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
 				 */
 				loadLevelThread = null;
 				currentState = GameStates.GAME;
@@ -472,19 +470,13 @@ public class Game
 			tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
 			tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
 			tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
-			//tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
+			// tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
 			for (Tile t : tutorialButtons)
 			{
 				t.update();
 			}
 			camera.update();
 			SoundStore.get().poll(0);
-		}
-
-		// if (handler.isMouseLeftClicking())
-		// {
-		// GFX.screenshot();
-		// }
 		} else if (currentState == GameStates.OPTIONS)
 		{
 

@@ -368,7 +368,7 @@ public class LevelBuilderGame
 			{
 				continue;
 			}
-			colliders.add(t.getCollider());
+			//colliders.add(t.getCollider());
 		}
 
 		class ColliderComparatorX implements Comparator<RectangleBox>
