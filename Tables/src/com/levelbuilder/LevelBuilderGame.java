@@ -25,6 +25,7 @@ import com.graphics.world.util.EnemyMovement;
 import com.graphics.world.util.MovementMethod;
 import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
+import com.main.Game;
 import com.main.Window;
 
 /**
@@ -75,6 +76,7 @@ public class LevelBuilderGame
 	{
 		new Textures();
 		handler = new InputHandler();
+		Game.SCALE = 1;
 	}
 
 	/**
@@ -368,7 +370,7 @@ public class LevelBuilderGame
 			{
 				continue;
 			}
-			//colliders.add(t.getCollider());
+			colliders.add(new RectangleBox(new Vector3f(t.getPosition().getX(),t.getPosition().getY(),t.getPosition().getZ()),new Vector2f(t.getSize().getX(),t.getSize().getY())));
 		}
 
 		class ColliderComparatorX implements Comparator<RectangleBox>
@@ -780,22 +782,65 @@ public class LevelBuilderGame
 				Tile enemyStartTile = v.getTile();
 				currentEnemyPosition.x = v.getTile().getPosition().x + v.getTile().getSize().getX();
 				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
-				currentEnemyVelocity = new Vector2f(0,terminalVelocityX);
+				currentEnemyVelocity = new Vector2f(terminalVelocityX,0);
 				distanceEnemyTraveledY = 0;
-				//while(currentEnemyPosition.y <= lowestYCoordinate)
-				//{
-					//RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
-					for(Vertex vv : vertices)
+				while(currentEnemyPosition.y <= lowestYCoordinate)
+				{
+					currentEnemyPosition.y += currentEnemyVelocity.y;
+					currentEnemyPosition.x += currentEnemyVelocity.x;
+					RectangleBox enemyCollider = new RectangleBox(currentEnemyPosition,enemySize);
+					//Check for collision
+					for(Tile t : sortedTiles)
 					{
-						v.addEdge(new Edge(v,vv,14));
+						RectangleBox tileCollider = new RectangleBox(t.getPosition(),t.getSize());
+						if(enemyCollider.isCollidingWithBox(tileCollider)) // Found collision along arc
+						{
+							Tile previousTile = t;
+							// assumming falling to the right
+							while(previousTile.getPosition().getX() > v.getTile().getPosition().getX())
+							{
+								for(Tile tt: sortedTiles)
+								{
+									if(tt.getPosition().getX() + tt.getSize().getX() == previousTile.getPosition().getX() && tt.getPosition().getY() == previousTile.getPosition().getY())
+									{
+										if(!isBlockOnTop(tt,sortedTiles))
+										{
+											Edge e = new Edge(v,getVertexFromTile(tt,vertices),14);
+											e.addEnemyMovementMethod(0, MovementMethod.FALL);
+											v.addEdge(e);
+										}
+										previousTile = tt;
+										break;
+									}
+								}
+							}
+							if(previousTile.getPosition().getX() == v.getTile().getPosition().getX() && previousTile.getPosition().getY() == v.getTile().getPosition().getY()) // Check if blocked off
+							{
+								break;
+							}
+						}
 					}
+					
+					currentEnemyVelocity.y += Entity.GRAVITY;
+					if(currentEnemyVelocity.y > terminalVelocityY)
+					{
+						currentEnemyVelocity.y = terminalVelocityY;
+					}
+				}
+					//RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
+					//for(Vertex vv : vertices)
+					//{
+					//	if(vv.getTile().getPosition().getY() > v.getTile().getPosition().getY())
+					//	{
+					//		Edge ee = new Edge(v,vv,14);
+					//		ee.addEnemyMovementMethod(0, MovementMethod.FALL);
+					//		v.addEdge(ee);
+					//	}
+					//}
 					//currentEnemyPosition.x += terminalVelocityY;
 					//currentEnemyPosition.y += currentEnemyVelocity.getY();
 					//currentEnemyVelocity.y += Entity.GRAVITY;
-					//if(currentEnemyVelocity.y > terminalVelocityY)
-					//{
-						currentEnemyVelocity.y = terminalVelocityY;
-					//}
+					
 					// apply physics
 				//}
 			}
@@ -836,5 +881,17 @@ public class LevelBuilderGame
 			}
 		}
 		return false;
+	}
+	
+	public static Vertex getVertexFromTile(Tile t, ArrayList<Vertex> vertices)
+	{
+		for(Vertex v : vertices)
+		{
+			if(v.getTile() == t)
+			{
+				return v;
+			}
+		}
+		return null;
 	}
 }

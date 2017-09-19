@@ -125,7 +125,7 @@ public class Game
 	{
 		if (currentState == GameStates.SPLASH)
 		{
-			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.sean, tmpCounter);
+			GFX.drawEntireSpriteWithVaryingAlpha(320, 240, 0, 0, Textures.testSplashScreenTexture, tmpCounter);
 		} else if (currentState == GameStates.MAIN_MENU)
 		{
 
