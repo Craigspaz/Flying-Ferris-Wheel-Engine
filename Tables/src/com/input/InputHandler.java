@@ -6,6 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
+import com.graphics.world.Camera;
+import com.main.Game;
 import com.main.Window;
 
 /**
@@ -21,13 +23,14 @@ public class InputHandler
 	String			previous	= "";
 	int				deleteTimer	= 0;
 	boolean			startDelay	= true;
+	Camera			camera;
 
 	/**
 	 * Creates a new Input Handler
 	 */
-	public InputHandler()
+	public InputHandler(Camera camera)
 	{
-
+		this.camera = camera;
 		cmd = new StringBuilder();
 		if (!Keyboard.isCreated())
 		{
@@ -155,8 +158,7 @@ public class InputHandler
 	}
 
 	/**
-	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to
-	 * account for different keyboards
+	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to account for different keyboards
 	 * 
 	 * @return true if the tilde key is pressed
 	 */
@@ -296,9 +298,11 @@ public class InputHandler
 	 */
 	public Vector2f getMousePosition()
 	{
-		int Mousex = Mouse.getX();
-		int Mousey = Window.height - Mouse.getY() - 1;
-		return new Vector2f(Mousex, Mousey);
+		int mouseX = Mouse.getX();
+		int mouseY = Window.height - Mouse.getY() - 1;
+		float trueX = (mouseX - camera.getTotalCameraOffset().x) / Game.SCALE;
+		float trueY = (mouseY - camera.getTotalCameraOffset().y) / Game.SCALE;
+		return new Vector2f(trueX, trueY);
 	}
 
 }

@@ -182,17 +182,17 @@ public class Projectile extends Entity
 	{
 		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture());
+			GFX.drawEntireSprite(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), -1);
 		} else
 		{
 			Vector2f offset = new Vector2f(((float) (super.getSpriteSize().x * animSpriteFrameX)) / super.getSizeOfSpriteSheet().x, (float) (super.getSpriteSize().y * row) / super.getSizeOfSpriteSheet().y);
 			Vector2f sizey = new Vector2f((float) (super.getSpriteSize().x / super.getSizeOfSpriteSheet().x), (float) (super.getSpriteSize().y / super.getSizeOfSpriteSheet().y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey, -1);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(super.getSpriteSize().x, super.getSpriteSize().y, position.x, position.y, super.getTexture(), offset, sizey, -1, 1f);
 			}
 		}
 		// GFX.drawSpriteFromSpriteSheetAtAngle(super.getSpriteSize().x, super.getSpriteSize().y, super.position.x,
@@ -206,7 +206,7 @@ public class Projectile extends Entity
 	public void addExplosionParticles()
 	{
 		float rawgain = Math.abs(this.getPosition().getX() - Game.playerPosition.getX() + this.getPosition().getY() - Game.playerPosition.getY());
-		SoundEffects.explosion.playAsSoundEffect(4.0f, Math.abs(20.0f/(rawgain)), false);
+		SoundEffects.explosion.playAsSoundEffect(4.0f, Math.abs(20.0f / (rawgain)), false);
 		for (int i = 0; i < 24; i++)// small fire
 		{
 			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4, rand.nextInt(2)));// small fire

@@ -13,6 +13,7 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.GFX;
 import com.graphics.Loader;
 import com.graphics.Textures;
+import com.graphics.world.Camera;
 import com.graphics.world.Entity;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
@@ -35,38 +36,38 @@ import com.main.Window;
  */
 public class LevelBuilderGame
 {
-	private ArrayList<Tile>		tiles			= new ArrayList<Tile>();
-	private ArrayList<Enemy>	enemies			= new ArrayList<Enemy>();
+	private ArrayList<Tile>		tiles					= new ArrayList<Tile>();
+	private ArrayList<Enemy>	enemies					= new ArrayList<Enemy>();
 
 	private Player				player;
 
 	private InputHandler		handler;
 	private Texture				tileToPlace;
-	private boolean				isMouseReady	= true;
-	private boolean				isDeleting		= false;
+	private boolean				isMouseReady			= true;
+	private boolean				isDeleting				= false;
 
-	boolean						clickedATile	= false;										// as soon as a tile is clicked, the mouse should enter "delete mode" until the mouse is released
+	boolean						clickedATile			= false;										// as soon as a tile is clicked, the mouse should enter "delete mode" until the mouse is released
 
-	private Texture				down			= Loader.loadTexture("borders/down");
-	private Texture				downleft		= Loader.loadTexture("borders/downleft");
-	private Texture				downleftright	= Loader.loadTexture("borders/downleftright");
-	private Texture				downright		= Loader.loadTexture("borders/downright");
-	private Texture				left			= Loader.loadTexture("borders/left");
-	private Texture				leftright		= Loader.loadTexture("borders/leftright");
-	private Texture				leftupright		= Loader.loadTexture("borders/leftupright");
-	private Texture				right			= Loader.loadTexture("borders/right");
-	private Texture				rightupdown		= Loader.loadTexture("borders/rightupdown");
-	private Texture				topdown			= Loader.loadTexture("borders/topdown");
-	private Texture				up				= Loader.loadTexture("borders/up");
-	private Texture				updownleftright	= Loader.loadTexture("borders/updownleftright");
-	private Texture				updownright		= Loader.loadTexture("borders/updownright");
-	private Texture				upleft			= Loader.loadTexture("borders/upleft");
-	private Texture				upright			= Loader.loadTexture("borders/upright");
-	private Texture				saveLevel		= Loader.loadTexture("saveLevel");
-	private Texture				door			= Loader.loadTexture("door");
+	private Texture				down					= Loader.loadTexture("borders/down");
+	private Texture				downleft				= Loader.loadTexture("borders/downleft");
+	private Texture				downleftright			= Loader.loadTexture("borders/downleftright");
+	private Texture				downright				= Loader.loadTexture("borders/downright");
+	private Texture				left					= Loader.loadTexture("borders/left");
+	private Texture				leftright				= Loader.loadTexture("borders/leftright");
+	private Texture				leftupright				= Loader.loadTexture("borders/leftupright");
+	private Texture				right					= Loader.loadTexture("borders/right");
+	private Texture				rightupdown				= Loader.loadTexture("borders/rightupdown");
+	private Texture				topdown					= Loader.loadTexture("borders/topdown");
+	private Texture				up						= Loader.loadTexture("borders/up");
+	private Texture				updownleftright			= Loader.loadTexture("borders/updownleftright");
+	private Texture				updownright				= Loader.loadTexture("borders/updownright");
+	private Texture				upleft					= Loader.loadTexture("borders/upleft");
+	private Texture				upright					= Loader.loadTexture("borders/upright");
+	private Texture				saveLevel				= Loader.loadTexture("saveLevel");
+	private Texture				door					= Loader.loadTexture("door");
 
 	private int					y_offset, x_offset;
-	private boolean readyAfterClickingSave = true;
+	private boolean				readyAfterClickingSave	= true;
 
 	/**
 	 * Creates a new level builder
@@ -74,7 +75,7 @@ public class LevelBuilderGame
 	public LevelBuilderGame()
 	{
 		new Textures();
-		handler = new InputHandler();
+		handler = new InputHandler(new Camera(null, null));
 	}
 
 	/**
@@ -174,8 +175,7 @@ public class LevelBuilderGame
 					{
 						if (player == null)
 						{
-							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16,16),
-									handler);
+							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16, 16), handler);
 						} else
 						{
 							for (Tile t : tiles)
@@ -227,8 +227,7 @@ public class LevelBuilderGame
 						}
 						if (!removedItem)
 						{
-							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, 0, 0, new Vector2f(16, 16),
-									new Vector2f(64, 64)));
+							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, 0, 0, new Vector2f(16, 16), new Vector2f(64, 64)));
 						}
 
 					} else
@@ -298,50 +297,50 @@ public class LevelBuilderGame
 			player.render();
 		}
 
-		GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.highlight);
+		GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.highlight, -1);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 0, Textures.testTile);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 32, Textures.grass);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 64, Textures.grassTop);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 96, Textures.dirt2);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 128, Textures.dirt);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 160, Textures.air);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 0, Textures.testTile, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 32, Textures.grass, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 64, Textures.grassTop, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 96, Textures.dirt2, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 128, Textures.dirt, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 160, Textures.air, -1);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 192, down);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 224, downleft);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 256, downleftright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 288, downright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 320, left);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 352, leftright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 384, leftupright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 416, right);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 448, rightupdown);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 480, topdown);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 512, up);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 544, updownleftright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 576, updownright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 608, upleft);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 640, upright);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 192, down, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 224, downleft, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 256, downleftright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 288, downright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 320, left, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 352, leftright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 384, leftupright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 416, right, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 448, rightupdown, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 480, topdown, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 512, up, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 544, updownleftright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 576, updownright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 608, upleft, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 640, upright, -1);
 
-		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 0, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
+		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 0, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256), -1, 1f);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel, -1);
 
-		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 32, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
+		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 32, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128), -1, 1f);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 64, 64, door);
+		GFX.drawEntireSprite(32, 32, Window.width - 64, 64, door, -1);
 
 		if (tileToPlace != null)
 		{
 			if (tileToPlace == Textures.playerFront)
 			{
-				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
+				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256), -1, 1f);
 			} else if (tileToPlace == Textures.crabman)
 			{
-				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
+				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128), -1, 1f);
 			} else
 			{
-				GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace);
+				GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace, -1);
 			}
 		}
 		for (Enemy e : enemies)
@@ -368,7 +367,7 @@ public class LevelBuilderGame
 			{
 				continue;
 			}
-			//colliders.add(t.getCollider());
+			// colliders.add(t.getCollider());
 		}
 
 		class ColliderComparatorX implements Comparator<RectangleBox>
@@ -689,63 +688,62 @@ public class LevelBuilderGame
 					textureName = "crabMan";
 					outlineName = "crabMan";
 				}
-				writer.println(
-						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getSpriteSize().x + "\" height=\"" + (int) e.getSpriteSize().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
+				writer.println("\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getSpriteSize().x + "\" height=\"" + (int) e.getSpriteSize().y + "\" texName=\"" + textureName + "\" outlineName=\""
+						+ outlineName + "\"");
 			}
 
 			writer.println("\t</ENEMIES>");
-			
-			for(Tile t : tiles)
+
+			for (Tile t : tiles)
 			{
-				t.setPosition(new Vector3f(t.getPosition().x * 4,t.getPosition().y * 4,t.getPosition().z));
-				t.setSize(new Vector2f(t.getSize().x * 4,t.getSize().y * 4));
+				t.setPosition(new Vector3f(t.getPosition().x * 4, t.getPosition().y * 4, t.getPosition().z));
+				t.setSize(new Vector2f(t.getSize().x * 4, t.getSize().y * 4));
 			}
 			ArrayList<Tile> sortedTiles = World.sortTiles(tiles);
-			//Generate path graph
+			// Generate path graph
 			ArrayList<Tile> ti = new ArrayList<Tile>();
-			
-			//Gathers list of tiles that have nothing above them
-			for(Tile t : sortedTiles)
+
+			// Gathers list of tiles that have nothing above them
+			for (Tile t : sortedTiles)
 			{
 				boolean isAbleToBeWalkedOn = true;
-				for(Tile t1: sortedTiles)
+				for (Tile t1 : sortedTiles)
 				{
-					if(t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + t1.getSize().y)
+					if (t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + t1.getSize().y)
 					{
 						isAbleToBeWalkedOn = false;
 						break;
 					}
 				}
-				if(isAbleToBeWalkedOn)
+				if (isAbleToBeWalkedOn)
 				{
 					ti.add(t);
 				}
 			}
 
 			ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-			for(Tile t : ti)
+			for (Tile t : ti)
 			{
 				vertices.add(new Vertex(t));
 			}
-			
+
 			// Handle walking paths. All current enemies can walk between nodes on the same platform.
-			for(Vertex v : vertices)
+			for (Vertex v : vertices)
 			{
-				for(Vertex vv : vertices)
+				for (Vertex vv : vertices)
 				{
-					if(v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) //VV is to the left of V
+					if (v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the left of V
 					{
-						Edge e = new Edge(v,vv,10);
-						for(int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
+						Edge e = new Edge(v, vv, 10);
+						for (int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
 						{
 							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
 						v.addEdge(e);
-					}
-					else if(v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the right of V
+					} else if (v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the right of V
 					{
-						Edge e = new Edge(v,vv,10);
-						for(int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
+						Edge e = new Edge(v, vv, 10);
+						for (int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
 						{
 							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
@@ -753,69 +751,70 @@ public class LevelBuilderGame
 					}
 				}
 			}
-			
-			//TODO: Loop through each enemy type
+
+			// TODO: Loop through each enemy type
 			float terminalVelocityY = Entity.MAX_SPEED_Y;
 			float terminalVelocityX = Entity.MAX_SPEED_X;
-			float distanceTillTerminalVelocityY = Math.abs((terminalVelocityY * terminalVelocityY)/(2 * Entity.GRAVITY));
+			float distanceTillTerminalVelocityY = Math.abs((terminalVelocityY * terminalVelocityY) / (2 * Entity.GRAVITY));
 			float distanceEnemyTraveledY = 0.0f;
 			int tickCounter = 0;
-			
-			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX,terminalVelocityX);
-			Vector3f currentEnemyPosition = new Vector3f(0,0,0);
-			Vector2f enemySize = new Vector2f(64,64);
-			
+
+			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX, terminalVelocityX);
+			Vector3f currentEnemyPosition = new Vector3f(0, 0, 0);
+			Vector2f enemySize = new Vector2f(64, 64);
+
 			int lowestYCoordinate = 0;
-			for(Tile t : sortedTiles)
+			for (Tile t : sortedTiles)
 			{
-				if(t.getPosition().getY() > lowestYCoordinate)
+				if (t.getPosition().getY() > lowestYCoordinate)
 				{
-					lowestYCoordinate = (int)t.getPosition().getY();
+					lowestYCoordinate = (int) t.getPosition().getY();
 				}
 			}
-			
+
 			boolean isAtTerminalVelocity = false;
-			for(Vertex v : vertices)
+			for (Vertex v : vertices)
 			{
 				Tile enemyStartTile = v.getTile();
 				currentEnemyPosition.x = v.getTile().getPosition().x + v.getTile().getSize().getX();
 				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
-				currentEnemyVelocity = new Vector2f(0,terminalVelocityX);
+				currentEnemyVelocity = new Vector2f(0, terminalVelocityX);
 				distanceEnemyTraveledY = 0;
-				//while(currentEnemyPosition.y <= lowestYCoordinate)
-				//{
-					//RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
-					for(Vertex vv : vertices)
-					{
-						v.addEdge(new Edge(v,vv,14));
-					}
-					//currentEnemyPosition.x += terminalVelocityY;
-					//currentEnemyPosition.y += currentEnemyVelocity.getY();
-					//currentEnemyVelocity.y += Entity.GRAVITY;
-					//if(currentEnemyVelocity.y > terminalVelocityY)
-					//{
-						currentEnemyVelocity.y = terminalVelocityY;
-					//}
-					// apply physics
-				//}
-			}
-			
-			for(Vertex v : vertices)
-			{
-				//System.out.println(v);
-				writer.println("\t<VERTEX x=\"" + (int)v.getTile().getPosition().x +"\" y=\"" + (int)v.getTile().getPosition().y + "\">");
-				
-				for(Edge e: v.getEdges())
+				// while(currentEnemyPosition.y <= lowestYCoordinate)
+				// {
+				// RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
+				for (Vertex vv : vertices)
 				{
-					for(EnemyMovement ee : e.getEnemyMovement())
+					v.addEdge(new Edge(v, vv, 14));
+				}
+				// currentEnemyPosition.x += terminalVelocityY;
+				// currentEnemyPosition.y += currentEnemyVelocity.getY();
+				// currentEnemyVelocity.y += Entity.GRAVITY;
+				// if(currentEnemyVelocity.y > terminalVelocityY)
+				// {
+				currentEnemyVelocity.y = terminalVelocityY;
+				// }
+				// apply physics
+				// }
+			}
+
+			for (Vertex v : vertices)
+			{
+				// System.out.println(v);
+				writer.println("\t<VERTEX x=\"" + (int) v.getTile().getPosition().x + "\" y=\"" + (int) v.getTile().getPosition().y + "\">");
+
+				for (Edge e : v.getEdges())
+				{
+					for (EnemyMovement ee : e.getEnemyMovement())
 					{
-						writer.println("\t\t<EDGE D x=\"" + (int)e.getDestination().getTile().getPosition().x + "\" y=\"" + (int)e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int)e.getWeight() + "\" enemyType=\"" + ee.getEnemyTypeID() + "\" movementType=\"" + ee.getMovementMethod().toString() + "\"/>");
+						writer.println("\t\t<EDGE D x=\"" + (int) e.getDestination().getTile().getPosition().x + "\" y=\"" + (int) e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int) e.getWeight() + "\" enemyType=\"" + ee.getEnemyTypeID() + "\" movementType=\""
+								+ ee.getMovementMethod().toString() + "\"/>");
 					}
 				}
-				
+
 				writer.println("\t</VERTEX>");
 			}
-			
+
 			writer.println("</LEVEL>");
 			writer.close();
 		} catch (FileNotFoundException e)
@@ -825,12 +824,12 @@ public class LevelBuilderGame
 		System.out.println("Done...");
 		readyAfterClickingSave = true;
 	}
-	
+
 	public static boolean isBlockOnTop(Tile t, ArrayList<Tile> tiles)
 	{
-		for(Tile tile : tiles)
+		for (Tile tile : tiles)
 		{
-			if((int)tile.getPosition().getX() == (int)t.getPosition().getX() && tile.getPosition().getY() == t.getPosition().getY() - tile.getSize().getY())
+			if ((int) tile.getPosition().getX() == (int) t.getPosition().getX() && tile.getPosition().getY() == t.getPosition().getY() - tile.getSize().getY())
 			{
 				return true;
 			}

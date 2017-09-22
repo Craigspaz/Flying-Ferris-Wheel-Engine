@@ -11,6 +11,10 @@ import com.graphics.Textures;
  */
 public class Textures
 {
+	public static Texture	splash;
+	public static Texture	titletext;
+	public static Texture	menubuttons;
+
 	public static Texture	playerFront;
 	public static Texture	playerOutline;
 
@@ -62,6 +66,10 @@ public class Textures
 	 */
 	public Textures()
 	{
+		splash = Loader.loadTexture("splashs");
+		titletext = Loader.loadTexture("title-text");
+		menubuttons = Loader.loadTexture("menu-buttons");
+
 		playerFront = Loader.loadTexture("tableSpriteSheet");
 		playerOutline = Loader.loadTexture("tableSpriteSheet_outline");
 
@@ -97,7 +105,7 @@ public class Textures
 		tileOutline = Loader.loadTexture("tile-outlines");
 		door = Loader.loadTexture("door");
 		tilesheet = Loader.loadTexture("tilesheet");
-		
+
 		tutorialButtons = Loader.loadTexture("tutorial-buttons");
 	}
 }

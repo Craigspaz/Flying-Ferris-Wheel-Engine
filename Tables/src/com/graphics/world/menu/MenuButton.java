@@ -6,7 +6,9 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
 import com.graphics.world.RectangleBox;
+import com.graphics.world.Tile;
 import com.input.InputHandler;
+import com.main.Game;
 
 /**
  * A button for a menu like the main menu
@@ -17,39 +19,35 @@ import com.input.InputHandler;
 public class MenuButton
 {
 	private Vector2f		position;
-	private Vector2f		sizeToRender;
 	private RectangleBox	collider;
-	private Texture			spriteSheet;
-	private Vector2f		startPos;
-	private Vector2f		sizeOfSpriteSheet;
-	private Vector2f		sizeOfSpriteOnSpriteSheet;
 
+	private Tile			Button;
+	private Tile			redButton;
+	private Tile			whiteButton;
 	private ButtonState		currentState;
+	private float			redheat		= 0;
+	private float			whiteheat	= 0;
 
 	/**
 	 * Creates a new MenuButton
 	 * 
-	 * @param position
-	 *            The position at which the button is drawn
-	 * @param sizeToRender
-	 *            The size to render the button
-	 * @param spriteSheet
-	 *            The texture of the spritesheet
-	 * @param startPos
-	 *            The coordinate of the UP state of the button texture on the spritesheet
-	 * @param sizeOfSpriteOnSpriteSheet
-	 *            The size of the sprite on the spritesheet
+	 * @param Button
+	 *            the tile to use when rendering the button
 	 */
-	public MenuButton(Vector2f position, Vector2f sizeToRender, Texture spriteSheet, Vector2f startPos, Vector2f sizeOfSpriteOnSpriteSheet)
+	public MenuButton(Tile Button)
 	{
-		this.position = position;
-		this.sizeToRender = sizeToRender;
-		this.spriteSheet = spriteSheet;
-		this.startPos = startPos;
-		this.sizeOfSpriteSheet = new Vector2f(spriteSheet.getImageWidth(),spriteSheet.getImageHeight());
-		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
-		currentState = ButtonState.UP;
-		collider = new RectangleBox(new Vector3f(position.getX(), position.getY(), 0), new Vector2f(sizeToRender.getX(), sizeToRender.getY()));
+		this.Button = Button;
+		this.redButton = Button.clone();
+		this.whiteButton = Button.clone();
+		System.out.println(Button);
+		System.out.println(redButton);
+		System.out.println(whiteButton);
+		redButton.setFrame(1);
+		redButton.setAlpha(0);
+		whiteButton.setFrame(2);
+		whiteButton.setAlpha(0);
+		this.collider = new RectangleBox(Button.getPosition(), Button.getSize());
+		this.position = new Vector2f(Button.getPosition().x, Button.getPosition().y);
 	}
 
 	/**
@@ -61,6 +59,40 @@ public class MenuButton
 	public void update(InputHandler handler)
 	{
 		// Handle mouse input
+		// change ButtonState and heatState
+		if (handler.getMousePosition().x > collider.getPosition().x && handler.getMousePosition().y > collider.getPosition().y && handler.getMousePosition().x < collider.getPosition().x + collider.getSize().x && handler.getMousePosition().y < collider.getPosition().y + collider.getSize().y)
+		{
+			if (redheat < 1)
+			{
+				redheat += 0.002;
+			} else
+			{
+				redheat = 1;
+				if (whiteheat < 1)
+					whiteheat += 0.005;
+				else
+					whiteheat = 1;
+			}
+
+		} else
+		{
+			if (whiteheat > 0)
+			{
+				whiteheat -= 0.05;
+			} else
+			{
+				whiteheat = 0;
+				if (redheat > 0)
+				{
+					redheat -= 0.05;
+				} else
+				{
+					redheat = 0;
+				}
+			}
+		}
+		redButton.setAlpha(redheat);
+		whiteButton.setAlpha(whiteheat);
 	}
 
 	/**
@@ -68,22 +100,9 @@ public class MenuButton
 	 */
 	public void render()
 	{
-		if (currentState == ButtonState.UP)
-		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSpriteSheet.getX() * startPos.getX())) / sizeOfSpriteSheet.getX(), (float) (sizeOfSpriteOnSpriteSheet.getY() * startPos.getY()) / sizeOfSpriteSheet.getY());
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSpriteSheet.getX() / sizeOfSpriteSheet.getX()), (float) (sizeOfSpriteOnSpriteSheet.getY() / sizeOfSpriteSheet.getY()));
-			GFX.drawSpriteFromSpriteSheet(sizeToRender.getX(), sizeToRender.getY(), position.getX(), position.getY(), spriteSheet, offset, sizey);
-		} else if (currentState == ButtonState.HOVER)
-		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSpriteSheet.getX() * startPos.getX())) / sizeOfSpriteSheet.x, (float) (sizeOfSpriteOnSpriteSheet.getY() * (startPos.getY() + 1)) / sizeOfSpriteSheet.getY());
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSpriteSheet.getX() / sizeOfSpriteSheet.getX()), (float) (sizeOfSpriteOnSpriteSheet.getY() / sizeOfSpriteSheet.getY()));
-			GFX.drawSpriteFromSpriteSheet(sizeToRender.getX(), sizeToRender.getY(), position.getX(), position.getY(), spriteSheet, offset, sizey);
-		} else if (currentState == ButtonState.DOWN)
-		{
-			Vector2f offset = new Vector2f(((float) (sizeOfSpriteOnSpriteSheet.getX() * startPos.getX())) / sizeOfSpriteSheet.x, (float) (sizeOfSpriteOnSpriteSheet.getY() * (startPos.getY() + 2)) / sizeOfSpriteSheet.getY());
-			Vector2f sizey = new Vector2f((float) (sizeOfSpriteOnSpriteSheet.getX() / sizeOfSpriteSheet.getX()), (float) (sizeOfSpriteOnSpriteSheet.getY() / sizeOfSpriteSheet.getY()));
-			GFX.drawSpriteFromSpriteSheet(sizeToRender.getX(), sizeToRender.getY(), position.getX(), position.getY(), spriteSheet, offset, sizey);
-		}
+		Button.render();
+		redButton.render();
+		whiteButton.render();
 	}
 
 	/**
@@ -105,6 +124,10 @@ public class MenuButton
 	public void setPosition(Vector2f position)
 	{
 		this.position = position;
+		this.Button.setPosition(new Vector3f(position.x, position.y, 0));
+		this.redButton.setPosition(new Vector3f(position.x, position.y, 0));
+		this.whiteButton.setPosition(new Vector3f(position.x, position.y, 0));
+		this.collider.setPosition(new Vector3f(position.x, position.y, 0));
 	}
 
 	/**
@@ -129,109 +152,6 @@ public class MenuButton
 	}
 
 	/**
-	 * Returns the size to render the button
-	 * 
-	 * @return Returns the size to render the button
-	 */
-	public Vector2f getSizeToRender()
-	{
-		return sizeToRender;
-	}
-
-	/**
-	 * Sets the size to render the button
-	 * 
-	 * @param sizeToRender
-	 *            The size to render the button
-	 */
-	public void setSizeToRender(Vector2f sizeToRender)
-	{
-		this.sizeToRender = sizeToRender;
-	}
-
-	/**
-	 * Returns the spritesheet
-	 * 
-	 * @return Returns the spritesheet
-	 */
-	public Texture getSpriteSheet()
-	{
-		return spriteSheet;
-	}
-
-	/**
-	 * Sets the spritesheet
-	 * 
-	 * @param spriteSheet
-	 *            The spritesheet
-	 */
-	public void setSpriteSheet(Texture spriteSheet)
-	{
-		this.spriteSheet = spriteSheet;
-	}
-
-	/**
-	 * Returns the start position of the texture to render the UP state
-	 * 
-	 * @return Returns the start position of the texture to render the UP state
-	 */
-	public Vector2f getStartPos()
-	{
-		return startPos;
-	}
-
-	/**
-	 * Sets the start position of the texture to render the UP state
-	 * 
-	 * @param startPos
-	 */
-	public void setStartPos(Vector2f startPos)
-	{
-		this.startPos = startPos;
-	}
-
-	/**
-	 * Returns the size of the spritesheet
-	 * 
-	 * @return Returns the size of the spritesheet
-	 */
-	public Vector2f getSizeOfSpriteSheet()
-	{
-		return sizeOfSpriteSheet;
-	}
-
-	/**
-	 * Sets the size of the spritesheet
-	 * 
-	 * @param sizeOfSpriteSheet
-	 *            The size of the spritesheet
-	 */
-	public void setSizeOfSpriteSheet(Vector2f sizeOfSpriteSheet)
-	{
-		this.sizeOfSpriteSheet = sizeOfSpriteSheet;
-	}
-
-	/**
-	 * Returns the size of the sprite on the spritesheet
-	 * 
-	 * @return Returns the size of the sprite on the spritesheet
-	 */
-	public Vector2f getSizeOfSpriteOnSpriteSheet()
-	{
-		return sizeOfSpriteOnSpriteSheet;
-	}
-
-	/**
-	 * Sets the size of the sprite on the spritesheet
-	 * 
-	 * @param sizeOfSpriteOnSpriteSheet
-	 */
-	public void setSizeOfSpriteOnSpriteSheet(Vector2f sizeOfSpriteOnSpriteSheet)
-	{
-		this.sizeOfSpriteOnSpriteSheet = sizeOfSpriteOnSpriteSheet;
-	}
-
-	/**
 	 * Returns the currentbutton state
 	 * 
 	 * @return Returns the current buttonstate
@@ -239,6 +159,11 @@ public class MenuButton
 	public ButtonState getCurrentState()
 	{
 		return currentState;
+	}
+
+	public Vector2f getSize()
+	{
+		return Button.getSize();
 	}
 
 	/**
