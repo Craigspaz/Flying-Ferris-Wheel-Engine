@@ -11,7 +11,6 @@ import com.graphics.Textures;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
-import com.main.Game;
 
 /**
  * Handles the player input and player specifics

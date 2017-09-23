@@ -7,10 +7,8 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
-import com.graphics.Textures;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Vertex;
-import com.main.Game;
 
 /**
  * Defines the basic behavior of enemies and players

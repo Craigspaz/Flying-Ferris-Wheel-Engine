@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
-import com.main.Game;
 
 /**
  * Handles small particles

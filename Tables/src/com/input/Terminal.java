@@ -9,7 +9,6 @@ import com.graphics.world.Player;
 import com.graphics.world.enemys.Enemy;
 import com.main.Game;
 import com.main.GameStates;
-import com.main.Window;
 
 /**
  * Handles the dev console
