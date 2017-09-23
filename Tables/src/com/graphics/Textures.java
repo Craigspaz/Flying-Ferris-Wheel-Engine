@@ -57,8 +57,6 @@ public class Textures
 
 	public static Texture	tutorialButtons;
 
-	public static Texture	testSplashScreenTexture;
-
 	/**
 	 * Initializes all of the textures
 	 */
@@ -99,10 +97,7 @@ public class Textures
 		tileOutline = Loader.loadTexture("tile-outlines");
 		door = Loader.loadTexture("door");
 		tilesheet = Loader.loadTexture("tilesheet");
-
-		tutorialButtons = Loader.loadTexture("tutorial-buttons");
 		
-		testSplashScreenTexture = Loader.loadTexture("splash-screen-end");
-
+		tutorialButtons = Loader.loadTexture("tutorial-buttons");
 	}
 }
