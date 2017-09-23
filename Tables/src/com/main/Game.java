@@ -250,6 +250,21 @@ public class Game
 
 			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 
+
+			testShader.bindShader();
+			testShader.setUniformf("uniformFloat", 1f);
+			Textures.sean.bind();
+			testMesh.draw();
+			testShader.unbindShader();
+			
+			testShader.bindShader();
+			testShader.setUniformf("uniformFloat", .5f);
+			//Textures.grass.bind();
+			GFX.drawEntireSprite(2, 2, 0,0, Textures.sean);
+			testShader.unbindShader();
+			
+			GFX.drawEntireSprite(32, 32, 32, 32, Textures.air);
+			
 			if (debugMode)
 			{
 				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player position: X:" + player.getPosition().x);
@@ -282,12 +297,6 @@ public class Game
 			testShader.unbindShader();
 			// GL11.glColor4f(1f, 1f, 1f, 1f);
 		}
-
-		testShader.bindShader();
-		testShader.setUniformf("uniformFloat", 1f);
-		Textures.sean.bind();
-		testMesh.draw();
-		testShader.unbindShader();
 
 	}
 
@@ -545,6 +554,35 @@ public class Game
 			}
 			camera.update();
 			SoundStore.get().poll(0);
+			
+			//tmp
+			//Vector3f ttest = new Vector3f((0 -camera.getPosition().getX() + camera.getSize().getX() / 2),(0 -camera.getPosition().getY() + camera.getSize().getY() / 2),0); //new Vector3f(player.getPosition().getX(),player.getPosition().getY(),player.getPosition().getZ());
+			Vector3f ttest = new Vector3f(tiles.get(6).getPosition());
+			float ourX = (ttest.x-(camera.getPosition().getX()) + camera.getSize().getX() / 1) - Window.width + 65;//(-ttest.x + tiles.get(6).getSize().getX()) / 2;
+			float ourY = (ttest.y-(camera.getPosition().getY()) + camera.getSize().getY() / 1) - Window.height + 192;//(-ttest.y + tiles.get(6).getSize().getY()) / 2;
+			
+			ttest.x = (((ourX * Game.SCALE) - 1) / (Window.width)) - 1;
+			ttest.y = (((-ourY * Game.SCALE)) / (Window.height));
+			System.out.println(ttest.x + " " + ttest.y + " " + tiles.get(6).getPosition().getX() + " " + tiles.get(6).getPosition().getY() + " " + ourX + " " + ourY);
+			
+			com.graphics.Vertex[] v = new com.graphics.Vertex[]{
+					new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y + 1, 0.0f),new Vector2f(1,0)),
+					new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y + 1, 0.0f),new Vector2f(0,0)),
+					new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y, 0.0f), new Vector2f(0,1)),
+					new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y, 0.0f),new Vector2f(1,1))
+					};
+			
+
+			//GL11.glVertex3f(-1.0f, 1.0f, 0.0f);
+			//GL11.glVertex3f(1.0f, 1.0f, 0.0f);
+			//GL11.glVertex3f(1.0f, -1.0f, 0.0f);
+			//GL11.glVertex3f(-1.0f, -1.0f, 0.0f);
+			
+			int[] indices = new int[]{
+					3,2,1,0
+			};
+			testMesh.addVertices(v, indices);
+			
 		} else if (currentState == GameStates.OPTIONS)
 		{
 
@@ -552,28 +590,6 @@ public class Game
 		{
 
 		}
-		
-		Vector3f ttest = new Vector3f(-camera.getPosition().getX() / Game.SCALE,-camera.getPosition().getY() / Game.SCALE,0); //new Vector3f(player.getPosition().getX(),player.getPosition().getY(),player.getPosition().getZ());
-		ttest.x = (2 / ttest.x) - 1;
-		ttest.y = (2 / ttest.y);
-		
-		com.graphics.Vertex[] v = new com.graphics.Vertex[]{
-				new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y + 1, 0.0f),new Vector2f(1,0)),
-				new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y + 1, 0.0f),new Vector2f(0,0)),
-				new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y, 0.0f), new Vector2f(0,1)),
-				new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y, 0.0f),new Vector2f(1,1))
-				};
-		
-
-		//GL11.glVertex3f(-1.0f, 1.0f, 0.0f);
-		//GL11.glVertex3f(1.0f, 1.0f, 0.0f);
-		//GL11.glVertex3f(1.0f, -1.0f, 0.0f);
-		//GL11.glVertex3f(-1.0f, -1.0f, 0.0f);
-		
-		int[] indices = new int[]{
-				3,2,1,0
-		};
-		testMesh.addVertices(v, indices);
 	}
 
 	/**

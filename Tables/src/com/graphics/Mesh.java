@@ -50,7 +50,7 @@ public class Mesh
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
 		GL11.glDrawElements(GL11.GL_QUADS, size, GL11.GL_UNSIGNED_INT,0);
 
-		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
+		GL20.glDisableVertexAttribArray(0);
 	}
 }
