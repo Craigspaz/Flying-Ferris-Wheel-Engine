@@ -1,6 +1,10 @@
 package com.util;
 
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
+
+import org.lwjgl.BufferUtils;
 
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
@@ -191,5 +195,64 @@ public class Utils
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * Creates a float buffer
+	 * @param size The size of the buffer
+	 * @author TheBennyBox from youtube
+	 * @return Returns a new float buffer
+	 */
+	public static FloatBuffer createFloatBuffer(int size)
+	{
+		return BufferUtils.createFloatBuffer(size);
+	}
+	
+	/**
+	 * Creates an int buffer
+	 * @param size The size of the int buffer
+	 * @author TheBennyBox from Youtube
+	 * @return Returns a new int buffer
+	 */
+	public static IntBuffer createIntBuffer(int size)
+	{
+		return BufferUtils.createIntBuffer(size);
+	}
+	
+	/**
+	 * Flips a float buffer
+	 * @param vertices The vertices to flip
+	 * @author TheBennyBox from youtube
+	 * @return Returns a flipped buffer
+	 */
+	public static FloatBuffer createFlippedBuffer(com.graphics.Vertex[] vertices)
+	{
+		FloatBuffer buffer = createFloatBuffer(vertices.length * com.graphics.Vertex.SIZE);
+		for(int i = 0; i < vertices.length; i++)
+		{
+			buffer.put(vertices[i].getPos().getX());
+			buffer.put(vertices[i].getPos().getY());
+			buffer.put(vertices[i].getPos().getZ());
+			buffer.put(vertices[i].getTexCoord().getX());
+			buffer.put(vertices[i].getTexCoord().getY());
+		}
+		
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	/**
+	 * Flips an integer buffer
+	 * @param values The values to flip
+	 * @author TheBennyBox from youtube
+	 * @return Returns the flipped int buffer
+	 */
+	public static IntBuffer createFlippedBuffer(int... values)
+	{
+		IntBuffer buffer = createIntBuffer(values.length);
+		buffer.put(values);
+		buffer.flip();
+		return buffer;
 	}
 }

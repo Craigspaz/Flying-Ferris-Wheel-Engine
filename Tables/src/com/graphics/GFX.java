@@ -90,6 +90,29 @@ public class GFX
 		// Font awtFont = new Font("Times New Roman", Font.BOLD, 24); //name, style (PLAIN, BOLD, or ITALIC), size
 		// font2 = new TrueTypeFont(awtFont, false); //base Font, anti-aliasing true/false
 	}
+	
+	public static void drawEntireSpriteTEST(float x, float y, float xx, float yy, Texture texture)
+	{
+		x = x * Game.SCALE;
+		y = y * Game.SCALE;
+		xx = (float) (Math.round(xx) * Game.SCALE);
+		yy = (float) (Math.round(yy) * Game.SCALE);
+		// First binds the texture
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+
+		// Draws a rectangle
+		GL11.glBegin(GL11.GL_QUADS);
+
+		GL11.glVertex2f(xx, yy);
+		GL11.glVertex2f(xx, y + yy);
+		GL11.glVertex2f(x + xx, y + yy);
+		GL11.glVertex2f(x + xx, yy);
+
+		GL11.glEnd();
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
 
 	/**
 	 * Draws an entire sprite to the screen

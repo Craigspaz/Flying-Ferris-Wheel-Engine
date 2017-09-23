@@ -4,6 +4,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
 import com.main.Window;
@@ -63,7 +64,7 @@ public class InputHandler
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns if the player should move left
 	 * 

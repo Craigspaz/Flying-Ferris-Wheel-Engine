@@ -36,38 +36,45 @@ import com.main.Window;
  */
 public class LevelBuilderGame
 {
-	private ArrayList<Tile>		tiles			= new ArrayList<Tile>();
-	private ArrayList<Enemy>	enemies			= new ArrayList<Enemy>();
+	private ArrayList<Tile>		tiles					= new ArrayList<Tile>();
+	private ArrayList<Enemy>	enemies					= new ArrayList<Enemy>();
 
 	private Player				player;
 
 	private InputHandler		handler;
 	private Texture				tileToPlace;
-	private boolean				isMouseReady	= true;
-	private boolean				isDeleting		= false;
+	private boolean				isMouseReady			= true;
+	private boolean				isDeleting				= false;
 
-	boolean						clickedATile	= false;										// as soon as a tile is clicked, the mouse should enter "delete mode" until the mouse is released
+	boolean						clickedATile			= false;										// as soon as a
+																										// tile is
+																										// clicked, the
+																										// mouse should
+																										// enter "delete
+																										// mode" until
+																										// the mouse is
+																										// released
 
-	private Texture				down			= Loader.loadTexture("borders/down");
-	private Texture				downleft		= Loader.loadTexture("borders/downleft");
-	private Texture				downleftright	= Loader.loadTexture("borders/downleftright");
-	private Texture				downright		= Loader.loadTexture("borders/downright");
-	private Texture				left			= Loader.loadTexture("borders/left");
-	private Texture				leftright		= Loader.loadTexture("borders/leftright");
-	private Texture				leftupright		= Loader.loadTexture("borders/leftupright");
-	private Texture				right			= Loader.loadTexture("borders/right");
-	private Texture				rightupdown		= Loader.loadTexture("borders/rightupdown");
-	private Texture				topdown			= Loader.loadTexture("borders/topdown");
-	private Texture				up				= Loader.loadTexture("borders/up");
-	private Texture				updownleftright	= Loader.loadTexture("borders/updownleftright");
-	private Texture				updownright		= Loader.loadTexture("borders/updownright");
-	private Texture				upleft			= Loader.loadTexture("borders/upleft");
-	private Texture				upright			= Loader.loadTexture("borders/upright");
-	private Texture				saveLevel		= Loader.loadTexture("saveLevel");
-	private Texture				door			= Loader.loadTexture("door");
+	private Texture				down					= Loader.loadTexture("borders/down");
+	private Texture				downleft				= Loader.loadTexture("borders/downleft");
+	private Texture				downleftright			= Loader.loadTexture("borders/downleftright");
+	private Texture				downright				= Loader.loadTexture("borders/downright");
+	private Texture				left					= Loader.loadTexture("borders/left");
+	private Texture				leftright				= Loader.loadTexture("borders/leftright");
+	private Texture				leftupright				= Loader.loadTexture("borders/leftupright");
+	private Texture				right					= Loader.loadTexture("borders/right");
+	private Texture				rightupdown				= Loader.loadTexture("borders/rightupdown");
+	private Texture				topdown					= Loader.loadTexture("borders/topdown");
+	private Texture				up						= Loader.loadTexture("borders/up");
+	private Texture				updownleftright			= Loader.loadTexture("borders/updownleftright");
+	private Texture				updownright				= Loader.loadTexture("borders/updownright");
+	private Texture				upleft					= Loader.loadTexture("borders/upleft");
+	private Texture				upright					= Loader.loadTexture("borders/upright");
+	private Texture				saveLevel				= Loader.loadTexture("saveLevel");
+	private Texture				door					= Loader.loadTexture("door");
 
 	private int					y_offset, x_offset;
-	private boolean readyAfterClickingSave = true;
+	private boolean				readyAfterClickingSave	= true;
 
 	/**
 	 * Creates a new level builder
@@ -176,8 +183,7 @@ public class LevelBuilderGame
 					{
 						if (player == null)
 						{
-							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16,16),
-									handler);
+							player = new Player(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), tileToPlace, tileToPlace, 0, 0, new Vector2f(16, 16), handler);
 						} else
 						{
 							for (Tile t : tiles)
@@ -229,8 +235,7 @@ public class LevelBuilderGame
 						}
 						if (!removedItem)
 						{
-							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, 0, 0, new Vector2f(16, 16),
-									new Vector2f(64, 64)));
+							enemies.add(new Enemy(new Vector3f(handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, 0), Textures.crabman, Textures.crabman, 0, 0, new Vector2f(16, 16), new Vector2f(64, 64)));
 						}
 
 					} else
@@ -370,7 +375,7 @@ public class LevelBuilderGame
 			{
 				continue;
 			}
-			colliders.add(new RectangleBox(new Vector3f(t.getPosition().getX(),t.getPosition().getY(),t.getPosition().getZ()),new Vector2f(t.getSize().getX(),t.getSize().getY())));
+			colliders.add(new RectangleBox(new Vector3f(t.getPosition().getX(), t.getPosition().getY(), t.getPosition().getZ()), new Vector2f(t.getSize().getX(), t.getSize().getY())));
 		}
 
 		class ColliderComparatorX implements Comparator<RectangleBox>
@@ -661,14 +666,16 @@ public class LevelBuilderGame
 
 				String textureName = "";
 				Texture tex = t.getTexture();
-				if (tex == Textures.testTile)// max height is 9 tiles, so for additional tilesheets you'll need to add 9 to get to the start of the next
+				if (tex == Textures.testTile)// max height is 9 tiles, so for additional tilesheets you'll need to add 9
+												// to get to the start of the next
 				{
 					textureName = "tilesheet";
 					y_offset += 0;
 				}
 				// TODO add more of these as more tiles are made
 
-				float vectorX = (float) (64 * x_offset) / 1024f;// these are the size of each sprite and size of the sheet itself
+				float vectorX = (float) (64 * x_offset) / 1024f;// these are the size of each sprite and size of the
+																// sheet itself
 				float vectorY = (float) (64 * y_offset) / 1024f;
 
 				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\" texCoordX=\"" + vectorX + "\" texCoordY=\"" + vectorY + "\"/>");
@@ -691,63 +698,74 @@ public class LevelBuilderGame
 					textureName = "crabMan";
 					outlineName = "crabMan";
 				}
-				writer.println(
-						"\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getSpriteSize().x + "\" height=\"" + (int) e.getSpriteSize().y + "\" texName=\"" + textureName + "\" outlineName=\"" + outlineName + "\"");
+				writer.println("\t\t<ENEMY x=\"" + (int) e.getPosition().x + "\" y=\"" + (int) e.getPosition().y + "\" z=\"" + (int) e.getPosition().z + "\" width=\"" + (int) e.getSpriteSize().x + "\" height=\"" + (int) e.getSpriteSize().y + "\" texName=\"" + textureName + "\" outlineName=\""
+						+ outlineName + "\"");
 			}
 
 			writer.println("\t</ENEMIES>");
-			
-			for(Tile t : tiles)
+
+			for (Tile t : tiles)
 			{
-				t.setPosition(new Vector3f(t.getPosition().x * 4,t.getPosition().y * 4,t.getPosition().z));
-				t.setSize(new Vector2f(t.getSize().x * 4,t.getSize().y * 4));
+				t.setPosition(new Vector3f(t.getPosition().x * 4, t.getPosition().y * 4, t.getPosition().z));
+				t.setSize(new Vector2f(t.getSize().x * 4, t.getSize().y * 4));
 			}
 			ArrayList<Tile> sortedTiles = World.sortTiles(tiles);
-			//Generate path graph
+			// Generate path graph
 			ArrayList<Tile> ti = new ArrayList<Tile>();
-			
-			//Gathers list of tiles that have nothing above them
-			for(Tile t : sortedTiles)
+
+			// Gathers list of tiles that have nothing above them
+			for (Tile t : sortedTiles)
 			{
 				boolean isAbleToBeWalkedOn = true;
-				for(Tile t1: sortedTiles)
+				for (Tile t1 : sortedTiles)
 				{
-					if(t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + t1.getSize().y)
+					if (t.getPosition().x == t1.getPosition().x && t.getPosition().y == t1.getPosition().y + t1.getSize().y)
 					{
 						isAbleToBeWalkedOn = false;
 						break;
 					}
 				}
-				if(isAbleToBeWalkedOn)
+				if (isAbleToBeWalkedOn)
 				{
 					ti.add(t);
 				}
 			}
 
 			ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-			for(Tile t : ti)
+			for (Tile t : ti)
 			{
 				vertices.add(new Vertex(t));
 			}
-			
+
 			// Handle walking paths. All current enemies can walk between nodes on the same platform.
-			for(Vertex v : vertices)
+			for (Vertex v : vertices)
 			{
-				for(Vertex vv : vertices)
+				for (Vertex vv : vertices)
 				{
-					if(v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) //VV is to the left of V
+					if (v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV
+																																												// is
+																																												// to
+																																												// the
+																																												// left
+																																												// of
+																																												// V
 					{
-						Edge e = new Edge(v,vv,10);
-						for(int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
+						Edge e = new Edge(v, vv, 10);
+						for (int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
 						{
 							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
 						v.addEdge(e);
-					}
-					else if(v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the right of V
+					} else if (v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV
+																																														// is
+																																														// to
+																																														// the
+																																														// right
+																																														// of
+																																														// V
 					{
-						Edge e = new Edge(v,vv,10);
-						for(int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
+						Edge e = new Edge(v, vv, 10);
+						for (int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
 						{
 							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
@@ -755,112 +773,219 @@ public class LevelBuilderGame
 					}
 				}
 			}
-			
-			//TODO: Loop through each enemy type
+
+			// TODO: Loop through each enemy type
 			float terminalVelocityY = Entity.MAX_SPEED_Y;
 			float terminalVelocityX = Entity.MAX_SPEED_X;
-			float distanceTillTerminalVelocityY = Math.abs((terminalVelocityY * terminalVelocityY)/(2 * Entity.GRAVITY));
+			float distanceTillTerminalVelocityY = Math.abs((terminalVelocityY * terminalVelocityY) / (2 * Entity.GRAVITY));
 			float distanceEnemyTraveledY = 0.0f;
 			int tickCounter = 0;
-			
-			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX,terminalVelocityX);
-			Vector3f currentEnemyPosition = new Vector3f(0,0,0);
-			Vector2f enemySize = new Vector2f(64,64);
-			
+
+			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX, terminalVelocityX);
+			Vector3f currentEnemyPosition = new Vector3f(0, 0, 0);
+			Vector2f enemySize = new Vector2f(64, 64);
+
 			int lowestYCoordinate = 0;
-			for(Tile t : sortedTiles)
+			for (Tile t : sortedTiles)
 			{
-				if(t.getPosition().getY() > lowestYCoordinate)
+				if (t.getPosition().getY() > lowestYCoordinate)
 				{
-					lowestYCoordinate = (int)t.getPosition().getY();
+					lowestYCoordinate = (int) t.getPosition().getY();
 				}
 			}
-			
-			boolean isAtTerminalVelocity = false;
-			for(Vertex v : vertices)
+			System.out.println("Lowest y: " + lowestYCoordinate);
+
+			ArrayList<Vertex> edgeOfPlatformVertices = new ArrayList<Vertex>();
+			for (Vertex v : vertices)
 			{
-				Tile enemyStartTile = v.getTile();
-				currentEnemyPosition.x = v.getTile().getPosition().x + v.getTile().getSize().getX();
-				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
-				currentEnemyVelocity = new Vector2f(terminalVelocityX,0);
-				distanceEnemyTraveledY = 0;
-				while(currentEnemyPosition.y <= lowestYCoordinate)
+				boolean right = false;
+				boolean left = false;
+				for (Edge e : v.getEdges())
 				{
-					currentEnemyPosition.y += currentEnemyVelocity.y;
-					currentEnemyPosition.x += currentEnemyVelocity.x;
-					RectangleBox enemyCollider = new RectangleBox(currentEnemyPosition,enemySize);
-					//Check for collision
-					for(Tile t : sortedTiles)
+					Tile startTile = v.getTile();
+					Tile destinationTile = e.getDestination().getTile();
+
+					// Check if destination is to the right
+					if (startTile.getPosition().getX() + startTile.getSize().getX() == destinationTile.getPosition().getX() && startTile.getPosition().getY() == destinationTile.getPosition().getY())
 					{
-						RectangleBox tileCollider = new RectangleBox(t.getPosition(),t.getSize());
-						if(enemyCollider.isCollidingWithBox(tileCollider)) // Found collision along arc
+						right = true;
+						if (left)
 						{
-							Tile previousTile = t;
-							// assumming falling to the right
-							while(previousTile.getPosition().getX() > v.getTile().getPosition().getX())
+							break;
+						}
+					}
+
+					if (destinationTile.getPosition().getX() + destinationTile.getSize().getX() == startTile.getPosition().getX() && destinationTile.getPosition().getY() == startTile.getPosition().getY())
+					{
+						left = true;
+						if (right)
+						{
+							break;
+						}
+					}
+				}
+				if (!left || !right)
+				{
+					for (Tile t : sortedTiles)
+					{
+						Tile startTile = v.getTile();
+						if (startTile.getPosition().getX() + startTile.getSize().getX() == t.getPosition().getX() && startTile.getPosition().getY() == t.getPosition().getY())
+						{
+							right = true;
+							if (left)
 							{
-								for(Tile tt: sortedTiles)
-								{
-									if(tt.getPosition().getX() + tt.getSize().getX() == previousTile.getPosition().getX() && tt.getPosition().getY() == previousTile.getPosition().getY())
-									{
-										if(!isBlockOnTop(tt,sortedTiles))
-										{
-											Edge e = new Edge(v,getVertexFromTile(tt,vertices),14);
-											e.addEnemyMovementMethod(0, MovementMethod.FALL);
-											v.addEdge(e);
-										}
-										previousTile = tt;
-										break;
-									}
-								}
+								break;
 							}
-							if(previousTile.getPosition().getX() == v.getTile().getPosition().getX() && previousTile.getPosition().getY() == v.getTile().getPosition().getY()) // Check if blocked off
+						}
+
+						if (t.getPosition().getX() + t.getSize().getX() == startTile.getPosition().getX() && t.getPosition().getY() == startTile.getPosition().getY())
+						{
+							left = true;
+							if (right)
 							{
 								break;
 							}
 						}
 					}
-					
+				}
+
+				if (right && left) // middle tile
+				{
+
+				} else
+				{
+					edgeOfPlatformVertices.add(v);
+				}
+			}
+
+			boolean isAtTerminalVelocity = false;
+			for (Vertex v : edgeOfPlatformVertices)
+			{
+				System.out.println("Checking new vertex...");
+				Tile enemyStartTile = v.getTile();
+				currentEnemyPosition.x = v.getTile().getPosition().x + v.getTile().getSize().getX();
+				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
+				currentEnemyVelocity = new Vector2f(terminalVelocityX, 0);
+				distanceEnemyTraveledY = 0;
+				while (currentEnemyPosition.y <= lowestYCoordinate)
+				{
+					currentEnemyPosition.x += currentEnemyVelocity.x;
+					currentEnemyPosition.y += currentEnemyVelocity.y;
+					System.out.println(currentEnemyPosition.y);
+					RectangleBox enemyCollider = new RectangleBox(currentEnemyPosition, enemySize);
+					int currentModuloPosition = -Integer.MAX_VALUE;
+					// Check for collision
+					for (Tile t : sortedTiles)
+					{
+						RectangleBox tileCollider = new RectangleBox(t.getPosition(), t.getSize());
+						if (enemyCollider.isCollidingWithBox(tileCollider)) // Found collision along arc
+						{
+							if (t.getPosition().getY() == v.getTile().getPosition().getY() && (t.getPosition().getX() + t.getSize().getX() + t.getSize().getX() == v.getTile().getPosition().getX() || v.getTile().getPosition().getX() + v.getTile().getSize().getX() + v.getTile().getSize().getX() == t.getPosition().getX()))
+							{
+								continue;
+							} else if (t.getPosition().getY() <= v.getTile().getPosition().getY())
+							{
+								break;
+							}
+							Tile previousTile = t;
+							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
+							// assumming falling to the right
+							while ((int) previousTile.getPosition().getX() > (int) v.getTile().getPosition().getX() + (int) v.getTile().getSize().getX())
+							{
+								boolean brokeOutOfLoop = false;
+								for (Tile tt : tiles)
+								{
+									if ((int) tt.getPosition().getX() + (int) tt.getSize().getX() == (int) previousTile.getPosition().getX() && (int) tt.getPosition().getY() == (int) previousTile.getPosition().getY())
+									{
+										if (!isBlockOnTop(tt, tiles))
+										{
+											Edge e = new Edge(v, getVertexFromTile(tt, vertices), 14);
+											e.addEnemyMovementMethod(0, MovementMethod.FALL);
+											v.addEdge(e);
+										}
+										previousTile = tt;
+										brokeOutOfLoop = true;
+										break;
+									}
+								}
+
+								if (!brokeOutOfLoop)
+								{
+									break;
+								}
+							}
+							if ((int) previousTile.getPosition().getX() == (int) v.getTile().getPosition().getX() && (int) previousTile.getPosition().getY() == (int) v.getTile().getPosition().getY()) // Check
+																																																		// if
+																																																		// blocked
+																																																		// off
+							{
+								break;
+							}
+						}
+					}
+					int tmp = (int)(currentEnemyPosition.getX() / (int)v.getTile().getSize().getX());
+					if(currentModuloPosition != tmp)
+					{
+						currentModuloPosition = tmp;
+						for(Tile ttt : sortedTiles)
+						{
+							if((int)ttt.getPosition().getX() / (int)ttt.getSize().getX() == currentModuloPosition && ttt.getPosition().getY() > v.getTile().getPosition().getY())
+							{
+								System.out.println("Found edge...");
+								Vertex tmp2 = getVertexFromTile(ttt,vertices);
+								if(tmp2 == null || tmp2 == v)
+								{
+									System.out.println("Error finding edge...");
+									continue;
+								}
+								Edge e = new Edge(v, tmp2, 14);
+								e.addEnemyMovementMethod(0, MovementMethod.FALL);
+								v.addEdge(e);
+							}
+						}								
+					}
+
 					currentEnemyVelocity.y += Entity.GRAVITY;
-					if(currentEnemyVelocity.y > terminalVelocityY)
+					if (currentEnemyVelocity.y > terminalVelocityY)
 					{
 						currentEnemyVelocity.y = terminalVelocityY;
 					}
 				}
-					//RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
-					//for(Vertex vv : vertices)
-					//{
-					//	if(vv.getTile().getPosition().getY() > v.getTile().getPosition().getY())
-					//	{
-					//		Edge ee = new Edge(v,vv,14);
-					//		ee.addEnemyMovementMethod(0, MovementMethod.FALL);
-					//		v.addEdge(ee);
-					//	}
-					//}
-					//currentEnemyPosition.x += terminalVelocityY;
-					//currentEnemyPosition.y += currentEnemyVelocity.getY();
-					//currentEnemyVelocity.y += Entity.GRAVITY;
-					
-					// apply physics
-				//}
+				// RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
+				// for(Vertex vv : vertices)
+				// {
+				// if(vv.getTile().getPosition().getY() > v.getTile().getPosition().getY())
+				// {
+				// Edge ee = new Edge(v,vv,14);
+				// ee.addEnemyMovementMethod(0, MovementMethod.FALL);
+				// v.addEdge(ee);
+				// }
+				// }
+				// currentEnemyPosition.x += terminalVelocityY;
+				// currentEnemyPosition.y += currentEnemyVelocity.getY();
+				// currentEnemyVelocity.y += Entity.GRAVITY;
+
+				// apply physics
+				// }
 			}
-			
-			for(Vertex v : vertices)
+
+			for (Vertex v : vertices)
 			{
-				//System.out.println(v);
-				writer.println("\t<VERTEX x=\"" + (int)v.getTile().getPosition().x +"\" y=\"" + (int)v.getTile().getPosition().y + "\">");
-				
-				for(Edge e: v.getEdges())
+				// System.out.println(v);
+				writer.println("\t<VERTEX x=\"" + (int) v.getTile().getPosition().x + "\" y=\"" + (int) v.getTile().getPosition().y + "\">");
+
+				for (Edge e : v.getEdges())
 				{
-					for(EnemyMovement ee : e.getEnemyMovement())
+					for (EnemyMovement ee : e.getEnemyMovement())
 					{
-						writer.println("\t\t<EDGE D x=\"" + (int)e.getDestination().getTile().getPosition().x + "\" y=\"" + (int)e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int)e.getWeight() + "\" enemyType=\"" + ee.getEnemyTypeID() + "\" movementType=\"" + ee.getMovementMethod().toString() + "\"/>");
+						writer.println("\t\t<EDGE D x=\"" + (int) e.getDestination().getTile().getPosition().x + "\" y=\"" + (int) e.getDestination().getTile().getPosition().y + "\" weight=\"" + (int) e.getWeight() + "\" enemyType=\"" + ee.getEnemyTypeID() + "\" movementType=\""
+								+ ee.getMovementMethod().toString() + "\"/>");
 					}
 				}
-				
+
 				writer.println("\t</VERTEX>");
 			}
-			
+
 			writer.println("</LEVEL>");
 			writer.close();
 		} catch (FileNotFoundException e)
@@ -870,24 +995,24 @@ public class LevelBuilderGame
 		System.out.println("Done...");
 		readyAfterClickingSave = true;
 	}
-	
+
 	public static boolean isBlockOnTop(Tile t, ArrayList<Tile> tiles)
 	{
-		for(Tile tile : tiles)
+		for (Tile tile : tiles)
 		{
-			if((int)tile.getPosition().getX() == (int)t.getPosition().getX() && tile.getPosition().getY() == t.getPosition().getY() - tile.getSize().getY())
+			if ((int) tile.getPosition().getX() == (int) t.getPosition().getX() && tile.getPosition().getY() == t.getPosition().getY() - tile.getSize().getY())
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public static Vertex getVertexFromTile(Tile t, ArrayList<Vertex> vertices)
 	{
-		for(Vertex v : vertices)
+		for (Vertex v : vertices)
 		{
-			if(v.getTile() == t)
+			if (v.getTile() == t)
 			{
 				return v;
 			}

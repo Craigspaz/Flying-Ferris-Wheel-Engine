@@ -3,6 +3,7 @@ package com.main;
 import java.util.ArrayList;
 
 import org.lwjgl.openal.AL;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -10,6 +11,8 @@ import org.newdawn.slick.openal.SoundStore;
 
 import com.audio.SoundEffects;
 import com.graphics.GFX;
+import com.graphics.Mesh;
+import com.graphics.Shader;
 import com.graphics.Textures;
 import com.graphics.world.Camera;
 import com.graphics.world.DialogBox;
@@ -78,6 +81,10 @@ public class Game
 
 	private String					nextLevelName			= "level1";
 
+	private Shader					testShader;
+
+	private Mesh					testMesh;
+
 	// private Projectile testProjectile;
 
 	/**
@@ -110,12 +117,46 @@ public class Game
 		// tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2,
 		// 20));
 
-		SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
+		// SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
 		// if (!loadNewLevel("./res/world/level1.ffw"))
 		// {
 		// throw new NullPointerException("World Could not be loaded");
 		// }
 		// SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
+
+		testShader = new Shader("./res/shaders/testVertex.vs", "./res/shaders/testFragment.fs");
+		testShader.addUniform("uniformFloat");
+		testMesh = new Mesh();
+		//com.graphics.Vertex[] v = new com.graphics.Vertex[]{
+		//							new com.graphics.Vertex(new Vector3f(-1.0f, 1.0f, 0.0f),new Vector2f(1,0)),
+		//							new com.graphics.Vertex(new Vector3f(1.0f, 1.0f, 0.0f),new Vector2f(0,0)),
+		//							new com.graphics.Vertex(new Vector3f(1.0f, -1.0f, 0.0f), new Vector2f(0,1)),
+		//							new com.graphics.Vertex(new Vector3f(-1.0f, -1.0f, 0.0f),new Vector2f(1,1))
+		//							};
+		
+		
+		
+		Vector3f ttest = new Vector3f(32,32,0); //new Vector3f(player.getPosition().getX(),player.getPosition().getY(),player.getPosition().getZ());
+		ttest.x = (2 / ttest.x) - 1;
+		ttest.y = (2 / ttest.y);
+		
+		com.graphics.Vertex[] v = new com.graphics.Vertex[]{
+				new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y + 1, 0.0f),new Vector2f(1,0)),
+				new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y + 1, 0.0f),new Vector2f(0,0)),
+				new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y, 0.0f), new Vector2f(0,1)),
+				new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y, 0.0f),new Vector2f(1,1))
+				};
+		
+
+		//GL11.glVertex3f(-1.0f, 1.0f, 0.0f);
+		//GL11.glVertex3f(1.0f, 1.0f, 0.0f);
+		//GL11.glVertex3f(1.0f, -1.0f, 0.0f);
+		//GL11.glVertex3f(-1.0f, -1.0f, 0.0f);
+		
+		int[] indices = new int[]{
+				3,2,1,0
+		};
+		testMesh.addVertices(v, indices);
 	}
 
 	/**
@@ -137,16 +178,6 @@ public class Game
 		{
 			GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the
 																						// correct
-			// location
-			// Draw Movement map
-			for (Vertex v : currentLevel.getVertices())
-			{
-				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
-				for (Edge e : v.getEdges())
-				{
-					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
-				}
-			}
 			for (Tile t : tiles)
 			{
 				if (t.getPosition().z >= 0)
@@ -206,6 +237,17 @@ public class Game
 				t.render();
 			}
 
+			// location
+			// Draw Movement map
+			for (Vertex v : currentLevel.getVertices())
+			{
+				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
+				for (Edge e : v.getEdges())
+				{
+					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
+				}
+			}
+
 			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
 
 			if (debugMode)
@@ -219,8 +261,34 @@ public class Game
 
 		} else if (currentState == GameStates.PAUSE)
 		{
+			// GL11.glPushMatrix();
+			// testShader.bindShader();
+			int xx = (int) (camera.getPosition().getX()) / (int) Game.SCALE;
+			int yy = (int) (camera.getPosition().getY()) / (int) Game.SCALE;
+			// GL11.glPushMatrix();
+			testShader.bindShader();
+			testShader.setUniformf("uniformFloat", 1.0f);
+			// Draws a rectangle
+			GL11.glLoadIdentity();
+			GL11.glTranslatef(0.0f, 0.0f, -10.0f);
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);// white
 
+			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glVertex3f(-1.0f, 1.0f, 0.0f);
+			GL11.glVertex3f(1.0f, 1.0f, 0.0f);
+			GL11.glVertex3f(1.0f, -1.0f, 0.0f);
+			GL11.glVertex3f(-1.0f, -1.0f, 0.0f);
+			GL11.glEnd();
+			testShader.unbindShader();
+			// GL11.glColor4f(1f, 1f, 1f, 1f);
 		}
+
+		testShader.bindShader();
+		testShader.setUniformf("uniformFloat", 1f);
+		Textures.sean.bind();
+		testMesh.draw();
+		testShader.unbindShader();
+
 	}
 
 	/**
@@ -484,6 +552,28 @@ public class Game
 		{
 
 		}
+		
+		Vector3f ttest = new Vector3f(-camera.getPosition().getX() / Game.SCALE,-camera.getPosition().getY() / Game.SCALE,0); //new Vector3f(player.getPosition().getX(),player.getPosition().getY(),player.getPosition().getZ());
+		ttest.x = (2 / ttest.x) - 1;
+		ttest.y = (2 / ttest.y);
+		
+		com.graphics.Vertex[] v = new com.graphics.Vertex[]{
+				new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y + 1, 0.0f),new Vector2f(1,0)),
+				new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y + 1, 0.0f),new Vector2f(0,0)),
+				new com.graphics.Vertex(new Vector3f(ttest.x + 1, ttest.y, 0.0f), new Vector2f(0,1)),
+				new com.graphics.Vertex(new Vector3f(ttest.x, ttest.y, 0.0f),new Vector2f(1,1))
+				};
+		
+
+		//GL11.glVertex3f(-1.0f, 1.0f, 0.0f);
+		//GL11.glVertex3f(1.0f, 1.0f, 0.0f);
+		//GL11.glVertex3f(1.0f, -1.0f, 0.0f);
+		//GL11.glVertex3f(-1.0f, -1.0f, 0.0f);
+		
+		int[] indices = new int[]{
+				3,2,1,0
+		};
+		testMesh.addVertices(v, indices);
 	}
 
 	/**

@@ -32,6 +32,7 @@ public class Window
 		{
 			if(width < 0 || height < 0)
 			{
+				System.err.println("Invalid Width and Height. Window creation failed");
 				throw new IllegalArgumentException();
 			}
 			setDisplayMode(width, height, false);
