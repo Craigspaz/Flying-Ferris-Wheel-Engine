@@ -1,6 +1,7 @@
 package com.main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.GL11;
@@ -21,6 +22,8 @@ import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
 import com.graphics.world.World;
 import com.graphics.world.enemys.Enemy;
+import com.graphics.world.menu.ButtonState;
+import com.graphics.world.menu.MenuButton;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Edge;
 import com.graphics.world.util.Vertex;
@@ -65,6 +68,10 @@ public class Game
 	private Tile					testTile2;
 	private Tile					sky;
 
+	// Menu things
+	private Tile					titleText;
+	private ArrayList<MenuButton>	menuButtons				= new ArrayList<MenuButton>();
+
 	private ArrayList<Tile>			tutorialButtons			= new ArrayList<Tile>();
 
 	private DialogBox				currentDialogue;
@@ -78,6 +85,7 @@ public class Game
 
 	private String					nextLevelName			= "level1";
 
+	private boolean					canTogglePause			= true;
 	// private Projectile testProjectile;
 
 	/**
@@ -87,7 +95,6 @@ public class Game
 	{
 		new Textures(); // Loads textures
 		new SoundEffects(); // Loads Sound effects
-		handler = new InputHandler();
 		GFX.initString();
 
 		setPlayer(new Player(new Vector3f(32, 32, 0), Textures.playerFront, Textures.playerOutline, 0, 0, new Vector2f(32, 32), handler));
@@ -96,12 +103,24 @@ public class Game
 		playerPosition = new Vector2f(getPlayer().getPosition().getX(), getPlayer().getPosition().getY());
 
 		camera = new Camera(new Vector2f(getPlayer().getPosition().x, getPlayer().getPosition().y), new Vector2f(Window.width, Window.height));
+		handler = new InputHandler(camera);
 		camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
 		terminal = new Terminal(handler, getPlayer(), camera, this);
 		sky = new Tile(new Vector3f(-256, -112, 100), new Vector2f(1024, 1024), Textures.sky);
 		testTile2 = new Tile(new Vector3f(-256, -112, 10), new Vector2f(1024, 1024), Textures.desert2);
 		testTile1 = new Tile(new Vector3f(-256, -112, 5), new Vector2f(1024, 1024), Textures.desert1);
 		testTile0 = new Tile(new Vector3f(-256, -112, 2), new Vector2f(1024, 1024), Textures.desert0);
+
+		titleText = new Tile(new Vector3f(0, 0, 0), new Vector2f(304, 125), Textures.titletext);
+		float titleTextCenter = titleText.getPosition().x + titleText.getSize().x / 2;
+		Tile startButton = new Tile(new Vector3f(titleTextCenter - (92 / 2), 80, 0), new Vector2f(92, 18), Textures.menubuttons, 3, 0);
+		Tile optionButton = new Tile(new Vector3f(titleTextCenter - (128 / 2), 100, 0), new Vector2f(128, 18), Textures.menubuttons, 3, 1);
+		Tile exitButton = new Tile(new Vector3f(titleTextCenter - (74 / 2), 120, 0), new Vector2f(74, 18), Textures.menubuttons, 3, 2);
+		Tile backButton = new Tile(new Vector3f(titleTextCenter - (16 / 2), 80, 0), new Vector2f(20, 18), Textures.menubuttons, 3, 3);
+		menuButtons.add(new MenuButton(startButton));// the start button
+		menuButtons.add(new MenuButton(optionButton));// the start button
+		menuButtons.add(new MenuButton(exitButton));// the start button
+		menuButtons.add(new MenuButton(backButton));
 
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 2, 0, 20, 1));
 		tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(14, 14), Textures.tutorialButtons, 2, 0, 20));
@@ -110,7 +129,7 @@ public class Game
 		// tutorialButtons.add(new Tile(new Vector3f(0, 0, 0), new Vector2f(56, 14), Textures.tutorialButtons, 2, 2,
 		// 20));
 
-		SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
+		// SoundEffects.testEffect.playAsMusic(1.0f, 1.0f, true);
 		// if (!loadNewLevel("./res/world/level1.ffw"))
 		// {
 		// throw new NullPointerException("World Could not be loaded");
@@ -123,25 +142,31 @@ public class Game
 	 */
 	public void render()
 	{
+		GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the
+		// correct
 		if (currentState == GameStates.SPLASH)
 		{
-			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.sean, tmpCounter);
+			// GFX.drawEntireSpriteWithVaryingAlpha(2048, 2048, 0, 0, Textures.splash, tmpCounter);
+			// GFX.drawEntireSpriteUnscaled(2048, 2048, 0, 0, Textures.splash);
+			GFX.drawSpriteFromSpriteSheet(Window.width, Window.height, 0, 0, Textures.splash, new Vector2f(0, 0), new Vector2f(1920f / 2048f, 1080f / 2048f), 1, 1f);
 		} else if (currentState == GameStates.MAIN_MENU)
 		{
-
+			titleText.render();
+			for (int i = 0; i < 3; i++)
+			{
+				menuButtons.get(i).render();
+			}
 		} else if (currentState == GameStates.LOADING)
 		{
-			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.air, 1);
+			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.air, 1, -1);
 			System.out.println("Loading Please Wait...");
 		} else if (currentState == GameStates.GAME)
 		{
-			GL11.glTranslatef(-camera.getPosition().x, -camera.getPosition().y, 0.0f); // Moves the camera to the
-																						// correct
 			// location
 			// Draw Movement map
 			for (Vertex v : currentLevel.getVertices())
 			{
-				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
+				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt, -1);
 				for (Edge e : v.getEdges())
 				{
 					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
@@ -216,8 +241,9 @@ public class Game
 			}
 		} else if (currentState == GameStates.OPTIONS)
 		{
-
+			menuButtons.get(3).render();
 		} else if (currentState == GameStates.PAUSE)
+			menuButtons.get(3).render();
 		{
 
 		}
@@ -230,10 +256,17 @@ public class Game
 	{
 		if (currentState == GameStates.SPLASH)
 		{
+			camera.setPosition(new Vector2f(0, 0));
 			splashScreenTickCounter++;
 			if (splashScreenTickCounter > 60 * 2)
 			{
-				currentState = GameStates.LOADING;
+				currentState = GameStates.MAIN_MENU;
+				// does this so we don't see a single frame of stuff in the wrong place
+				titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+				for (int i = 0; i < 3; i++)
+				{
+					menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+				}
 				tmpCounter = 1;
 			}
 			tmpCounter -= 0.001f;
@@ -243,9 +276,38 @@ public class Game
 			}
 		} else if (currentState == GameStates.MAIN_MENU)
 		{
+			// System.out.println("camera center at " + camera.getAbsoluteCenter().x + " " + camera.getAbsoluteCenter().y);
+			// camera.setPosition(new Vector2f(0, 0));
+			titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
 
+			for (int i = 0; i < 3; i++)
+			{
+				menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+				menuButtons.get(i).update(handler);
+				if (menuButtons.get(i).getCurrentState() == ButtonState.ACTIVE)
+				{
+					switch (i)
+					{
+						case 0:
+							currentState = GameStates.LOADING;
+							break;
+						case 1:
+							currentState = GameStates.OPTIONS;
+							menuButtons.get(3).setPosition(new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE),
+									(camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
+							break;
+						case 2:
+							cleanUPGame();
+							System.exit(0);
+						default:
+							break;
+					}
+				}
+			}
+			// Do stuff for parallax effect based on mouse movement around the title screen
 		} else if (currentState == GameStates.LOADING)
 		{
+			camera.setPosition(new Vector2f(0, 0));
 			if (loadLevelThread == null)
 			{
 				loadLevelThread = new Thread(new Runnable()
@@ -271,8 +333,7 @@ public class Game
 			if (!loadLevelThread.isAlive()) // Note: This is a discouraged way of doing this
 			{
 				/*
-				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
-				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
 				 */
 				loadLevelThread = null;
 				currentState = GameStates.GAME;
@@ -293,6 +354,18 @@ public class Game
 			terminal.update();
 			if (!terminal.active())// pauses game while terminal is active
 			{
+				// handles pausing (when terminal is closed
+				if (handler.escape() && canTogglePause)
+				{
+					canTogglePause = false;
+					currentState = GameStates.PAUSE;
+					menuButtons.get(3).setPosition(
+							new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
+				} else if (!handler.escape())
+				{
+					canTogglePause = true;
+				}
+
 				// Updates the dialogue box
 				if (currentDialogue != null)
 				{
@@ -326,8 +399,7 @@ public class Game
 					e.update(worldColliders, player, currentLevel.getVertices());
 					e.checkForCollisionWithProjectiles(playerProjectiles);
 					/*
-					 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
-					 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+					 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
 					 */
 				}
 
@@ -461,28 +533,48 @@ public class Game
 				}
 				playerPosition.x = player.getPosition().getX();
 				playerPosition.y = player.getPosition().getY();
+				tutorialButtons.get(0).setPosition(new Vector3f(playerPosition.x - 6, playerPosition.y - 24, 0));
+				tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
+				tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
+				tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
+				// tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
+				for (Tile t : tutorialButtons)
+				{
+					t.update();
+				}
 				camera.update();
 				SoundStore.get().poll(0);
 			}
 			playerPosition.x = player.getPosition().getX();
 			playerPosition.y = player.getPosition().getY();
-			tutorialButtons.get(0).setPosition(new Vector3f(playerPosition.x - 6, playerPosition.y - 24, 0));
-			tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
-			tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
-			tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
-			// tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
-			for (Tile t : tutorialButtons)
-			{
-				t.update();
-			}
+			camera.setPositionToPlayer(player, Window.width, Window.height);
 			camera.update();
 			SoundStore.get().poll(0);
 		} else if (currentState == GameStates.OPTIONS)
 		{
-
+			menuButtons.get(3).setPosition(
+					new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
+			menuButtons.get(3).update(handler);
+			if (handler.escape() || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
+			{
+				currentState = GameStates.MAIN_MENU;
+			}
 		} else if (currentState == GameStates.PAUSE)
 		{
-
+			camera.setPosition(new Vector2f(0, 0));
+			menuButtons.get(3).setPosition(
+					new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
+			System.out.println(handler.getMousePosition() + " " + menuButtons.get(3).getPosition());
+			menuButtons.get(3).update(handler);
+			if (handler.escape() && canTogglePause || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
+			{
+				canTogglePause = false;
+				currentState = GameStates.GAME;
+				camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
+			} else if (!handler.escape())
+			{
+				canTogglePause = true;
+			}
 		}
 	}
 

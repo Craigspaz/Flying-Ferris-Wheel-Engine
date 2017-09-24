@@ -148,6 +148,16 @@ public class Camera
 	}
 
 	/**
+	 * returns the center of the camera at any scale of the game, so things can be drawn relative no matter the scale
+	 * 
+	 * @return
+	 */
+	public Vector2f getAbsoluteCenter()
+	{
+		return new Vector2f((position.x + size.x / 2) / Game.SCALE, (position.y + size.y / 2) / Game.SCALE);
+	}
+
+	/**
 	 * Sets the position of the top left corner of the camera
 	 * 
 	 * @param position

@@ -244,10 +244,10 @@ public class Particle
 		Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 		if (flip)
 		{
-			GFX.drawSpriteFromSpriteSheetInverse(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey);
+			GFX.drawSpriteFromSpriteSheetInverse(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey, -1);
 		} else
 		{
-			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey);
+			GFX.drawSpriteFromSpriteSheet(size.x, size.y, position.x, position.y, spriteSheet, offset, sizey, -1, 1f);
 		}
 	}
 
