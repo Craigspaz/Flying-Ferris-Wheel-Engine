@@ -88,16 +88,6 @@ public class InputHandler
 	}
 
 	/**
-	 * Returns if the game should pause
-	 * 
-	 * @return Returns if the game should pause
-	 */
-	public boolean pause()
-	{
-		return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
-	}
-
-	/**
 	 * Returns if the player should be sprinting
 	 * 
 	 * @return Returns if the player should be sprinting
@@ -300,8 +290,8 @@ public class InputHandler
 	{
 		int mouseX = Mouse.getX();
 		int mouseY = Window.height - Mouse.getY() - 1;
-		float trueX = (mouseX - camera.getTotalCameraOffset().x) / Game.SCALE;
-		float trueY = (mouseY - camera.getTotalCameraOffset().y) / Game.SCALE;
+		float trueX = (mouseX - camera.getPosition().x) / Game.SCALE;
+		float trueY = (mouseY - camera.getPosition().y) / Game.SCALE;
 		return new Vector2f(trueX, trueY);
 	}
 

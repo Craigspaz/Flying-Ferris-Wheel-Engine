@@ -53,8 +53,8 @@ public class Entity
 	protected float					animateSpeed		= 2.0f;
 	protected float					animateTime			= 0.0f;
 
-	protected float					walkSpeed			= 4.0f;
-	protected float					sprintSpeed			= 8.0f;
+	protected float					walkSpeed			= 3.0f;
+	protected float					sprintSpeed			= 6.0f;
 	protected boolean				isSprinting			= false;
 
 	protected boolean				affectedByGravity	= false;

@@ -224,7 +224,7 @@ public class Terminal
 					{
 						if (commands[1].equals("reset"))
 						{
-							Game.setScale(1f);
+							Game.setScale(2f);
 						} else
 						{
 							Game.setScale(Float.parseFloat(commands[1]));

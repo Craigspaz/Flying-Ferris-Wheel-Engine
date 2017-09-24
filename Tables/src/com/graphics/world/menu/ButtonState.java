@@ -8,5 +8,5 @@ package com.graphics.world.menu;
  */
 public enum ButtonState
 {
-	UP, HOVER, DOWN
+	INACTIVE, HOVER, ACTIVE, PRESSED
 }

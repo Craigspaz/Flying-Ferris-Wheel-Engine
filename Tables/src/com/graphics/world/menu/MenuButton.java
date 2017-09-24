@@ -27,6 +27,7 @@ public class MenuButton
 	private ButtonState		currentState;
 	private float			redheat		= 0;
 	private float			whiteheat	= 0;
+	boolean					buttonHeld	= false;
 
 	/**
 	 * Creates a new MenuButton
@@ -62,6 +63,29 @@ public class MenuButton
 		// change ButtonState and heatState
 		if (handler.getMousePosition().x > collider.getPosition().x && handler.getMousePosition().y > collider.getPosition().y && handler.getMousePosition().x < collider.getPosition().x + collider.getSize().x && handler.getMousePosition().y < collider.getPosition().y + collider.getSize().y)
 		{
+			if (handler.isMouseLeftClicking())
+			{
+				currentState = ButtonState.PRESSED;
+			} else
+			{
+				if (currentState == ButtonState.PRESSED)
+				{
+					currentState = ButtonState.ACTIVE;
+				} else
+				{
+					currentState = ButtonState.HOVER;
+				}
+			}
+		} else
+		{
+			if (!handler.isMouseLeftClicking())
+			{
+				currentState = ButtonState.INACTIVE;
+			}
+		}
+		
+		//Graphics changes based on state
+		if(currentState == ButtonState.PRESSED || currentState == ButtonState.HOVER) {
 			if (redheat < 1)
 			{
 				redheat += 0.002;
@@ -73,9 +97,14 @@ public class MenuButton
 				else
 					whiteheat = 1;
 			}
-
-		} else
+		}
+		if (currentState == ButtonState.PRESSED)
 		{
+			Button.setPosition(new Vector3f(position.x, position.y + 2, 0));
+			redButton.setPosition(new Vector3f(position.x, position.y + 2, 0));
+			whiteButton.setPosition(new Vector3f(position.x, position.y + 2, 0));
+		}
+		if (currentState == ButtonState.INACTIVE) {
 			if (whiteheat > 0)
 			{
 				whiteheat -= 0.05;
