@@ -39,6 +39,8 @@ public class Game
 	public static float				counter					= 0f;
 	public static boolean			debugMode				= true;
 
+	private Window					currentWindow;
+
 	private Player					player;
 
 	public static Vector2f			playerPosition;
@@ -83,8 +85,9 @@ public class Game
 	/**
 	 * Creates the game world
 	 */
-	public Game()
+	public Game(Window currentWindow)
 	{
+		this.currentWindow = currentWindow;
 		new Textures(); // Loads textures
 		new SoundEffects(); // Loads Sound effects
 		handler = new InputHandler();
@@ -220,7 +223,7 @@ public class Game
 
 		} else if (currentState == GameStates.PAUSE)
 		{
-			
+
 		}
 
 	}
@@ -479,6 +482,15 @@ public class Game
 			}
 			camera.update();
 			SoundStore.get().poll(0);
+			
+			if(handler.isMouseLeftClicking())
+			{
+				currentWindow.destroy();
+				currentWindow.width = 800;
+				currentWindow.height = 600;
+				currentWindow = new Window(800,600,true);
+				currentWindow.initOpenGL();
+			}
 		} else if (currentState == GameStates.OPTIONS)
 		{
 
@@ -494,6 +506,7 @@ public class Game
 	public void cleanUPGame()
 	{
 		AL.destroy();
+		currentWindow.destroy();
 	}
 
 	/**

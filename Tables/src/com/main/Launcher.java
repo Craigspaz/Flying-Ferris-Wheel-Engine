@@ -9,7 +9,7 @@ public class Launcher
 			@Override
 			public void run()
 			{
-				Window window = new Window();
+				Window window = new Window(1366,768,false);
 				window.initOpenGL();
 				window.run();
 			}}).start();
