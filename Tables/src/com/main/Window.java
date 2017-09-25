@@ -29,6 +29,8 @@ public class Window
 	 */
 	public Window(int width, int height, boolean fullscreen)
 	{
+		this.width = width;
+		this.height = height;
 		try
 		{
 			if(width < 0 || height < 0)
@@ -42,12 +44,18 @@ public class Window
 
 			Display.create();
 			Keyboard.create();
+			Mouse.create();
 		} catch (LWJGLException e)
 		{
 			e.printStackTrace();
 		}
 
 		game = new Game(this);
+	}
+	
+	public void enableVSync(boolean e)
+	{
+		Display.setVSyncEnabled(e);
 	}
 	
 	public void destroy()
@@ -194,5 +202,11 @@ public class Window
 		{
 			System.out.println("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullscreen + e);
 		}
+	}
+
+	public void enableFullScreen(boolean fullscreen)
+	{
+		setDisplayMode(width,height,fullscreen);
+		this.initOpenGL();
 	}
 }
