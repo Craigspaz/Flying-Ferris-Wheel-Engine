@@ -66,7 +66,7 @@ public class InputHandler
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns if the player should move left
 	 * 

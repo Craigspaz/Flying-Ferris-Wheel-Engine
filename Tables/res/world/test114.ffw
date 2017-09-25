@@ -1,0 +1,226 @@
+<LEVEL name="gen_1506033112226_level.ffw">
+<PLAYER x="1984" y="704" z="0" width="16" height="16" tex="playerFront" texOut="playerOutline"/>
+	<TILES sizex="64" sizey="64">
+		<TILE x="1280" y="768" z="0" texName="tilesheet" texCoordX="0.0" texCoordY="0.0"/>
+		<TILE x="1344" y="832" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1408" y="832" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="1472" y="896" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1536" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1600" y="896" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="1664" y="832" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="1728" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1792" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1856" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="1920" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.125"/>
+		<TILE x="1920" y="768" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0"/>
+		<TILE x="1984" y="768" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2048" y="768" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2112" y="768" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0625"/>
+		<TILE x="2112" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.1875"/>
+		<TILE x="2176" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2240" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0625"/>
+		<TILE x="2240" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.1875"/>
+		<TILE x="2304" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2368" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0625"/>
+		<TILE x="2368" y="960" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.1875"/>
+		<TILE x="2432" y="960" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="2496" y="896" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0"/>
+		<TILE x="2560" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.125"/>
+		<TILE x="2560" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0"/>
+		<TILE x="2624" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2688" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2752" y="832" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0625"/>
+		<TILE x="2752" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.1875"/>
+		<TILE x="2816" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2880" y="896" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.3125"/>
+		<TILE x="2944" y="896" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.125"/>
+		<TILE x="3008" y="832" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.1875"/>
+		<TILE x="3008" y="768" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.0"/>
+		<TILE x="3072" y="768" z="0" texName="tilesheet" texCoordX="0.125" texCoordY="0.125"/>
+		<TILE x="3072" y="704" z="0" texName="tilesheet" texCoordX="0.0625" texCoordY="0.0625"/>
+	</TILES>
+	<COLLIDERS>
+	<COLLIDER x="3072" y="704" z="0" width="64" height="64"/>
+	<COLLIDER x="1280" y="768" z="0" width="64" height="64"/>
+	<COLLIDER x="1920" y="768" z="0" width="256" height="64"/>
+	<COLLIDER x="3008" y="768" z="0" width="128" height="64"/>
+	<COLLIDER x="1344" y="832" z="0" width="128" height="64"/>
+	<COLLIDER x="1664" y="832" z="0" width="320" height="64"/>
+	<COLLIDER x="2112" y="832" z="0" width="192" height="64"/>
+	<COLLIDER x="2560" y="832" z="0" width="256" height="64"/>
+	<COLLIDER x="3008" y="832" z="0" width="64" height="64"/>
+	<COLLIDER x="1472" y="896" z="0" width="192" height="64"/>
+	<COLLIDER x="2240" y="896" z="0" width="192" height="64"/>
+	<COLLIDER x="2496" y="896" z="0" width="128" height="64"/>
+	<COLLIDER x="2752" y="896" z="0" width="256" height="64"/>
+	<COLLIDER x="2368" y="960" z="0" width="128" height="64"/>
+	</COLLIDERS>
+	<ENEMIES>
+	</ENEMIES>
+	<VERTEX x="1280" y="768">
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1344" y="832" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="1344" y="832">
+		<EDGE D x="1408" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="1408" y="832">
+		<EDGE D x="1344" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1536" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1536" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1536" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1536" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1536" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1536" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="1472" y="896" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="1472" y="896">
+		<EDGE D x="1536" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1536" y="896">
+		<EDGE D x="1472" y="896" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1600" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1600" y="896">
+		<EDGE D x="1536" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1664" y="832">
+		<EDGE D x="1728" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1728" y="832">
+		<EDGE D x="1664" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1792" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1792" y="832">
+		<EDGE D x="1728" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="1856" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1856" y="832">
+		<EDGE D x="1792" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1920" y="768">
+		<EDGE D x="1984" y="768" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="1984" y="768">
+		<EDGE D x="1920" y="768" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2048" y="768" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2048" y="768">
+		<EDGE D x="1984" y="768" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2112" y="768" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2112" y="768">
+		<EDGE D x="2048" y="768" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2176" y="832" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="2176" y="832">
+		<EDGE D x="2240" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="2240" y="832">
+		<EDGE D x="2176" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2304" y="896" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="2304" y="896">
+		<EDGE D x="2368" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2368" y="896">
+		<EDGE D x="2304" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2432" y="960">
+	</VERTEX>
+	<VERTEX x="2496" y="896">
+	</VERTEX>
+	<VERTEX x="2560" y="832">
+		<EDGE D x="2624" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2624" y="832">
+		<EDGE D x="2560" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2688" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2688" y="832">
+		<EDGE D x="2624" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2752" y="832" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2752" y="832">
+		<EDGE D x="2688" y="832" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2880" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2880" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2880" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2880" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2880" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2880" y="896" weight="14" enemyType="0" movementType="FALL"/>
+		<EDGE D x="2816" y="896" weight="14" enemyType="0" movementType="FALL"/>
+	</VERTEX>
+	<VERTEX x="2816" y="896">
+		<EDGE D x="2880" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2880" y="896">
+		<EDGE D x="2816" y="896" weight="10" enemyType="0" movementType="WALK"/>
+		<EDGE D x="2944" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="2944" y="896">
+		<EDGE D x="2880" y="896" weight="10" enemyType="0" movementType="WALK"/>
+	</VERTEX>
+	<VERTEX x="3008" y="768">
+	</VERTEX>
+	<VERTEX x="3072" y="704">
+	</VERTEX>
+</LEVEL>
