@@ -238,7 +238,6 @@ public class Game
 			// Draw Movement map
 			for (Vertex v : currentLevel.getVertices())
 			{
-				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
 				for (Edge e : v.getEdges())
 				{
 					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
