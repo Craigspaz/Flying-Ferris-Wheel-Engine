@@ -126,13 +126,24 @@ public class GFX
 	 *            The y position of the top left corner of the sprite
 	 * @param texture
 	 *            The texture to be rendered at the specified location
+	 * @param scale
+	 *            the scale to render the sprite at (-1 for default)
 	 */
-	public static void drawEntireSprite(float x, float y, float xx, float yy, Texture texture)
+	public static void drawEntireSprite(float x, float y, float xx, float yy, Texture texture, int scale)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-		xx = (float) (Math.round(xx) * Game.SCALE);
-		yy = (float) (Math.round(yy) * Game.SCALE);
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -156,46 +167,6 @@ public class GFX
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
-	/**
-	 * Draws an entire sprite to the screen
-	 * 
-	 * @param x
-	 *            The width of the sprite on screen in pixels
-	 * @param y
-	 *            The height of the sprite on screen in pixels
-	 * @param xx
-	 *            The x position of the top left corner of the sprite
-	 * @param yy
-	 *            The y position of the top left corner of the sprite
-	 * @param texture
-	 *            The texture to be rendered at the specified location
-	 */
-	public static void drawEntireSpriteUnscaled(float x, float y, float xx, float yy, Texture texture)
-	{
-		// First binds the texture
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-		GL11.glPushMatrix();
-
-		// Draws a rectangle
-		GL11.glBegin(GL11.GL_QUADS);
-
-		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex2f(xx, yy);
-		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex2f(xx, y + yy);
-		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex2f(x + xx, y + yy);
-		GL11.glTexCoord2f(1, 0);
-		GL11.glVertex2f(x + xx, yy);
-
-		GL11.glEnd();
-		GL11.glPopMatrix();
-
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-	}
-
-	
 	/**
 	 * Draws an entire sprite at an angle
 	 * 
@@ -211,13 +182,24 @@ public class GFX
 	 *            The texture to be rendered at the specified location
 	 * @param angle
 	 *            The angle to rotate the texture
+	 * @param scale
+	 *            Scale to draw the sprite (-1 for game's default)
 	 */
-	public static void drawEntireSpriteAtAngle(float x, float y, float xx, float yy, Texture texture, float angle)
+	public static void drawEntireSpriteAtAngle(float x, float y, float xx, float yy, Texture texture, float angle, int scale)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-		xx = (float) (Math.round(xx) * Game.SCALE);
-		yy = (float) (Math.round(yy) * Game.SCALE);
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -265,18 +247,28 @@ public class GFX
 	 *            The coordinates on the texture to render
 	 * @param size
 	 *            The width and height to render from the sprite sheet
+	 * @param scale
+	 *            the scale to draw the sprite, -1 for game default
 	 */
-	public static void drawSpriteFromSpriteSheet(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size)
+	public static void drawSpriteFromSpriteSheet(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, int scale, float alpha)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-//		xx = xx * Game.SCALE;
-//		yy = yy * Game.SCALE;
-		xx = (float) (Math.round(xx) * Game.SCALE);
-		yy = (float) (Math.round(yy) * Game.SCALE);
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+		GL11.glColor4f(1f, 1f, 1f, alpha);
 		GL11.glPushMatrix();
 
 		// Draws a rectangle
@@ -294,6 +286,8 @@ public class GFX
 		GL11.glEnd();
 		GL11.glPopMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		
+		GL11.glColor4f(1f, 1f, 1f, 1f);
 	}
 
 	/**
@@ -315,13 +309,24 @@ public class GFX
 	 *            The width and height to render from the sprite
 	 * @param angle
 	 *            The angle at which to rotate the texture
+	 * @param scale
+	 *            the scale at which to draw the sprite, -1 for default
 	 */
-	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle)
+	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle, int scale)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-		xx = (float) (Math.round(xx) * Game.SCALE);
-		yy = (float) (Math.round(yy) * Game.SCALE);
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 
 		GL11.glPushMatrix();
@@ -367,13 +372,24 @@ public class GFX
 	 *            The coordinates on the texture to render
 	 * @param size
 	 *            The width and height to render from the sprite sheet
+	 * @param scale
+	 *            the scale to multiply the sprite, -1 for game default
 	 */
-	public static void drawSpriteFromSpriteSheetInverse(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size)
+	public static void drawSpriteFromSpriteSheetInverse(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, int scale)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-		xx = (float) (Math.round(xx) * Game.SCALE);
-		yy = (float) (Math.round(yy) * Game.SCALE);
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -415,15 +431,24 @@ public class GFX
 	 *            The width and height to render from the sprite sheet
 	 * @param angle
 	 *            The angle to rotate the texture
+	 * @param scale
+	 *            the amount to scale the sprite, -1 for game default
 	 */
-	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle)
+	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle, int scale)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-		// xx = xx * Game.SCALE;
-		// yy = yy * Game.SCALE;
-		xx = (float) (Math.round(xx) * Game.SCALE);
-		yy = (float) (Math.round(yy) * Game.SCALE);
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		// Binds the texture
 		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
@@ -454,7 +479,7 @@ public class GFX
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
 	}
-	
+
 	public static void drawLine(float startX, float startY, float destX, float destY)
 	{
 		GL11.glPushMatrix();
@@ -466,17 +491,26 @@ public class GFX
 		GL11.glColor3f(1, 1, 1);
 		GL11.glPopMatrix();
 	}
-	
-	public static void drawEntireSpriteWithVaryingAlpha(float x, float y, float xx, float yy, Texture texture, float alpha)
+
+	public static void drawEntireSpriteWithVaryingAlpha(float x, float y, float xx, float yy, Texture texture, float alpha, int scale)
 	{
-		x = x * Game.SCALE;
-		y = y * Game.SCALE;
-		xx = xx * Game.SCALE;
-		yy = yy * Game.SCALE;
+		if (scale == -1)
+		{
+			x = x * Game.SCALE;
+			y = y * Game.SCALE;
+			xx = (float) (Math.round(xx) * Game.SCALE);
+			yy = (float) (Math.round(yy) * Game.SCALE);
+		} else
+		{
+			x = x * scale;
+			y = y * scale;
+			xx = (float) (Math.round(xx) * scale);
+			yy = (float) (Math.round(yy) * scale);
+		}
 		// First binds the texture
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-		GL11.glColor4f(1f,1f,1f,alpha);
+		GL11.glColor4f(1f, 1f, 1f, alpha);
 		GL11.glPushMatrix();
 
 		// Draws a rectangle
@@ -495,9 +529,9 @@ public class GFX
 		GL11.glPopMatrix();
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		GL11.glColor4f(1f,1f,1f,1f);
+		GL11.glColor4f(1f, 1f, 1f, 1f);
 	}
-	
+
 	// Found http://www.java-gaming.org/topics/solved-opengl-context/27956/view.html
 	public static void screenshot()
 	{

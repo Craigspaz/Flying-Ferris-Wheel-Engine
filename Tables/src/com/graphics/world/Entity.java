@@ -51,8 +51,8 @@ public class Entity
 	protected float					animateSpeed		= 2.0f;
 	protected float					animateTime			= 0.0f;
 
-	protected float					walkSpeed			= 4.0f;
-	protected float					sprintSpeed			= 8.0f;
+	protected float					walkSpeed			= 3.0f;
+	protected float					sprintSpeed			= 6.0f;
 	protected boolean				isSprinting			= false;
 
 	protected boolean				affectedByGravity	= false;
@@ -393,17 +393,17 @@ public class Entity
 	{
 		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(spriteSize.x, spriteSize.y, position.x, position.y, texture);
+			GFX.drawEntireSprite(spriteSize.x, spriteSize.y, position.x, position.y, texture, -1);
 		} else
 		{
 			Vector2f offset = new Vector2f(((float) (spriteSize.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
 			Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey, -1);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey, -1, 1f);
 			}
 		}
 	}
@@ -415,17 +415,17 @@ public class Entity
 	{
 		if (numberOfFrames == 1)
 		{
-			GFX.drawEntireSprite(spriteSize.x, spriteSize.y, position.x, position.y, texture);
+			GFX.drawEntireSprite(spriteSize.x, spriteSize.y, position.x, position.y, texture, -1);
 		} else
 		{
 			Vector2f offset = new Vector2f(((float) (spriteSize.x * animSpriteFrameX)) / sizeOfSpriteSheet.x, (float) (spriteSize.y * row) / sizeOfSpriteSheet.y);
 			Vector2f sizey = new Vector2f((float) (spriteSize.x / sizeOfSpriteSheet.x), (float) (spriteSize.y / sizeOfSpriteSheet.y));
 			if (velocity.x < 0 || left)
 			{
-				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, outlineTexture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, outlineTexture, offset, sizey, -1);
 			} else
 			{
-				GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, outlineTexture, offset, sizey);
+				GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, outlineTexture, offset, sizey, -1, 1f);
 			}
 		}
 	}

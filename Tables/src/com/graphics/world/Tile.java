@@ -23,6 +23,7 @@ public class Tile
 	private int			row;
 	private int			currentFrame	= 0;
 	private boolean		flip			= false;
+	private float		alpha			= 1;
 	private Vector2f	spriteSize;
 
 	/**
@@ -180,6 +181,30 @@ public class Tile
 	}
 
 	/**
+	 * sets how opaque the image is (float from 0 to 1)
+	 * 
+	 * @param alpha
+	 */
+	public void setAlpha(float alpha)
+	{
+		this.alpha = alpha;
+	}
+
+	public float getAlpha()
+	{
+		return alpha;
+	}
+
+	/**
+	 * sets which frame is being shown
+	 * 
+	 */
+	public void setFrame(int currentFrame)
+	{
+		this.currentFrame = currentFrame % numberOfFrames;
+	}
+
+	/**
 	 * Renders the tile to the screen
 	 */
 	public void render()
@@ -188,10 +213,10 @@ public class Tile
 		Vector2f sizey = new Vector2f((float) (spriteSize.x / texture.getImageWidth()), (float) (spriteSize.y / texture.getImageHeight()));
 		if (flip)
 		{
-			GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey);
+			GFX.drawSpriteFromSpriteSheetInverse(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey, -1);
 		} else
 		{
-			GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey);
+			GFX.drawSpriteFromSpriteSheet(spriteSize.x, spriteSize.y, position.x, position.y, texture, offset, sizey, -1, alpha);
 		}
 	}
 
@@ -261,6 +286,11 @@ public class Tile
 	public String toString()
 	{
 		return "Pos: " + position + " spriteSize: " + spriteSize;
+	}
+
+	public Tile clone()
+	{
+		return new Tile(position, spriteSize, texture, numberOfFrames, row, ticksPerFrame, currentFrame);
 	}
 
 }

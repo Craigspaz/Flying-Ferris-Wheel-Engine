@@ -69,8 +69,8 @@ public class DialogBox
 		if (isActive)
 		{
 			int lineheight = GFX.font3.getLineHeight();
-			GFX.drawSpriteFromSpriteSheet(1024, 256, textBoxX, textBoxY, textBoxes, new Vector2f(0, textBoxNumber), new Vector2f(1, 1));// TODO fix the vectors so they aren't hard coded
-			GFX.drawSpriteFromSpriteSheet(128, 128, textBoxX + 2, textBoxY + 26, portraits, new Vector2f(portraitNumber, 0), new Vector2f(.5f, 1));
+			GFX.drawSpriteFromSpriteSheet(1024, 256, textBoxX, textBoxY, textBoxes, new Vector2f(0, textBoxNumber), new Vector2f(1, 1), -1, 1f);// TODO fix the vectors so they aren't hard coded
+			GFX.drawSpriteFromSpriteSheet(128, 128, textBoxX + 2, textBoxY + 26, portraits, new Vector2f(portraitNumber, 0), new Vector2f(.5f, 1), -1, 1f);
 			GFX.drawString2(textBoxX + 4, textBoxY + 1, speaker);
 			for (int i = 0; i < currentLine; i++)// draws all strings in previous lines, because they're already "typed"
 			{
@@ -140,12 +140,12 @@ public class DialogBox
 				currentLine = 0;
 				currentString = "";// does this because otherwise it briefly displays the current string when going to a
 									// new page, before it's overwritten above
-			} else //if you press while it's typing a line, it automatically completes the line and starts on the next
+			} else // if you press while it's typing a line, it automatically completes the line and starts on the next
 			{
 				currentLetter = messages[currentLine + (pageNumber * 5)].length();
 			}
 		}
-		if (!handler.nextPage())//you have to let go of the button before you can skip again
+		if (!handler.nextPage())// you have to let go of the button before you can skip again
 		{
 			canPress = true;
 		}

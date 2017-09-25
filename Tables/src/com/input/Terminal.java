@@ -61,11 +61,12 @@ public class Terminal
 	{
 		return this.active;
 	}
-	
-	
+
 	/**
 	 * Prints a message to the terminal
-	 * @param message The message to print
+	 * 
+	 * @param message
+	 *            The message to print
 	 */
 	public void printMessage(String message)
 	{
@@ -129,7 +130,7 @@ public class Terminal
 		lineheight = GFX.font2.getLineHeight();
 		if (active)
 		{
-			GFX.drawEntireSpriteUnscaled(512, 128, x, (y - 128), Textures.terminalWindow);
+			GFX.drawEntireSprite(512, 128, x, (y - 128), Textures.terminalWindow, 1);
 			for (int i = 0; i < messages.size(); i++)
 			{
 				GFX.drawString((x + 10), ((y - 2 * lineheight) - (lineheight * i) - 11), messages.get(i));
@@ -207,13 +208,9 @@ public class Terminal
 				{
 					game.setNextLevelName(commands[1]);
 					game.setGameState(GameStates.LOADING);
-					/*if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw"))
-					{
-						messages.add(0, "loaded " + commands[1]);
-					} else
-					{
-						messages.add(0, "could not load level");
-					}*/
+					/*
+					 * if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw")) { messages.add(0, "loaded " + commands[1]); } else { messages.add(0, "could not load level"); }
+					 */
 				} else
 				{
 					printMessage("invalid arguments");
@@ -226,7 +223,7 @@ public class Terminal
 					{
 						if (commands[1].equals("reset"))
 						{
-							Game.setScale(1f);
+							Game.setScale(2f);
 						} else
 						{
 							Game.setScale(Float.parseFloat(commands[1]));

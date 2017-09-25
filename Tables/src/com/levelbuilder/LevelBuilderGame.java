@@ -13,6 +13,7 @@ import org.newdawn.slick.opengl.Texture;
 import com.graphics.GFX;
 import com.graphics.Loader;
 import com.graphics.Textures;
+import com.graphics.world.Camera;
 import com.graphics.world.Entity;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
@@ -82,8 +83,8 @@ public class LevelBuilderGame
 	public LevelBuilderGame()
 	{
 		new Textures();
-		handler = new InputHandler();
 		Game.SCALE = 1;
+		handler = new InputHandler(new Camera(null, null));
 	}
 
 	/**
@@ -305,50 +306,50 @@ public class LevelBuilderGame
 			player.render();
 		}
 
-		GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.highlight);
+		GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.highlight, -1);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 0, Textures.testTile);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 32, Textures.grass);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 64, Textures.grassTop);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 96, Textures.dirt2);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 128, Textures.dirt);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 160, Textures.air);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 0, Textures.testTile, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 32, Textures.grass, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 64, Textures.grassTop, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 96, Textures.dirt2, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 128, Textures.dirt, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 160, Textures.air, -1);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 192, down);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 224, downleft);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 256, downleftright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 288, downright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 320, left);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 352, leftright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 384, leftupright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 416, right);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 448, rightupdown);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 480, topdown);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 512, up);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 544, updownleftright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 576, updownright);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 608, upleft);
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 640, upright);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 192, down, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 224, downleft, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 256, downleftright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 288, downright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 320, left, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 352, leftright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 384, leftupright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 416, right, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 448, rightupdown, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 480, topdown, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 512, up, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 544, updownleftright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 576, updownright, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 608, upleft, -1);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 640, upright, -1);
 
-		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 0, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
+		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 0, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256), -1, 1f);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel);
+		GFX.drawEntireSprite(32, 32, Window.width - 32, 672, saveLevel, -1);
 
-		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 32, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
+		GFX.drawSpriteFromSpriteSheet(32, 32, Window.width - 64, 32, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128), -1, 1f);
 
-		GFX.drawEntireSprite(32, 32, Window.width - 64, 64, door);
+		GFX.drawEntireSprite(32, 32, Window.width - 64, 64, door, -1);
 
 		if (tileToPlace != null)
 		{
 			if (tileToPlace == Textures.playerFront)
 			{
-				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256));
+				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.playerFront, new Vector2f(0, 0), new Vector2f((float) 32 / 512, (float) 32 / 256), -1, 1f);
 			} else if (tileToPlace == Textures.crabman)
 			{
-				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128));
+				GFX.drawSpriteFromSpriteSheet(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, Textures.crabman, new Vector2f(0, 0), new Vector2f((float) 64 / 512, (float) 64 / 128), -1, 1f);
 			} else
 			{
-				GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace);
+				GFX.drawEntireSprite(16, 16, handler.getMousePosition().x - handler.getMousePosition().x % 16, handler.getMousePosition().y - handler.getMousePosition().y % 16, tileToPlace, -1);
 			}
 		}
 		for (Enemy e : enemies)
@@ -1016,7 +1017,6 @@ public class LevelBuilderGame
 				// currentEnemyPosition.x += terminalVelocityY;
 				// currentEnemyPosition.y += currentEnemyVelocity.getY();
 				// currentEnemyVelocity.y += Entity.GRAVITY;
-
 				// apply physics
 				// }
 			}
