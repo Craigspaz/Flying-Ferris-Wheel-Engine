@@ -51,6 +51,7 @@ public class Game
 	private ArrayList<Projectile>	playerProjectiles		= new ArrayList<Projectile>();
 	private ArrayList<Projectile>	enemyProjectiles		= new ArrayList<Projectile>();
 	private ArrayList<Particle>		particles				= new ArrayList<Particle>();
+	private ArrayList<Particle>		backgroundParticles		= new ArrayList<Particle>();
 	private ArrayList<Enemy>		enemies					= new ArrayList<Enemy>();
 	private ArrayList<DialogBox>	dialogue;
 
@@ -194,6 +195,14 @@ public class Game
 			{
 				menuButtons.get(i).render();
 			}
+			for (Particle p : backgroundParticles)
+			{
+				p.render();
+			}
+			for (Particle p : particles)
+			{
+				p.render();
+			}
 		} else if (currentState == GameStates.LOADING)
 		{
 			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.air, 1, -1);
@@ -273,7 +282,7 @@ public class Game
 
 			if (debugMode)
 			{
-				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player position: X:" + player.getPosition().x);
+				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player handler.getMousePosition(): X:" + player.getPosition().x);
 				GFX.drawString(camera.getPosition().x, camera.getPosition().y + 15, "Y: " + player.getPosition().y);
 				GFX.drawString(camera.getPosition().x, camera.getPosition().y + 30, "Z: " + player.getPosition().z);
 			}
@@ -288,6 +297,14 @@ public class Game
 				option.render();
 			}
 			menuButtons.get(3).render();
+			for (Particle p : backgroundParticles)
+			{
+				p.render();
+			}
+			for (Particle p : particles)
+			{
+				p.render();
+			}
 		} else if (currentState == GameStates.PAUSE)
 			menuButtons.get(3).render();
 		{
@@ -325,7 +342,25 @@ public class Game
 			// System.out.println("camera center at " + camera.getAbsoluteCenter().x + " " + camera.getAbsoluteCenter().y);
 			// camera.setPosition(new Vector2f(0, 0));
 			titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+			backgroundParticles
+					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+			backgroundParticles
+					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
 
+			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 10, 4, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -.5f), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4, 2));// big
+																																																																											// fire
+			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 8, 5, false, new Vector2f(16, 16), 0, new Vector2f(0, -.8f), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 3));// small fire
+			particles.add(
+					new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, new Random().nextInt(4)));
+
+			for (Particle p : backgroundParticles)
+			{
+				p.update();
+			}
+			for (Particle p : particles)
+			{
+				p.update();
+			}
 			for (int i = 0; i < 3; i++)
 			{
 				menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
@@ -617,10 +652,27 @@ public class Game
 			SoundStore.get().poll(0);
 		} else if (currentState == GameStates.OPTIONS)
 		{
-			setAllOptionPositions();
-			menuButtons.get(3).update(handler);
-			// TODO set positions of all option features
+			setAllOptionPositions();// a method to organize buttons on the screen. otherwise this gets really cluttered
+			backgroundParticles
+					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+			backgroundParticles
+					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
 
+			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 10, 4, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -.5f), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4, 2));// big
+																																																																											// fire
+			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 8, 5, false, new Vector2f(16, 16), 0, new Vector2f(0, -.8f), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 3));// small fire
+			particles.add(
+					new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, new Random().nextInt(4)));
+
+			for (Particle p : backgroundParticles)
+			{
+				p.update();
+			}
+			for (Particle p : particles)
+			{
+				p.update();
+			}
+			menuButtons.get(3).update(handler);
 			for (MenuButton butt : optionButtons)
 			{
 				butt.update(handler);
