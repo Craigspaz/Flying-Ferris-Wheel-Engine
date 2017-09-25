@@ -2,6 +2,7 @@ package com.main;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -26,15 +27,16 @@ public class Window
 	/**
 	 * Creates the window
 	 */
-	public Window()
+	public Window(int width, int height, boolean fullscreen)
 	{
 		try
 		{
 			if(width < 0 || height < 0)
 			{
+				System.err.println("Invalid Width and Height. Window creation failed");
 				throw new IllegalArgumentException();
 			}
-			setDisplayMode(width, height, false);
+			setDisplayMode(width, height, fullscreen);
 			Display.setTitle("Flying Ferris Wheel Engine");
 			Display.setResizable(false);
 
@@ -45,7 +47,14 @@ public class Window
 			e.printStackTrace();
 		}
 
-		game = new Game();
+		game = new Game(this);
+	}
+	
+	public void destroy()
+	{
+		Mouse.destroy();
+		Keyboard.destroy();
+		Display.destroy();
 	}
 
 	/**

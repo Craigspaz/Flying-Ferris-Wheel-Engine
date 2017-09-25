@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import com.graphics.GFX;
-import com.main.Game;
 
 /**
  * A texture that is rendered on screen

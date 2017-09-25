@@ -15,7 +15,6 @@ import com.graphics.world.enemys.Enemy;
 import com.graphics.world.util.Edge;
 import com.graphics.world.util.MovementMethod;
 import com.graphics.world.util.Vertex;
-import com.main.Game;
 import com.util.Utils;
 
 /**

@@ -42,6 +42,8 @@ public class Game
 	public static float				counter					= 0f;
 	public static boolean			debugMode				= true;
 
+	private Window					currentWindow;
+
 	private Player					player;
 
 	public static Vector2f			playerPosition;
@@ -91,8 +93,9 @@ public class Game
 	/**
 	 * Creates the game world
 	 */
-	public Game()
+	public Game(Window currentWindow)
 	{
+		this.currentWindow = currentWindow;
 		new Textures(); // Loads textures
 		new SoundEffects(); // Loads Sound effects
 		GFX.initString();
@@ -231,8 +234,19 @@ public class Game
 				t.render();
 			}
 
-			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
+			// location
+			// Draw Movement map
+			for (Vertex v : currentLevel.getVertices())
+			{
+				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt);
+				for (Edge e : v.getEdges())
+				{
+					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE);
+				}
+			}
 
+			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
+			
 			if (debugMode)
 			{
 				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player position: X:" + player.getPosition().x);
@@ -247,6 +261,7 @@ public class Game
 		{
 
 		}
+
 	}
 
 	/**
@@ -550,6 +565,15 @@ public class Game
 			camera.setPositionToPlayer(player, Window.width, Window.height);
 			camera.update();
 			SoundStore.get().poll(0);
+			
+			if(handler.isMouseLeftClicking())
+			{
+				currentWindow.destroy();
+				currentWindow.width = 800;
+				currentWindow.height = 600;
+				currentWindow = new Window(800,600,true);
+				currentWindow.initOpenGL();
+			}
 		} else if (currentState == GameStates.OPTIONS)
 		{
 			menuButtons.get(3).setPosition(
@@ -584,6 +608,7 @@ public class Game
 	public void cleanUPGame()
 	{
 		AL.destroy();
+		currentWindow.destroy();
 	}
 
 	/**

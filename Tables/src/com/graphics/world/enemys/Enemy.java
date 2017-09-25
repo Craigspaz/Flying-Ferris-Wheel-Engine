@@ -6,14 +6,11 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
-import com.graphics.Textures;
 import com.graphics.world.Entity;
-import com.graphics.world.Particle;
 import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Vertex;
-import com.threads.PathFindingThread;
 import com.util.Utils;
 
 /**

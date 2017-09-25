@@ -26,6 +26,7 @@ import com.graphics.world.util.EnemyMovement;
 import com.graphics.world.util.MovementMethod;
 import com.graphics.world.util.Vertex;
 import com.input.InputHandler;
+import com.main.Game;
 import com.main.Window;
 
 /**
@@ -46,7 +47,14 @@ public class LevelBuilderGame
 	private boolean				isMouseReady			= true;
 	private boolean				isDeleting				= false;
 
-	boolean						clickedATile			= false;										// as soon as a tile is clicked, the mouse should enter "delete mode" until the mouse is released
+	boolean						clickedATile			= false;										// as soon as a
+																										// tile is
+																										// clicked, the
+																										// mouse should
+																										// enter "delete
+																										// mode" until
+																										// the mouse is
+																										// released
 
 	private Texture				down					= Loader.loadTexture("borders/down");
 	private Texture				downleft				= Loader.loadTexture("borders/downleft");
@@ -75,6 +83,7 @@ public class LevelBuilderGame
 	public LevelBuilderGame()
 	{
 		new Textures();
+		Game.SCALE = 1;
 		handler = new InputHandler(new Camera(null, null));
 	}
 
@@ -367,7 +376,7 @@ public class LevelBuilderGame
 			{
 				continue;
 			}
-			// colliders.add(t.getCollider());
+			colliders.add(new RectangleBox(new Vector3f(t.getPosition().getX(), t.getPosition().getY(), t.getPosition().getZ()), new Vector2f(t.getSize().getX(), t.getSize().getY())));
 		}
 
 		class ColliderComparatorX implements Comparator<RectangleBox>
@@ -658,14 +667,16 @@ public class LevelBuilderGame
 
 				String textureName = "";
 				Texture tex = t.getTexture();
-				if (tex == Textures.testTile)// max height is 9 tiles, so for additional tilesheets you'll need to add 9 to get to the start of the next
+				if (tex == Textures.testTile)// max height is 9 tiles, so for additional tilesheets you'll need to add 9
+												// to get to the start of the next
 				{
 					textureName = "tilesheet";
 					y_offset += 0;
 				}
 				// TODO add more of these as more tiles are made
 
-				float vectorX = (float) (64 * x_offset) / 1024f;// these are the size of each sprite and size of the sheet itself
+				float vectorX = (float) (64 * x_offset) / 1024f;// these are the size of each sprite and size of the
+																// sheet itself
 				float vectorY = (float) (64 * y_offset) / 1024f;
 
 				writer.println("\t\t<TILE x=\"" + (int) t.getPosition().x * 4 + "\" y=\"" + (int) t.getPosition().y * 4 + "\" z=\"" + (int) t.getPosition().z + "\" texName=\"" + textureName + "\" texCoordX=\"" + vectorX + "\" texCoordY=\"" + vectorY + "\"/>");
@@ -732,7 +743,13 @@ public class LevelBuilderGame
 			{
 				for (Vertex vv : vertices)
 				{
-					if (v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the left of V
+					if (v.getTile().getPosition().x - v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV
+																																												// is
+																																												// to
+																																												// the
+																																												// left
+																																												// of
+																																												// V
 					{
 						Edge e = new Edge(v, vv, 10);
 						for (int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
@@ -740,7 +757,13 @@ public class LevelBuilderGame
 							e.addEnemyMovementMethod(i, MovementMethod.WALK);
 						}
 						v.addEdge(e);
-					} else if (v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV is to the right of V
+					} else if (v.getTile().getPosition().x + v.getTile().getSize().x == vv.getTile().getPosition().x && v.getTile().getPosition().y == vv.getTile().getPosition().y) // VV
+																																														// is
+																																														// to
+																																														// the
+																																														// right
+																																														// of
+																																														// V
 					{
 						Edge e = new Edge(v, vv, 10);
 						for (int i = 0; i < Enemies.TOTAL_NUMBER_OF_ENEMY_TYPES; i++)
@@ -771,29 +794,229 @@ public class LevelBuilderGame
 					lowestYCoordinate = (int) t.getPosition().getY();
 				}
 			}
+			System.out.println("Lowest y: " + lowestYCoordinate);
 
-			boolean isAtTerminalVelocity = false;
+			// Find vertices that are not in the middle of a platform
+			ArrayList<Vertex> edgeOfPlatformVertices = new ArrayList<Vertex>();
 			for (Vertex v : vertices)
 			{
+				boolean right = false;
+				boolean left = false;
+				for (Edge e : v.getEdges())
+				{
+					Tile startTile = v.getTile();
+					Tile destinationTile = e.getDestination().getTile();
+
+					// Check if destination is to the right
+					if (startTile.getPosition().getX() + startTile.getSize().getX() == destinationTile.getPosition().getX() && startTile.getPosition().getY() == destinationTile.getPosition().getY())
+					{
+						right = true;
+						if (left)
+						{
+							break;
+						}
+					}
+
+					if (destinationTile.getPosition().getX() + destinationTile.getSize().getX() == startTile.getPosition().getX() && destinationTile.getPosition().getY() == startTile.getPosition().getY())
+					{
+						left = true;
+						if (right)
+						{
+							break;
+						}
+					}
+				}
+				if (!left || !right)
+				{
+					for (Tile t : sortedTiles)
+					{
+						Tile startTile = v.getTile();
+						if (startTile.getPosition().getX() + startTile.getSize().getX() == t.getPosition().getX() && startTile.getPosition().getY() == t.getPosition().getY())
+						{
+							right = true;
+							if (left)
+							{
+								break;
+							}
+						}
+
+						if (t.getPosition().getX() + t.getSize().getX() == startTile.getPosition().getX() && t.getPosition().getY() == startTile.getPosition().getY())
+						{
+							left = true;
+							if (right)
+							{
+								break;
+							}
+						}
+					}
+				}
+
+				if (right && left) // middle tile
+				{
+
+				} else
+				{
+					edgeOfPlatformVertices.add(v);
+				}
+			}
+
+			boolean isAtTerminalVelocity = false;
+			for (Vertex v : edgeOfPlatformVertices)
+			{
+				System.out.println("Checking new vertex...");
 				Tile enemyStartTile = v.getTile();
 				currentEnemyPosition.x = v.getTile().getPosition().x + v.getTile().getSize().getX();
+				currentEnemyPosition.z = v.getTile().getPosition().x + v.getTile().getSize().getX(); // Z is the x
+																										// representation
+																										// in the
+																										// negative
+																										// direction
 				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
-				currentEnemyVelocity = new Vector2f(0, terminalVelocityX);
+				currentEnemyVelocity = new Vector2f(terminalVelocityX, 0);
 				distanceEnemyTraveledY = 0;
-				// while(currentEnemyPosition.y <= lowestYCoordinate)
-				// {
-				// RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
-				for (Vertex vv : vertices)
+				while (currentEnemyPosition.y <= lowestYCoordinate)
 				{
-					v.addEdge(new Edge(v, vv, 14));
+					currentEnemyPosition.x += currentEnemyVelocity.x;
+					currentEnemyPosition.z -= currentEnemyVelocity.x;
+					currentEnemyPosition.y += currentEnemyVelocity.y;
+					System.out.println(currentEnemyPosition.y);
+					RectangleBox enemyColliderRight = new RectangleBox(currentEnemyPosition, enemySize);
+					RectangleBox enemyColliderLeft = new RectangleBox(new Vector3f(currentEnemyPosition.getZ(), currentEnemyPosition.getY(), 0), enemySize);
+					int currentModuloPosition = -Integer.MAX_VALUE;
+					// Check for collision
+					for (Tile t : sortedTiles)
+					{
+						RectangleBox tileCollider = new RectangleBox(t.getPosition(), t.getSize());
+						if (enemyColliderRight.isCollidingWithBox(tileCollider)) // Found collision along arc
+						{
+							if (t.getPosition().getY() == v.getTile().getPosition().getY()
+									&& (t.getPosition().getX() + t.getSize().getX() + t.getSize().getX() == v.getTile().getPosition().getX() || v.getTile().getPosition().getX() + v.getTile().getSize().getX() + v.getTile().getSize().getX() == t.getPosition().getX()))
+							{
+								continue;
+							} else if (t.getPosition().getY() <= v.getTile().getPosition().getY())
+							{
+								break;
+							}
+							Tile previousTile = t;
+							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
+							// assumming falling to the right
+							while ((int) previousTile.getPosition().getX() > (int) v.getTile().getPosition().getX() + (int) v.getTile().getSize().getX())
+							{
+								boolean brokeOutOfLoop = false;
+								for (Tile tt : tiles)
+								{
+									if ((int) tt.getPosition().getX() + (int) tt.getSize().getX() == (int) previousTile.getPosition().getX() && (int) tt.getPosition().getY() == (int) previousTile.getPosition().getY())
+									{
+										if (!isBlockOnTop(tt, tiles))
+										{
+											Edge e = new Edge(v, getVertexFromTile(tt, vertices), 14);
+											e.addEnemyMovementMethod(0, MovementMethod.FALL);
+											v.addEdge(e);
+										}
+										previousTile = tt;
+										brokeOutOfLoop = true;
+										break;
+									}
+								}
+
+								if (!brokeOutOfLoop)
+								{
+									break;
+								}
+							}
+							if ((int) previousTile.getPosition().getX() == (int) v.getTile().getPosition().getX() && (int) previousTile.getPosition().getY() == (int) v.getTile().getPosition().getY()) // Check
+																																																		// if
+																																																		// blocked
+																																																		// off
+							{
+								break;
+							}
+						} else if (tileCollider.isCollidingWithBox(enemyColliderLeft))
+						{
+							if (t.getPosition().getY() == v.getTile().getPosition().getY()
+									&& (t.getPosition().getX() + t.getSize().getX() + t.getSize().getX() == v.getTile().getPosition().getX() || v.getTile().getPosition().getX() + v.getTile().getSize().getX() + v.getTile().getSize().getX() == t.getPosition().getX()))
+							{
+								continue;
+							} else if (t.getPosition().getY() <= v.getTile().getPosition().getY())
+							{
+								break;
+							}
+							Tile previousTile = t;
+							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
+							// assumming falling to the right
+							while ((int) previousTile.getPosition().getX() + previousTile.getSize().getX() < (int) v.getTile().getPosition().getX())
+							{
+								boolean brokeOutOfLoop = false;
+								for (Tile tt : tiles)
+								{
+									if ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() == (int) tt.getPosition().getX() && (int) tt.getPosition().getY() == (int) previousTile.getPosition().getY())
+									{
+										if (!isBlockOnTop(tt, tiles))
+										{
+											Edge e = new Edge(v, getVertexFromTile(tt, vertices), 14);
+											e.addEnemyMovementMethod(0, MovementMethod.FALL);
+											v.addEdge(e);
+										}
+										previousTile = tt;
+										brokeOutOfLoop = true;
+										break;
+									}
+								}
+								if (!brokeOutOfLoop)
+								{
+									break;
+								}
+							}
+							if ((int) previousTile.getPosition().getX() == (int) v.getTile().getPosition().getX() && (int) previousTile.getPosition().getY() == (int) v.getTile().getPosition().getY()) // Check
+																																																		// if
+																																																		// blocked
+																																																		// off
+							{
+								break;
+							}
+						}
+					}
+					int tmp = (int) (currentEnemyPosition.getX() / (int) v.getTile().getSize().getX());
+					if (currentModuloPosition != tmp)
+					{
+						currentModuloPosition = tmp;
+						for (Tile ttt : sortedTiles)
+						{
+							if ((int) ttt.getPosition().getX() / (int) ttt.getSize().getX() == currentModuloPosition && ttt.getPosition().getY() > v.getTile().getPosition().getY())
+							{
+								System.out.println("Found edge...");
+								Vertex tmp2 = getVertexFromTile(ttt, vertices);
+								if (tmp2 == null || tmp2 == v)
+								{
+									System.out.println("Error finding edge...");
+									continue;
+								}
+								Edge e = new Edge(v, tmp2, 14);
+								e.addEnemyMovementMethod(0, MovementMethod.FALL);
+								v.addEdge(e);
+							}
+						}
+					}
+
+					currentEnemyVelocity.y += Entity.GRAVITY;
+					if (currentEnemyVelocity.y > terminalVelocityY)
+					{
+						currentEnemyVelocity.y = terminalVelocityY;
+					}
 				}
+				// RectangleBox entityCollider = new RectangleBox(currentEnemyPosition,enemySize);
+				// for(Vertex vv : vertices)
+				// {
+				// if(vv.getTile().getPosition().getY() > v.getTile().getPosition().getY())
+				// {
+				// Edge ee = new Edge(v,vv,14);
+				// ee.addEnemyMovementMethod(0, MovementMethod.FALL);
+				// v.addEdge(ee);
+				// }
+				// }
 				// currentEnemyPosition.x += terminalVelocityY;
 				// currentEnemyPosition.y += currentEnemyVelocity.getY();
 				// currentEnemyVelocity.y += Entity.GRAVITY;
-				// if(currentEnemyVelocity.y > terminalVelocityY)
-				// {
-				currentEnemyVelocity.y = terminalVelocityY;
-				// }
 				// apply physics
 				// }
 			}
@@ -835,5 +1058,17 @@ public class LevelBuilderGame
 			}
 		}
 		return false;
+	}
+
+	public static Vertex getVertexFromTile(Tile t, ArrayList<Vertex> vertices)
+	{
+		for (Vertex v : vertices)
+		{
+			if (v.getTile() == t)
+			{
+				return v;
+			}
+		}
+		return null;
 	}
 }

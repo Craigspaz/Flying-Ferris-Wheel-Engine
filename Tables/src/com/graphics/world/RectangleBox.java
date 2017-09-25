@@ -3,8 +3,6 @@ package com.graphics.world;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.main.Game;
-
 /**
  * Used as a collider for tiles and entities
  * 
