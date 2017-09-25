@@ -118,7 +118,7 @@ public class MenuButton
 						redButton.setAlpha(0);
 						whiteButton.setFrame(2);
 						whiteButton.setAlpha(0);
-						currentState = ButtonState.HOVER;
+						currentState = ButtonState.ACTIVE;
 					} else
 					{
 						currentState = ButtonState.ACTIVE;

@@ -664,15 +664,6 @@ public class Game
 			camera.setPositionToPlayer(player, Window.width, Window.height);
 			camera.update();
 			SoundStore.get().poll(0);
-			
-			if(handler.isMouseLeftClicking())
-			{
-				currentWindow.destroy();
-				currentWindow.width = 800;
-				currentWindow.height = 600;
-				currentWindow = new Window(800,600,true);
-				currentWindow.initOpenGL();
-			}
 		} else if (currentState == GameStates.OPTIONS)
 		{
 			setAllOptionPositions();// a method to organize buttons on the screen. otherwise this gets really cluttered
@@ -733,6 +724,11 @@ public class Game
 				{
 					menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
 				}
+			}
+			currentWindow.enableVSync(optionButtons.get(5).isToggled());
+			if(optionButtons.get(4).getCurrentState() == ButtonState.ACTIVE)
+			{
+				currentWindow.enableFullScreen(optionButtons.get(4).isToggled());
 			}
 		} else if (currentState == GameStates.PAUSE)
 		{
