@@ -14,6 +14,7 @@ public class Textures
 	public static Texture	splash;
 	public static Texture	titletext;
 	public static Texture	menubuttons;
+	public static Texture	options;
 
 	public static Texture	playerFront;
 	public static Texture	playerOutline;
@@ -69,6 +70,7 @@ public class Textures
 		splash = Loader.loadTexture("splashs");
 		titletext = Loader.loadTexture("title-text");
 		menubuttons = Loader.loadTexture("menu-buttons");
+		options = Loader.loadTexture("options");
 
 		playerFront = Loader.loadTexture("tableSpriteSheet");
 		playerOutline = Loader.loadTexture("tableSpriteSheet_outline");

@@ -21,13 +21,20 @@ public class MenuButton
 	private Vector2f		position;
 	private RectangleBox	collider;
 
-	private Tile			Button;
+	private Tile			coldButton;
 	private Tile			redButton;
 	private Tile			whiteButton;
+
+	// these are only used when button is toggleable
+	private Tile			Button;
+	private Tile			Button2;
+
+	private boolean			isToggled	= false;
+
+	private boolean			toggleable	= false;
 	private ButtonState		currentState;
 	private float			redheat		= 0;
 	private float			whiteheat	= 0;
-	boolean					buttonHeld	= false;
 
 	/**
 	 * Creates a new MenuButton
@@ -38,15 +45,32 @@ public class MenuButton
 	public MenuButton(Tile Button)
 	{
 		this.Button = Button;
+		this.coldButton = Button.clone();
 		this.redButton = Button.clone();
 		this.whiteButton = Button.clone();
-		System.out.println(Button);
-		System.out.println(redButton);
-		System.out.println(whiteButton);
 		redButton.setFrame(1);
 		redButton.setAlpha(0);
 		whiteButton.setFrame(2);
 		whiteButton.setAlpha(0);
+		this.collider = new RectangleBox(Button.getPosition(), Button.getSize());
+		this.position = new Vector2f(Button.getPosition().x, Button.getPosition().y);
+	}
+
+	public MenuButton(Tile Button, Tile Button2)
+	{
+		this.Button = Button.clone();
+		this.Button2 = Button2.clone();// the second button can be copied into cold, red, white at any time
+		this.coldButton = Button.clone();
+		this.redButton = Button.clone();
+		this.whiteButton = Button.clone();
+
+		toggleable = true;
+
+		redButton.setFrame(1);
+		redButton.setAlpha(0);
+		whiteButton.setFrame(2);
+		whiteButton.setAlpha(0);
+
 		this.collider = new RectangleBox(Button.getPosition(), Button.getSize());
 		this.position = new Vector2f(Button.getPosition().x, Button.getPosition().y);
 	}
@@ -70,7 +94,35 @@ public class MenuButton
 			{
 				if (currentState == ButtonState.PRESSED)
 				{
-					currentState = ButtonState.ACTIVE;
+					// if the mouse has been pressed and released over the button
+					if (toggleable)
+					{
+						if (isToggled)
+						{
+							this.coldButton = Button.clone();
+							this.redButton = Button.clone();
+							this.whiteButton = Button.clone();
+							collider = new RectangleBox(Button.getPosition(), Button.getSize());
+							isToggled = false;
+						} else
+						{
+							this.coldButton = Button2.clone();
+							this.redButton = Button2.clone();
+							this.whiteButton = Button2.clone();
+							collider = new RectangleBox(Button2.getPosition(), Button2.getSize());
+							isToggled = true;
+						}
+						redheat = 0;
+						whiteheat = 0;
+						redButton.setFrame(1);
+						redButton.setAlpha(0);
+						whiteButton.setFrame(2);
+						whiteButton.setAlpha(0);
+						currentState = ButtonState.HOVER;
+					} else
+					{
+						currentState = ButtonState.ACTIVE;
+					}
 				} else
 				{
 					currentState = ButtonState.HOVER;
@@ -83,12 +135,14 @@ public class MenuButton
 				currentState = ButtonState.INACTIVE;
 			}
 		}
-		
-		//Graphics changes based on state
-		if(currentState == ButtonState.PRESSED || currentState == ButtonState.HOVER) {
+
+		// Graphics changes based on state
+		if (currentState == ButtonState.PRESSED || currentState == ButtonState.HOVER)
+		{
+			//System.out.println(redheat);
 			if (redheat < 1)
 			{
-				redheat += 0.002;
+				redheat += 0.004;
 			} else
 			{
 				redheat = 1;
@@ -100,11 +154,17 @@ public class MenuButton
 		}
 		if (currentState == ButtonState.PRESSED)
 		{
-			Button.setPosition(new Vector3f(position.x, position.y + 2, 0));
+			Button.setPosition(new Vector3f(position.x, position.y, 0));
+			coldButton.setPosition(new Vector3f(position.x, position.y + 2, 0));
 			redButton.setPosition(new Vector3f(position.x, position.y + 2, 0));
 			whiteButton.setPosition(new Vector3f(position.x, position.y + 2, 0));
+			if (toggleable)
+			{
+				Button2.setPosition(new Vector3f(position.x, position.y, 0));
+			}
 		}
-		if (currentState == ButtonState.INACTIVE) {
+		if (currentState == ButtonState.INACTIVE)
+		{
 			if (whiteheat > 0)
 			{
 				whiteheat -= 0.05;
@@ -113,7 +173,7 @@ public class MenuButton
 				whiteheat = 0;
 				if (redheat > 0)
 				{
-					redheat -= 0.05;
+					redheat -= 0.03;
 				} else
 				{
 					redheat = 0;
@@ -129,7 +189,7 @@ public class MenuButton
 	 */
 	public void render()
 	{
-		Button.render();
+		coldButton.render();
 		redButton.render();
 		whiteButton.render();
 	}
@@ -154,8 +214,17 @@ public class MenuButton
 	{
 		this.position = position;
 		this.Button.setPosition(new Vector3f(position.x, position.y, 0));
+
+		this.coldButton.setPosition(new Vector3f(position.x, position.y, 0));
 		this.redButton.setPosition(new Vector3f(position.x, position.y, 0));
 		this.whiteButton.setPosition(new Vector3f(position.x, position.y, 0));
+		if (toggleable)
+		{
+			this.Button2.setPosition(new Vector3f(position.x, position.y, 0));
+			this.coldButton.setPosition(new Vector3f(position.x, position.y, 0));
+			this.redButton.setPosition(new Vector3f(position.x, position.y, 0));
+			this.whiteButton.setPosition(new Vector3f(position.x, position.y, 0));
+		}
 		this.collider.setPosition(new Vector3f(position.x, position.y, 0));
 	}
 
@@ -204,6 +273,12 @@ public class MenuButton
 	public void setCurrentState(ButtonState currentState)
 	{
 		this.currentState = currentState;
+	}
+
+	// returns whether the button has been toggled
+	public boolean isToggled()
+	{
+		return isToggled;
 	}
 
 }
