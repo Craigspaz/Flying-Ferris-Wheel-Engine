@@ -76,6 +76,9 @@ public class Game
 	private ArrayList<MenuButton>	menuButtons				= new ArrayList<MenuButton>();	// the few buttons on the main menu
 	private ArrayList<Tile>			optionList				= new ArrayList<Tile>();		// the non-clickable items in the options menu
 	private ArrayList<MenuButton>	optionButtons			= new ArrayList<MenuButton>();	// the clickable options
+	private ArrayList<MenuButton>	pauseButtons			= new ArrayList<MenuButton>();	// the things that appear in the pause menu
+	private ArrayList<Vector2f>		resolutionList			= new ArrayList<Vector2f>();	// the available resolutions to select from
+	private int						resolutionListIndex		= 3;
 
 	private ArrayList<Tile>			tutorialButtons			= new ArrayList<Tile>();
 
@@ -123,11 +126,11 @@ public class Game
 		titleText = new Tile(new Vector3f(0, 0, 0), new Vector2f(304, 125), Textures.titletext);
 		float titleTextCenter = titleText.getPosition().x + titleText.getSize().x / 2;
 		Tile startButton = new Tile(new Vector3f(titleTextCenter - (92 / 2), 80, 0), new Vector2f(92, 18), Textures.menubuttons, 3, 0);
-		Tile optionButton = new Tile(new Vector3f(titleTextCenter - (128 / 2), 100, 0), new Vector2f(128, 18), Textures.menubuttons, 3, 1);
+		Tile optionsButton = new Tile(new Vector3f(titleTextCenter - (128 / 2), 100, 0), new Vector2f(128, 18), Textures.menubuttons, 3, 1);
 		Tile exitButton = new Tile(new Vector3f(titleTextCenter - (74 / 2), 120, 0), new Vector2f(74, 18), Textures.menubuttons, 3, 2);
 		Tile backButton = new Tile(new Vector3f(titleTextCenter - (16 / 2), 80, 0), new Vector2f(20, 18), Textures.menubuttons, 3, 3);
 		menuButtons.add(new MenuButton(startButton));// the start button
-		menuButtons.add(new MenuButton(optionButton));// the option button
+		menuButtons.add(new MenuButton(optionsButton));// the option button
 		menuButtons.add(new MenuButton(exitButton));// the exit button
 		menuButtons.add(new MenuButton(backButton));// the arrow that takes you back
 
@@ -137,12 +140,15 @@ public class Game
 		Tile resolutionImg = new Tile(new Vector3f(), new Vector2f(188, 18), Textures.options, 1, 3);
 		Tile fullscreenImg = new Tile(new Vector3f(), new Vector2f(188, 18), Textures.options, 1, 4);
 		Tile scaleNumberImg = new Tile(new Vector3f(), new Vector2f(20, 18), Textures.options, 4, 1);
+		Tile currentResolutionImg = new Tile(new Vector3f(), new Vector2f(80, 18), Textures.options, 9, 5);
 		scaleNumberImg.setFrame(Math.round(Game.SCALE) - 1);
+		currentResolutionImg.setFrame(resolutionListIndex);
 		optionList.add(scaleImg);
 		optionList.add(resolutionImg);
 		optionList.add(fullscreenImg);
 		optionList.add(vsyncImg);
 		optionList.add(scaleNumberImg);
+		optionList.add(currentResolutionImg);
 
 		Tile on = new Tile(new Vector3f(), new Vector2f(38, 18), Textures.menubuttons, 3, 4);
 		Tile off = new Tile(new Vector3f(), new Vector2f(56, 18), Textures.menubuttons, 3, 5);
@@ -158,6 +164,8 @@ public class Game
 		optionButtons.add(new MenuButton(off, on));
 		// and then the vsync on/off button
 		optionButtons.add(new MenuButton(off, on));
+
+		pauseButtons.add(new MenuButton(optionsButton));
 
 		// any additional buttons for sound and stuff go after this
 		/**
@@ -292,7 +300,7 @@ public class Game
 			}
 
 			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
-			
+
 			if (debugMode)
 			{
 				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player handler.getMousePosition(): X:" + player.getPosition().x);
@@ -319,9 +327,12 @@ public class Game
 				p.render();
 			}
 		} else if (currentState == GameStates.PAUSE)
-			menuButtons.get(3).render();
 		{
-
+			menuButtons.get(3).render();
+			for (MenuButton butt : pauseButtons)
+			{
+				butt.render();
+			}
 		}
 
 	}
@@ -388,27 +399,7 @@ public class Game
 							break;
 						case 1:
 							currentState = GameStates.OPTIONS;
-							menuButtons.get(3).setPosition(new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE),
-									(camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
-							for (int j = 0; j < optionList.size(); j++)
-							{
-								optionList.get(j).setPosition(new Vector3f(camera.getAbsoluteCenter().x - camera.getSize().x / (2 * Game.SCALE) + (512 / (Game.SCALE * Game.SCALE)) - 14, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (j * 25) + (64 / (Game.SCALE * 2)), 0));
-							}
-							optionButtons.get(0)
-									.setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (0 * 25) + (64 / (Game.SCALE * 2))));
-							optionButtons.get(1)
-									.setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) + (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (0 * 25) + (64 / (Game.SCALE * 2))));
-							float midpoint = (optionButtons.get(0).getPosition().x + optionButtons.get(1).getPosition().x) / 2;
-							optionList.get(4).setPosition(new Vector3f(midpoint, optionButtons.get(0).getPosition().y, 0));
-							optionButtons.get(2)
-									.setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (1 * 25) + (64 / (Game.SCALE * 2))));
-							optionButtons.get(3)
-									.setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) + (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (1 * 25) + (64 / (Game.SCALE * 2))));
-							optionButtons.get(4)
-									.setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (2 * 25) + (64 / (Game.SCALE * 2))));
-							optionButtons.get(5)
-									.setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (3 * 25) + (64 / (Game.SCALE * 2))));
-
+							setAllOptionPositions();
 							break;
 						case 2:
 							cleanUPGame();
@@ -691,7 +682,7 @@ public class Game
 			{
 				butt.update(handler);
 			}
-			if (optionButtons.get(0).getCurrentState() == ButtonState.ACTIVE)
+			if (optionButtons.get(0).getCurrentState() == ButtonState.ACTIVE)// the "decrease scale" arrow
 			{
 				if (Game.SCALE > 1)
 				{
@@ -703,7 +694,7 @@ public class Game
 				optionList.get(4).setFrame(Math.round(Game.SCALE) - 1);
 				setAllOptionPositions();
 			}
-			if (optionButtons.get(1).getCurrentState() == ButtonState.ACTIVE)
+			if (optionButtons.get(1).getCurrentState() == ButtonState.ACTIVE)// the "increase scale" arrow
 			{
 				if (Game.SCALE < 4)
 				{
@@ -714,6 +705,28 @@ public class Game
 				}
 				optionList.get(4).setFrame(Math.round(Game.SCALE) - 1);
 				setAllOptionPositions();
+			}
+			if (optionButtons.get(2).getCurrentState() == ButtonState.ACTIVE)// the "decrease resolution" arrow
+			{
+				if (resolutionListIndex > 0)
+				{
+					resolutionListIndex--;
+				} else
+				{
+					resolutionListIndex = 8;
+				}
+				optionList.get(5).setFrame(resolutionListIndex);
+			}
+			if (optionButtons.get(3).getCurrentState() == ButtonState.ACTIVE)// the "increase resolution" arrow
+			{
+				if (resolutionListIndex < 8)
+				{
+					resolutionListIndex++;
+				} else
+				{
+					resolutionListIndex = 0;
+				}
+				optionList.get(5).setFrame(resolutionListIndex);
 			}
 
 			if (handler.escape() || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
@@ -726,7 +739,7 @@ public class Game
 				}
 			}
 			currentWindow.enableVSync(optionButtons.get(5).isToggled());
-			if(optionButtons.get(4).getCurrentState() == ButtonState.ACTIVE)
+			if (optionButtons.get(4).getCurrentState() == ButtonState.ACTIVE)
 			{
 				currentWindow.enableFullScreen(optionButtons.get(4).isToggled());
 			}
@@ -737,6 +750,10 @@ public class Game
 					new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
 			System.out.println(handler.getMousePosition() + " " + menuButtons.get(3).getPosition());
 			menuButtons.get(3).update(handler);
+			for (MenuButton butt : pauseButtons)
+			{
+				butt.update(handler);
+			}
 			if (handler.escape() && canTogglePause || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
 			{
 				canTogglePause = false;
@@ -760,13 +777,14 @@ public class Game
 		}
 		optionButtons.get(0).setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (0 * 25) + (64 / (Game.SCALE * 2))));
 		optionButtons.get(1).setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) + (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (0 * 25) + (64 / (Game.SCALE * 2))));
-		float midpoint = (optionButtons.get(0).getPosition().x + optionButtons.get(1).getPosition().x) / 2;
-		optionList.get(4).setPosition(new Vector3f(midpoint, optionButtons.get(0).getPosition().y, 0));
+		float midpoint = (optionButtons.get(0).getPosition().x + optionButtons.get(0).getSize().x + optionButtons.get(1).getPosition().x) / 2;
+		optionList.get(4).setPosition(new Vector3f(midpoint - optionList.get(4).getSize().x / 2, optionButtons.get(0).getPosition().y, 0));
 		optionButtons.get(2).setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (1 * 25) + (64 / (Game.SCALE * 2))));
 		optionButtons.get(3).setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) + (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (1 * 25) + (64 / (Game.SCALE * 2))));
 		optionButtons.get(4).setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (2 * 25) + (64 / (Game.SCALE * 2))));
 		optionButtons.get(5).setPosition(new Vector2f(camera.getAbsoluteCenter().x + camera.getSize().x / (3 * Game.SCALE) - (512 / (2 * Game.SCALE)) - (192 / Game.SCALE) + 36, camera.getAbsoluteCenter().y - camera.getSize().y / (3 * Game.SCALE) + (3 * 25) + (64 / (Game.SCALE * 2))));
-
+		float midpoint2 = (optionButtons.get(2).getPosition().x + optionButtons.get(2).getSize().x + optionButtons.get(3).getPosition().x) / 2;
+		optionList.get(5).setPosition(new Vector3f(midpoint2 - optionList.get(5).getSize().x / 2, optionButtons.get(2).getPosition().y, 0));
 	}
 
 	/**
