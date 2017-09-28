@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -483,7 +484,7 @@ public class GFX
 	public static void drawLine(float startX, float startY, float destX, float destY)
 	{
 		GL11.glPushMatrix();
-		GL11.glColor3f(0.0f, 1.0f, 0.0f);
+		GL11.glColor3f(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
 		GL11.glBegin(GL11.GL_LINE_STRIP);
 		GL11.glVertex2f(startX, startY);
 		GL11.glVertex2f(destX, destY);
