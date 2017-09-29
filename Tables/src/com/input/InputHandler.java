@@ -24,6 +24,7 @@ public class InputHandler
 	int				deleteTimer	= 0;
 	boolean			startDelay	= true;
 	Camera			camera;
+	boolean			canEscape	= false;
 
 	/**
 	 * Creates a new Input Handler
@@ -66,7 +67,7 @@ public class InputHandler
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns if the player should move left
 	 * 
@@ -164,7 +165,18 @@ public class InputHandler
 	 */
 	public boolean escape()
 	{
-		return Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
+		if (canEscape && Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+		{
+			canEscape = false;
+			return true;
+		} else
+		{
+			if (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+			{
+				canEscape = true;
+			}
+			return false;
+		}
 	}
 
 	/**

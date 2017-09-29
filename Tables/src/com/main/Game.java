@@ -87,6 +87,7 @@ public class Game
 	private float					tmpCounter				= 1f;
 
 	private GameStates				currentState			= GameStates.SPLASH;
+	private GameStates				previousState			= GameStates.SPLASH;
 	private Thread					loadLevelThread			= null;
 
 	private int						splashScreenTickCounter	= 0;
@@ -166,6 +167,7 @@ public class Game
 		optionButtons.add(new MenuButton(off, on));
 
 		pauseButtons.add(new MenuButton(optionsButton));
+		pauseButtons.add(new MenuButton(exitButton));
 
 		// any additional buttons for sound and stuff go after this
 		/**
@@ -399,6 +401,7 @@ public class Game
 							break;
 						case 1:
 							currentState = GameStates.OPTIONS;
+							previousState = GameStates.MAIN_MENU;// this must be set anytime a button leads to Options
 							setAllOptionPositions();
 							break;
 						case 2:
@@ -464,6 +467,10 @@ public class Game
 				{
 					canTogglePause = false;
 					currentState = GameStates.PAUSE;
+					for (int i = 0; i < pauseButtons.size(); i++)
+					{
+						pauseButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - pauseButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+					}
 					menuButtons.get(3).setPosition(
 							new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
 				} else if (!handler.escape())
@@ -731,7 +738,7 @@ public class Game
 
 			if (handler.escape() || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
 			{
-				currentState = GameStates.MAIN_MENU;
+				currentState = previousState;
 				titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
 				for (int i = 0; i < 3; i++)
 				{
@@ -748,11 +755,26 @@ public class Game
 			camera.setPosition(new Vector2f(0, 0));
 			menuButtons.get(3).setPosition(
 					new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
-			System.out.println(handler.getMousePosition() + " " + menuButtons.get(3).getPosition());
+			//System.out.println(handler.getMousePosition() + " " + menuButtons.get(3).getPosition());
 			menuButtons.get(3).update(handler);
-			for (MenuButton butt : pauseButtons)
+			for (int i = 0; i < pauseButtons.size(); i++)
 			{
-				butt.update(handler);
+				pauseButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - pauseButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+				pauseButtons.get(i).update(handler);
+			}
+			if (pauseButtons.get(0).getCurrentState() == ButtonState.ACTIVE)
+			{
+				currentState = GameStates.OPTIONS;
+				previousState = GameStates.PAUSE;
+			}
+			if (pauseButtons.get(1).getCurrentState() == ButtonState.ACTIVE)
+			{
+				titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+				for (int i = 0; i < 3; i++)
+				{
+					menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+				}
+				currentState = GameStates.MAIN_MENU;
 			}
 			if (handler.escape() && canTogglePause || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
 			{
