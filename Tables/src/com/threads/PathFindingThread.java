@@ -16,6 +16,13 @@ public class PathFindingThread implements Runnable
 	private Thread thread;
 	private ArrayList<Vertex> vertices;
 	
+	/**
+	 * Starts the thread
+	 * @param enemy The enemy to start the pathfinding from
+	 * @param colliders The colliders of the world
+	 * @param player A pointer to the player
+	 * @param vertices The vertices of the movement graph
+	 */
 	public void start(Enemy enemy, ArrayList<RectangleBox> colliders, Player player, ArrayList<Vertex> vertices)
 	{
 		this.enemy = enemy;

@@ -1,5 +1,10 @@
 package com.main;
 
+/**
+ * Launches the game
+ * @author Craig Ferris
+ *
+ */
 public class Launcher
 {
 	public static void main(String[] args)

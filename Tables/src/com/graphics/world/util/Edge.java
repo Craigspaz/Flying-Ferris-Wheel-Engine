@@ -56,16 +56,28 @@ public class Edge
 		return weight;
 	}
 	
+	/**
+	 * Overrides the tostring method in object
+	 */
 	public String toString()
 	{
 		return "[Edge Source: " + source + " Destination: " + destination + " Weight: " + weight + "]";
 	}	
 	
+	/**
+	 * Returns the possible enemy movements
+	 * @return Returns the possible enemy movements
+	 */
 	public ArrayList<EnemyMovement> getEnemyMovement()
 	{
 		return enemyMovement;
 	}
 	
+	/**
+	 * Adds enemy movements
+	 * @param enemyTypeID The type of enemy
+	 * @param method The method to move
+	 */
 	public void addEnemyMovementMethod(int enemyTypeID, MovementMethod method)
 	{
 		enemyMovement.add(new EnemyMovement(enemyTypeID,method));

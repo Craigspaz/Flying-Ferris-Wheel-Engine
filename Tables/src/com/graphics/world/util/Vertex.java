@@ -62,6 +62,9 @@ public class Vertex
 		this.edges = edges;
 	}
 	
+	/**
+	 * Overrides the tostring in object
+	 */
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();

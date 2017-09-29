@@ -2,13 +2,10 @@ package com.graphics.world.menu;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.Texture;
 
-import com.graphics.GFX;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.Tile;
 import com.input.InputHandler;
-import com.main.Game;
 
 /**
  * A button for a menu like the main menu
@@ -56,6 +53,11 @@ public class MenuButton
 		this.position = new Vector2f(Button.getPosition().x, Button.getPosition().y);
 	}
 
+	/**
+	 * Creates a new MenuButton
+	 * @param Button The tile to use when rendering the button
+	 * @param Button2 The other tile to use when rendering the button
+	 */
 	public MenuButton(Tile Button, Tile Button2)
 	{
 		this.Button = Button.clone();
@@ -259,6 +261,10 @@ public class MenuButton
 		return currentState;
 	}
 
+	/**
+	 * Returns the size of the button
+	 * @return
+	 */
 	public Vector2f getSize()
 	{
 		return Button.getSize();
@@ -275,7 +281,10 @@ public class MenuButton
 		this.currentState = currentState;
 	}
 
-	// returns whether the button has been toggled
+	/**
+	 * Returns whether the button has been toggled
+	 * @return Returns whether the button has been toggled
+	 */
 	public boolean isToggled()
 	{
 		return isToggled;

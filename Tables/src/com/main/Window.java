@@ -25,7 +25,10 @@ public class Window
 	private Game		game;
 
 	/**
-	 * Creates the window
+	 * Creates the window for the game
+	 * @param width The width of the window
+	 * @param height The height of th window
+	 * @param fullscreen Is the window going to be fullscreen
 	 */
 	public Window(int width, int height, boolean fullscreen)
 	{
@@ -53,11 +56,18 @@ public class Window
 		game = new Game(this);
 	}
 	
+	/**
+	 * Sets vsync on or off
+	 * @param e The value of vsync after the function runs
+	 */
 	public void enableVSync(boolean e)
 	{
 		Display.setVSyncEnabled(e);
 	}
 	
+	/**
+	 * Destroys portions of the window so the window can be recreated
+	 */
 	public void destroy()
 	{
 		Mouse.destroy();
@@ -204,6 +214,10 @@ public class Window
 		}
 	}
 
+	/**
+	 * Enables/disables fullscreen
+	 * @param fullscreen Determines if the window should be fullscreen or not
+	 */
 	public void enableFullScreen(boolean fullscreen)
 	{
 		setDisplayMode(width,height,fullscreen);
