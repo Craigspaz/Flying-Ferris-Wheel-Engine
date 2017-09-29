@@ -293,4 +293,9 @@ public class Tile
 		return new Tile(position, spriteSize, texture, numberOfFrames, row, ticksPerFrame, currentFrame);
 	}
 
+	public int getFrame()
+	{
+		return currentFrame;
+	}
+
 }

@@ -304,21 +304,21 @@ public class Player extends Entity
 		super.update(colliders, vertices);
 		Random bool = new Random();
 		// smoke
-		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 21, 3, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 8), new Vector2f(16, 16), Textures.particles, 21, 3, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 6f), new Vector2f(.5f, .5f), 4, 3));
 		particles
-				.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 21, 3, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, 3));
+				.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 8), new Vector2f(16, 16), Textures.particles, 21, 3, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 6f), new Vector2f(.25f, .5f), 4, 3));
 		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 21, 3, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
 		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 21, 3, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, 3));
 		// sparks
-		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, bool.nextInt(4)));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 10), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, bool.nextInt(4)));
 		particles
-				.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, bool.nextInt(4)));
+				.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 10), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, bool.nextInt(4)));
 		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, bool.nextInt(4)));
 		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, bool.nextInt(4)));
 
 		// sparks
-		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 8, 5, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 1, 2));
-		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 12), new Vector2f(16, 16), Textures.particles, 8, 5, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 1, 2));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 10), new Vector2f(16, 16), Textures.particles, 8, 5, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 1, 2));
+		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y - offsety + 10), new Vector2f(16, 16), Textures.particles, 8, 5, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 1, 2));
 		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 8, 5, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 1, 2));
 		particles.add(new Particle(new Vector2f(position.x + offsetx, position.y + offsety2), new Vector2f(16, 16), Textures.particles, 8, 5, bool.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 15 - 0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 1, 2));
 	}
