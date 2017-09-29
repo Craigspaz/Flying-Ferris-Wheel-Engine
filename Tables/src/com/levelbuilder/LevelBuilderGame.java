@@ -84,7 +84,7 @@ public class LevelBuilderGame
 	{
 		new Textures();
 		Game.SCALE = 1;
-		handler = new InputHandler(new Camera(null, null));
+		handler = new InputHandler(new Camera(new Vector2f(0, 0), new Vector2f(0, 0)));
 	}
 
 	/**
@@ -883,6 +883,7 @@ public class LevelBuilderGame
 					RectangleBox enemyColliderRight = new RectangleBox(currentEnemyPosition, enemySize);
 					RectangleBox enemyColliderLeft = new RectangleBox(new Vector3f(currentEnemyPosition.getZ(), currentEnemyPosition.getY(), 0), enemySize);
 					int currentModuloPosition = -Integer.MAX_VALUE;
+					int currentModuloPositionZ = -Integer.MAX_VALUE;
 					// Check for collision
 					for (Tile t : sortedTiles)
 					{
@@ -900,7 +901,7 @@ public class LevelBuilderGame
 							Tile previousTile = t;
 							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
 							// assumming falling to the right
-							while ((int) previousTile.getPosition().getX() > (int) v.getTile().getPosition().getX() + (int) v.getTile().getSize().getX())
+							while ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() < (int) v.getTile().getPosition().getX())
 							{
 								boolean brokeOutOfLoop = false;
 								for (Tile tt : tiles)
@@ -933,19 +934,21 @@ public class LevelBuilderGame
 							}
 						} else if (tileCollider.isCollidingWithBox(enemyColliderLeft))
 						{
-							if (t.getPosition().getY() == v.getTile().getPosition().getY()
-									&& (t.getPosition().getX() + t.getSize().getX() + t.getSize().getX() == v.getTile().getPosition().getX() || v.getTile().getPosition().getX() + v.getTile().getSize().getX() + v.getTile().getSize().getX() == t.getPosition().getX()))
+							if ((int) t.getPosition().getY() == (int) v.getTile().getPosition().getY() && ((int) t.getPosition().getX() + (int) t.getSize().getX() + (int) t.getSize().getX() == (int) v.getTile().getPosition().getX()
+									|| (int) v.getTile().getPosition().getX() + (int) v.getTile().getSize().getX() + (int) v.getTile().getSize().getX() == (int) t.getPosition().getX()))
 							{
 								continue;
 							} else if (t.getPosition().getY() <= v.getTile().getPosition().getY())
 							{
 								break;
 							}
+							System.out.println("Checking left path....");
 							Tile previousTile = t;
 							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
 							// assumming falling to the right
-							while ((int) previousTile.getPosition().getX() + previousTile.getSize().getX() < (int) v.getTile().getPosition().getX())
+							while ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() < (int) v.getTile().getPosition().getX())
 							{
+								System.out.println("Left Continues...");
 								boolean brokeOutOfLoop = false;
 								for (Tile tt : tiles)
 								{
@@ -983,6 +986,28 @@ public class LevelBuilderGame
 						for (Tile ttt : sortedTiles)
 						{
 							if ((int) ttt.getPosition().getX() / (int) ttt.getSize().getX() == currentModuloPosition && ttt.getPosition().getY() > v.getTile().getPosition().getY())
+							{
+								System.out.println("Found edge...");
+								Vertex tmp2 = getVertexFromTile(ttt, vertices);
+								if (tmp2 == null || tmp2 == v)
+								{
+									System.out.println("Error finding edge...");
+									continue;
+								}
+								Edge e = new Edge(v, tmp2, 14);
+								e.addEnemyMovementMethod(0, MovementMethod.FALL);
+								v.addEdge(e);
+							}
+						}
+					}
+					
+					int tmp1 = (int) (currentEnemyPosition.getZ() / (int) v.getTile().getSize().getX());
+					if (currentModuloPositionZ != tmp1)
+					{
+						currentModuloPositionZ = tmp1;
+						for (Tile ttt : sortedTiles)
+						{
+							if ((int) ttt.getPosition().getX() / (int) ttt.getSize().getX() == currentModuloPositionZ && ttt.getPosition().getY() > v.getTile().getPosition().getY())
 							{
 								System.out.println("Found edge...");
 								Vertex tmp2 = getVertexFromTile(ttt, vertices);
