@@ -73,12 +73,17 @@ public class Game
 	private Tile					sky;
 
 	// Menu things
-	private Tile					titleText;												// the main title as it appears on the menu
-	private ArrayList<MenuButton>	menuButtons				= new ArrayList<MenuButton>();	// the few buttons on the main menu
-	private ArrayList<Tile>			optionList				= new ArrayList<Tile>();		// the non-clickable items in the options menu
+	private Tile					titleText;												// the main title as it
+																							// appears on the menu
+	private ArrayList<MenuButton>	menuButtons				= new ArrayList<MenuButton>();	// the few buttons on the
+																							// main menu
+	private ArrayList<Tile>			optionList				= new ArrayList<Tile>();		// the non-clickable items
+																							// in the options menu
 	private ArrayList<MenuButton>	optionButtons			= new ArrayList<MenuButton>();	// the clickable options
-	private ArrayList<MenuButton>	pauseButtons			= new ArrayList<MenuButton>();	// the things that appear in the pause menu
-	private ArrayList<Vector2f>		resolutionList			= new ArrayList<Vector2f>();	// the available resolutions to select from
+	private ArrayList<MenuButton>	pauseButtons			= new ArrayList<MenuButton>();	// the things that appear in
+																							// the pause menu
+	private ArrayList<Vector2f>		resolutionList			= new ArrayList<Vector2f>();	// the available resolutions
+																							// to select from
 	private int						resolutionListIndex		= 3;
 
 	private ArrayList<Tile>			tutorialButtons			= new ArrayList<Tile>();
@@ -191,6 +196,177 @@ public class Game
 	}
 
 	/**
+	 * Helper method that render the splash screen
+	 */
+	private void renderSplashScreen()
+	{
+		// GFX.drawEntireSpriteWithVaryingAlpha(2048, 2048, 0, 0, Textures.splash, tmpCounter);
+		// GFX.drawEntireSpriteUnscaled(2048, 2048, 0, 0, Textures.splash);
+		GFX.drawSpriteFromSpriteSheet(Window.width, Window.height, 0, 0, Textures.splash, new Vector2f(0, 0), new Vector2f(1920f / 2048f, 1080f / 2048f), 1, 1f);
+	}
+
+	/**
+	 * Helper method that renders the main menu
+	 */
+	private void renderMainMenu()
+	{
+		titleText.render();
+		for (int i = 0; i < 3; i++)
+		{
+			menuButtons.get(i).render();
+		}
+		for (Particle p : backgroundParticles)
+		{
+			p.render();
+		}
+		for (Particle p : particles)
+		{
+			p.render();
+		}
+	}
+
+	/**
+	 * Helper method that renders the loading screen
+	 */
+	private void renderLoadingScreen()
+	{
+		GFX.drawEntireSprite(256, 256, 32, 32, Textures.air, 1);
+		System.out.println("Loading Please Wait...");
+	}
+
+	/**
+	 * Helper method that renders the game state
+	 */
+	private void renderGameScreen()
+	{
+		// location
+		// Draw Movement map
+		for (Vertex v : currentLevel.getVertices())
+		{
+			GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt, -1);
+			for (Edge e : v.getEdges())
+			{
+				GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE,
+						new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
+			}
+		}
+		for (Tile t : tiles)
+		{
+			if (t.getPosition().z >= 0)
+			{
+				t.render();
+			}
+		}
+
+		for (Entity e : entities)
+		{
+			e.renderOutline();
+		}
+		for (Enemy e : enemies)
+		{
+			e.renderOutline();
+		}
+		for (Particle p : particles)
+		{
+			p.render();
+		}
+		getPlayer().renderOutline();
+		getPlayer().render();
+		for (Entity e : entities)
+		{
+			e.render();
+		}
+		for (Enemy e : enemies)
+		{
+			e.render();
+		}
+		for (Projectile p : playerProjectiles)
+		{
+			p.render();
+		}
+		for (Projectile p : enemyProjectiles)
+		{
+			p.render();
+		}
+		for (Tile t : tiles)
+		{
+			if (t.getPosition().z < 0)
+			{
+				t.render();
+			}
+		}
+		// Renders the dialog box
+		if (currentDialogue != null && currentDialogue.active())
+		{
+			float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not
+																						// world
+			float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
+			currentDialogue.render(textBoxX, textBoxY);
+		}
+
+		for (Tile t : tutorialButtons)
+		{
+			t.render();
+		}
+
+		// location
+		// Draw Movement map
+		for (Vertex v : currentLevel.getVertices())
+		{
+			for (Edge e : v.getEdges())
+			{
+				GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE,
+						new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
+			}
+		}
+
+		terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
+
+		if (debugMode)
+		{
+			GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player handler.getMousePosition(): X:" + player.getPosition().x);
+			GFX.drawString(camera.getPosition().x, camera.getPosition().y + 15, "Y: " + player.getPosition().y);
+			GFX.drawString(camera.getPosition().x, camera.getPosition().y + 30, "Z: " + player.getPosition().z);
+		}
+	}
+
+	/**
+	 * Helper method that renders the options menu
+	 */
+	private void renderOptionsMenu()
+	{
+		for (MenuButton butt : optionButtons)
+		{
+			butt.render();
+		}
+		for (Tile option : optionList)
+		{
+			option.render();
+		}
+		menuButtons.get(3).render();
+		for (Particle p : backgroundParticles)
+		{
+			p.render();
+		}
+		for (Particle p : particles)
+		{
+			p.render();
+		}
+	}
+
+	/**
+	 * Helper method that renders the pause screen
+	 */
+	private void renderPauseScreen()
+	{
+		menuButtons.get(3).render();
+		for (MenuButton butt : pauseButtons)
+		{
+			butt.render();
+		}
+	}
+
+	/**
 	 * Draws objects to the screen. Is executed for every frame
 	 */
 	public void render()
@@ -199,145 +375,498 @@ public class Game
 		// correct
 		if (currentState == GameStates.SPLASH)
 		{
-			// GFX.drawEntireSpriteWithVaryingAlpha(2048, 2048, 0, 0, Textures.splash, tmpCounter);
-			// GFX.drawEntireSpriteUnscaled(2048, 2048, 0, 0, Textures.splash);
-			GFX.drawSpriteFromSpriteSheet(Window.width, Window.height, 0, 0, Textures.splash, new Vector2f(0, 0), new Vector2f(1920f / 2048f, 1080f / 2048f), 1, 1f);
+			renderSplashScreen();
 		} else if (currentState == GameStates.MAIN_MENU)
 		{
-			titleText.render();
-			for (int i = 0; i < 3; i++)
-			{
-				menuButtons.get(i).render();
-			}
-			for (Particle p : backgroundParticles)
-			{
-				p.render();
-			}
-			for (Particle p : particles)
-			{
-				p.render();
-			}
+			renderMainMenu();
 		} else if (currentState == GameStates.LOADING)
 		{
-			GFX.drawEntireSpriteWithVaryingAlpha(256, 256, 32, 32, Textures.air, 1, -1);
-			System.out.println("Loading Please Wait...");
+			renderLoadingScreen();
 		} else if (currentState == GameStates.GAME)
 		{
-			// location
-			// Draw Movement map
-			for (Vertex v : currentLevel.getVertices())
-			{
-				GFX.drawEntireSprite(32, 32, v.getTile().getPosition().x, v.getTile().getPosition().y - 32, Textures.dirt, -1);
-				for (Edge e : v.getEdges())
-				{
-					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE,new Color(new Random().nextFloat(),new Random().nextFloat(),new Random().nextFloat()));
-				}
-			}
-			for (Tile t : tiles)
-			{
-				if (t.getPosition().z >= 0)
-				{
-					t.render();
-				}
-			}
-
-			for (Entity e : entities)
-			{
-				e.renderOutline();
-			}
-			for (Enemy e : enemies)
-			{
-				e.renderOutline();
-			}
-			for (Particle p : particles)
-			{
-				p.render();
-			}
-			getPlayer().renderOutline();
-			getPlayer().render();
-			for (Entity e : entities)
-			{
-				e.render();
-			}
-			for (Enemy e : enemies)
-			{
-				e.render();
-			}
-			for (Projectile p : playerProjectiles)
-			{
-				p.render();
-			}
-			for (Projectile p : enemyProjectiles)
-			{
-				p.render();
-			}
-			for (Tile t : tiles)
-			{
-				if (t.getPosition().z < 0)
-				{
-					t.render();
-				}
-			}
-			// Renders the dialog box
-			if (currentDialogue != null && currentDialogue.active())
-			{
-				float textBoxX = camera.getPosition().x + (camera.getSize().x / 2) - 384;// relative to camera, not
-																							// world
-				float textBoxY = camera.getPosition().y + camera.getSize().y - 156;
-				currentDialogue.render(textBoxX, textBoxY);
-			}
-
-			for (Tile t : tutorialButtons)
-			{
-				t.render();
-			}
-
-			// location
-			// Draw Movement map
-			for (Vertex v : currentLevel.getVertices())
-			{
-				for (Edge e : v.getEdges())
-				{
-					GFX.drawLine(v.getTile().getPosition().getX() * Game.SCALE, (v.getTile().getPosition().getY() - 32) * Game.SCALE, e.getDestination().getTile().getPosition().getX() * Game.SCALE, (e.getDestination().getTile().getPosition().getY() - 32) * Game.SCALE,new Color(new Random().nextFloat(),new Random().nextFloat(),new Random().nextFloat()));
-				}
-			}
-
-			terminal.render(camera.getPosition().x, camera.getPosition().y + camera.getSize().y);
-
-			if (debugMode)
-			{
-				GFX.drawString(camera.getPosition().x, camera.getPosition().y, "Player handler.getMousePosition(): X:" + player.getPosition().x);
-				GFX.drawString(camera.getPosition().x, camera.getPosition().y + 15, "Y: " + player.getPosition().y);
-				GFX.drawString(camera.getPosition().x, camera.getPosition().y + 30, "Z: " + player.getPosition().z);
-			}
+			renderGameScreen();
 		} else if (currentState == GameStates.OPTIONS)
 		{
-			for (MenuButton butt : optionButtons)
-			{
-				butt.render();
-			}
-			for (Tile option : optionList)
-			{
-				option.render();
-			}
-			menuButtons.get(3).render();
-			for (Particle p : backgroundParticles)
-			{
-				p.render();
-			}
-			for (Particle p : particles)
-			{
-				p.render();
-			}
+			renderOptionsMenu();
 		} else if (currentState == GameStates.PAUSE)
 		{
-			menuButtons.get(3).render();
-			for (MenuButton butt : pauseButtons)
-			{
-				butt.render();
-			}
+			renderPauseScreen();
 		}
 
+	}
+
+	/**
+	 * Helper method that updates the splash screen
+	 */
+	private void updateSplashScreen()
+	{
+		camera.setPosition(new Vector2f(0, 0));
+		splashScreenTickCounter++;
+		if (splashScreenTickCounter > 60 * 2)
+		{
+			currentState = GameStates.MAIN_MENU;
+			// does this so we don't see a single frame of stuff in the wrong place
+			titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+			for (int i = 0; i < 3; i++)
+			{
+				menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+			}
+			tmpCounter = 1;
+		}
+		tmpCounter -= 0.001f;
+		if (tmpCounter <= 0)
+		{
+			tmpCounter = 0;
+		}
+	}
+
+	/**
+	 * Helper method that updates the main menu
+	 */
+	private void updateMainMenu()
+	{
+		// System.out.println("camera center at " + camera.getAbsoluteCenter().x + " " +
+		// camera.getAbsoluteCenter().y);
+		// camera.setPosition(new Vector2f(0, 0));
+		titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+		backgroundParticles
+				.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+		backgroundParticles
+				.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+
+		particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 10, 4, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -.5f), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4, 2));// big
+																																																																										// fire
+		particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 8, 5, false, new Vector2f(16, 16), 0, new Vector2f(0, -.8f), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 3));// small
+																																																																				// fire
+		particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, new Random().nextInt(4)));
+
+		for (Particle p : backgroundParticles)
+		{
+			p.update();
+		}
+		for (Particle p : particles)
+		{
+			p.update();
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+			menuButtons.get(i).update(handler);
+			if (menuButtons.get(i).getCurrentState() == ButtonState.ACTIVE)
+			{
+				switch (i)
+				{
+					case 0:
+						currentState = GameStates.LOADING;
+						break;
+					case 1:
+						currentState = GameStates.OPTIONS;
+						previousState = GameStates.MAIN_MENU;// this must be set anytime a button leads to Options
+						setAllOptionPositions();
+						break;
+					case 2:
+						cleanUPGame();
+						System.exit(0);
+					default:
+						break;
+				}
+			}
+		}
+		// Do stuff for parallax effect based on mouse movement around the title screen
+	}
+
+	/**
+	 * Helper method that updates the loading screen
+	 */
+	private void updateLoadingScreen()
+	{
+		camera.setPosition(new Vector2f(0, 0));
+		if (loadLevelThread == null)
+		{
+			loadLevelThread = new Thread(new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					System.out.println("Loading: " + nextLevelName);
+					if (!loadNewLevel("./res/world/" + nextLevelName + ".ffw"))
+					{
+						terminal.printMessage(nextLevelName + " Could not be loaded");
+						// throw new NullPointerException("World Could not be loaded");
+					} else
+					{
+						terminal.printMessage(nextLevelName + " has been loaded");
+					}
+				}
+
+			});
+			loadLevelThread.start();
+		}
+		if (!loadLevelThread.isAlive()) // Note: This is a discouraged way of doing this
+		{
+			/*
+			 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+			 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+			 */
+			loadLevelThread = null;
+			currentState = GameStates.GAME;
+		}
+	}
+
+	/**
+	 * Helper method that updates the game screen
+	 */
+	private void updateGameScreen()
+	{
+		tmpCounter -= 0.001f;
+		if (tmpCounter <= 0)
+		{
+			tmpCounter = 0;
+		}
+		// test
+		if (handler.up())
+		{
+			// SoundEffects.testEffect.playAsSoundEffect(1.0f, 1.0f, false);
+		}
+		// endtest
+		terminal.update();
+		if (!terminal.active())// pauses game while terminal is active
+		{
+			// handles pausing (when terminal is closed
+			if (handler.escape() && canTogglePause)
+			{
+				canTogglePause = false;
+				currentState = GameStates.PAUSE;
+				for (int i = 0; i < pauseButtons.size(); i++)
+				{
+					pauseButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - pauseButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+				}
+				menuButtons.get(3).setPosition(
+						new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
+			} else if (!handler.escape())
+			{
+				canTogglePause = true;
+			}
+
+			// Updates the dialogue box
+			if (currentDialogue != null)
+			{
+				if (currentDialogue.active())
+					currentDialogue.update(handler);
+			}
+			// Updates the player
+			getPlayer().update(worldColliders, currentLevel.getVertices());
+			getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
+			// Updates tiles
+			for (Tile t : tiles)
+			{
+				t.update();
+			}
+
+			// Updates entities
+			for (Entity e : entities)
+			{
+				e.update(worldColliders, currentLevel.getVertices());
+				e.checkForCollisionWithProjectiles(playerProjectiles);
+				if (e.isHostileToPlayer())
+				{
+					enemies.add(new Enemy(e));
+					e.setDead(true);
+				}
+			}
+
+			// Updates the enemy
+			for (Enemy e : enemies)
+			{
+				e.update(worldColliders, player, currentLevel.getVertices());
+				e.checkForCollisionWithProjectiles(playerProjectiles);
+				/*
+				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false);
+				 * e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
+				 */
+			}
+
+			// Adds all projectiles the player fired to playerProjectiles
+			if (!getPlayer().getProjectiles().isEmpty())
+			{
+				playerProjectiles.addAll(getPlayer().getProjectiles());
+				getPlayer().getProjectiles().clear();
+			}
+
+			// Adds all particles the player made
+			if (!getPlayer().getParticles().isEmpty())
+			{
+				particles.addAll(getPlayer().getParticles());
+				getPlayer().getParticles().clear();
+			}
+
+			// Updates the projectiles the player fired
+			for (Projectile p : playerProjectiles)
+			{
+				if (!p.getParticles().isEmpty())
+				{
+					particles.addAll(p.getParticles());
+					p.getParticles().clear();
+				}
+				p.update(worldColliders);
+			}
+			// Updates the projectiles the enemies fired
+			for (Projectile p : enemyProjectiles)
+			{
+				p.update(worldColliders);
+			}
+
+			// Cleans up the playerProjectiles by removing projectiles that are dead
+			int i = 0;
+			while (i < playerProjectiles.size())
+			{
+				while (i < playerProjectiles.size())
+				{
+					if (playerProjectiles.get(i).isDead())
+					{
+						particles.addAll(playerProjectiles.get(i).getParticles());
+						playerProjectiles.get(i).getParticles().clear();
+						playerProjectiles.remove(i);
+						break;
+					}
+					i++;
+				}
+			}
+			// Cleans up the enemy projectiles by removing projectiles that are dead
+			i = 0;
+			while (i < enemyProjectiles.size())
+			{
+				while (i < enemyProjectiles.size())
+				{
+					if (enemyProjectiles.get(i).isDead())
+					{
+						enemyProjectiles.remove(i);
+						break;
+					}
+					i++;
+				}
+			}
+			// Cleans up entities by removing dead entities
+			i = 0;
+			while (i < entities.size())
+			{
+				while (i < entities.size())
+				{
+					if (entities.get(i).isDead())
+					{
+						entities.remove(i);
+						break;
+					}
+					i++;
+				}
+			}
+
+			// Updates the particles in the world
+			for (Particle p : particles)
+			{
+				p.update();
+			}
+			// Cleans up particles that are done running
+			i = 0;
+			while (i < particles.size())
+			{
+				while (i < particles.size())
+				{
+					if (particles.get(i).isDead())
+					{
+						particles.remove(i);
+						break;
+					}
+					i++;
+				}
+			}
+			// Cleans up enemies that are dead
+			i = 0;
+			while (i < enemies.size())
+			{
+				while (i < enemies.size())
+				{
+					if (enemies.get(i).isDead())
+					{
+						enemies.remove(i);
+						break;
+					}
+					i++;
+				}
+			}
+			// crazy camera movement
+			// Game.SCALE = (float) (2 + Math.sin(counter));
+			// counter += 0.01;
+			// testProjectile.update(colliders);
+			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the
+																					// player
+																					// centered
+
+			// Handles parallax calculations
+			for (Tile t : tiles)
+			{
+				if (t.getPosition().z > 1)
+				{
+					t.getPosition().x -= camera.getOffset().x / t.getPosition().z;
+					// System.out.println(camera.getOffset().x);
+				} else if (t.getPosition().z < 0)
+				{
+					t.getPosition().x += camera.getOffset().x / t.getPosition().z;
+				}
+			}
+			playerPosition.x = player.getPosition().getX();
+			playerPosition.y = player.getPosition().getY();
+			tutorialButtons.get(0).setPosition(new Vector3f(playerPosition.x - 6, playerPosition.y - 24, 0));
+			tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
+			tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
+			tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
+			// tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
+			for (Tile t : tutorialButtons)
+			{
+				t.update();
+			}
+			camera.update();
+			SoundStore.get().poll(0);
+		}
+		playerPosition.x = player.getPosition().getX();
+		playerPosition.y = player.getPosition().getY();
+		camera.setPositionToPlayer(player, Window.width, Window.height);
+		camera.update();
+		SoundStore.get().poll(0);
+	}
+
+	/**
+	 * Helper method that updates the options menu
+	 */
+	private void updateOptionsMenu()
+	{
+		setAllOptionPositions();// a method to organize buttons on the screen. otherwise this gets really cluttered
+		backgroundParticles
+				.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+		backgroundParticles
+				.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
+
+		particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 10, 4, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -.5f), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4, 2));// big
+																																																																										// fire
+		particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 8, 5, false, new Vector2f(16, 16), 0, new Vector2f(0, -.8f), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 3));// small
+																																																																				// fire
+		particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, new Random().nextInt(4)));
+
+		for (Particle p : backgroundParticles)
+		{
+			p.update();
+		}
+		for (Particle p : particles)
+		{
+			p.update();
+		}
+		menuButtons.get(3).update(handler);
+		for (MenuButton butt : optionButtons)
+		{
+			butt.update(handler);
+		}
+		if (optionButtons.get(0).getCurrentState() == ButtonState.ACTIVE)// the "decrease scale" arrow
+		{
+			if (Game.SCALE > 1)
+			{
+				Game.SCALE -= 1;
+			} else
+			{
+				Game.SCALE = 4;
+			}
+			optionList.get(4).setFrame(Math.round(Game.SCALE) - 1);
+			setAllOptionPositions();
+		}
+		if (optionButtons.get(1).getCurrentState() == ButtonState.ACTIVE)// the "increase scale" arrow
+		{
+			if (Game.SCALE < 4)
+			{
+				Game.SCALE += 1;
+			} else
+			{
+				Game.SCALE = 1;
+			}
+			optionList.get(4).setFrame(Math.round(Game.SCALE) - 1);
+			setAllOptionPositions();
+		}
+		if (optionButtons.get(2).getCurrentState() == ButtonState.ACTIVE)// the "decrease resolution" arrow
+		{
+			if (resolutionListIndex > 0)
+			{
+				resolutionListIndex--;
+			} else
+			{
+				resolutionListIndex = 8;
+			}
+			optionList.get(5).setFrame(resolutionListIndex);
+		}
+		if (optionButtons.get(3).getCurrentState() == ButtonState.ACTIVE)// the "increase resolution" arrow
+		{
+			if (resolutionListIndex < 8)
+			{
+				resolutionListIndex++;
+			} else
+			{
+				resolutionListIndex = 0;
+			}
+			optionList.get(5).setFrame(resolutionListIndex);
+		}
+
+		if (handler.escape() || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
+		{
+			currentState = previousState;
+			titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+			for (int i = 0; i < 3; i++)
+			{
+				menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+			}
+		}
+		currentWindow.enableVSync(optionButtons.get(5).isToggled());
+		if (optionButtons.get(4).getCurrentState() == ButtonState.ACTIVE)
+		{
+			currentWindow.enableFullScreen(optionButtons.get(4).isToggled());
+		}
+	}
+
+	/**
+	 * Helper method that updates the pause screen
+	 */
+	private void updatePauseScreen()
+	{
+		camera.setPosition(new Vector2f(0, 0));
+		menuButtons.get(3)
+				.setPosition(new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
+		// System.out.println(handler.getMousePosition() + " " + menuButtons.get(3).getPosition());
+		menuButtons.get(3).update(handler);
+		for (int i = 0; i < pauseButtons.size(); i++)
+		{
+			pauseButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - pauseButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+			pauseButtons.get(i).update(handler);
+		}
+		if (pauseButtons.get(0).getCurrentState() == ButtonState.ACTIVE)
+		{
+			currentState = GameStates.OPTIONS;
+			previousState = GameStates.PAUSE;
+		}
+		if (pauseButtons.get(1).getCurrentState() == ButtonState.ACTIVE)
+		{
+			titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
+			for (int i = 0; i < 3; i++)
+			{
+				menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
+			}
+			currentState = GameStates.MAIN_MENU;
+		}
+		if (handler.escape() && canTogglePause || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
+		{
+			canTogglePause = false;
+			currentState = GameStates.GAME;
+			camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
+		} else if (!handler.escape())
+		{
+			canTogglePause = true;
+		}
 	}
 
 	/**
@@ -347,445 +876,22 @@ public class Game
 	{
 		if (currentState == GameStates.SPLASH)
 		{
-			camera.setPosition(new Vector2f(0, 0));
-			splashScreenTickCounter++;
-			if (splashScreenTickCounter > 60 * 2)
-			{
-				currentState = GameStates.MAIN_MENU;
-				// does this so we don't see a single frame of stuff in the wrong place
-				titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
-				for (int i = 0; i < 3; i++)
-				{
-					menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
-				}
-				tmpCounter = 1;
-			}
-			tmpCounter -= 0.001f;
-			if (tmpCounter <= 0)
-			{
-				tmpCounter = 0;
-			}
+			updateSplashScreen();
 		} else if (currentState == GameStates.MAIN_MENU)
 		{
-			// System.out.println("camera center at " + camera.getAbsoluteCenter().x + " " + camera.getAbsoluteCenter().y);
-			// camera.setPosition(new Vector2f(0, 0));
-			titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
-			backgroundParticles
-					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
-			backgroundParticles
-					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
-
-			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 10, 4, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -.5f), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4, 2));// big
-																																																																											// fire
-			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 8, 5, false, new Vector2f(16, 16), 0, new Vector2f(0, -.8f), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 3));// small fire
-			particles.add(
-					new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, new Random().nextInt(4)));
-
-			for (Particle p : backgroundParticles)
-			{
-				p.update();
-			}
-			for (Particle p : particles)
-			{
-				p.update();
-			}
-			for (int i = 0; i < 3; i++)
-			{
-				menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
-				menuButtons.get(i).update(handler);
-				if (menuButtons.get(i).getCurrentState() == ButtonState.ACTIVE)
-				{
-					switch (i)
-					{
-						case 0:
-							currentState = GameStates.LOADING;
-							break;
-						case 1:
-							currentState = GameStates.OPTIONS;
-							previousState = GameStates.MAIN_MENU;// this must be set anytime a button leads to Options
-							setAllOptionPositions();
-							break;
-						case 2:
-							cleanUPGame();
-							System.exit(0);
-						default:
-							break;
-					}
-				}
-			}
-			// Do stuff for parallax effect based on mouse movement around the title screen
+			updateMainMenu();
 		} else if (currentState == GameStates.LOADING)
 		{
-			camera.setPosition(new Vector2f(0, 0));
-			if (loadLevelThread == null)
-			{
-				loadLevelThread = new Thread(new Runnable()
-				{
-
-					@Override
-					public void run()
-					{
-						System.out.println("Loading: " + nextLevelName);
-						if (!loadNewLevel("./res/world/" + nextLevelName + ".ffw"))
-						{
-							terminal.printMessage(nextLevelName + " Could not be loaded");
-							// throw new NullPointerException("World Could not be loaded");
-						} else
-						{
-							terminal.printMessage(nextLevelName + " has been loaded");
-						}
-					}
-
-				});
-				loadLevelThread.start();
-			}
-			if (!loadLevelThread.isAlive()) // Note: This is a discouraged way of doing this
-			{
-				/*
-				 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
-				 */
-				loadLevelThread = null;
-				currentState = GameStates.GAME;
-			}
+			updateLoadingScreen();
 		} else if (currentState == GameStates.GAME)
 		{
-			tmpCounter -= 0.001f;
-			if (tmpCounter <= 0)
-			{
-				tmpCounter = 0;
-			}
-			// test
-			if (handler.up())
-			{
-				// SoundEffects.testEffect.playAsSoundEffect(1.0f, 1.0f, false);
-			}
-			// endtest
-			terminal.update();
-			if (!terminal.active())// pauses game while terminal is active
-			{
-				// handles pausing (when terminal is closed
-				if (handler.escape() && canTogglePause)
-				{
-					canTogglePause = false;
-					currentState = GameStates.PAUSE;
-					for (int i = 0; i < pauseButtons.size(); i++)
-					{
-						pauseButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - pauseButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
-					}
-					menuButtons.get(3).setPosition(
-							new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
-				} else if (!handler.escape())
-				{
-					canTogglePause = true;
-				}
-
-				// Updates the dialogue box
-				if (currentDialogue != null)
-				{
-					if (currentDialogue.active())
-						currentDialogue.update(handler);
-				}
-				// Updates the player
-				getPlayer().update(worldColliders, currentLevel.getVertices());
-				getPlayer().checkForCollisionWithProjectiles(enemyProjectiles);
-				// Updates tiles
-				for (Tile t : tiles)
-				{
-					t.update();
-				}
-
-				// Updates entities
-				for (Entity e : entities)
-				{
-					e.update(worldColliders, currentLevel.getVertices());
-					e.checkForCollisionWithProjectiles(playerProjectiles);
-					if (e.isHostileToPlayer())
-					{
-						enemies.add(new Enemy(e));
-						e.setDead(true);
-					}
-				}
-
-				// Updates the enemy
-				for (Enemy e : enemies)
-				{
-					e.update(worldColliders, player, currentLevel.getVertices());
-					e.checkForCollisionWithProjectiles(playerProjectiles);
-					/*
-					 * if (new Random().nextBoolean()) { if (new Random().nextBoolean()) { e.setMoveLeft(false); e.setMoveRight(true); } else { e.setMoveRight(false); e.setMoveLeft(true); } }
-					 */
-				}
-
-				// Adds all projectiles the player fired to playerProjectiles
-				if (!getPlayer().getProjectiles().isEmpty())
-				{
-					playerProjectiles.addAll(getPlayer().getProjectiles());
-					getPlayer().getProjectiles().clear();
-				}
-
-				// Adds all particles the player made
-				if (!getPlayer().getParticles().isEmpty())
-				{
-					particles.addAll(getPlayer().getParticles());
-					getPlayer().getParticles().clear();
-				}
-
-				// Updates the projectiles the player fired
-				for (Projectile p : playerProjectiles)
-				{
-					if (!p.getParticles().isEmpty())
-					{
-						particles.addAll(p.getParticles());
-						p.getParticles().clear();
-					}
-					p.update(worldColliders);
-				}
-				// Updates the projectiles the enemies fired
-				for (Projectile p : enemyProjectiles)
-				{
-					p.update(worldColliders);
-				}
-
-				// Cleans up the playerProjectiles by removing projectiles that are dead
-				int i = 0;
-				while (i < playerProjectiles.size())
-				{
-					while (i < playerProjectiles.size())
-					{
-						if (playerProjectiles.get(i).isDead())
-						{
-							particles.addAll(playerProjectiles.get(i).getParticles());
-							playerProjectiles.get(i).getParticles().clear();
-							playerProjectiles.remove(i);
-							break;
-						}
-						i++;
-					}
-				}
-				// Cleans up the enemy projectiles by removing projectiles that are dead
-				i = 0;
-				while (i < enemyProjectiles.size())
-				{
-					while (i < enemyProjectiles.size())
-					{
-						if (enemyProjectiles.get(i).isDead())
-						{
-							enemyProjectiles.remove(i);
-							break;
-						}
-						i++;
-					}
-				}
-				// Cleans up entities by removing dead entities
-				i = 0;
-				while (i < entities.size())
-				{
-					while (i < entities.size())
-					{
-						if (entities.get(i).isDead())
-						{
-							entities.remove(i);
-							break;
-						}
-						i++;
-					}
-				}
-
-				// Updates the particles in the world
-				for (Particle p : particles)
-				{
-					p.update();
-				}
-				// Cleans up particles that are done running
-				i = 0;
-				while (i < particles.size())
-				{
-					while (i < particles.size())
-					{
-						if (particles.get(i).isDead())
-						{
-							particles.remove(i);
-							break;
-						}
-						i++;
-					}
-				}
-				// Cleans up enemies that are dead
-				i = 0;
-				while (i < enemies.size())
-				{
-					while (i < enemies.size())
-					{
-						if (enemies.get(i).isDead())
-						{
-							enemies.remove(i);
-							break;
-						}
-						i++;
-					}
-				}
-				// crazy camera movement
-				// Game.SCALE = (float) (2 + Math.sin(counter));
-				// counter += 0.01;
-				// testProjectile.update(colliders);
-				camera.setPositionToPlayer(getPlayer(), Window.width, Window.height); // Sets the camera to have the
-																						// player
-																						// centered
-
-				// Handles parallax calculations
-				for (Tile t : tiles)
-				{
-					if (t.getPosition().z > 1)
-					{
-						t.getPosition().x -= camera.getOffset().x / t.getPosition().z;
-						// System.out.println(camera.getOffset().x);
-					} else if (t.getPosition().z < 0)
-					{
-						t.getPosition().x += camera.getOffset().x / t.getPosition().z;
-					}
-				}
-				playerPosition.x = player.getPosition().getX();
-				playerPosition.y = player.getPosition().getY();
-				tutorialButtons.get(0).setPosition(new Vector3f(playerPosition.x - 6, playerPosition.y - 24, 0));
-				tutorialButtons.get(1).setPosition(new Vector3f(playerPosition.x + 24, playerPosition.y - 24, 0));
-				tutorialButtons.get(2).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 39, 0));
-				tutorialButtons.get(3).setPosition(new Vector3f(playerPosition.x + 9, playerPosition.y - 24, 0));
-				// tutorialButtons.get(4).setPosition(new Vector3f(playerPosition.x -33, playerPosition.y -24, 0));
-				for (Tile t : tutorialButtons)
-				{
-					t.update();
-				}
-				camera.update();
-				SoundStore.get().poll(0);
-			}
-			playerPosition.x = player.getPosition().getX();
-			playerPosition.y = player.getPosition().getY();
-			camera.setPositionToPlayer(player, Window.width, Window.height);
-			camera.update();
-			SoundStore.get().poll(0);
+			updateGameScreen();
 		} else if (currentState == GameStates.OPTIONS)
 		{
-			setAllOptionPositions();// a method to organize buttons on the screen. otherwise this gets really cluttered
-			backgroundParticles
-					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
-			backgroundParticles
-					.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 21, 3, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.5f, .5f), 4, 3));
-
-			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 10, 4, new Random().nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, -.5f), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4, 2));// big
-																																																																											// fire
-			particles.add(new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 8, 5, false, new Vector2f(16, 16), 0, new Vector2f(0, -.8f), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 3));// small fire
-			particles.add(
-					new Particle(new Vector2f(handler.getMousePosition().x - 8, handler.getMousePosition().y - 8), new Vector2f(16, 16), Textures.particles, 16, 7, true, new Vector2f(16, 16), 0, new Vector2f(0, -0.5f), new Vector2f(16f, 4f), new Vector2f(.25f, .5f), 4, new Random().nextInt(4)));
-
-			for (Particle p : backgroundParticles)
-			{
-				p.update();
-			}
-			for (Particle p : particles)
-			{
-				p.update();
-			}
-			menuButtons.get(3).update(handler);
-			for (MenuButton butt : optionButtons)
-			{
-				butt.update(handler);
-			}
-			if (optionButtons.get(0).getCurrentState() == ButtonState.ACTIVE)// the "decrease scale" arrow
-			{
-				if (Game.SCALE > 1)
-				{
-					Game.SCALE -= 1;
-				} else
-				{
-					Game.SCALE = 4;
-				}
-				optionList.get(4).setFrame(Math.round(Game.SCALE) - 1);
-				setAllOptionPositions();
-			}
-			if (optionButtons.get(1).getCurrentState() == ButtonState.ACTIVE)// the "increase scale" arrow
-			{
-				if (Game.SCALE < 4)
-				{
-					Game.SCALE += 1;
-				} else
-				{
-					Game.SCALE = 1;
-				}
-				optionList.get(4).setFrame(Math.round(Game.SCALE) - 1);
-				setAllOptionPositions();
-			}
-			if (optionButtons.get(2).getCurrentState() == ButtonState.ACTIVE)// the "decrease resolution" arrow
-			{
-				if (resolutionListIndex > 0)
-				{
-					resolutionListIndex--;
-				} else
-				{
-					resolutionListIndex = 8;
-				}
-				optionList.get(5).setFrame(resolutionListIndex);
-			}
-			if (optionButtons.get(3).getCurrentState() == ButtonState.ACTIVE)// the "increase resolution" arrow
-			{
-				if (resolutionListIndex < 8)
-				{
-					resolutionListIndex++;
-				} else
-				{
-					resolutionListIndex = 0;
-				}
-				optionList.get(5).setFrame(resolutionListIndex);
-			}
-
-			if (handler.escape() || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
-			{
-				currentState = previousState;
-				titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
-				for (int i = 0; i < 3; i++)
-				{
-					menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
-				}
-			}
-			currentWindow.enableVSync(optionButtons.get(5).isToggled());
-			if (optionButtons.get(4).getCurrentState() == ButtonState.ACTIVE)
-			{
-				currentWindow.enableFullScreen(optionButtons.get(4).isToggled());
-			}
+			updateOptionsMenu();
 		} else if (currentState == GameStates.PAUSE)
 		{
-			camera.setPosition(new Vector2f(0, 0));
-			menuButtons.get(3).setPosition(
-					new Vector2f((camera.getAbsoluteCenter().x + camera.getSize().x / (2 * Game.SCALE)) - menuButtons.get(3).getSize().x - (64 / Game.SCALE), (camera.getAbsoluteCenter().y + camera.getSize().y / (2 * Game.SCALE)) - menuButtons.get(3).getSize().y - (64 / Game.SCALE) + 4));
-			//System.out.println(handler.getMousePosition() + " " + menuButtons.get(3).getPosition());
-			menuButtons.get(3).update(handler);
-			for (int i = 0; i < pauseButtons.size(); i++)
-			{
-				pauseButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - pauseButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
-				pauseButtons.get(i).update(handler);
-			}
-			if (pauseButtons.get(0).getCurrentState() == ButtonState.ACTIVE)
-			{
-				currentState = GameStates.OPTIONS;
-				previousState = GameStates.PAUSE;
-			}
-			if (pauseButtons.get(1).getCurrentState() == ButtonState.ACTIVE)
-			{
-				titleText.setPosition(new Vector3f(camera.getAbsoluteCenter().x - titleText.getSize().x / 2, camera.getAbsoluteCenter().y - titleText.getSize().y - ((80 / Game.SCALE) - 20), 0));
-				for (int i = 0; i < 3; i++)
-				{
-					menuButtons.get(i).setPosition(new Vector2f(camera.getAbsoluteCenter().x - menuButtons.get(i).getSize().x / 2, camera.getAbsoluteCenter().y + (i * 25) + (Game.SCALE * 2)));
-				}
-				currentState = GameStates.MAIN_MENU;
-			}
-			if (handler.escape() && canTogglePause || menuButtons.get(3).getCurrentState() == ButtonState.ACTIVE)
-			{
-				canTogglePause = false;
-				currentState = GameStates.GAME;
-				camera.setPositionToPlayer(getPlayer(), Window.width, Window.height);
-			} else if (!handler.escape())
-			{
-				canTogglePause = true;
-			}
+			updatePauseScreen();
 		}
 	}
 
@@ -949,16 +1055,28 @@ public class Game
 		Game.SCALE = scale;
 	}
 
+	/**
+	 * Returns the games camera
+	 * @return Returns the games camera
+	 */
 	public static Camera getCamera()
 	{
 		return camera;
 	}
 
+	/**
+	 * Sets the next level
+	 * @param string The name of the level
+	 */
 	public void setNextLevelName(String string)
 	{
 		this.nextLevelName = string;
 	}
 
+	/**
+	 * Sets the state of the game
+	 * @param newState The new state of the game
+	 */
 	public void setGameState(GameStates newState)
 	{
 		this.currentState = newState;

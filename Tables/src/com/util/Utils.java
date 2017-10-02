@@ -69,6 +69,7 @@ public class Utils
 	 */
 	public static ArrayList<RectangleBox> calculateShortestPathToPlayer(Enemy e, Player p, ArrayList<Vertex> vertices,ArrayList<RectangleBox> colliders)
 	{
+		System.out.println("Running A*...");
 		Vertex sourceVertex = e.getCurrentVertex();
 		Vertex destinationVertex = p.getCurrentVertex();
 

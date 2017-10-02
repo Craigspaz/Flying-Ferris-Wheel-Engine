@@ -90,7 +90,7 @@ public class GFX
 		// Font awtFont = new Font("Times New Roman", Font.BOLD, 24); //name, style (PLAIN, BOLD, or ITALIC), size
 		// font2 = new TrueTypeFont(awtFont, false); //base Font, anti-aliasing true/false
 	}
-	
+
 	public static void drawEntireSpriteTEST(float x, float y, float xx, float yy, Texture texture)
 	{
 		x = x * Game.SCALE;
@@ -287,7 +287,7 @@ public class GFX
 		GL11.glEnd();
 		GL11.glPopMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		
+
 		GL11.glColor4f(1f, 1f, 1f, 1f);
 	}
 
@@ -481,10 +481,24 @@ public class GFX
 
 	}
 
+	/**
+	 * Draws a line between two points. Point1 is (startX,startY) and point2 is (destX,destY)
+	 * 
+	 * @param startX
+	 *            The x coordinate of the first point
+	 * @param startY
+	 *            The y coordinate of the first point
+	 * @param destX
+	 *            The x coordinate of the second point
+	 * @param destY
+	 *            The y coordinate of the second point
+	 * @param color
+	 *            The color of the line
+	 */
 	public static void drawLine(float startX, float startY, float destX, float destY, Color color)
 	{
 		GL11.glPushMatrix();
-		GL11.glColor3f(color.r,color.g,color.b);
+		GL11.glColor3f(color.r, color.g, color.b);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
 		GL11.glVertex2f(startX, startY);
 		GL11.glVertex2f(destX, destY);
@@ -493,6 +507,24 @@ public class GFX
 		GL11.glPopMatrix();
 	}
 
+	/**
+	 * Draws the entire sprite with a variable alpha
+	 * 
+	 * @param x
+	 *            The width to render the sprite on screen
+	 * @param y
+	 *            The height to render the sprite on screen
+	 * @param xx
+	 *            The x coordinate of the top left corner of the sprite
+	 * @param yy
+	 *            The y coordinate of the top left corner of the sprite
+	 * @param texture
+	 *            The texture to render the sprite
+	 * @param alpha
+	 *            The alpha value of the sprite. IE opacity [0,1]
+	 * @param scale
+	 *            The scale. This increases or decreases the size of the sprite on screen
+	 */
 	public static void drawEntireSpriteWithVaryingAlpha(float x, float y, float xx, float yy, Texture texture, float alpha, int scale)
 	{
 		if (scale == -1)

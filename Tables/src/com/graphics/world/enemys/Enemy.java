@@ -96,7 +96,8 @@ public class Enemy extends Entity
 	}
 
 	/**
-	 * Handles movement
+	 * Moves the enemy towards the player
+	 * @param player A pointer to the current player
 	 */
 	private void move(Player player)
 	{

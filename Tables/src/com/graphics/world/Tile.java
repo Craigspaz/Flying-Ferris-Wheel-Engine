@@ -190,6 +190,10 @@ public class Tile
 		this.alpha = alpha;
 	}
 
+	/**
+	 * Returns the alpha of the tile
+	 * @return Returns the alpha of the tile
+	 */
 	public float getAlpha()
 	{
 		return alpha;
@@ -283,16 +287,27 @@ public class Tile
 		this.texture = texture;
 	}
 
+	/**
+	 * Overrides the tostring funciton in object
+	 */
 	public String toString()
 	{
 		return "Pos: " + position + " spriteSize: " + spriteSize;
 	}
 
+	/**
+	 * Creates a clone of the tile
+	 * @return Returns a copy of the current tile
+	 */
 	public Tile clone()
 	{
 		return new Tile(position, spriteSize, texture, numberOfFrames, row, ticksPerFrame, currentFrame);
 	}
 
+	/**
+	 * Returns the current frame
+	 * @return Returns the current frame
+	 */
 	public int getFrame()
 	{
 		return currentFrame;
