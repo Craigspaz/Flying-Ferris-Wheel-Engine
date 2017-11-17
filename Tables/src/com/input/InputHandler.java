@@ -31,6 +31,10 @@ public class InputHandler
 	 */
 	public InputHandler(Camera camera)
 	{
+		if (camera == null)
+		{
+			throw new NullPointerException("A input handler must have access to the camera to handle mouse input");
+		}
 		this.camera = camera;
 		cmd = new StringBuilder();
 		if (!Keyboard.isCreated())
@@ -149,7 +153,8 @@ public class InputHandler
 	}
 
 	/**
-	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to account for different keyboards
+	 * Tilde to activate the Terminal. Technically uses the backquote key, should probably have multiple activations to
+	 * account for different keyboards
 	 * 
 	 * @return true if the tilde key is pressed
 	 */
@@ -213,7 +218,8 @@ public class InputHandler
 	}
 
 	/**
-	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality (keycode 14) and up arrow recognition to re-buffer the previous command
+	 * reads in a command to the Terminal, ignoring certain special characters. Includes backspace functionality
+	 * (keycode 14) and up arrow recognition to re-buffer the previous command
 	 * 
 	 * @return the currently typed string in the buffer
 	 */

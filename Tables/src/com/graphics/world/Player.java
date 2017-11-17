@@ -83,6 +83,10 @@ public class Player extends Entity
 	 */
 	public void input(ArrayList<RectangleBox> tiles)
 	{
+		if(tiles == null)
+		{
+			throw new NullPointerException("The player needs a list of all of the colliders to check for collisions");
+		}
 		if (handler.sprint())
 		{
 			super.setSprinting(true);
@@ -297,6 +301,14 @@ public class Player extends Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
+		if(colliders == null)
+		{
+			throw new NullPointerException("The player needs a list of all of the colliders");
+		}
+		if(vertices == null)
+		{
+			throw new NullPointerException("The player needs a list of all of the vertices");
+		}
 		int offsetx = (int) (8);
 		int offsety = (int) (velocity.y);
 		int offsety2 = (int) (6);

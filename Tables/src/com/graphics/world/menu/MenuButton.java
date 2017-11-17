@@ -41,6 +41,10 @@ public class MenuButton
 	 */
 	public MenuButton(Tile Button)
 	{
+		if (Button == null)
+		{
+			throw new NullPointerException("The button can't have a null tile");
+		}
 		this.Button = Button;
 		this.coldButton = Button.clone();
 		this.redButton = Button.clone();
@@ -55,11 +59,23 @@ public class MenuButton
 
 	/**
 	 * Creates a new MenuButton
-	 * @param Button The tile to use when rendering the button
-	 * @param Button2 The other tile to use when rendering the button
+	 * 
+	 * @param Button
+	 *            The tile to use when rendering the button
+	 * @param Button2
+	 *            The other tile to use when rendering the button
 	 */
 	public MenuButton(Tile Button, Tile Button2)
 	{
+		if (Button == null)
+		{
+			throw new NullPointerException("The button can't have a null tile");
+		}
+		if (Button2 == null)
+		{
+			throw new NullPointerException("The button can't have a null tile");
+		}
+
 		this.Button = Button.clone();
 		this.Button2 = Button2.clone();// the second button can be copied into cold, red, white at any time
 		this.coldButton = Button.clone();
@@ -85,6 +101,10 @@ public class MenuButton
 	 */
 	public void update(InputHandler handler)
 	{
+		if (handler == null)
+		{
+			throw new NullPointerException("A button needs access to the input handler");
+		}
 		// Handle mouse input
 		// change ButtonState and heatState
 		if (handler.getMousePosition().x > collider.getPosition().x && handler.getMousePosition().y > collider.getPosition().y && handler.getMousePosition().x < collider.getPosition().x + collider.getSize().x && handler.getMousePosition().y < collider.getPosition().y + collider.getSize().y)
@@ -141,7 +161,7 @@ public class MenuButton
 		// Graphics changes based on state
 		if (currentState == ButtonState.PRESSED || currentState == ButtonState.HOVER)
 		{
-			//System.out.println(redheat);
+			// System.out.println(redheat);
 			if (redheat < 1)
 			{
 				redheat += 0.004;
@@ -214,6 +234,10 @@ public class MenuButton
 	 */
 	public void setPosition(Vector2f position)
 	{
+		if (position == null)
+		{
+			throw new NullPointerException("Can't set the position of a menu button to null");
+		}
 		this.position = position;
 		this.Button.setPosition(new Vector3f(position.x, position.y, 0));
 
@@ -263,6 +287,7 @@ public class MenuButton
 
 	/**
 	 * Returns the size of the button
+	 * 
 	 * @return
 	 */
 	public Vector2f getSize()
@@ -283,6 +308,7 @@ public class MenuButton
 
 	/**
 	 * Returns whether the button has been toggled
+	 * 
 	 * @return Returns whether the button has been toggled
 	 */
 	public boolean isToggled()

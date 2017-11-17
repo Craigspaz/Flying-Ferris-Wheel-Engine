@@ -108,6 +108,10 @@ public class Game
 	 */
 	public Game(Window currentWindow)
 	{
+		if (currentWindow == null)
+		{
+			throw new NullPointerException("A game must have a non-null window");
+		}
 		this.currentWindow = currentWindow;
 		new Textures(); // Loads textures
 		new SoundEffects(); // Loads Sound effects
@@ -1057,6 +1061,7 @@ public class Game
 
 	/**
 	 * Returns the games camera
+	 * 
 	 * @return Returns the games camera
 	 */
 	public static Camera getCamera()
@@ -1066,7 +1071,9 @@ public class Game
 
 	/**
 	 * Sets the next level
-	 * @param string The name of the level
+	 * 
+	 * @param string
+	 *            The name of the level
 	 */
 	public void setNextLevelName(String string)
 	{
@@ -1075,7 +1082,9 @@ public class Game
 
 	/**
 	 * Sets the state of the game
-	 * @param newState The new state of the game
+	 * 
+	 * @param newState
+	 *            The new state of the game
 	 */
 	public void setGameState(GameStates newState)
 	{

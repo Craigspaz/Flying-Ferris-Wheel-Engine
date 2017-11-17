@@ -49,6 +49,10 @@ public class World
 	@SuppressWarnings("unused")
 	public static Level loadWorld(String filename)
 	{
+		if(filename == null)
+		{
+			throw new NullPointerException("Cannont load level. The filepath is null");
+		}
 		tiles = new ArrayList<Tile>();
 		colliders = new ArrayList<RectangleBox>();
 		enemies = new ArrayList<Enemy>();
@@ -380,6 +384,10 @@ public class World
 	 */
 	public static ArrayList<Tile> sortTiles(ArrayList<Tile> tiles)
 	{
+		if(tiles == null)
+		{
+			throw new NullPointerException("Can't sort a null array");
+		}
 		tiles.sort(new TileComparator());
 		return tiles;
 	}
@@ -400,6 +408,14 @@ public class World
 		@Override
 		public int compare(Tile o1, Tile o2)
 		{
+			if(o1 == null)
+			{
+				throw new NullPointerException("Can't compare a tile with null");
+			}
+			if(o2 == null)
+			{
+				throw new NullPointerException("Can't compare a tile with null");
+			}
 			return (int) (o2.getPosition().z - o1.getPosition().z);
 		}
 

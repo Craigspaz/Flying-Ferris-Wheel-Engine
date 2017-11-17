@@ -84,6 +84,10 @@ public class Projectile extends Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders)
 	{
+		if (colliders == null)
+		{
+			throw new NullPointerException("Can't update a projectile without knowing all of the colliders locations");
+		}
 		if (animateTime >= 2)
 		{
 			animSpriteFrameX++;
@@ -151,7 +155,9 @@ public class Projectile extends Entity
 
 		// addMagicParticle();
 
-		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 6, 8, rand.nextBoolean(), new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(8f, 8f), new Vector2f(1f, 1f), 0, 2));// magic
+		// particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 6,
+		// 8, rand.nextBoolean(), new Vector2f(16, 16), false, new Vector2f(0, 0), new Vector2f(8f, 8f), new
+		// Vector2f(1f, 1f), 0, 2));// magic
 	}
 
 	/**
@@ -209,11 +215,13 @@ public class Projectile extends Entity
 		SoundEffects.explosion.playAsSoundEffect(4.0f, Math.abs(20.0f / (rawgain)), false);
 		for (int i = 0; i < 24; i++)// small fire
 		{
-			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4, rand.nextInt(2)));// small fire
+			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(5f, 5f), new Vector2f(10f, 10f), 4, rand.nextInt(2)));// small
+																																																																				// fire
 		}
 		for (int i = 0; i < 16; i++)// big fire
 		{
-			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4, rand.nextInt(4)));// big fire
+			particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, true, new Vector2f(16, 16), 0, new Vector2f(velocity.x / 6, velocity.y / 6), new Vector2f(10f, 10f), new Vector2f(3f, 3f), 4, rand.nextInt(4)));// big
+																																																																				// fire
 		}
 		for (int i = 0; i < 16; i++)// sparks
 		{
@@ -226,9 +234,12 @@ public class Projectile extends Entity
 	 */
 	public void addFireParticle()
 	{
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big fire
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big fire
-		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 2));// small fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big
+																																																												// fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 10, 4, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(.5f, .5f), 4));// big
+																																																												// fire
+		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 8, 5, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 4, 2));// small
+																																																												// fire
 		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1.5f, 1.5f), 1, 2));// sparks
 		particles.add(new Particle(new Vector2f(position.x, position.y), new Vector2f(16, 16), Textures.particles, 16, 7, rand.nextBoolean(), new Vector2f(16, 16), 0, new Vector2f(0, 0), new Vector2f(5f, 5f), new Vector2f(1f, 1f), 2));// sparks
 	}

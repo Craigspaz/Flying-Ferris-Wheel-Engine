@@ -6,29 +6,38 @@ import com.graphics.world.Tile;
 
 /**
  * A vertex of a graph
+ * 
  * @author Craig Ferris
  *
  */
 public class Vertex
 {
-	private Tile tile;
-	private ArrayList<Edge> edges = new ArrayList<Edge>();
-	private int fCost;
-	private int gCost;
-	private Vertex parent;
-	
+	private Tile			tile;
+	private ArrayList<Edge>	edges	= new ArrayList<Edge>();
+	private int				fCost;
+	private int				gCost;
+	private Vertex			parent;
+
 	/**
 	 * Creates a new vertex
-	 * @param tile The tile mapped to the vertex
+	 * 
+	 * @param tile
+	 *            The tile mapped to the vertex
 	 */
 	public Vertex(Tile tile)
 	{
+		if (tile == null)
+		{
+			throw new NullPointerException("A vertex can't have a null tile");
+		}
 		this.tile = tile;
 	}
-	
+
 	/**
 	 * Adds an edge to the vertex
-	 * @param e The edge to add to the vertex
+	 * 
+	 * @param e
+	 *            The edge to add to the vertex
 	 */
 	public void addEdge(Edge e)
 	{
@@ -37,15 +46,17 @@ public class Vertex
 
 	/**
 	 * Returns the tile mapped to the vertex
+	 * 
 	 * @return Returns the tile mapped to the vertex
 	 */
 	public Tile getTile()
 	{
 		return tile;
 	}
-	
+
 	/**
 	 * Returns a list of edges attached to the vertex
+	 * 
 	 * @return Returns a list of edges attached to the vertex
 	 */
 	public ArrayList<Edge> getEdges()
@@ -55,13 +66,15 @@ public class Vertex
 
 	/**
 	 * Sets the edges attached to the vertex
-	 * @param edges The edges attached to the vertex
+	 * 
+	 * @param edges
+	 *            The edges attached to the vertex
 	 */
 	public void setEdges(ArrayList<Edge> edges)
 	{
 		this.edges = edges;
 	}
-	
+
 	/**
 	 * Overrides the tostring in object
 	 */
@@ -69,7 +82,7 @@ public class Vertex
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Tile: " + tile + "Edges: ");
-		for(Edge e : edges)
+		for (Edge e : edges)
 		{
 			builder.append(e + ", ");
 		}
@@ -78,6 +91,7 @@ public class Vertex
 
 	/**
 	 * Returns the f cost
+	 * 
 	 * @return Returns the f cost
 	 */
 	public int getfCost()
@@ -87,7 +101,9 @@ public class Vertex
 
 	/**
 	 * Sets the f cost
-	 * @param fCost The f cost
+	 * 
+	 * @param fCost
+	 *            The f cost
 	 */
 	public void setfCost(int fCost)
 	{
@@ -96,6 +112,7 @@ public class Vertex
 
 	/**
 	 * Returns the G cost
+	 * 
 	 * @return Returns the G cost
 	 */
 	public int getgCost()
@@ -105,7 +122,9 @@ public class Vertex
 
 	/**
 	 * Sets the G cost
-	 * @param gCost The new G cost
+	 * 
+	 * @param gCost
+	 *            The new G cost
 	 */
 	public void setgCost(int gCost)
 	{
@@ -114,6 +133,7 @@ public class Vertex
 
 	/**
 	 * Returns the parent vertex
+	 * 
 	 * @return Returns the parent vertex
 	 */
 	public Vertex getParent()
@@ -123,12 +143,13 @@ public class Vertex
 
 	/**
 	 * Sets the parent vertex
-	 * @param parent The new parent vertex
+	 * 
+	 * @param parent
+	 *            The new parent vertex
 	 */
 	public void setParent(Vertex parent)
 	{
 		this.parent = parent;
 	}
-	
-	
+
 }
