@@ -45,6 +45,22 @@ public class Terminal
 	 */
 	public Terminal(InputHandler handler, Player player, Camera camera, Game game)
 	{
+		if (handler == null)
+		{
+			throw new NullPointerException("Can't have a terminal if there is no input handler");
+		}
+		if (player == null)
+		{
+			throw new NullPointerException("Can't perform some terminal operations if the player is null");
+		}
+		if (camera == null)
+		{
+			throw new NullPointerException("Need the camera to not be null to render the terminal properly");
+		}
+		if (game == null)
+		{
+			throw new NullPointerException("A terminal needs a pointer to the game");
+		}
 		this.handler = handler;
 		messages = new ArrayList<String>(5);
 		this.player = player;
@@ -70,6 +86,10 @@ public class Terminal
 	 */
 	public void printMessage(String message)
 	{
+		if (message == null)
+		{
+			throw new NullPointerException("Can't print a null message");
+		}
 		messages.add(0, message);
 	}
 
@@ -147,6 +167,10 @@ public class Terminal
 	 */
 	private void read(String cmd)
 	{
+		if (cmd == null)
+		{
+			throw new NullPointerException("Can't interpret a null instruction");
+		}
 		String[] commands = cmd.split(" ");
 		if (commands.length == 0)
 		{
@@ -209,7 +233,8 @@ public class Terminal
 					game.setNextLevelName(commands[1]);
 					game.setGameState(GameStates.LOADING);
 					/*
-					 * if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw")) { messages.add(0, "loaded " + commands[1]); } else { messages.add(0, "could not load level"); }
+					 * if (game.loadNewLevel("./res/world/" + commands[1] + ".ffw")) { messages.add(0, "loaded " +
+					 * commands[1]); } else { messages.add(0, "could not load level"); }
 					 */
 				} else
 				{

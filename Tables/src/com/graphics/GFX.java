@@ -43,6 +43,10 @@ public class GFX
 	 */
 	public static void drawString(float x, float y, String string)
 	{
+		if (string == null)
+		{
+			throw new NullPointerException("You can't print a null string");
+		}
 		GL11.glPushMatrix();
 		Textures.black.bind();
 		GFX.font2.drawString(x, y, string);
@@ -61,6 +65,10 @@ public class GFX
 	 */
 	public static void drawString2(float x, float y, String string)
 	{
+		if (string == null)
+		{
+			throw new NullPointerException("You cant draw a null string");
+		}
 		GL11.glPushMatrix();
 		Textures.black.bind();
 		GFX.font3.drawString(x, y, string);
@@ -93,6 +101,10 @@ public class GFX
 
 	public static void drawEntireSpriteTEST(float x, float y, float xx, float yy, Texture texture)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
 		x = x * Game.SCALE;
 		y = y * Game.SCALE;
 		xx = (float) (Math.round(xx) * Game.SCALE);
@@ -132,6 +144,10 @@ public class GFX
 	 */
 	public static void drawEntireSprite(float x, float y, float xx, float yy, Texture texture, int scale)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;
@@ -188,6 +204,10 @@ public class GFX
 	 */
 	public static void drawEntireSpriteAtAngle(float x, float y, float xx, float yy, Texture texture, float angle, int scale)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;
@@ -253,6 +273,19 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheet(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, int scale, float alpha)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
+		if (texCoords == null)
+		{
+			throw new NullPointerException("You can't display a texture without texture coordinates");
+		}
+
+		if (size == null)
+		{
+			throw new NullPointerException("You can't display a texture without knowing the size it is");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;
@@ -315,6 +348,19 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheetAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle, int scale)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
+		if (texCoords == null)
+		{
+			throw new NullPointerException("You can't display a texture without texture coordinates");
+		}
+
+		if (size == null)
+		{
+			throw new NullPointerException("You can't display a texture without knowing the size it is");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;
@@ -378,6 +424,19 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheetInverse(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, int scale)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
+		if (texCoords == null)
+		{
+			throw new NullPointerException("You can't display a texture without texture coordinates");
+		}
+
+		if (size == null)
+		{
+			throw new NullPointerException("You can't display a texture without knowing the size it is");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;
@@ -437,6 +496,19 @@ public class GFX
 	 */
 	public static void drawSpriteFromSpriteSheetInverseAtAngle(float x, float y, float xx, float yy, Texture texture, Vector2f texCoords, Vector2f size, float angle, int scale)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
+		if (texCoords == null)
+		{
+			throw new NullPointerException("You can't display a texture without texture coordinates");
+		}
+
+		if (size == null)
+		{
+			throw new NullPointerException("You can't display a texture without knowing the size it is");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;
@@ -497,6 +569,10 @@ public class GFX
 	 */
 	public static void drawLine(float startX, float startY, float destX, float destY, Color color)
 	{
+		if (color == null)
+		{
+			throw new NullPointerException("You cant draw a line that has no color");
+		}
 		GL11.glPushMatrix();
 		GL11.glColor3f(color.r, color.g, color.b);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
@@ -527,6 +603,10 @@ public class GFX
 	 */
 	public static void drawEntireSpriteWithVaryingAlpha(float x, float y, float xx, float yy, Texture texture, float alpha, int scale)
 	{
+		if (texture == null)
+		{
+			throw new NullPointerException("You can't display a null texture");
+		}
 		if (scale == -1)
 		{
 			x = x * Game.SCALE;

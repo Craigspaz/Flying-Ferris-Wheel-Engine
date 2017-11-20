@@ -31,6 +31,10 @@ public class Level
 	 */
 	public Level(String name)
 	{
+		if(name == null)
+		{
+			throw new NullPointerException("A level must have a name");
+		}
 		this.name = name;
 	}
 

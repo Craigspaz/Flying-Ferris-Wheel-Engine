@@ -4,6 +4,7 @@ import com.graphics.world.RectangleBox;
 
 /**
  * Stores information for pathfinding
+ * 
  * @author Craig Ferris
  *
  */
@@ -15,7 +16,9 @@ public class Node
 
 	/**
 	 * Creates a new node
-	 * @param collider The collider for the node to correspond to
+	 * 
+	 * @param collider
+	 *            The collider for the node to correspond to
 	 */
 	public Node(RectangleBox collider)
 	{
@@ -24,6 +27,7 @@ public class Node
 
 	/**
 	 * Returns the parent node
+	 * 
 	 * @return Returns the parent node
 	 */
 	public Node getParent()
@@ -33,7 +37,9 @@ public class Node
 
 	/**
 	 * Sets the parent node
-	 * @param parent The parent node
+	 * 
+	 * @param parent
+	 *            The parent node
 	 */
 	public void setParent(Node parent)
 	{
@@ -42,6 +48,7 @@ public class Node
 
 	/**
 	 * Returns a string representation of this object
+	 * 
 	 * @return Returns a string representation of this object
 	 */
 	public String toString()

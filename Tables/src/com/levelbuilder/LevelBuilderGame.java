@@ -782,9 +782,9 @@ public class LevelBuilderGame
 			float distanceEnemyTraveledY = 0.0f;
 			int tickCounter = 0;
 
-			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX, terminalVelocityX);
+			Vector2f currentEnemyVelocity = new Vector2f(terminalVelocityX, 0);
 			Vector3f currentEnemyPosition = new Vector3f(0, 0, 0);
-			Vector2f enemySize = new Vector2f(64, 64);
+			Vector2f enemySize = new Vector2f(32, 32);
 
 			int lowestYCoordinate = 0;
 			for (Tile t : sortedTiles)
@@ -874,6 +874,8 @@ public class LevelBuilderGame
 				currentEnemyPosition.y = v.getTile().getPosition().y - enemySize.getY();
 				currentEnemyVelocity = new Vector2f(terminalVelocityX, 0);
 				distanceEnemyTraveledY = 0;
+				boolean collidedWithTileLeft = false;
+				boolean collidedWithTileRight = false;
 				while (currentEnemyPosition.y <= lowestYCoordinate)
 				{
 					currentEnemyPosition.x += currentEnemyVelocity.x;
@@ -888,7 +890,7 @@ public class LevelBuilderGame
 					for (Tile t : sortedTiles)
 					{
 						RectangleBox tileCollider = new RectangleBox(t.getPosition(), t.getSize());
-						if (enemyColliderRight.isCollidingWithBox(tileCollider)) // Found collision along arc
+						if (enemyColliderRight.isCollidingWithBox(tileCollider) && !collidedWithTileRight) // Found collision along arc
 						{
 							if (t.getPosition().getY() == v.getTile().getPosition().getY()
 									&& (t.getPosition().getX() + t.getSize().getX() + t.getSize().getX() == v.getTile().getPosition().getX() || v.getTile().getPosition().getX() + v.getTile().getSize().getX() + v.getTile().getSize().getX() == t.getPosition().getX()))
@@ -898,41 +900,48 @@ public class LevelBuilderGame
 							{
 								break;
 							}
-							Tile previousTile = t;
-							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
-							// assumming falling to the right
-							while ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() < (int) v.getTile().getPosition().getX())
+							int leftTileX = (int) v.getTile().getPosition().getX();
+							int currentTileX = (int) tileCollider.getPosition().getX();
+							Tile highestTile = null;
+							while (currentTileX > leftTileX)
 							{
-								boolean brokeOutOfLoop = false;
 								for (Tile tt : tiles)
-								{
-									if ((int) tt.getPosition().getX() + (int) tt.getSize().getX() == (int) previousTile.getPosition().getX() && (int) tt.getPosition().getY() == (int) previousTile.getPosition().getY())
+						 		{
+									if ((int) tt.getPosition().getX() == currentTileX) // found possible highest tile
 									{
-										if (!isBlockOnTop(tt, tiles))
+										if(highestTile == null)
 										{
-											Edge e = new Edge(v, getVertexFromTile(tt, vertices), 14);
-											e.addEnemyMovementMethod(0, MovementMethod.FALL);
-											v.addEdge(e);
+											highestTile = tt;
 										}
-										previousTile = tt;
-										brokeOutOfLoop = true;
-										break;
+										else if ((int) tt.getPosition().getY() < highestTile.getPosition().getY())
+										{
+											highestTile = tt;
+										}
 									}
 								}
+								Edge e = new Edge(v,getVertexFromTile(highestTile,vertices),14);
+								e.addEnemyMovementMethod(0, MovementMethod.FALL);
+								v.addEdge(e);
+								currentTileX -= (int)tileCollider.getSize().getX();
+							}
 
-								if (!brokeOutOfLoop)
-								{
-									break;
-								}
-							}
-							if ((int) previousTile.getPosition().getX() == (int) v.getTile().getPosition().getX() && (int) previousTile.getPosition().getY() == (int) v.getTile().getPosition().getY()) // Check
-																																																		// if
-																																																		// blocked
-																																																		// off
-							{
-								break;
-							}
-						} else if (tileCollider.isCollidingWithBox(enemyColliderLeft))
+							// Tile previousTile = t;
+							// System.out.println("PreviousTile: " + previousTile.getPosition().getX());
+							// assumming falling to the right
+							/*
+							 * while ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() <
+							 * (int) v.getTile().getPosition().getX()) { boolean brokeOutOfLoop = false; for (Tile tt :
+							 * tiles) { if ((int) tt.getPosition().getX() + (int) tt.getSize().getX() == (int)
+							 * previousTile.getPosition().getX() && (int) tt.getPosition().getY() == (int)
+							 * previousTile.getPosition().getY()) { if (!isBlockOnTop(tt, tiles)) { Edge e = new Edge(v,
+							 * getVertexFromTile(tt, vertices), 14); e.addEnemyMovementMethod(0, MovementMethod.FALL);
+							 * v.addEdge(e); } previousTile = tt; brokeOutOfLoop = true; break; } }
+							 * 
+							 * if (!brokeOutOfLoop) { break; } } if ((int) previousTile.getPosition().getX() == (int)
+							 * v.getTile().getPosition().getX() && (int) previousTile.getPosition().getY() == (int)
+							 * v.getTile().getPosition().getY()) // Check // if // blocked // off { break; }
+							 */
+						} else if (tileCollider.isCollidingWithBox(enemyColliderLeft) && !collidedWithTileLeft)
 						{
 							if ((int) t.getPosition().getY() == (int) v.getTile().getPosition().getY() && ((int) t.getPosition().getX() + (int) t.getSize().getX() + (int) t.getSize().getX() == (int) v.getTile().getPosition().getX()
 									|| (int) v.getTile().getPosition().getX() + (int) v.getTile().getSize().getX() + (int) v.getTile().getSize().getX() == (int) t.getPosition().getX()))
@@ -943,40 +952,31 @@ public class LevelBuilderGame
 								break;
 							}
 							System.out.println("Checking left path....");
-							Tile previousTile = t;
-							System.out.println("PreviousTile: " + previousTile.getPosition().getX());
-							// assumming falling to the right
-							while ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() < (int) v.getTile().getPosition().getX())
+							int rightTileX = (int) v.getTile().getPosition().getX();
+							int currentTileX = (int) tileCollider.getPosition().getX();
+							Tile highestTile = null;
+							while (currentTileX < rightTileX)
 							{
-								System.out.println("Left Continues...");
-								boolean brokeOutOfLoop = false;
 								for (Tile tt : tiles)
-								{
-									if ((int) previousTile.getPosition().getX() + (int) previousTile.getSize().getX() == (int) tt.getPosition().getX() && (int) tt.getPosition().getY() == (int) previousTile.getPosition().getY())
+						 		{
+									if ((int) tt.getPosition().getX() == currentTileX) // found possible highest tile
 									{
-										if (!isBlockOnTop(tt, tiles))
+										if(highestTile == null)
 										{
-											Edge e = new Edge(v, getVertexFromTile(tt, vertices), 14);
-											e.addEnemyMovementMethod(0, MovementMethod.FALL);
-											v.addEdge(e);
+											highestTile = tt;
 										}
-										previousTile = tt;
-										brokeOutOfLoop = true;
-										break;
+										else if ((int) tt.getPosition().getY() < highestTile.getPosition().getY())
+										{
+											highestTile = tt;
+										}
 									}
 								}
-								if (!brokeOutOfLoop)
-								{
-									break;
-								}
+								Edge e = new Edge(v,getVertexFromTile(highestTile,vertices),14);
+								e.addEnemyMovementMethod(0, MovementMethod.FALL);
+								v.addEdge(e);
+								currentTileX += (int)tileCollider.getSize().getX();
 							}
-							if ((int) previousTile.getPosition().getX() == (int) v.getTile().getPosition().getX() && (int) previousTile.getPosition().getY() == (int) v.getTile().getPosition().getY()) // Check
-																																																		// if
-																																																		// blocked
-																																																		// off
-							{
-								break;
-							}
+
 						}
 					}
 					int tmp = (int) (currentEnemyPosition.getX() / (int) v.getTile().getSize().getX());
@@ -1000,7 +1000,7 @@ public class LevelBuilderGame
 							}
 						}
 					}
-					
+
 					int tmp1 = (int) (currentEnemyPosition.getZ() / (int) v.getTile().getSize().getX());
 					if (currentModuloPositionZ != tmp1)
 					{

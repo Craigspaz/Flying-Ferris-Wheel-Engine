@@ -101,6 +101,10 @@ public class Enemy extends Entity
 	 */
 	private void move(Player player)
 	{
+		if(player == null)
+		{
+			throw new NullPointerException("Can't move a enemy towards a null position");
+		}
 		if (path != null)
 		{
 			System.out.println("PATH: ");
@@ -251,6 +255,10 @@ public class Enemy extends Entity
 	 */
 	public static Enemy generateBasicEnemyBasedOnID(String id, float x, float y)
 	{
+		if(id == null)
+		{
+			throw new NullPointerException("The id of a basic enemy can't be null");
+		}
 		Enemy e = null;
 		switch (id)
 		{
@@ -274,6 +282,18 @@ public class Enemy extends Entity
 		/*
 		 * if (path == null) { PathFindingThread pathThread = new PathFindingThread(); pathThread.start(this, colliders, player, vertices); System.out.println("Ran Thread"); path = new ArrayList<RectangleBox>();//tmp }
 		 */
+		if(colliders == null)
+		{
+			throw new NullPointerException("The list of colliders can't be null for updating a enemy");
+		}
+		if(player == null)
+		{
+			throw new NullPointerException("An enemy can't move towards a player if the player is null");
+		}
+		if(vertices == null)
+		{
+			throw new NullPointerException("Can't move an enemy without knowing the world vertices");
+		}
 		path = Utils.calculateShortestPathToPlayer(this, player, vertices, colliders);
 		if (path == null)
 		{
@@ -312,6 +332,14 @@ public class Enemy extends Entity
 	 */
 	public static int getManhattanDistance(Vector3f start, Vector3f end)
 	{
+		if(start == null)
+		{
+			throw new NullPointerException("Can't get manhattan distance if starting point is null");
+		}
+		if(end == null)
+		{
+			throw new NullPointerException("Can't get manhattan distance if ending point is null");
+		}
 		return (int) (Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
 	}
 
@@ -326,7 +354,14 @@ public class Enemy extends Entity
 	 */
 	public ArrayList<RectangleBox> generatePath(ArrayList<RectangleBox> colliders, Player player)
 	{
-
+		if(colliders == null)
+		{
+			throw new NullPointerException("Can't generate path to player if colliders are null");
+		}
+		if(player == null)
+		{
+			throw new NullPointerException("Can't generate path to player if pointer to player is null");
+		}
 		RectangleBox endCollider = player.getCurrentFloor();
 		if (endCollider == null)
 		{
@@ -372,6 +407,14 @@ public class Enemy extends Entity
 	 */
 	public Node generatePath(ArrayList<RectangleBox> colliders, RectangleBox destination, Node root)
 	{
+		if(colliders == null)
+		{
+			throw new NullPointerException("Can't generate path if colliders are null");
+		}
+		if(destination == null)
+		{
+			throw new NullPointerException("Can't generate path if the destination is null");
+		}
 		Node result = null;
 		if (root != null)
 		{

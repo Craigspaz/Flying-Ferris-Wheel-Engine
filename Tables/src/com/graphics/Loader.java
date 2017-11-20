@@ -27,6 +27,10 @@ public class Loader
 	 */
 	public static Texture loadTexture(String fileName)
 	{
+		if (fileName == null)
+		{
+			throw new NullPointerException("Error: Can't load a file at a null file path");
+		}
 		Texture texture = null;
 		try
 		{
@@ -39,14 +43,20 @@ public class Loader
 		}
 		return texture;
 	}
-	
+
 	/**
 	 * Loads an WAV audio file into memory
-	 * @param fileName The name of the file to be loaded from the "./res/" folder
+	 * 
+	 * @param fileName
+	 *            The name of the file to be loaded from the "./res/" folder
 	 * @return Returns an Audio object of the file loaded in
 	 */
 	public static Audio loadAudioWAV(String fileName)
 	{
+		if (fileName == null)
+		{
+			throw new NullPointerException("Error: Can't load a file at a null file path");
+		}
 		Audio audio = null;
 		try
 		{
@@ -57,14 +67,20 @@ public class Loader
 		}
 		return audio;
 	}
-	
+
 	/**
 	 * Loads an OGG audio file into memory
-	 * @param fileName The name of the file to be loaded from the "./res/" folder
+	 * 
+	 * @param fileName
+	 *            The name of the file to be loaded from the "./res/" folder
 	 * @return Returns an Audio object of the file loaded in
 	 */
 	public static Audio loadAudioOGG(String fileName)
 	{
+		if (fileName == null)
+		{
+			throw new NullPointerException("Error: Can't load a file at a null file path");
+		}
 		Audio audio = null;
 		try
 		{

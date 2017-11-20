@@ -39,6 +39,10 @@ public class Camera
 	 */
 	public Camera(Vector2f position, Vector2f size)
 	{
+		if (position == null || size == null)
+		{
+			throw new NullPointerException();
+		}
 		this.position = position;
 		this.size = size;
 		movementSpeed = 9;
@@ -61,6 +65,14 @@ public class Camera
 	 */
 	public void setPositionToPlayer(Entity entity, int width, int height)
 	{
+		if (entity == null)
+		{
+			throw new NullPointerException();
+		}
+		if (width < 0 || height < 0)
+		{
+			throw new IndexOutOfBoundsException("Width/height passed into setPositionToPlayer is invalid");
+		}
 		// camera shake
 		float noiseX = 0;
 		float noiseY = 0;
@@ -126,7 +138,7 @@ public class Camera
 	 */
 	public void moveUp()
 	{
-		position.y += movementSpeed;
+		position.y -= movementSpeed;
 	}
 
 	/**
@@ -134,7 +146,7 @@ public class Camera
 	 */
 	public void moveDown()
 	{
-		position.y -= movementSpeed;
+		position.y += movementSpeed;
 	}
 
 	/**

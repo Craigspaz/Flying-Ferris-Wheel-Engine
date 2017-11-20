@@ -53,6 +53,22 @@ public class Particle
 	 */
 	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("A particle must have a starting position");
+		}
+		if(size == null)
+		{
+			throw new NullPointerException("A particle must have a size");
+		}
+		if(spriteSheet == null)
+		{
+			throw new NullPointerException("A particle must have a sprite sheet to animate");
+		}
+		if(spriteSize == null)
+		{
+			throw new NullPointerException("A particle must have a sprite size");
+		}
 		this.position = position;
 		this.size = size;
 		this.spriteSheet = spriteSheet;
@@ -90,6 +106,22 @@ public class Particle
 	 */
 	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount, int ticksPerFrame)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("A particle must have a position");
+		}
+		if(size == null)
+		{
+			throw new NullPointerException("A particle must have a size");
+		}
+		if(spriteSheet == null)
+		{
+			throw new NullPointerException("A particle must have a sprite sheet");
+		}
+		if(spriteSize == null)
+		{
+			throw new NullPointerException("A particle must have a size");
+		}
 		this.position = position;
 		this.size = size;
 		this.spriteSheet = spriteSheet;
@@ -134,6 +166,34 @@ public class Particle
 	 */
 	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("The starting position of a particle can't be null");
+		}
+		if(size == null)
+		{
+			throw new NullPointerException("The size of a particle can't be null");
+		}
+		if(spriteSheet == null)
+		{
+			throw new NullPointerException("The sprite sheet of a particle can't be null");
+		}
+		if(spriteSize == null)
+		{
+			throw new NullPointerException("The sprite size can't be null");
+		}
+		if(velocity == null)
+		{
+			throw new NullPointerException("A particle must have a velocity. It can be zero");
+		}
+		if(positionScatter == null)
+		{
+			throw new NullPointerException("A particle must have a position scatter");
+		}
+		if(velocityMod == null)
+		{
+			throw new NullPointerException("A particle must have a velocity mod");
+		}
 		// these offsets are randomly picked from the total x and y direction that the particle can spawn
 		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatter.x;
 		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatter.y;
@@ -185,6 +245,34 @@ public class Particle
 	 */
 	public Particle(Vector2f position, Vector2f size, Texture spriteSheet, int numberOfFrames, int row, boolean flip, Vector2f spriteSize, int loopCount, Vector2f velocity, Vector2f positionScatter, Vector2f velocityMod, int startingFrameRandomOffset, int ticksPerFrame)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("The starting position of a particle can't be null");
+		}
+		if(size == null)
+		{
+			throw new NullPointerException("The size of a particle can't be null");
+		}
+		if(spriteSheet == null)
+		{
+			throw new NullPointerException("The sprite sheet of a particle can't be null");
+		}
+		if(spriteSize == null)
+		{
+			throw new NullPointerException("The sprite size can't be null");
+		}
+		if(velocity == null)
+		{
+			throw new NullPointerException("A particle must have a velocity. It can be zero");
+		}
+		if(positionScatter == null)
+		{
+			throw new NullPointerException("A particle must have a position scatter");
+		}
+		if(velocityMod == null)
+		{
+			throw new NullPointerException("A particle must have a velocity mod");
+		}
 		// these offsets are randomly picked from the total x and y direction that the particle can spawn
 		float offset_x = (new Random().nextFloat() - 0.5f) * positionScatter.x;
 		float offset_y = (new Random().nextFloat() - 0.5f) * positionScatter.y;

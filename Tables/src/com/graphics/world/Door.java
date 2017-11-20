@@ -29,6 +29,16 @@ public class Door extends Tile
 	public Door(Game game, InputHandler handler)
 	{
 		super();
+		if (game == null)
+		{
+			throw new NullPointerException("The Game must be running to create a door");
+		}
+
+		if (handler == null)
+		{
+			throw new NullPointerException("A door needs to understand input");
+		}
+
 		this.game = game;
 		this.destination = new Vector3f(0, 0, 0);
 	}
@@ -43,6 +53,14 @@ public class Door extends Tile
 	 */
 	public void setDestination(String levelName, Vector3f destination)
 	{
+		if (levelName == null)
+		{
+			throw new NullPointerException("Error: A door can't have a null destination level");
+		}
+		if (destination == null)
+		{
+			throw new NullPointerException("You can't have a null spawn location");
+		}
 		this.levelName = levelName;
 		this.destination = destination;
 	}
@@ -61,9 +79,9 @@ public class Door extends Tile
 	 */
 	public void update()
 	{
-//		if (isCollidingWithBox(game.getPlayer().getCollider()) && handler.down())
-//		{
-//			openDoor();
-//		}
+		// if (isCollidingWithBox(game.getPlayer().getCollider()) && handler.down())
+		// {
+		// openDoor();
+		// }
 	}
 }

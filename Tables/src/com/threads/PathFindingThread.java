@@ -29,7 +29,7 @@ public class PathFindingThread implements Runnable
 		this.colliders = colliders;
 		this.player = player;
 		this.vertices = vertices;
-		if(enemy == null)
+		if(enemy == null || colliders == null || player == null || vertices == null)
 		{
 			System.out.println("Failed to Start PathFinding Thread");
 			throw new NullPointerException();

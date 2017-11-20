@@ -45,6 +45,10 @@ public class Tile
 	 */
 	public Tile(Vector3f position)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("A tile must have a position");
+		}
 		this.position = position;
 		texture = null;
 		spriteSize = new Vector2f(0, 0);
@@ -59,6 +63,10 @@ public class Tile
 	public Tile(Texture texture)
 	{
 		this();
+		if(texture == null)
+		{
+			throw new NullPointerException("A tile must have a texture if created with a texture");
+		}
 		this.texture = texture;
 	}
 
@@ -73,6 +81,10 @@ public class Tile
 	public Tile(Vector3f position, Texture texture)
 	{
 		this(position);
+		if(texture == null)
+		{
+			throw new NullPointerException("A tile must have a texture");
+		}
 		this.texture = texture;
 	}
 
@@ -89,6 +101,7 @@ public class Tile
 	public Tile(Vector3f position, Vector2f spriteSize, Texture texture)
 	{
 		this(position, texture);
+		
 		this.spriteSize = spriteSize;
 	}
 
@@ -128,6 +141,10 @@ public class Tile
 	public Tile(Vector3f position, Vector2f spriteSize, Texture texture, int numberOfFrames, int row)
 	{
 		this(position, texture, numberOfFrames, row);
+		if(spriteSize == null)
+		{
+			throw new NullPointerException("A tile must have a non-null spritesize");
+		}
 		this.spriteSize = spriteSize;
 	}
 

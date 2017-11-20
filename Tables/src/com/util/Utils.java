@@ -20,6 +20,10 @@ public class Utils
 	 */
 	public static Vertex findTileVertexInVertices(Tile t, ArrayList<Vertex> vertices)
 	{
+		if(vertices == null)
+		{
+			throw new NullPointerException("Can't search for a tile in a null array");
+		}
 		for(Vertex v: vertices)
 		{
 			if(v.getTile() == t)
@@ -38,6 +42,14 @@ public class Utils
 	 */
 	public static int manhattanDistance(Tile source, Tile dest)
 	{
+		if(source == null)
+		{
+			throw new NullPointerException("Can't find the manhattan distance between two points if the source is null");
+		}
+		if(dest == null)
+		{
+			throw new NullPointerException("Can't find the manhattan distance between two points if the destination is null");
+		}
 		return Math.abs((int)source.getPosition().x - (int)dest.getPosition().x) + Math.abs((int)source.getPosition().y - (int)dest.getPosition().y);
 	}
 	
@@ -49,6 +61,10 @@ public class Utils
 	 */
 	private static boolean isVertexInList(ArrayList<Vertex> list, Edge element)
 	{
+		if(list == null)
+		{
+			throw new NullPointerException("Can't search a null list");
+		}
 		for(Vertex v : list)
 		{
 			if(v.getTile() == element.getDestination().getTile())
@@ -69,6 +85,22 @@ public class Utils
 	 */
 	public static ArrayList<RectangleBox> calculateShortestPathToPlayer(Enemy e, Player p, ArrayList<Vertex> vertices,ArrayList<RectangleBox> colliders)
 	{
+		if(e == null)
+		{
+			throw new NullPointerException("Can't calculate the shortest path if the enemy is null");
+		}
+		if(p == null)
+		{
+			throw new NullPointerException("Can't generate the path to the player if the player is null");
+		}
+		if(vertices == null)
+		{
+			throw new NullPointerException("Can't generate a path if the graph is null");
+		}
+		if(colliders == null)
+		{
+			throw new NullPointerException("Can't generate a path if the colliders are null");
+		}
 		System.out.println("Running A*...");
 		Vertex sourceVertex = e.getCurrentVertex();
 		Vertex destinationVertex = p.getCurrentVertex();

@@ -85,6 +85,18 @@ public class Entity
 	 */
 	public Entity(Vector3f position, Texture texture, Vector2f spriteSize)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("An entity needs a starting position.");
+		}
+		if(texture == null)
+		{
+			throw new NullPointerException("An entity needs a texture so it can be seen on the screen");
+		}
+		if(spriteSize == null)
+		{
+			throw new NullPointerException("The sprite needs a size to render");
+		}
 		this.position = position;
 		this.texture = texture;
 		this.spriteSize = spriteSize;
@@ -118,6 +130,10 @@ public class Entity
 	public Entity(Vector3f position, Texture texture, Texture outlineTexture, int numberOfFrames, int row, Vector2f spriteSize)
 	{
 		this(position, texture, spriteSize);
+		if(outlineTexture == null)
+		{
+			throw new NullPointerException("An entity needs an outline texture");
+		}
 		this.numberOfFrames = numberOfFrames;
 		this.row = row;
 		this.outlineTexture = outlineTexture;
@@ -132,6 +148,10 @@ public class Entity
 	 */
 	public boolean isCollidingWithEntity2D(Entity entity)
 	{
+		if(entity == null)
+		{
+			throw new NullPointerException("You can't check to collide with null");
+		}
 		return collider.isCollidingWithBox(entity.getCollider());
 	}
 
@@ -143,6 +163,14 @@ public class Entity
 	 */
 	public void update(ArrayList<RectangleBox> colliders, ArrayList<Vertex> vertices)
 	{
+		if(colliders == null)
+		{
+			throw new NullPointerException("You can't have null colliders");
+		}
+		if(vertices == null)
+		{
+			throw new NullPointerException("You can't have null vertices");
+		}
 		if (animateTime >= animateFrameTime)
 		{
 			animSpriteFrameX++;
@@ -255,6 +283,10 @@ public class Entity
 	 */
 	public void checkForCollisionWithProjectiles(ArrayList<Projectile> projectiles)
 	{
+		if(projectiles == null)
+		{
+			throw new NullPointerException("You can't check if an entity is colliding with null projectiles");
+		}
 		for (Projectile p : projectiles)
 		{
 			if (!p.isDead() && p.isCollidingWithEntity2D(this))
@@ -438,6 +470,10 @@ public class Entity
 	 */
 	public void takeDamage(int damage)
 	{
+		if(damage < 0)
+		{
+			damage = Math.abs(damage);
+		}
 		if (!immune)
 		{
 			this.healthPoints -= damage;

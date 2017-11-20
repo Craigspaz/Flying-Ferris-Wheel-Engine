@@ -24,6 +24,14 @@ public class RectangleBox
 	 */
 	public RectangleBox(Vector3f position, Vector2f size)
 	{
+		if(position == null)
+		{
+			throw new NullPointerException("A colliders needs a position");
+		}
+		if(size == null)
+		{
+			throw new NullPointerException("A collider needs a size");
+		}
 		this.position = position;
 		this.size = size;
 	}
@@ -37,6 +45,10 @@ public class RectangleBox
 	 */
 	public boolean isCollidingWithBox(RectangleBox box)
 	{
+		if(box == null)
+		{
+			throw new NullPointerException("Box");
+		}
 		float x = position.x;
 		float y = position.y;
 		float sizex = size.x;
