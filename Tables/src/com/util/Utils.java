@@ -130,7 +130,7 @@ public class Utils
 		sourceVertex.setfCost(manhattanDistance(sourceVertex.getTile(), destinationVertex.getTile()));
 		
 		openlist.add(sourceVertex);
-		
+
 		while(!openlist.isEmpty())
 		{
 			Vertex currentVertex = null;

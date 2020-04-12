@@ -43,8 +43,11 @@ public class PathFindingThread implements Runnable
 	@Override
 	public void run()
 	{
+		System.out.println("DEBUG1......");
 		//enemy.setPath(enemy.generatePath(colliders,player));
-		enemy.setPath(Utils.calculateShortestPathToPlayer(enemy, player, vertices,colliders));
+		ArrayList<RectangleBox> value = Utils.calculateShortestPathToPlayer(enemy, player, vertices,colliders);
+		System.out.println("DEBUG: " + value);
+		enemy.setPath(value);
 	}
 	
 }

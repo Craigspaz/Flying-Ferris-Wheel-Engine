@@ -11,6 +11,7 @@ import com.graphics.world.Player;
 import com.graphics.world.RectangleBox;
 import com.graphics.world.projectile.Projectile;
 import com.graphics.world.util.Vertex;
+import com.threads.PathFindingThread;
 import com.util.Utils;
 
 /**
@@ -295,6 +296,7 @@ public class Enemy extends Entity
 			throw new NullPointerException("Can't move an enemy without knowing the world vertices");
 		}
 		path = Utils.calculateShortestPathToPlayer(this, player, vertices, colliders);
+		System.out.println("THE DEBUG: " + path);
 		if (path == null)
 		{
 			if (player.getCurrentVertex() != null && this.getCurrentVertex() != null)

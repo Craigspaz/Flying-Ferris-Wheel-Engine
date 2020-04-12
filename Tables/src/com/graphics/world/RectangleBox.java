@@ -92,6 +92,63 @@ public class RectangleBox
 			return false;
 		}
 	}
+	
+	/**
+	 * Returns true if the current box overlaps with the Tile passed in
+	 * 
+	 * @param tile
+	 *            The Tile to check if colliding with
+	 * @return Returns true if the current box overlaps with the Tile passed in and false otherwise
+	 */
+	public boolean isCollidingWithTile(Tile tile)
+	{
+		if(tile == null)
+		{
+			throw new NullPointerException("Tile");
+		}
+		float x = position.x;
+		float y = position.y;
+		float sizex = size.x;
+		float sizey = size.y;
+
+		float xx = tile.getPosition().x;
+		float yy = tile.getPosition().y;
+		float sizexx = tile.getSize().x;
+		float sizeyy = tile.getSize().y;
+
+		// Checks if any of the corners of the current box object are in the box
+		if (x > xx && x < xx + sizexx && y > yy && y < yy + sizeyy)
+		{
+			return true;
+		} else if (x > xx && x < xx + sizexx && y + sizey > yy && y < yy + sizeyy)
+		{
+			return true;
+		} else if (x + sizex > xx && x + sizex < xx + sizexx && y > yy && y < yy + sizeyy)
+		{
+			return true;
+		} else if (x + sizex > xx && x + sizex < xx + sizexx && y + sizey > yy && y < yy + sizeyy)
+		{
+			return true;
+		}
+		// Checks if and y of the corners of the box are in the current box
+		// object
+		else if (xx > x && xx < x + sizex && yy > y && yy < y + sizey)
+		{
+			return true;
+		} else if (xx > x && xx < x + sizex && yy + sizeyy > y && yy < y + sizey)
+		{
+			return true;
+		} else if (xx + sizexx > x && xx + sizexx < x + sizex && yy > y && yy < y + sizey)
+		{
+			return true;
+		} else if (xx + sizexx > x && xx + sizexx < x + sizex && yy + sizeyy > y && yy < y + sizey)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
 
 	/**
 	 * Returns a clone of the current rectanglebox

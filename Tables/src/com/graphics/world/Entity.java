@@ -236,24 +236,21 @@ public class Entity
 				float bottomOfPlayer = nBoxY.getPosition().y + nBoxY.getSize().y;
 				if (velocity.y > 0)
 				{
+					for (Vertex v : vertices)
+					{
+						if (nBoxY.isCollidingWithTile(v.getTile()))
+						{
+							currentVertex = v;
+							break;
+						}
+					}
 					float yShift = Math.abs(bottomOfPlayer - topOfGround);
-
 					nBoxY.getPosition().y += -yShift;
 					isOnGround = true;
 					velocity.y = 0;
 					currentFloor = t;
 					flipping = false;
-					for (Vertex v : vertices)
-					{
-						if ((int) v.getTile().getPosition().y == (int) t.getPosition().y)
-						{
-							if ((int) v.getTile().getPosition().x >= (int) nBoxY.getPosition().x - nBoxY.getSize().x || (int) v.getTile().getPosition().x <= (int) nBoxY.getPosition().x + nBoxY.getSize().x)
-							{
-								currentVertex = v;
-								break;
-							}
-						}
-					}
+					
 					// System.out.println("landed on "+ currentFloor);
 				} else if (velocity.y < 0)
 				{
